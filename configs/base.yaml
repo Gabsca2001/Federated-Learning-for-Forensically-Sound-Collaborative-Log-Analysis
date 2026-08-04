@@ -1,0 +1,79 @@
+schema_version: "1.0"
+experiment:
+  name: uwf-zeekdata22-forensic-fl
+  seed: 341593
+  client_count: 15
+  dataset: UWF-ZeekData22
+  provenance_boundary: controlled_ingestion
+
+cryptography:
+  canonicalization: RFC8785-JCS-integer-profile
+  digest: SHA-256
+  signature: ECDSA-P256-SHA256
+  batch_chain_encoding: binary-digests
+
+acquisition:
+  source_type: zeek-jsonl
+  max_batch_records: 50000
+  max_batch_seconds: 60
+  delivery: at-least-once
+
+attestation:
+  virtual_profile: swtpm
+  physical_profile: tpm2
+  accepted_statuses:
+    - passed
+    - passed_with_warning
+  pcr_selection: [0, 2, 4, 7, 10]
+  max_result_age_seconds: 900
+
+preprocessing:
+  schema_version: zeek-window-v1
+  window_seconds: 60
+  split_seed: 341593
+  split_percentages:
+    train: 70
+    validation: 15
+    test: 15
+  label_fields: [label, _label, attack, mitre_tactic]
+  benign_labels: [benign, normal, "-"]
+  numeric_scaling: none
+
+model:
+  architecture: mlp-encoder-classification-head
+  hidden_layers: [128, 64]
+  embedding_size: 32
+  dropout: 0.2
+  activation: relu
+  loss: multiclass-cross-entropy
+
+federation:
+  framework: Flower
+  baseline_aggregator: fedavg
+  robust_reference_aggregator: trimmed_mean
+  rounds: 30
+  local_epochs: 2
+  batch_size: 128
+  learning_rate: 0.001
+  minimum_available_clients: 15
+  minimum_fit_clients: 15
+
+prototypes:
+  enabled: true
+  minimum_local_support: 5
+  class_quorum: 3
+  baseline_aggregation: support_weighted_mean
+  robust_aggregation: coordinate_median
+
+robustness:
+  clip_norm_source: benign-development-campaign
+  indicators: [relative_norm, cosine_to_median, coordinate_median_distance, mad_score, validation_impact]
+  comparison_aggregators: [fedavg, coordinate_median, trimmed_mean, multikrum, bulyan]
+  attacks: [label_flip, gaussian_noise, sign_flip, model_replacement, backdoor, prototype_poisoning, colluding]
+
+reporting:
+  explanation: integrated_gradients
+  prototype_distance: euclidean
+  deterministic_baseline_required: true
+  llm_narrative_optional: true
+

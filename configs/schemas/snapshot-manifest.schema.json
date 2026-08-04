@@ -1,0 +1,149 @@
+{
+  "$defs": {
+    "DigestRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "digest"
+      ],
+      "title": "DigestRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "dataset_snapshot_manifest",
+      "default": "dataset_snapshot_manifest",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "built_at": {
+      "title": "Built At",
+      "type": "string"
+    },
+    "class_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Class Counts",
+      "type": "object"
+    },
+    "client_id": {
+      "title": "Client Id",
+      "type": "string"
+    },
+    "code_version": {
+      "title": "Code Version",
+      "type": "string"
+    },
+    "dataset_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Digest",
+      "type": "string"
+    },
+    "discarded_records": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Discarded Records",
+      "type": "object"
+    },
+    "feature_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Feature Names",
+      "type": "array"
+    },
+    "input_batches": {
+      "items": {
+        "$ref": "#/$defs/DigestRef"
+      },
+      "title": "Input Batches",
+      "type": "array"
+    },
+    "input_decisions": {
+      "items": {
+        "$ref": "#/$defs/DigestRef"
+      },
+      "title": "Input Decisions",
+      "type": "array"
+    },
+    "lineage_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Lineage Digest",
+      "type": "string"
+    },
+    "preprocessing_config_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Preprocessing Config Digest",
+      "type": "string"
+    },
+    "preprocessing_schema": {
+      "title": "Preprocessing Schema",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "source_dataset": {
+      "title": "Source Dataset",
+      "type": "string"
+    },
+    "source_dataset_version": {
+      "title": "Source Dataset Version",
+      "type": "string"
+    },
+    "split_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Split Counts",
+      "type": "object"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "client_id",
+    "input_batches",
+    "input_decisions",
+    "source_dataset",
+    "source_dataset_version",
+    "preprocessing_schema",
+    "preprocessing_config_digest",
+    "code_version",
+    "seed",
+    "feature_names",
+    "class_counts",
+    "split_counts",
+    "discarded_records",
+    "dataset_digest",
+    "lineage_digest",
+    "built_at"
+  ],
+  "title": "SnapshotManifest",
+  "type": "object"
+}

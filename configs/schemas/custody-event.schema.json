@@ -1,0 +1,107 @@
+{
+  "$defs": {
+    "CustodyEventCore": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "actor": {
+          "title": "Actor",
+          "type": "string"
+        },
+        "details": {
+          "additionalProperties": true,
+          "title": "Details",
+          "type": "object"
+        },
+        "object_refs": {
+          "items": {
+            "$ref": "#/$defs/DigestRef"
+          },
+          "title": "Object Refs",
+          "type": "array"
+        },
+        "occurred_at": {
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "outcome": {
+          "title": "Outcome",
+          "type": "string"
+        },
+        "previous_event_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Previous Event Hash",
+          "type": "string"
+        },
+        "sequence_number": {
+          "minimum": 0,
+          "title": "Sequence Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sequence_number",
+        "previous_event_hash",
+        "action",
+        "actor",
+        "object_refs",
+        "outcome",
+        "occurred_at"
+      ],
+      "title": "CustodyEventCore",
+      "type": "object"
+    },
+    "DigestRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "digest"
+      ],
+      "title": "DigestRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "custody_event",
+      "default": "custody_event",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/CustodyEventCore"
+    },
+    "event_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Event Hash",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "core",
+    "event_hash"
+  ],
+  "title": "CustodyEvent",
+  "type": "object"
+}

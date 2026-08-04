@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "ReceiptCore": {
+      "additionalProperties": false,
+      "properties": {
+        "admission_status": {
+          "enum": [
+            "accepted",
+            "quarantined"
+          ],
+          "title": "Admission Status",
+          "type": "string"
+        },
+        "batch_id": {
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "chain_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Chain Hash",
+          "type": "string"
+        },
+        "decision_id": {
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "policy_id": {
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "policy_version": {
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "receipt_id": {
+          "title": "Receipt Id",
+          "type": "string"
+        },
+        "received_at": {
+          "title": "Received At",
+          "type": "string"
+        },
+        "repository_id": {
+          "title": "Repository Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "receipt_id",
+        "batch_id",
+        "chain_hash",
+        "decision_id",
+        "admission_status",
+        "repository_id",
+        "received_at",
+        "policy_id",
+        "policy_version"
+      ],
+      "title": "ReceiptCore",
+      "type": "object"
+    },
+    "SignatureBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "ECDSA-P256-SHA256",
+          "default": "ECDSA-P256-SHA256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "trust_level": {
+          "enum": [
+            "software-development",
+            "swtpm",
+            "tpm2"
+          ],
+          "title": "Trust Level",
+          "type": "string"
+        },
+        "value_b64": {
+          "title": "Value B64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key_id",
+        "value_b64",
+        "trust_level"
+      ],
+      "title": "SignatureBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "repository_receipt",
+      "default": "repository_receipt",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/ReceiptCore"
+    },
+    "core_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Core Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "$ref": "#/$defs/SignatureBlock"
+    }
+  },
+  "required": [
+    "core",
+    "core_digest",
+    "signature"
+  ],
+  "title": "SignedReceipt",
+  "type": "object"
+}

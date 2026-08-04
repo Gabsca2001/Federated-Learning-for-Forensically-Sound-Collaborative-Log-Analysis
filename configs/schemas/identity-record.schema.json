@@ -1,0 +1,54 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "client_id": {
+      "title": "Client Id",
+      "type": "string"
+    },
+    "evidence_key_id": {
+      "title": "Evidence Key Id",
+      "type": "string"
+    },
+    "evidence_public_key_pem": {
+      "title": "Evidence Public Key Pem",
+      "type": "string"
+    },
+    "node_id": {
+      "title": "Node Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "revoked"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "valid_from": {
+      "title": "Valid From",
+      "type": "string"
+    },
+    "valid_until": {
+      "title": "Valid Until",
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_id",
+    "node_id",
+    "evidence_key_id",
+    "evidence_public_key_pem",
+    "valid_from",
+    "valid_until"
+  ],
+  "title": "IdentityRecord",
+  "type": "object"
+}

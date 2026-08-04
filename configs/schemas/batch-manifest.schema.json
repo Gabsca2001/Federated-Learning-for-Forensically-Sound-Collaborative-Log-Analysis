@@ -1,0 +1,213 @@
+{
+  "$defs": {
+    "BatchManifestCore": {
+      "additionalProperties": false,
+      "properties": {
+        "acquired_at": {
+          "title": "Acquired At",
+          "type": "string"
+        },
+        "acquisition_session_id": {
+          "title": "Acquisition Session Id",
+          "type": "string"
+        },
+        "attestation_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Attestation Digest",
+          "type": "string"
+        },
+        "attestation_id": {
+          "title": "Attestation Id",
+          "type": "string"
+        },
+        "batch_id": {
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "chain_encoding": {
+          "const": "binary-digests",
+          "default": "binary-digests",
+          "title": "Chain Encoding",
+          "type": "string"
+        },
+        "client_id": {
+          "title": "Client Id",
+          "type": "string"
+        },
+        "collector_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Collector Digest",
+          "type": "string"
+        },
+        "collector_id": {
+          "title": "Collector Id",
+          "type": "string"
+        },
+        "collector_version": {
+          "title": "Collector Version",
+          "type": "string"
+        },
+        "configuration_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Configuration Digest",
+          "type": "string"
+        },
+        "content_filename": {
+          "title": "Content Filename",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "content_size_bytes": {
+          "minimum": 0,
+          "title": "Content Size Bytes",
+          "type": "integer"
+        },
+        "hash_algorithm": {
+          "const": "SHA-256",
+          "default": "SHA-256",
+          "title": "Hash Algorithm",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "observed_end": {
+          "title": "Observed End",
+          "type": "string"
+        },
+        "observed_start": {
+          "title": "Observed Start",
+          "type": "string"
+        },
+        "previous_chain_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Previous Chain Hash",
+          "type": "string"
+        },
+        "record_count": {
+          "minimum": 0,
+          "title": "Record Count",
+          "type": "integer"
+        },
+        "sequence_number": {
+          "minimum": 0,
+          "title": "Sequence Number",
+          "type": "integer"
+        },
+        "source_name": {
+          "title": "Source Name",
+          "type": "string"
+        },
+        "source_type": {
+          "const": "zeek-jsonl",
+          "title": "Source Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "batch_id",
+        "node_id",
+        "client_id",
+        "acquisition_session_id",
+        "sequence_number",
+        "source_type",
+        "source_name",
+        "observed_start",
+        "observed_end",
+        "acquired_at",
+        "record_count",
+        "content_filename",
+        "content_size_bytes",
+        "content_sha256",
+        "previous_chain_hash",
+        "collector_id",
+        "collector_version",
+        "collector_digest",
+        "configuration_digest",
+        "attestation_id",
+        "attestation_digest"
+      ],
+      "title": "BatchManifestCore",
+      "type": "object"
+    },
+    "SignatureBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "ECDSA-P256-SHA256",
+          "default": "ECDSA-P256-SHA256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "trust_level": {
+          "enum": [
+            "software-development",
+            "swtpm",
+            "tpm2"
+          ],
+          "title": "Trust Level",
+          "type": "string"
+        },
+        "value_b64": {
+          "title": "Value B64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key_id",
+        "value_b64",
+        "trust_level"
+      ],
+      "title": "SignatureBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "batch_bundle_manifest",
+      "default": "batch_bundle_manifest",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "canonical_core_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Canonical Core Sha256",
+      "type": "string"
+    },
+    "chain_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Chain Hash",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/BatchManifestCore"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "$ref": "#/$defs/SignatureBlock"
+    }
+  },
+  "required": [
+    "core",
+    "canonical_core_sha256",
+    "chain_hash",
+    "signature"
+  ],
+  "title": "BatchManifest",
+  "type": "object"
+}

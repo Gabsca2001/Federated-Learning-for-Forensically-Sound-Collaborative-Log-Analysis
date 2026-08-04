@@ -1,0 +1,26 @@
+services:
+  evidence-demo:
+    build:
+      context: .
+    command:
+      - demo
+      - --input
+      - /input/zeek_conn.jsonl
+      - --output
+      - /runtime/demo
+    read_only: true
+    user: "65532:65532"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./tests/fixtures:/input:ro
+      - phase1_runtime:/runtime
+    networks: [evidence]
+
+volumes:
+  phase1_runtime: {}
+
+networks:
+  evidence:
+    internal: true
+

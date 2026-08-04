@@ -1,0 +1,19 @@
+schema_version: "1.0"
+policy_id: batch-admission
+policy_version: "1.0.0"
+required_checks:
+  - registered_identity
+  - client_node_binding
+  - content_digest
+  - content_size
+  - canonical_chain_commitment
+  - evidence_signature
+  - attestation_signature
+  - attestation_identity_binding
+  - attestation_status
+  - attestation_freshness
+  - session_sequence_continuity
+outcomes:
+  all_required_checks_pass: accepted
+  otherwise: quarantined
+

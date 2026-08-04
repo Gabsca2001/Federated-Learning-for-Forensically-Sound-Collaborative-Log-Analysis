@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fl-forensics-pipeline"
+version = "0.1.0"
+description = "Forensically-sound federated Zeek log analysis prototype"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "cryptography>=45,<47",
+  "pydantic>=2.10,<3",
+  "PyYAML>=6,<7",
+]
+
+[project.optional-dependencies]
+ml = [
+  "flwr>=1.20,<2",
+  "numpy>=2,<3",
+  "scikit-learn>=1.7,<2",
+  "torch>=2.7,<3",
+]
+dev = ["pytest>=8,<9", "ruff>=0.12,<1"]
+
+[project.scripts]
+fl-forensics = "fl_forensics.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
