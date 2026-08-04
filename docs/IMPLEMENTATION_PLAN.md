@@ -6,7 +6,7 @@ Each milestone ends with an executable acceptance gate. A later milestone may ad
 | --- | --- | --- | --- |
 | M0 — Contract | Repository, configs, artifact schemas, architecture map | Configuration and schemas load; status is explicit | SIC6, FOR5, ML2 |
 | M1 — Evidence vertical slice | Acquisition, hash chain, ECDSA, signed attestation result, admission, content-addressed vault, custody chain, deterministic snapshot | Tampering, wrong identity, expired attestation, chain conflict, and raw/snapshot separation are tested | SIC1–SIC5, FOR1–FOR5 |
-| M2 — Data and centralized baseline | UWF-ZeekData22 inventory, group/time split, frozen feature schema, scaler fitted on training only, MLP encoder+head | Repeated preprocessing yields the same digest; centralized metrics include macro-F1 and per-class recall | ML2–ML4, ML8 |
+| M2 — Data and centralized baseline | UWF-ZeekData24 inventory, group/time split, frozen feature schema, scaler fitted on training only, MLP encoder+head | Repeated preprocessing yields the same digest; centralized metrics include macro-F1 and per-class recall | ML2–ML4, ML8 |
 | M3 — Federated baseline | 15 logical clients, IID/non-IID manifests, Flower ClientApp/ServerApp, FedAvg, round audit, model registry | No raw client mount at server; same frozen snapshots support local and FedAvg comparisons | ML1, ML3, ML4, FOR6 |
 | M4 — Trust deployment | 15 `swtpm` pairs, enrollment, AK/ESK separation, Quote verification, mTLS, physical TPM adapter | Nonce replay, altered measurement, revoked identity, and wrong pair are rejected and preserved | SIC1–SIC6, FOR1–FOR4 |
 | M5 — Secure round protocol | Signed round context and Update Bundles, replay/idempotency checks, structural validator, checkpoint manifests | Wrong round/base model/snapshot/tensor is rejected; every checkpoint lists actual inputs | SIC4, SIC7, FOR6, FOR8 |
@@ -16,3 +16,6 @@ Each milestone ends with an executable acceptance gate. A later milestone may ad
 
 The optional secure-aggregation profile is evaluated only after M6 because it conflicts with defenses that require inspection of individual updates. Optional DP-SGD is outside the core acceptance path and must not delay the thesis experiments.
 
+## Completed M2 gate
+
+The M2 gate uses UWF-ZeekData24 exclusively. The official CSV bytes are verified against a controlled-ingestion manifest; the audit records the real schema and dataset risks; capture dates are split without group overlap; the final week is isolated as a temporal holdout; standardization is fitted on training only; and the centralized MLP emits macro metrics, per-class recall/support, confusion matrices, model weights, and digest-linked manifests. Two independent preparations of the real release produced the same dataset and scaler SHA-256 digests.

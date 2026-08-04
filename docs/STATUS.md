@@ -9,13 +9,16 @@
 | Admission and idempotency | Implemented | Identity, content, chain, signature, attestation status/expiry |
 | Content-addressed Evidence Vault | Implemented | Tamper-evident prototype; WORM/object lock pending |
 | Chained custody events | Implemented | Local append-only convention; external time anchor pending |
-| Deterministic Zeek normalization/window snapshot | Implemented | Generic Zeek JSONL contract; UWF schema audit pending |
-| Lineage from batch to snapshot windows/events | Implemented | Local JSON graph; rebuild/contamination traversal pending |
-| Central MLP baseline | Planned (M2) | — |
+| UWF-ZeekData24 controlled download and audit | Implemented (M2) | 8 CSV partitions; size/SHA-256 verification; 95,871-row schema, label, null, time, duplicate, and leakage audit |
+| Deterministic Zeek normalization/window snapshot | Implemented (M1–M2) | Generic JSONL and real Data24 CSV path; frozen 25-feature/60-second schema; repeated real preparation has identical digest |
+| Group/time split and training-only scaling | Implemented (M2) | Capture-date groups are disjoint; final week reserved; scaler row count and digest verified |
+| Lineage from source CSV rows to windows | Implemented (M2) | Raw line digest/path/line, consolidated identity, normalized event, and window links; rebuild/contamination traversal pending |
+| Central MLP baseline | Implemented (M2) | sklearn 1.8 encoder 128/64, embedding 32, six-class head; validation macro-F1 0.7514, development-test macro-F1 0.7477 |
 | Flower federation with 15 clients | Planned (M3) | — |
 | `swtpm`, mTLS, and physical TPM | Planned (M4) | — |
 | Secure Update Bundle and robust aggregation | Planned (M5–M6) | — |
 | Integrated Gradients and deterministic report | Planned (M7) | — |
 
-The absence of Docker, `swtpm`, Flower, and PyTorch in the current build environment means those components are not marked as validated.
+M2 uses NumPy and scikit-learn only. Flower, PyTorch, Docker-based federation, `swtpm`, mTLS, and the physical TPM remain outside the validated M2 boundary.
 
+The published Data24 CSV release has a documented acquisition-time/class confound, 328 cross-label connection identities, and a benign-only final-week holdout. The implementation preserves these facts in machine-readable audit, split, lineage, and metrics artifacts; the baseline scores must not be interpreted as evidence that those dataset limitations have been removed.

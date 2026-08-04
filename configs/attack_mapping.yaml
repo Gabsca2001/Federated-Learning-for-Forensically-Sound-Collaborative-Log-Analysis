@@ -1,14 +1,34 @@
 schema_version: "1.0"
 taxonomy: MITRE-ATT&CK-Enterprise
-mapping_status: provisional-until-uwf-label-audit
+source_dataset: UWF-ZeekData24
+mapping_status: audited-against-data24-csv-labels
+duplicate_policy: union-source-labels-and-resolve-multiple-attack-tactics-as-multi_tactic
 labels:
+  credential_access:
+    tactics: [TA0006]
+    techniques: [T1110]
+  defense_evasion:
+    tactics: [TA0005]
+    techniques: [T1078]
+  exfiltration:
+    tactics: [TA0010]
+    techniques: [T1048]
+  initial_access:
+    tactics: [TA0001]
+    techniques: [T1190]
+  persistence:
+    tactics: [TA0003]
+    techniques: []
+  privilege_escalation:
+    tactics: [TA0004]
+    techniques: []
   reconnaissance:
     tactics: [TA0043]
+    techniques: [T1595]
+  multi_tactic:
+    tactics: []
     techniques: []
-  discovery:
-    tactics: [TA0007]
-    techniques: []
+    resolution: dynamic-union-from-source-lineage
   benign:
     tactics: []
     techniques: []
-

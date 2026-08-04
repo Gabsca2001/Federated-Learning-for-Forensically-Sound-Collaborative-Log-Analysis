@@ -23,6 +23,10 @@
 9. Predictions and explanations reference the checkpoint, window, snapshot, and source events.
 10. A report is finalizable only when every evidentiary reference resolves and the lineage is complete.
 
+## M2 centralized derivation path
+
+The public UWF-ZeekData24 files enter the trust model only at controlled ingestion. Their source URL, size, and SHA-256 are recorded, but this does not retroactively attest the historical UWF capture. M2 then audits the 26-column CSV schema, consolidates identical connections carrying multiple labels, retains every source path/line/digest in lineage, builds 60-second windows with the frozen 25-feature schema, assigns whole UTC dates to splits, and fits standardization only on training windows. The centralized model, metrics, and manifest reference the exact dataset and scaler digests.
+
 ## Cryptographic profile
 
 - Canonicalization: RFC 8785/JCS-compatible integer-only manifest profile. Floating-point values are prohibited in signed manifest cores; measurements are represented as strings or scaled integers.
@@ -40,4 +44,3 @@
 - The physical TPM experiment validates key use and measured-state appraisal on one node; it does not prove 15-node physical scalability.
 - Statistical screening never changes a cryptographic admission result into proof of malicious intent.
 - Explanations remain model-derived interpretive artifacts and do not become primary evidence.
-

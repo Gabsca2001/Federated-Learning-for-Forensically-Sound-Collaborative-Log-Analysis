@@ -111,10 +111,14 @@ def _fraction(counter: Counter[str], key: str, total: int) -> float:
     return counter.get(key, 0) / total if total else 0.0
 
 
-def _choose_label(labels: list[str], benign_labels: set[str]) -> tuple[str, list[str]]:
+def _choose_label(
+    labels: list[str], benign_labels: set[str], mixed_attack_label: str | None = None
+) -> tuple[str, list[str]]:
     observed = sorted(set(labels))
     attacks = [label for label in observed if label not in benign_labels]
     if attacks:
+        if len(attacks) > 1 and mixed_attack_label:
+            return mixed_attack_label, observed
         # Multiple attack labels in a window are surfaced in `observed_labels`.
         # Lexicographic selection is deterministic and never hidden.
         return attacks[0], observed
@@ -134,6 +138,9 @@ def normalize_and_window(
     percentages = dict(config["split_percentages"])
     label_fields = [str(item) for item in config["label_fields"]]
     benign_labels = {str(item).lower() for item in config["benign_labels"]}
+    mixed_attack_label = config.get("mixed_attack_label")
+    if mixed_attack_label is not None:
+        mixed_attack_label = str(mixed_attack_label)
 
     normalized: list[dict[str, Any]] = []
     discarded: Counter[str] = Counter()
@@ -185,6 +192,22 @@ def normalize_and_window(
             "responder_packets": _nonnegative_int(source.get("resp_pkts")),
             "label": label,
         }
+        if source.get("observed_tactics") is not None:
+            event["observed_tactics"] = sorted(
+                str(item) for item in source["observed_tactics"]
+            )
+        if source.get("observed_techniques") is not None:
+            event["observed_techniques"] = sorted(
+                str(item) for item in source["observed_techniques"]
+            )
+        if source.get("source_identity_sha256") is not None:
+            event["source_identity_sha256"] = str(source["source_identity_sha256"])
+        source_records = source.get("_source_records")
+        if source_records is not None:
+            if not isinstance(source_records, list):
+                discarded["invalid_source_lineage"] += 1
+                continue
+            event["source_records"] = source_records
         normalized.append(event)
         event_lineage[event_id] = {
             "batch_id": batch_id,
@@ -193,6 +216,8 @@ def normalize_and_window(
             "raw_line_sha256": raw_line_digest,
             "timestamp": timestamp,
         }
+        if source_records is not None:
+            event_lineage[event_id]["source_records"] = source_records
 
     normalized.sort(key=lambda item: (item["timestamp"], item["source_line"], item["event_id"]))
     windows: dict[tuple[str, int], list[dict[str, Any]]] = defaultdict(list)
@@ -240,7 +265,7 @@ def normalize_and_window(
         ]
         features = [round(value, 12) for value in features]
         label, observed_labels = _choose_label(
-            [event["label"] for event in events], benign_labels
+            [event["label"] for event in events], benign_labels, mixed_attack_label
         )
         window_id = f"window-{client_id}-{sha256_bytes(f'{capture_id}:{bucket}'.encode())[:20]}"
         rows.append(
@@ -262,7 +287,11 @@ def normalize_and_window(
             "operations": {
                 "grouping": f"floor(timestamp/{window_seconds}) within capture_id",
                 "feature_names": FEATURE_NAMES,
-                "label_policy": "non-benign lexical priority with all observed labels retained",
+                "label_policy": (
+                    f"multiple attack labels become {mixed_attack_label}"
+                    if mixed_attack_label
+                    else "non-benign lexical priority with all observed labels retained"
+                ),
             },
         }
 
@@ -293,4 +322,3 @@ def derived_json_bytes(value: Any) -> bytes:
         ).encode("utf-8")
         + b"\n"
     )
-

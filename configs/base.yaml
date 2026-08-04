@@ -1,9 +1,9 @@
 schema_version: "1.0"
 experiment:
-  name: uwf-zeekdata22-forensic-fl
+  name: uwf-zeekdata24-forensic-fl
   seed: 341593
   client_count: 15
-  dataset: UWF-ZeekData22
+  dataset: UWF-ZeekData24
   provenance_boundary: controlled_ingestion
 
 cryptography:
@@ -31,21 +31,28 @@ preprocessing:
   schema_version: zeek-window-v1
   window_seconds: 60
   split_seed: 341593
+  split_strategy: grouped-chronological-with-reserved-last-week
   split_percentages:
     train: 70
     validation: 15
     test: 15
   label_fields: [label, _label, attack, mitre_tactic]
-  benign_labels: [benign, normal, "-"]
-  numeric_scaling: none
+  benign_labels: [benign, normal, none, "-"]
+  mixed_attack_label: multi_tactic
+  temporal_holdout_start: "2024-11-03T00:00:00Z"
+  numeric_scaling: standard-score-training-only
 
 model:
+  centralized_backend: scikit-learn
   architecture: mlp-encoder-classification-head
   hidden_layers: [128, 64]
   embedding_size: 32
-  dropout: 0.2
+  dropout: 0.0
   activation: relu
   loss: multiclass-cross-entropy
+  class_weighting: balanced
+  regularization_alpha: 0.0001
+  max_iterations: 60
 
 federation:
   framework: Flower
@@ -76,4 +83,3 @@ reporting:
   prototype_distance: euclidean
   deterministic_baseline_required: true
   llm_narrative_optional: true
-
