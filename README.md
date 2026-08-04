@@ -10,6 +10,11 @@ The Data24 centralized path is:
 
 `controlled UWF-ZeekData24 CSV ingestion → schema/label audit → cross-label consolidation → 60 s feature windows → group/time split → training-only scaler → MLP encoder + classification head → metrics and digests`
 
+The clean federated path is:
+
+`M2 feature snapshot → 15 IID/non-IID client snapshots → PyTorch local training → Flower FedAvg → chained round records → global model registry → local/FedAvg comparison`
+
+
 It intentionally does **not** claim that a software key is equivalent to a TPM. The signer and attestation interfaces are already separated so that `swtpm` and the physical TPM 2.0 adapter can replace the development implementation without changing the artifact formats.
 
 ## Quick start
@@ -53,6 +58,53 @@ fl-forensics m2-verify-baseline --workspace artifacts\m2-data24-central --datase
 ```
 
 The scaler is fitted only on `train`. Capture dates are indivisible groups. The partition beginning on 3 November 2024 is kept as `temporal_holdout`; in the published CSV release it contains only benign records, so it is reported separately from the multiclass development test.
+
+## Milestone 3 — clean 15-client Flower/FedAvg baseline
+
+Install the M3 dependencies. The auditable runner uses Flower and PyTorch but does
+not require Ray:
+
+```powershell
+python -m pip install -e ".[federated,dev]"
+```
+
+Create and verify both frozen partition profiles:
+
+```powershell
+fl-forensics m3-partition --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-iid --mode iid
+fl-forensics m3-verify-partitions --workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24
+fl-forensics m3-partition --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-non-iid --mode non-iid
+fl-forensics m3-verify-partitions --workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24
+```
+
+Run and verify the clean FedAvg campaign first on IID and then on non-IID:
+
+```powershell
+fl-forensics m3-train --partition-workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-iid-fedavg
+fl-forensics m3-verify --workspace artifacts\m3-data24-iid-fedavg --partition-workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24
+
+fl-forensics m3-train --partition-workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-non-iid-fedavg
+fl-forensics m3-verify --workspace artifacts\m3-data24-non-iid-fedavg --partition-workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24
+```
+
+`m3-train` performs 30 rounds, two local epochs, full participation and
+example-weighted FedAvg. It preserves every local update object, every global
+checkpoint, a hash-chained record for each round, centralized evaluation, and a
+fair local-only comparison using the same initial model and the same total number
+of local epochs.
+
+The repository also exposes a current Flower Message API `ClientApp` and
+`ServerApp`. To validate Flower's Simulation Runtime, install the separate Ray
+extra and run 15 SuperNodes:
+
+```powershell
+python -m pip install -e ".[federated,simulation,dev]"
+flwr run . --stream --federation-config="num-supernodes=15 client-resources-num-cpus=1"
+```
+
+Flower documents native Windows/Ray support as experimental and recommends WSL2
+for the Simulation Runtime. This limitation does not apply to the auditable
+single-process `m3-train` runner.
 
 ## Source-of-truth rules
 

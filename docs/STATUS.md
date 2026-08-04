@@ -14,7 +14,9 @@
 | Group/time split and training-only scaling | Implemented (M2) | Capture-date groups are disjoint; final week reserved; scaler row count and digest verified |
 | Lineage from source CSV rows to windows | Implemented (M2) | Raw line digest/path/line, consolidated identity, normalized event, and window links; rebuild/contamination traversal pending |
 | Central MLP baseline | Implemented (M2) | sklearn 1.8 encoder 128/64, embedding 32, six-class head; validation macro-F1 0.7514, development-test macro-F1 0.7477 |
-| Flower federation with 15 clients | Planned (M3) | — |
+| Deterministic 15-client IID/non-IID snapshots | Implemented and verified (M3) | Exact M2 train/validation coverage; raw-data boundary; IID 380–381 rows/client, non-IID 58–1,046 on real Data24 |
+| Flower Message API ClientApp/ServerApp | Implemented, runtime validation pending (M3) | Current ArrayRecord/MetricRecord API; 15-node full-participation FedAvg |
+| Auditable PyTorch/FedAvg runner | Implemented, experiment pending (M3) | Content-addressed updates/checkpoints, chained rounds, FedAvg recomputation verifier, local-only comparison |
 | `swtpm`, mTLS, and physical TPM | Planned (M4) | — |
 | Secure Update Bundle and robust aggregation | Planned (M5–M6) | — |
 | Integrated Gradients and deterministic report | Planned (M7) | — |

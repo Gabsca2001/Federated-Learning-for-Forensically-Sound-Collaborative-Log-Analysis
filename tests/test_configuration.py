@@ -24,6 +24,14 @@ class ConfigurationTests(unittest.TestCase):
         self.assertEqual(len({item["node_id"] for item in clients}), 15)
         self.assertEqual(len({item["tpm"] for item in clients}), 15)
 
+    def test_m3_clean_baseline_requires_full_fifteen_client_fedavg(self) -> None:
+        config, _ = load_yaml(ROOT / "configs" / "federation.yaml")
+        self.assertEqual(config["dataset"], "UWF-ZeekData24")
+        self.assertEqual(config["partitioning"]["client_count"], 15)
+        self.assertEqual(config["training"]["aggregator"], "fedavg")
+        self.assertEqual(config["training"]["participation_fraction"], 1.0)
+        self.assertEqual(config["training"]["minimum_fit_clients"], 15)
+
 
 if __name__ == "__main__":
     unittest.main()

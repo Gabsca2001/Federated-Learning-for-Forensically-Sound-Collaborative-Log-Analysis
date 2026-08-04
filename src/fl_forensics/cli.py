@@ -11,6 +11,8 @@ from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
+from .federated_partitioning import prepare_partitions, verify_partitions
+from .federated_training import run_federated_baseline, verify_federated_baseline
 from .verification import verify_workspace
 
 
@@ -85,6 +87,39 @@ def build_parser() -> argparse.ArgumentParser:
     m2_verify_baseline.add_argument(
         "--dataset-workspace", type=Path, required=True
     )
+
+    m3_partition = subparsers.add_parser(
+        "m3-partition", help="prepare deterministic IID or non-IID Data24 client snapshots"
+    )
+    m3_partition.add_argument("--dataset-workspace", type=Path, required=True)
+    m3_partition.add_argument("--output", type=Path, required=True)
+    m3_partition.add_argument("--mode", choices=("iid", "non-iid"), required=True)
+    m3_partition.add_argument(
+        "--config", type=Path, default=Path("configs/federation.yaml")
+    )
+
+    m3_verify_partitions = subparsers.add_parser(
+        "m3-verify-partitions", help="verify M3 client snapshots and their M2 lineage"
+    )
+    m3_verify_partitions.add_argument("--workspace", type=Path, required=True)
+    m3_verify_partitions.add_argument("--dataset-workspace", type=Path, required=True)
+
+    m3_train = subparsers.add_parser(
+        "m3-train", help="run the auditable 15-client PyTorch/Flower FedAvg baseline"
+    )
+    m3_train.add_argument("--partition-workspace", type=Path, required=True)
+    m3_train.add_argument("--dataset-workspace", type=Path, required=True)
+    m3_train.add_argument("--output", type=Path, required=True)
+    m3_train.add_argument(
+        "--config", type=Path, default=Path("configs/federation.yaml")
+    )
+
+    m3_verify = subparsers.add_parser(
+        "m3-verify", help="verify the M3 round chain, updates, checkpoints, and FedAvg"
+    )
+    m3_verify.add_argument("--workspace", type=Path, required=True)
+    m3_verify.add_argument("--partition-workspace", type=Path, required=True)
+    m3_verify.add_argument("--dataset-workspace", type=Path, required=True)
     return parser
 
 
@@ -126,13 +161,46 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
-    result = train_central_baseline(
+    if arguments.command == "m2-train":
+        result = train_central_baseline(
+            workspace=arguments.workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-partition":
+        result = prepare_partitions(
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            mode=arguments.mode,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-verify-partitions":
+        result = verify_partitions(
+            workspace=arguments.workspace,
+            dataset_workspace=arguments.dataset_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m3-train":
+        result = run_federated_baseline(
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    result = verify_federated_baseline(
         workspace=arguments.workspace,
-        output=arguments.output,
-        config_path=arguments.config,
+        partition_workspace=arguments.partition_workspace,
+        dataset_workspace=arguments.dataset_workspace,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0
+    return 0 if result["status"] == "verified" else 1
 
 
 if __name__ == "__main__":

@@ -1,0 +1,38 @@
+schema_version: "1.0"
+dataset: UWF-ZeekData24
+
+partitioning:
+  client_count: 15
+  seed: 341593
+  iid_strategy: stratified-round-robin
+  non_iid_strategy: label-dirichlet
+  dirichlet_alpha: 0.3
+  minimum_train_rows_per_client: 32
+  validation_strategy: stratified-round-robin
+
+model:
+  hidden_layers: [128, 64]
+  embedding_size: 32
+  dropout: 0.0
+  activation: relu
+
+training:
+  aggregator: fedavg
+  rounds: 30
+  local_epochs: 2
+  batch_size: 128
+  learning_rate: 0.001
+  optimizer: adam
+  class_weighting: global-balanced-training-only
+  participation_fraction: 1.0
+  minimum_available_clients: 15
+  minimum_fit_clients: 15
+  seed: 341593
+  device: cpu
+  run_local_baselines: true
+
+forensic_audit:
+  preserve_local_update_objects: true
+  preserve_every_global_checkpoint: true
+  round_hash_chain: true
+  deterministic_runner: true

@@ -19,3 +19,16 @@ The optional secure-aggregation profile is evaluated only after M6 because it co
 ## Completed M2 gate
 
 The M2 gate uses UWF-ZeekData24 exclusively. The official CSV bytes are verified against a controlled-ingestion manifest; the audit records the real schema and dataset risks; capture dates are split without group overlap; the final week is isolated as a temporal holdout; standardization is fitted on training only; and the centralized MLP emits macro metrics, per-class recall/support, confusion matrices, model weights, and digest-linked manifests. Two independent preparations of the real release produced the same dataset and scaler SHA-256 digests.
+
+
+## M3 implementation gate
+
+M3 freezes two 15-client partition profiles over the verified M2 snapshot. IID is
+stratified round-robin; non-IID is label-Dirichlet with `alpha = 0.3`. The
+partition verifier enforces exact one-client coverage of every training and
+validation window and prevents raw-event fields from entering client or server
+feature artifacts. The clean PyTorch/Flower runner preserves content-addressed
+local updates and global checkpoints, chains round records, performs full-client
+example-weighted FedAvg, and records a local-only comparison. Runtime execution
+and final metric validation remain the acceptance gate before M3 is marked
+complete.
