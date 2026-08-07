@@ -2,7 +2,9 @@
 
 This repository is the experimental implementation of the architecture defined in Chapter 4 of the thesis. The target system joins controlled Zeek log acquisition, cryptographic preservation, deterministic preprocessing, federated learning, Byzantine-resilient aggregation, end-to-end lineage, explainability, and investigative reporting.
 
-The current milestone implements and tests the first vertical slice:
+Milestones 1 and 2 are implemented and tested. Milestone 3 implements the frozen
+15-client partition contract, the PyTorch/Flower clean baseline, and its forensic
+round audit. The evidence vertical slice is:
 
 `Zeek JSONL → raw batch → canonical manifest → SHA-256 chain → ECDSA signature → attestation-aware admission → content-addressed vault → deterministic snapshot → lineage`
 
@@ -13,7 +15,6 @@ The Data24 centralized path is:
 The clean federated path is:
 
 `M2 feature snapshot → 15 IID/non-IID client snapshots → PyTorch local training → Flower FedAvg → chained round records → global model registry → local/FedAvg comparison`
-
 
 It intentionally does **not** claim that a software key is equivalent to a TPM. The signer and attestation interfaces are already separated so that `swtpm` and the physical TPM 2.0 adapter can replace the development implementation without changing the artifact formats.
 
@@ -82,6 +83,7 @@ Run and verify the clean FedAvg campaign first on IID and then on non-IID:
 ```powershell
 fl-forensics m3-train --partition-workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-iid-fedavg
 fl-forensics m3-verify --workspace artifacts\m3-data24-iid-fedavg --partition-workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24
+fl-forensics m3-report --workspace artifacts\m3-data24-iid-fedavg --central-workspace artifacts\m2-data24-central
 
 fl-forensics m3-train --partition-workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-non-iid-fedavg
 fl-forensics m3-verify --workspace artifacts\m3-data24-non-iid-fedavg --partition-workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24
@@ -92,6 +94,19 @@ example-weighted FedAvg. It preserves every local update object, every global
 checkpoint, a hash-chained record for each round, centralized evaluation, and a
 fair local-only comparison using the same initial model and the same total number
 of local epochs.
+
+Install the reporting extra before generating figures:
+
+```powershell
+python -m pip install -e ".[federated,reporting,dev]"
+```
+
+`m3-report` validates the digests of `metrics.json`, `comparison.json`, and the
+optional centralized metrics before generating seven immutable PNG figures and a
+machine-readable `reports\summary.json`. The outputs include absolute and
+row-normalized test confusion matrices, per-class precision/recall/F1, validation
+and loss curves by round, the local/FedAvg/centralized comparison, and per-client
+local-only performance. It does not repeat training or inference.
 
 The repository also exposes a current Flower Message API `ClientApp` and
 `ServerApp`. To validate Flower's Simulation Runtime, install the separate Ray
@@ -121,5 +136,3 @@ single-process `m3-train` runner.
 See `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION_PLAN.md`, and `docs/STATUS.md` for boundaries, milestones, and current coverage.
 
 Dataset setup is documented in `docs/DATASET_UWF_ZEEKDATA24.md`. The data itself is intentionally excluded from Git.
-
-

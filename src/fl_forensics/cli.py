@@ -13,6 +13,7 @@ from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .reporting import generate_m3_report
 from .verification import verify_workspace
 
 
@@ -120,6 +121,21 @@ def build_parser() -> argparse.ArgumentParser:
     m3_verify.add_argument("--workspace", type=Path, required=True)
     m3_verify.add_argument("--partition-workspace", type=Path, required=True)
     m3_verify.add_argument("--dataset-workspace", type=Path, required=True)
+
+    m3_report = subparsers.add_parser(
+        "m3-report", help="generate deterministic plots from an M3 metrics workspace"
+    )
+    m3_report.add_argument("--workspace", type=Path, required=True)
+    m3_report.add_argument(
+        "--output",
+        type=Path,
+        help="report directory; defaults to <workspace>/reports",
+    )
+    m3_report.add_argument(
+        "--central-workspace",
+        type=Path,
+        help="optional verified M2 centralized baseline for the comparison chart",
+    )
     return parser
 
 
@@ -191,6 +207,14 @@ def main(argv: list[str] | None = None) -> int:
             dataset_workspace=arguments.dataset_workspace,
             output=arguments.output,
             config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-report":
+        result = generate_m3_report(
+            workspace=arguments.workspace,
+            output=arguments.output,
+            central_workspace=arguments.central_workspace,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0

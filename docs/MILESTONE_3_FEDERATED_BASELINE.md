@@ -53,6 +53,21 @@ objects, round order and hash-chain continuity. It then reloads all 15 updates f
 every round, recomputes example-weighted FedAvg and requires exact equality with
 the preserved global checkpoint.
 
+## Evaluation report
+
+`fl-forensics m3-report` derives a deterministic visual report from the preserved
+`metrics.json` and `comparison.json`; it does not repeat training or inference.
+Before plotting, it checks both source digests against the M3 run manifest. An
+optional M2 centralized workspace is checked in the same way and can be included
+in the comparison chart.
+
+The report contains absolute and row-normalized test confusion matrices,
+per-class precision/recall/F1, validation macro-F1 and weighted training loss by
+round, local-only/FedAvg/centralized comparison, and per-client local-only test
+performance. `summary.json` records the input and figure SHA-256 values. The best
+validation round is reported only as a diagnostic because M3 preserves the final
+round model; the test split is not a model-selection input.
+
 ## Interpretation boundary
 
 M3 measures the clean IID/non-IID effect. It does not simulate Byzantine clients,
