@@ -14,6 +14,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from .canonical import digest_object
 from .crypto import DigestSigner, public_key_id, verify_digest_signature
 from .models import AttestationResult, AttestationResultCore, SignatureBlock
+from .trust_models import AttestationResultCoreV2, AttestationResultV2
 
 
 def create_attestation_result(
@@ -24,6 +25,27 @@ def create_attestation_result(
 ) -> AttestationResult:
     core_digest = digest_object(core.model_dump(mode="json"))
     return AttestationResult(
+        result_id=f"attestation-{core_digest[:24]}",
+        core=core,
+        core_digest=core_digest,
+        signature=SignatureBlock(
+            key_id=signer.key_id,
+            value_b64=signer.sign_digest(core_digest),
+            trust_level=trust_level,
+        ),
+    )
+
+
+def create_attestation_result_v2(
+    core: AttestationResultCoreV2,
+    signer: DigestSigner,
+    *,
+    trust_level: str,
+) -> AttestationResultV2:
+    """Create the M4 result without changing preserved M1 schema-v1 objects."""
+
+    core_digest = digest_object(core.model_dump(mode="json"))
+    return AttestationResultV2(
         result_id=f"attestation-{core_digest[:24]}",
         core=core,
         core_digest=core_digest,
@@ -68,7 +90,8 @@ def create_development_attestation(
 
 
 def verify_attestation_signature(
-    result: AttestationResult, verifier_public_key: ec.EllipticCurvePublicKey
+    result: AttestationResult | AttestationResultV2,
+    verifier_public_key: ec.EllipticCurvePublicKey,
 ) -> bool:
     core_digest = digest_object(result.core.model_dump(mode="json"))
     return (
@@ -78,4 +101,3 @@ def verify_attestation_signature(
             verifier_public_key, result.core_digest, result.signature.value_b64
         )
     )
-

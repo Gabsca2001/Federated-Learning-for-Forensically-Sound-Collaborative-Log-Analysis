@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fl-forensics-pipeline"
-version = "0.3.1"
+version = "0.4.0"
 description = "Forensically-sound federated Zeek log analysis prototype"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,6 +27,7 @@ federated = [
 ]
 simulation = ["flwr[simulation]>=1.32,<2"]
 reporting = ["matplotlib>=3.10,<4"]
+m4 = []
 ml = [
   "flwr>=1.32,<2",
   "matplotlib>=3.10,<4",

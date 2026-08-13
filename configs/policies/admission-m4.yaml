@@ -1,0 +1,21 @@
+schema_version: "1.0"
+policy_id: batch-admission-m4
+policy_version: "1.0.0"
+required_attestation_trust_levels: [swtpm, tpm2]
+required_checks:
+  - registered_identity
+  - client_node_binding
+  - content_digest
+  - content_size
+  - canonical_chain_commitment
+  - evidence_signature
+  - attestation_reference
+  - attestation_signature
+  - attestation_identity_binding
+  - attestation_status
+  - attestation_freshness
+  - attestation_trust_level
+  - session_sequence_continuity
+outcomes:
+  all_required_checks_pass: accepted
+  otherwise: quarantined

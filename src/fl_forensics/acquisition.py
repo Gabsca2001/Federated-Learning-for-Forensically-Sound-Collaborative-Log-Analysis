@@ -12,6 +12,7 @@ from .canonical import GENESIS_CHAIN_HASH, batch_chain_hash, digest_object, sha2
 from .crypto import DigestSigner
 from .models import AttestationResult, BatchManifest, BatchManifestCore, SignatureBlock
 from .storage import atomic_write, utc_now
+from .trust_models import AttestationResultV2
 
 
 @dataclass(frozen=True)
@@ -58,7 +59,7 @@ def build_batch(
     client_id: str,
     session_id: str,
     sequence_number: int,
-    attestation: AttestationResult,
+    attestation: AttestationResult | AttestationResultV2,
     signer: DigestSigner,
     configuration_digest: str,
     previous_chain_hash: str = GENESIS_CHAIN_HASH,
@@ -127,4 +128,3 @@ def build_batch(
     )
     staging.replace(final_directory)
     return BuiltBatch(raw=raw, manifest=manifest, queue_directory=final_directory)
-

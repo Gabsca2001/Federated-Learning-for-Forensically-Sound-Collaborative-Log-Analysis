@@ -21,6 +21,7 @@ from .models import (
     SignedReceipt,
 )
 from .storage import utc_now
+from .trust_models import AttestationResultV2
 from .vault import EvidenceVault
 
 
@@ -46,6 +47,7 @@ class AdmissionController:
         repository_id: str = "evidence-vault-01",
         policy_id: str = "batch-admission",
         policy_version: str = "1.0.0",
+        required_attestation_trust_levels: set[str] | None = None,
     ) -> None:
         self.identities = identities
         self.verifier_public_key = verifier_public_key
@@ -54,13 +56,14 @@ class AdmissionController:
         self.repository_id = repository_id
         self.policy_id = policy_id
         self.policy_version = policy_version
+        self.required_attestation_trust_levels = required_attestation_trust_levels
 
     def process(
         self,
         *,
         raw: bytes,
         manifest: BatchManifest,
-        attestation: AttestationResult,
+        attestation: AttestationResult | AttestationResultV2,
         now: datetime | None = None,
     ) -> AdmissionOutcome:
         existing = self.vault.existing_submission(manifest)
@@ -156,6 +159,13 @@ class AdmissionController:
         check("attestation_status", status_valid, f"status={attestation.core.status}")
         freshness_valid = _parse_utc(attestation.core.expires_at) >= now
         check("attestation_freshness", freshness_valid, f"expires={attestation.core.expires_at}")
+        if self.required_attestation_trust_levels is not None:
+            trust_valid = attestation.signature.trust_level in self.required_attestation_trust_levels
+            check(
+                "attestation_trust_level",
+                trust_valid,
+                f"trust_level={attestation.signature.trust_level}",
+            )
 
         continuity_valid, continuity_detail = self.vault.expected_continuity(manifest)
         if existing is not None and existing.chain_hash != manifest.chain_hash:

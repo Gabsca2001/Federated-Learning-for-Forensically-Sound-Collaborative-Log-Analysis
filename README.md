@@ -2,9 +2,11 @@
 
 This repository is the experimental implementation of the architecture defined in Chapter 4 of the thesis. The target system joins controlled Zeek log acquisition, cryptographic preservation, deterministic preprocessing, federated learning, Byzantine-resilient aggregation, end-to-end lineage, explainability, and investigative reporting.
 
-Milestones 1 and 2 are implemented and tested. Milestone 3 implements the frozen
-15-client partition contract, the PyTorch/Flower clean baseline, and its forensic
-round audit. The evidence vertical slice is:
+Milestones 1–3 are implemented and tested; the clean IID FedAvg run has also
+completed. Milestone 4 implements the versioned trust protocol, 15-pair swtpm
+deployment, TLS 1.3 mutual authentication, and the shared swtpm/physical TPM
+adapter. Its Docker and physical-hardware runtime gates remain explicit. The
+evidence vertical slice is:
 
 `Zeek JSONL → raw batch → canonical manifest → SHA-256 chain → ECDSA signature → attestation-aware admission → content-addressed vault → deterministic snapshot → lineage`
 
@@ -15,6 +17,10 @@ The Data24 centralized path is:
 The clean federated path is:
 
 `M2 feature snapshot → 15 IID/non-IID client snapshots → PyTorch local training → Flower FedAvg → chained round records → global model registry → local/FedAvg comparison`
+
+The trust path is:
+
+`client/node/TPM pair → EK/AK/ESK provisioning → signed enrollment → mTLS identity → one-use nonce → TPM2 Quote → PCR/log replay → signed Attestation Result v2 → admission or quarantine`
 
 It intentionally does **not** claim that a software key is equivalent to a TPM. The signer and attestation interfaces are already separated so that `swtpm` and the physical TPM 2.0 adapter can replace the development implementation without changing the artifact formats.
 
@@ -120,6 +126,66 @@ flwr run . --stream --federation-config="num-supernodes=15 client-resources-num-
 Flower documents native Windows/Ray support as experimental and recommends WSL2
 for the Simulation Runtime. This limitation does not apply to the auditable
 single-process `m3-train` runner.
+
+## Milestone 4 — trust deployment, swtpm, Quote appraisal, and mTLS
+
+M4 does not retrain the model or modify Data24. Install the project, run the full
+suite, and verify the declared one-to-one topology:
+
+```powershell
+python -m pip install -e ".[m4,dev]"
+python -m unittest discover -s tests -v
+fl-forensics m4-verify-deployment --compose compose.m4.yaml --clients configs\clients.yaml
+```
+
+Initialize the experiment authorities, private PKI, and approved measurement
+baseline. The command refuses partial or ambiguous existing state:
+
+```powershell
+fl-forensics m4-init --workspace artifacts\m4-trust --project-root .
+```
+
+Provision 15 independent TPM states. Every client generates a distinct EK, AK,
+and ESK inside its paired emulator, extends the approved measurements, generates
+its own TLS CSR, and writes an ESK-signed enrollment request:
+
+```powershell
+python scripts\run_m4_swtpm.py provision
+fl-forensics m4-enroll --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
+```
+
+Exercise a real TLS 1.3 mutual-authentication handshake for every enrolled
+client, then issue one-use challenges and produce Quotes:
+
+```powershell
+fl-forensics m4-mtls-test --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
+fl-forensics m4-challenge --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
+python scripts\run_m4_swtpm.py quote
+docker compose -f compose.m4.yaml --profile verify run --rm verifier
+```
+
+The final command must report `client_count: 15`, `passed_count: 15`, and
+`status: verified`. It verifies the AK signature, exact nonce, registered pair,
+revocation state, TLS certificate binding, measurement-log digest, and expected
+PCR values. Identical evidence is idempotent; changed evidence using a consumed
+nonce is rejected as stale.
+
+Stop containers without deleting TPM state:
+
+```powershell
+python scripts\run_m4_swtpm.py stop
+```
+
+Never add `--volumes` during normal cleanup. Deleting a TPM state volume changes
+the device identity and requires a new enrollment. The separate physical-node
+preflight is Linux-only:
+
+```bash
+fl-forensics m4-physical-preflight --tcti device:/dev/tpmrm0
+```
+
+See `docs/MILESTONE_4_TRUST_DEPLOYMENT.md` for artifact semantics, negative
+tests, and the limits of swtpm assurance.
 
 ## Source-of-truth rules
 

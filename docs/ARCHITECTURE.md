@@ -36,6 +36,19 @@ The public UWF-ZeekData24 files enter the trust model only at controlled ingesti
 - Transport target: TLS 1.3 with mutual client/service authentication.
 - Attestation target: TPM2 Quote over a versioned PCR selection and a fresh verifier nonce.
 
+## M4 trust derivation path
+
+Each node first produces an ESK-signed Enrollment Request that binds the declared
+client/node/TPM pair, EK digest, separate AK and ESK public keys, client TLS CSR,
+and approved measurement-log digest. The authority issues a signed Enrollment
+Record and a TLS client certificate whose SAN and fingerprint bind the same
+client. The Verifier then issues a signed one-use challenge. The AK signs a
+TPM2 Quote over PCRs `0,2,4,7,10` and the challenge nonce; the Verifier replays
+the ordered measurement log, supplies independent expected PCR bytes to the
+Quote checker, consults revocation and transport identity, and signs an
+Attestation Result v2. The Admission Controller consumes that result but cannot
+approve its own attestation.
+
 ## Trust boundaries
 
 - The Flower Server never mounts raw client datasets or client workspaces.

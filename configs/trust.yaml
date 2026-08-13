@@ -1,0 +1,49 @@
+schema_version: "1.0"
+
+enrollment:
+  organization_id: thesis-gabska
+  lifetime_days: 30
+  authority_policy: documented-experimental-approval
+
+attestation:
+  policy_id: m4-node-integrity
+  policy_version: "1.0.0"
+  baseline_id: m4-container-baseline
+  baseline_version: "1.0.0"
+  pcr_bank: sha256
+  pcr_selection: [0, 2, 4, 7, 10]
+  challenge_lifetime_seconds: 300
+  result_lifetime_seconds: 900
+
+mtls:
+  minimum_version: TLSv1.3
+  ca_lifetime_days: 365
+  client_certificate_lifetime_days: 30
+  require_client_certificate: true
+
+# The order is part of the approved baseline because PCR extension is order-sensitive.
+measurements:
+  - component_id: container-build-contract
+    component_version: "0.4.0"
+    pcr_index: 0
+    path: Dockerfile.m4
+  - component_id: swtpm-entrypoint
+    component_version: "0.4.0"
+    pcr_index: 2
+    path: scripts/run_swtpm.sh
+  - component_id: acquisition-agent
+    component_version: "0.4.0"
+    pcr_index: 4
+    path: src/fl_forensics/acquisition.py
+  - component_id: admission-policy
+    component_version: "1.0.0"
+    pcr_index: 7
+    path: configs/policies/admission.yaml
+  - component_id: trust-policy
+    component_version: "1.0.0"
+    pcr_index: 10
+    path: configs/trust.yaml
+  - component_id: experiment-configuration
+    component_version: "1.0.0"
+    pcr_index: 10
+    path: configs/base.yaml

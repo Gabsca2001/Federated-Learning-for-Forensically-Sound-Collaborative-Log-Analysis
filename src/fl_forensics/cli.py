@@ -14,6 +14,21 @@ from .demo import run_demo
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
 from .reporting import generate_m3_report
+from .tpm_adapter import (
+    create_tpm_quote_evidence,
+    physical_tpm_preflight,
+    provision_tpm_node,
+    verify_tpm2_quote,
+)
+from .trust import (
+    enroll_nodes,
+    initialize_trust_workspace,
+    issue_challenges,
+    revoke_enrollment,
+    test_mtls_bindings,
+    verify_attestation_campaign,
+)
+from .trust_deployment import verify_m4_deployment
 from .verification import verify_workspace
 
 
@@ -136,6 +151,115 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="optional verified M2 centralized baseline for the comparison chart",
     )
+
+    m4_deployment = subparsers.add_parser(
+        "m4-verify-deployment",
+        help="verify the one-to-one 15 client/swtpm Compose topology",
+    )
+    m4_deployment.add_argument(
+        "--compose", type=Path, default=Path("compose.m4.yaml")
+    )
+    m4_deployment.add_argument(
+        "--clients", type=Path, default=Path("configs/clients.yaml")
+    )
+
+    m4_init = subparsers.add_parser(
+        "m4-init", help="initialize M4 authorities, PKI, and approved PCR baseline"
+    )
+    m4_init.add_argument(
+        "--workspace", type=Path, default=Path("artifacts/m4-trust")
+    )
+    m4_init.add_argument("--project-root", type=Path, default=Path("."))
+    m4_init.add_argument(
+        "--config", type=Path, default=Path("configs/trust.yaml")
+    )
+    m4_init.add_argument(
+        "--clients", type=Path, default=Path("configs/clients.yaml")
+    )
+
+    m4_provision = subparsers.add_parser(
+        "m4-tpm-provision", help="provision EK/AK/ESK and create a signed enrollment request"
+    )
+    m4_provision.add_argument("--workspace", type=Path, required=True)
+    m4_provision.add_argument("--project-root", type=Path, required=True)
+    m4_provision.add_argument(
+        "--config", type=Path, default=Path("configs/trust.yaml")
+    )
+    m4_provision.add_argument("--client-id", required=True)
+    m4_provision.add_argument("--node-id", required=True)
+    m4_provision.add_argument("--tpm-instance", required=True)
+    m4_provision.add_argument("--tcti", required=True)
+    m4_provision.add_argument("--trust-level", choices=("swtpm", "tpm2"), required=True)
+
+    m4_enroll = subparsers.add_parser(
+        "m4-enroll", help="validate and sign all M4 enrollment requests"
+    )
+    m4_enroll.add_argument(
+        "--workspace", type=Path, default=Path("artifacts/m4-trust")
+    )
+    m4_enroll.add_argument(
+        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
+    )
+    m4_enroll.add_argument(
+        "--config", type=Path, default=Path("configs/trust.yaml")
+    )
+    m4_enroll.add_argument(
+        "--clients", type=Path, default=Path("configs/clients.yaml")
+    )
+
+    m4_challenge = subparsers.add_parser(
+        "m4-challenge", help="issue signed, short-lived, one-use attestation challenges"
+    )
+    m4_challenge.add_argument(
+        "--workspace", type=Path, default=Path("artifacts/m4-trust")
+    )
+    m4_challenge.add_argument(
+        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
+    )
+    m4_challenge.add_argument(
+        "--config", type=Path, default=Path("configs/trust.yaml")
+    )
+
+    m4_quote = subparsers.add_parser(
+        "m4-tpm-quote", help="produce Quote evidence with the enrolled AK"
+    )
+    m4_quote.add_argument("--workspace", type=Path, required=True)
+    m4_quote.add_argument("--tcti", required=True)
+
+    m4_verify = subparsers.add_parser(
+        "m4-verify-attestations",
+        help="verify and preserve all Quote appraisal results",
+    )
+    m4_verify.add_argument(
+        "--workspace", type=Path, default=Path("artifacts/m4-trust")
+    )
+    m4_verify.add_argument(
+        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
+    )
+
+    m4_mtls = subparsers.add_parser(
+        "m4-mtls-test", help="exercise TLS 1.3 mutual authentication for all enrolled clients"
+    )
+    m4_mtls.add_argument(
+        "--workspace", type=Path, default=Path("artifacts/m4-trust")
+    )
+    m4_mtls.add_argument(
+        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
+    )
+
+    m4_revoke = subparsers.add_parser(
+        "m4-revoke", help="append a signed enrollment revocation"
+    )
+    m4_revoke.add_argument(
+        "--workspace", type=Path, default=Path("artifacts/m4-trust")
+    )
+    m4_revoke.add_argument("--client-id", required=True)
+    m4_revoke.add_argument("--reason", required=True)
+
+    m4_physical = subparsers.add_parser(
+        "m4-physical-preflight", help="check the physical TPM adapter without changing TPM state"
+    )
+    m4_physical.add_argument("--tcti", default="device:/dev/tpmrm0")
     return parser
 
 
@@ -218,13 +342,90 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
-    result = verify_federated_baseline(
-        workspace=arguments.workspace,
-        partition_workspace=arguments.partition_workspace,
-        dataset_workspace=arguments.dataset_workspace,
-    )
+    if arguments.command == "m3-verify":
+        result = verify_federated_baseline(
+            workspace=arguments.workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m4-verify-deployment":
+        result = verify_m4_deployment(
+            compose_path=arguments.compose, clients_config_path=arguments.clients
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m4-init":
+        result = initialize_trust_workspace(
+            workspace=arguments.workspace,
+            project_root=arguments.project_root,
+            trust_config_path=arguments.config,
+            clients_config_path=arguments.clients,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m4-tpm-provision":
+        result = provision_tpm_node(
+            node_workspace=arguments.workspace,
+            project_root=arguments.project_root,
+            trust_config_path=arguments.config,
+            client_id=arguments.client_id,
+            node_id=arguments.node_id,
+            tpm_instance_id=arguments.tpm_instance,
+            tcti=arguments.tcti,
+            trust_level=arguments.trust_level,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m4-enroll":
+        result = enroll_nodes(
+            workspace=arguments.workspace,
+            node_root=arguments.node_root,
+            trust_config_path=arguments.config,
+            clients_config_path=arguments.clients,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "enrolled" else 1
+    if arguments.command == "m4-challenge":
+        result = issue_challenges(
+            workspace=arguments.workspace,
+            node_root=arguments.node_root,
+            trust_config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m4-tpm-quote":
+        result = create_tpm_quote_evidence(
+            node_workspace=arguments.workspace, tcti=arguments.tcti
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m4-verify-attestations":
+        result = verify_attestation_campaign(
+            workspace=arguments.workspace,
+            node_root=arguments.node_root,
+            quote_verifier=verify_tpm2_quote,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m4-mtls-test":
+        result = test_mtls_bindings(
+            workspace=arguments.workspace, node_root=arguments.node_root
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m4-revoke":
+        result = revoke_enrollment(
+            workspace=arguments.workspace,
+            client_id=arguments.client_id,
+            reason=arguments.reason,
+        )
+        print(json.dumps(result.model_dump(mode="json"), indent=2, sort_keys=True))
+        return 0
+    result = physical_tpm_preflight(tcti=arguments.tcti)
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0 if result["status"] == "verified" else 1
+    return 0
 
 
 if __name__ == "__main__":

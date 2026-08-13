@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "AttestationChallengeCore": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_id": {
+          "title": "Baseline Id",
+          "type": "string"
+        },
+        "baseline_version": {
+          "title": "Baseline Version",
+          "type": "string"
+        },
+        "challenge_id": {
+          "title": "Challenge Id",
+          "type": "string"
+        },
+        "client_id": {
+          "title": "Client Id",
+          "type": "string"
+        },
+        "enrollment_id": {
+          "title": "Enrollment Id",
+          "type": "string"
+        },
+        "expires_at": {
+          "title": "Expires At",
+          "type": "string"
+        },
+        "issued_at": {
+          "title": "Issued At",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "nonce": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Nonce",
+          "type": "string"
+        },
+        "pcr_bank": {
+          "const": "sha256",
+          "default": "sha256",
+          "title": "Pcr Bank",
+          "type": "string"
+        },
+        "pcr_selection": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Pcr Selection",
+          "type": "array"
+        },
+        "policy_id": {
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "policy_version": {
+          "title": "Policy Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "challenge_id",
+        "enrollment_id",
+        "client_id",
+        "node_id",
+        "nonce",
+        "pcr_selection",
+        "policy_id",
+        "policy_version",
+        "baseline_id",
+        "baseline_version",
+        "issued_at",
+        "expires_at"
+      ],
+      "title": "AttestationChallengeCore",
+      "type": "object"
+    },
+    "SignatureBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "ECDSA-P256-SHA256",
+          "default": "ECDSA-P256-SHA256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "trust_level": {
+          "enum": [
+            "software-development",
+            "swtpm",
+            "tpm2"
+          ],
+          "title": "Trust Level",
+          "type": "string"
+        },
+        "value_b64": {
+          "title": "Value B64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key_id",
+        "value_b64",
+        "trust_level"
+      ],
+      "title": "SignatureBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "attestation_challenge",
+      "default": "attestation_challenge",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/AttestationChallengeCore"
+    },
+    "core_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Core Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "$ref": "#/$defs/SignatureBlock"
+    }
+  },
+  "required": [
+    "core",
+    "core_digest",
+    "signature"
+  ],
+  "title": "AttestationChallenge",
+  "type": "object"
+}

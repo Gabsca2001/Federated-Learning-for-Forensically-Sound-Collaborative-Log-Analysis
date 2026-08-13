@@ -20,7 +20,6 @@ The optional secure-aggregation profile is evaluated only after M6 because it co
 
 The M2 gate uses UWF-ZeekData24 exclusively. The official CSV bytes are verified against a controlled-ingestion manifest; the audit records the real schema and dataset risks; capture dates are split without group overlap; the final week is isolated as a temporal holdout; standardization is fitted on training only; and the centralized MLP emits macro metrics, per-class recall/support, confusion matrices, model weights, and digest-linked manifests. Two independent preparations of the real release produced the same dataset and scaler SHA-256 digests.
 
-
 ## M3 implementation gate
 
 M3 freezes two 15-client partition profiles over the verified M2 snapshot. IID is
@@ -32,3 +31,15 @@ local updates and global checkpoints, chains round records, performs full-client
 example-weighted FedAvg, and records a local-only comparison. Runtime execution
 and final metric validation remain the acceptance gate before M3 is marked
 complete.
+
+## M4 implementation gate
+
+M4 preserves new versioned Enrollment Request, Enrollment Record, Attestation
+Challenge, Quote Evidence, Revocation Record, and Attestation Result v2 objects.
+The Compose topology statically enforces 15 one-to-one client/swtpm socket pairs
+without client access to TPM state. The Verifier reconstructs PCR values from the
+approved ordered measurement log and supplies those independent expected values
+to `tpm2_checkquote`, while nonce consumption is recorded with idempotent replay
+semantics. TLS 1.3 client certificates are bound to the same enrolled client.
+The protocol, topology, and adverse cases are unit-tested; the 15-swtpm Docker
+run and the separate physical-node experiment remain runtime acceptance gates.

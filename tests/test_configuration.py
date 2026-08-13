@@ -32,6 +32,16 @@ class ConfigurationTests(unittest.TestCase):
         self.assertEqual(config["training"]["participation_fraction"], 1.0)
         self.assertEqual(config["training"]["minimum_fit_clients"], 15)
 
+    def test_m4_uses_sha256_quote_policy_and_separate_measurement_roles(self) -> None:
+        config, _ = load_yaml(ROOT / "configs" / "trust.yaml")
+        self.assertEqual(config["attestation"]["pcr_bank"], "sha256")
+        self.assertEqual(config["attestation"]["pcr_selection"], [0, 2, 4, 7, 10])
+        self.assertEqual(config["mtls"]["minimum_version"], "TLSv1.3")
+        measured_components = {item["component_id"] for item in config["measurements"]}
+        self.assertIn("acquisition-agent", measured_components)
+        self.assertIn("admission-policy", measured_components)
+        self.assertIn("trust-policy", measured_components)
+
 
 if __name__ == "__main__":
     unittest.main()

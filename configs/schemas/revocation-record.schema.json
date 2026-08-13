@@ -1,0 +1,111 @@
+{
+  "$defs": {
+    "RevocationRecordCore": {
+      "additionalProperties": false,
+      "properties": {
+        "client_id": {
+          "title": "Client Id",
+          "type": "string"
+        },
+        "enrollment_id": {
+          "title": "Enrollment Id",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "revocation_id": {
+          "title": "Revocation Id",
+          "type": "string"
+        },
+        "revoked_at": {
+          "title": "Revoked At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "revocation_id",
+        "enrollment_id",
+        "client_id",
+        "node_id",
+        "reason",
+        "revoked_at"
+      ],
+      "title": "RevocationRecordCore",
+      "type": "object"
+    },
+    "SignatureBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "ECDSA-P256-SHA256",
+          "default": "ECDSA-P256-SHA256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "trust_level": {
+          "enum": [
+            "software-development",
+            "swtpm",
+            "tpm2"
+          ],
+          "title": "Trust Level",
+          "type": "string"
+        },
+        "value_b64": {
+          "title": "Value B64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key_id",
+        "value_b64",
+        "trust_level"
+      ],
+      "title": "SignatureBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "enrollment_revocation",
+      "default": "enrollment_revocation",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/RevocationRecordCore"
+    },
+    "core_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Core Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "$ref": "#/$defs/SignatureBlock"
+    }
+  },
+  "required": [
+    "core",
+    "core_digest",
+    "signature"
+  ],
+  "title": "RevocationRecord",
+  "type": "object"
+}

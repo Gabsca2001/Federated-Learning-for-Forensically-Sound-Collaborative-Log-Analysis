@@ -1,0 +1,236 @@
+{
+  "$defs": {
+    "EnrollmentRecordCore": {
+      "additionalProperties": false,
+      "properties": {
+        "ak_key_id": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Ak Key Id",
+          "type": "string"
+        },
+        "ak_public_key_pem": {
+          "title": "Ak Public Key Pem",
+          "type": "string"
+        },
+        "baseline_id": {
+          "title": "Baseline Id",
+          "type": "string"
+        },
+        "baseline_measurement_log_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Baseline Measurement Log Digest",
+          "type": "string"
+        },
+        "baseline_version": {
+          "title": "Baseline Version",
+          "type": "string"
+        },
+        "client_id": {
+          "title": "Client Id",
+          "type": "string"
+        },
+        "ek_credential_status": {
+          "enum": [
+            "emulator-logical-identity",
+            "manufacturer-certificate",
+            "manual-approval"
+          ],
+          "title": "Ek Credential Status",
+          "type": "string"
+        },
+        "ek_public_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Ek Public Sha256",
+          "type": "string"
+        },
+        "enrollment_id": {
+          "title": "Enrollment Id",
+          "type": "string"
+        },
+        "esk_key_id": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Esk Key Id",
+          "type": "string"
+        },
+        "esk_public_key_pem": {
+          "title": "Esk Public Key Pem",
+          "type": "string"
+        },
+        "expected_pcr_values": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Expected Pcr Values",
+          "type": "object"
+        },
+        "issued_at": {
+          "title": "Issued At",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "pcr_bank": {
+          "const": "sha256",
+          "default": "sha256",
+          "title": "Pcr Bank",
+          "type": "string"
+        },
+        "pcr_selection": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Pcr Selection",
+          "type": "array"
+        },
+        "policy_id": {
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "policy_version": {
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "request_id": {
+          "title": "Request Id",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "revoked"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tls_certificate_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Tls Certificate Sha256",
+          "type": "string"
+        },
+        "tpm_instance_id": {
+          "title": "Tpm Instance Id",
+          "type": "string"
+        },
+        "trust_level": {
+          "enum": [
+            "swtpm",
+            "tpm2"
+          ],
+          "title": "Trust Level",
+          "type": "string"
+        },
+        "valid_from": {
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_until": {
+          "title": "Valid Until",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enrollment_id",
+        "request_id",
+        "client_id",
+        "node_id",
+        "organization_id",
+        "tpm_instance_id",
+        "trust_level",
+        "ek_public_sha256",
+        "ek_credential_status",
+        "ak_key_id",
+        "ak_public_key_pem",
+        "esk_key_id",
+        "esk_public_key_pem",
+        "tls_certificate_sha256",
+        "pcr_selection",
+        "policy_id",
+        "policy_version",
+        "baseline_id",
+        "baseline_version",
+        "baseline_measurement_log_digest",
+        "expected_pcr_values",
+        "valid_from",
+        "valid_until",
+        "issued_at"
+      ],
+      "title": "EnrollmentRecordCore",
+      "type": "object"
+    },
+    "SignatureBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "ECDSA-P256-SHA256",
+          "default": "ECDSA-P256-SHA256",
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "trust_level": {
+          "enum": [
+            "software-development",
+            "swtpm",
+            "tpm2"
+          ],
+          "title": "Trust Level",
+          "type": "string"
+        },
+        "value_b64": {
+          "title": "Value B64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key_id",
+        "value_b64",
+        "trust_level"
+      ],
+      "title": "SignatureBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "enrollment_record",
+      "default": "enrollment_record",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/EnrollmentRecordCore"
+    },
+    "core_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Core Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "signature": {
+      "$ref": "#/$defs/SignatureBlock"
+    }
+  },
+  "required": [
+    "core",
+    "core_digest",
+    "signature"
+  ],
+  "title": "EnrollmentRecord",
+  "type": "object"
+}

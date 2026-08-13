@@ -1,0 +1,80 @@
+{
+  "$defs": {
+    "MeasurementEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "title": "Component Id",
+          "type": "string"
+        },
+        "component_version": {
+          "title": "Component Version",
+          "type": "string"
+        },
+        "measurement_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Measurement Sha256",
+          "type": "string"
+        },
+        "pcr_index": {
+          "maximum": 23,
+          "minimum": 0,
+          "title": "Pcr Index",
+          "type": "integer"
+        },
+        "sequence_number": {
+          "minimum": 0,
+          "title": "Sequence Number",
+          "type": "integer"
+        },
+        "source_path": {
+          "title": "Source Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sequence_number",
+        "pcr_index",
+        "component_id",
+        "component_version",
+        "source_path",
+        "measurement_sha256"
+      ],
+      "title": "MeasurementEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "measurement_event_log",
+      "default": "measurement_event_log",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/MeasurementEvent"
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "pcr_bank": {
+      "const": "sha256",
+      "default": "sha256",
+      "title": "Pcr Bank",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "events"
+  ],
+  "title": "MeasurementLog",
+  "type": "object"
+}

@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "QuoteEvidenceCore": {
+      "additionalProperties": false,
+      "properties": {
+        "ak_key_id": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Ak Key Id",
+          "type": "string"
+        },
+        "challenge_id": {
+          "title": "Challenge Id",
+          "type": "string"
+        },
+        "client_id": {
+          "title": "Client Id",
+          "type": "string"
+        },
+        "enrollment_id": {
+          "title": "Enrollment Id",
+          "type": "string"
+        },
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "measurement_log_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Measurement Log Digest",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "nonce": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Nonce",
+          "type": "string"
+        },
+        "observed_pcr_values": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Observed Pcr Values",
+          "type": "object"
+        },
+        "pcr_bank": {
+          "const": "sha256",
+          "default": "sha256",
+          "title": "Pcr Bank",
+          "type": "string"
+        },
+        "pcr_selection": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Pcr Selection",
+          "type": "array"
+        },
+        "quote_format": {
+          "enum": [
+            "software-jcs-v1",
+            "tpm2-tools-tpms-attest"
+          ],
+          "title": "Quote Format",
+          "type": "string"
+        },
+        "quote_message_b64": {
+          "title": "Quote Message B64",
+          "type": "string"
+        },
+        "quote_signature_b64": {
+          "title": "Quote Signature B64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "enrollment_id",
+        "challenge_id",
+        "client_id",
+        "node_id",
+        "ak_key_id",
+        "quote_format",
+        "nonce",
+        "pcr_selection",
+        "observed_pcr_values",
+        "measurement_log_digest",
+        "quote_message_b64",
+        "quote_signature_b64",
+        "generated_at"
+      ],
+      "title": "QuoteEvidenceCore",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "tpm_quote_evidence",
+      "default": "tpm_quote_evidence",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "core": {
+      "$ref": "#/$defs/QuoteEvidenceCore"
+    },
+    "core_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Core Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "core",
+    "core_digest"
+  ],
+  "title": "QuoteEvidence",
+  "type": "object"
+}

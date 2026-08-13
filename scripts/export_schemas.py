@@ -15,14 +15,30 @@ from fl_forensics.models import (
     SignedReceipt,
     SnapshotManifest,
 )
+from fl_forensics.trust_models import (
+    AttestationChallenge,
+    AttestationResultV2,
+    EnrollmentRecord,
+    EnrollmentRequest,
+    MeasurementLog,
+    QuoteEvidence,
+    RevocationRecord,
+)
 
 
 MODELS = {
     "admission-decision.schema.json": AdmissionDecision,
     "attestation-result.schema.json": AttestationResult,
+    "attestation-result-v2.schema.json": AttestationResultV2,
     "batch-manifest.schema.json": BatchManifest,
     "custody-event.schema.json": CustodyEvent,
     "identity-record.schema.json": IdentityRecord,
+    "enrollment-record.schema.json": EnrollmentRecord,
+    "enrollment-request.schema.json": EnrollmentRequest,
+    "attestation-challenge.schema.json": AttestationChallenge,
+    "measurement-log.schema.json": MeasurementLog,
+    "quote-evidence.schema.json": QuoteEvidence,
+    "revocation-record.schema.json": RevocationRecord,
     "repository-receipt.schema.json": SignedReceipt,
     "snapshot-manifest.schema.json": SnapshotManifest,
 }
@@ -41,4 +57,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
