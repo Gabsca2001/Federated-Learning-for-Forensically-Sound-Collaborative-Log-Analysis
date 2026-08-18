@@ -10,6 +10,7 @@ from typing import Any
 
 from . import __version__
 from .canonical import sha256_bytes, sha256_file
+from .class_weighting import compute_class_weights
 from .config import load_yaml
 from .dataset24 import DATASET_NAME, verify_workspace
 from .preprocessing import derived_json_bytes
@@ -190,7 +191,11 @@ def train_central_baseline(
         shuffle=True,
         early_stopping=False,
     )
-    sample_weights = compute_sample_weight(class_weight="balanced", y=train_labels)
+    weighting_strategy = str(model_config["class_weighting"])
+    class_weights = compute_class_weights(
+        train_labels.tolist(), strategy=weighting_strategy
+    )
+    sample_weights = compute_sample_weight(class_weight=class_weights, y=train_labels)
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", category=ConvergenceWarning)
         model.fit(train_features, train_labels, sample_weight=sample_weights)
@@ -222,7 +227,9 @@ def train_central_baseline(
         "dataset_sha256": dataset_manifest["artifacts"]["dataset.json"],
         "model_classes": all_training_classes,
         "training_class_counts": dict(sorted(Counter(train_labels.tolist()).items())),
-        "class_weighting": "balanced sample weights computed from training only",
+        "class_weighting": weighting_strategy,
+        "class_weighting_scope": "training-only",
+        "training_class_weights": class_weights,
         "metrics": metrics,
         "interpretation_constraints": [
             "The temporal_holdout split is benign-only in the published Data24 CSV release.",
@@ -240,6 +247,9 @@ def train_central_baseline(
         "dataset": DATASET_NAME,
         "code_version": __version__,
         "implementation_sha256": sha256_file(Path(__file__)),
+        "class_weighting_implementation_sha256": sha256_file(
+            Path(__file__).with_name("class_weighting.py")
+        ),
         "config_sha256": _config_source_digest,
         "input_m2_manifest_sha256": sha256_file(workspace / "manifest.json"),
         "input_dataset_sha256": sha256_file(workspace / "dataset.json"),
@@ -247,6 +257,7 @@ def train_central_baseline(
         "model_sha256": sha256_bytes(model_bytes),
         "metrics_sha256": sha256_bytes(metrics_bytes),
         "seed": int(config["experiment"]["seed"]),
+        "class_weighting": weighting_strategy,
         "iterations": int(model.n_iter_),
     }
     manifest_bytes = derived_json_bytes(training_manifest)
@@ -260,6 +271,7 @@ def train_central_baseline(
         "output": str(output),
         "model_sha256": training_manifest["model_sha256"],
         "iterations": int(model.n_iter_),
+        "class_weighting": weighting_strategy,
         "classes": all_training_classes,
         "validation_macro_f1": metrics["validation"]["macro_f1_all_model_classes"],
         "test_macro_f1": metrics["test"]["macro_f1_all_model_classes"],

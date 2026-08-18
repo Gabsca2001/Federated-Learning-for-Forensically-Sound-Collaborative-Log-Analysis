@@ -23,7 +23,7 @@ training:
   batch_size: 128
   learning_rate: 0.001
   optimizer: adam
-  class_weighting: global-balanced-training-only
+  class_weighting: global-sqrt-balanced-training-only
   participation_fraction: 1.0
   minimum_available_clients: 15
   minimum_fit_clients: 15
