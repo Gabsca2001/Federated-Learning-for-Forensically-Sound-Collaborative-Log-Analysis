@@ -272,7 +272,11 @@ def prepare_partitions(
         "split_counts": {split: len(rows) for split, rows in split_rows.items()},
         "privacy_boundary": {
             "server_reads": [server_relative.as_posix(), "manifest.json"],
-            "server_forbidden": ["M2 dataset.json", "normalized_events.jsonl", "raw CSV"],
+            "server_forbidden": [
+                "M2 dataset.json",
+                "normalized_events.jsonl",
+                "raw CSV or Parquet source records",
+            ],
             "client_snapshots_contain": "scaled feature windows and labels only",
         },
     }
