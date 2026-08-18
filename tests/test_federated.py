@@ -58,6 +58,10 @@ class FederatedPartitionTests(unittest.TestCase):
                 self.assertEqual(verification["status"], "verified")
                 manifest = json.loads((workspace / "manifest.json").read_text())
                 self.assertEqual(len(manifest["clients"]), 15)
+                self.assertEqual(
+                    manifest["class_weighting"],
+                    "global-sqrt-balanced-training-only",
+                )
                 digests[mode] = verification["manifest_sha256"]
             self.assertNotEqual(digests["iid"], digests["non-iid"])
 

@@ -9,6 +9,7 @@ from typing import Any
 
 from . import __version__
 from .canonical import sha256_bytes, sha256_file
+from .class_weighting import compute_class_weights
 from .config import load_yaml
 from .dataset24 import DATASET_NAME, verify_workspace as verify_m2_workspace
 from .preprocessing import derived_json_bytes
@@ -123,6 +124,7 @@ def prepare_partitions(
     np = _numpy()
     config, config_digest = load_yaml(config_path)
     partition_config = config["partitioning"]
+    training_config = config["training"]
     client_count = int(partition_config["client_count"])
     seed = int(partition_config["seed"])
     dataset = json.loads((dataset_workspace / "dataset.json").read_text(encoding="utf-8"))
@@ -163,11 +165,10 @@ def prepare_partitions(
     )
 
     class_names = sorted({row["label"] for row in train_rows})
-    train_counts = Counter(row["label"] for row in train_rows)
-    total_train = len(train_rows)
-    class_weights = {
-        label: total_train / (len(class_names) * train_counts[label]) for label in class_names
-    }
+    weighting_strategy = str(training_config["class_weighting"])
+    class_weights = compute_class_weights(
+        (row["label"] for row in train_rows), strategy=weighting_strategy
+    )
     client_records: list[dict[str, Any]] = []
     for client_index in range(client_count):
         client_id = f"client{client_index + 1:02d}"
@@ -257,9 +258,14 @@ def prepare_partitions(
         "source_m2_scaler_sha256": sha256_file(dataset_workspace / "scaler.json"),
         "feature_names": dataset["feature_names"],
         "class_names": class_names,
+        "class_weighting": weighting_strategy,
+        "class_weighting_scope": "global-training-only",
         "global_class_weights": class_weights,
         "partition_config_sha256": config_digest,
         "implementation_sha256": sha256_file(Path(__file__)),
+        "class_weighting_implementation_sha256": sha256_file(
+            Path(__file__).with_name("class_weighting.py")
+        ),
         "clients": client_records,
         "server_evaluation_path": server_relative.as_posix(),
         "server_evaluation_sha256": sha256_bytes(server_bytes),

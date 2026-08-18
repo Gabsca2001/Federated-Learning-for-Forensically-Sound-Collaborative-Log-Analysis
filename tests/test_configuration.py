@@ -29,6 +29,10 @@ class ConfigurationTests(unittest.TestCase):
         self.assertEqual(config["dataset"], "UWF-ZeekData24")
         self.assertEqual(config["partitioning"]["client_count"], 15)
         self.assertEqual(config["training"]["aggregator"], "fedavg")
+        self.assertEqual(
+            config["training"]["class_weighting"],
+            "global-sqrt-balanced-training-only",
+        )
         self.assertEqual(config["training"]["participation_fraction"], 1.0)
         self.assertEqual(config["training"]["minimum_fit_clients"], 15)
 
