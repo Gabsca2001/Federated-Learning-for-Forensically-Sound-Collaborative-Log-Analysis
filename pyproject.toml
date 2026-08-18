@@ -17,6 +17,7 @@ dependencies = [
 [project.optional-dependencies]
 m2 = [
   "numpy>=2,<3",
+  "pyarrow>=25,<26",
   "scikit-learn>=1.7,<2",
 ]
 federated = [
@@ -32,6 +33,7 @@ ml = [
   "flwr>=1.32,<2",
   "matplotlib>=3.10,<4",
   "numpy>=2,<3",
+  "pyarrow>=25,<26",
   "scikit-learn>=1.7,<2",
   "torch>=2.7,<3",
 ]

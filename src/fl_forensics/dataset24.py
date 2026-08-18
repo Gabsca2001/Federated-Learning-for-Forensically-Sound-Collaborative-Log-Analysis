@@ -157,7 +157,28 @@ def verify_download_manifest(source_root: Path) -> tuple[dict[str, Any], list[di
     return manifest, verified
 
 
+def _source_format(source_root: Path) -> str:
+    manifest_path = source_root / "download_manifest.json"
+    if not manifest_path.is_file():
+        raise Dataset24Error(f"missing controlled-ingestion manifest: {manifest_path}")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    source_format = str(manifest.get("source_format", "csv")).lower()
+    if source_format not in {"csv", "parquet"}:
+        raise Dataset24Error(f"unsupported Data24 source format: {source_format}")
+    return source_format
+
+
 def audit_dataset(source_root: Path) -> dict[str, Any]:
+    """Audit either frozen CSV or pinned Parquet controlled ingestion."""
+
+    if _source_format(source_root) == "parquet":
+        from .dataset24_parquet import audit_parquet_dataset
+
+        return audit_parquet_dataset(source_root)
+    return _audit_csv_dataset(source_root)
+
+
+def _audit_csv_dataset(source_root: Path) -> dict[str, Any]:
     """Audit the real CSV release without deriving features or fitting a model."""
 
     download_manifest, verified_files = verify_download_manifest(source_root)
@@ -523,12 +544,113 @@ def _feature_schema(config: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def apply_training_sampling(
+    rows: list[dict[str, Any]], config: dict[str, Any]
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Deterministically sample training windows while leaving evaluation untouched."""
+
+    sampling = dict(config.get("training_sampling", {}))
+    enabled = bool(sampling.get("enabled", False))
+    if not enabled:
+        return rows, {
+            "schema_version": "1.0",
+            "enabled": False,
+            "method": "none",
+        }
+
+    method = str(sampling.get("method", ""))
+    if method != "deterministic-hash-ranking-within-class":
+        raise Dataset24Error(f"unsupported training sampling method: {method}")
+    majority_labels = {str(item) for item in sampling.get("majority_labels", [])}
+    if not majority_labels:
+        raise Dataset24Error("training sampling needs at least one majority label")
+    majority_fraction = float(sampling.get("majority_fraction", 1.0))
+    minority_fraction = float(sampling.get("minority_fraction", 1.0))
+    if not 0 < majority_fraction <= 1 or not 0 < minority_fraction <= 1:
+        raise Dataset24Error("training sampling fractions must be in (0, 1]")
+    seed = int(sampling.get("seed", config["split_seed"]))
+
+    training_by_label: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        if row["split"] == "train":
+            training_by_label[str(row["label"])].append(row)
+
+    selected_ids: set[str] = set()
+    before_counts: dict[str, int] = {}
+    after_counts: dict[str, int] = {}
+    fractions: dict[str, float] = {}
+    for label, items in sorted(training_by_label.items()):
+        fraction = majority_fraction if label in majority_labels else minority_fraction
+        ranked = sorted(
+            items,
+            key=lambda row: (
+                sha256_bytes(f"{seed}:{label}:{row['window_id']}".encode("utf-8")),
+                row["window_id"],
+            ),
+        )
+        keep_count = len(ranked)
+        if fraction < 1:
+            keep_count = max(1, math.floor(len(ranked) * fraction))
+        selected = ranked[:keep_count]
+        selected_ids.update(str(row["window_id"]) for row in selected)
+        before_counts[label] = len(items)
+        after_counts[label] = len(selected)
+        fractions[label] = fraction
+
+    retained = [
+        row
+        for row in rows
+        if row["split"] != "train" or str(row["window_id"]) in selected_ids
+    ]
+    selection_digest = sha256_bytes(
+        canonical_json_bytes(sorted(selected_ids))
+    )
+    manifest = {
+        "schema_version": "1.0",
+        "enabled": True,
+        "scope": "training-only",
+        "method": method,
+        "seed": seed,
+        "majority_labels": sorted(majority_labels),
+        "majority_fraction": majority_fraction,
+        "minority_fraction": minority_fraction,
+        "label_fractions": dict(sorted(fractions.items())),
+        "training_class_counts_before": before_counts,
+        "training_class_counts_after": after_counts,
+        "training_window_count_before": sum(before_counts.values()),
+        "training_window_count_after": sum(after_counts.values()),
+        "selected_window_ids_sha256": selection_digest,
+        "evaluation_policy": "validation, test, and temporal_holdout are retained in full",
+    }
+    return retained, manifest
+
+
 def prepare_dataset(
+    *, source_root: Path, output: Path, preprocessing_config: dict[str, Any]
+) -> dict[str, Any]:
+    """Build a deterministic M2 snapshot from CSV or pinned Parquet input."""
+
+    if _source_format(source_root) == "parquet":
+        from .dataset24_parquet import prepare_parquet_dataset
+
+        return prepare_parquet_dataset(
+            source_root=source_root,
+            output=output,
+            preprocessing_config=preprocessing_config,
+        )
+    return _prepare_csv_dataset(
+        source_root=source_root,
+        output=output,
+        preprocessing_config=preprocessing_config,
+    )
+
+
+def _prepare_csv_dataset(
     *, source_root: Path, output: Path, preprocessing_config: dict[str, Any]
 ) -> dict[str, Any]:
     """Build the deterministic M2 feature snapshot and training-only scaler."""
 
-    audit = audit_dataset(source_root)
+    audit = _audit_csv_dataset(source_root)
     transformed_raw, unique_event_count = _load_consolidated_events(source_root)
     transformed_digest = sha256_bytes(transformed_raw)
     result = normalize_and_window(
@@ -669,6 +791,34 @@ def verify_workspace(workspace: Path) -> dict[str, Any]:
                 if left & right:
                     errors.append("capture groups overlap across M2 splits")
                     break
+        if manifest.get("source_format") == "parquet":
+            sampling_path = workspace / "training_sampling.json"
+            if not sampling_path.is_file():
+                errors.append("missing Parquet training_sampling.json")
+            else:
+                sampling = json.loads(sampling_path.read_text(encoding="utf-8"))
+                training_rows = [row for row in rows if row.get("split") == "train"]
+                observed_training_counts = dict(
+                    sorted(Counter(str(row["label"]) for row in training_rows).items())
+                )
+                if sampling.get("scope") != "training-only":
+                    errors.append("Parquet sampling scope is not training-only")
+                if sampling.get("training_class_counts_after") != observed_training_counts:
+                    errors.append("Parquet sampled training class counts do not match dataset")
+                selected_digest = sha256_bytes(
+                    canonical_json_bytes(
+                        sorted(str(row["window_id"]) for row in training_rows)
+                    )
+                )
+                if sampling.get("selected_window_ids_sha256") != selected_digest:
+                    errors.append("Parquet sampled training window selection digest mismatch")
+                before_counts = manifest.get(
+                    "split_counts_before_training_sampling", {}
+                )
+                after_counts = manifest.get("split_counts", {})
+                for split in ("validation", "test", "temporal_holdout"):
+                    if before_counts.get(split) != after_counts.get(split):
+                        errors.append(f"Parquet sampling changed evaluation split: {split}")
 
     return {
         "status": "verified" if not errors else "failed",

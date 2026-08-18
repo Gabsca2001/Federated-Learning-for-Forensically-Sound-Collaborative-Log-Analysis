@@ -125,6 +125,115 @@ def _choose_label(
     return (observed[0] if observed else "unlabeled"), observed
 
 
+def build_window_row(
+    *,
+    events: list[dict[str, Any]],
+    capture_id: str,
+    bucket: int,
+    window_seconds: int,
+    client_id: str,
+    benign_labels: set[str],
+    mixed_attack_label: str | None,
+    split_seed: int,
+    split_percentages: dict[str, int],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Derive one deterministic feature window from normalized Zeek events."""
+
+    total = len(events)
+    if total == 0:
+        raise ValueError("cannot derive a feature window from no events")
+    durations = [event["duration"] for event in events]
+    protocols = Counter(event["protocol"] for event in events)
+    services = Counter(event["service"] for event in events)
+    states = Counter(event["connection_state"] for event in events)
+    protocol_other = total - sum(
+        protocols.get(key, 0) for key in ("tcp", "udp", "icmp")
+    )
+    service_other = total - sum(
+        services.get(key, 0) for key in ("dns", "http", "ssl", "ssh")
+    )
+    state_other = total - sum(
+        states.get(key, 0) for key in ("sf", "s0", "rej", "rsto", "rstr")
+    )
+    features = [
+        float(total),
+        float(
+            len(
+                {
+                    event["responder_host"]
+                    for event in events
+                    if event["responder_host"]
+                }
+            )
+        ),
+        float(
+            len(
+                {
+                    event["responder_port"]
+                    for event in events
+                    if event["responder_port"]
+                }
+            )
+        ),
+        statistics.fmean(durations) if durations else 0.0,
+        statistics.pstdev(durations) if len(durations) > 1 else 0.0,
+        max(durations, default=0.0),
+        float(sum(event["originator_bytes"] for event in events)),
+        float(sum(event["responder_bytes"] for event in events)),
+        float(sum(event["originator_packets"] for event in events)),
+        float(sum(event["responder_packets"] for event in events)),
+        _fraction(protocols, "tcp", total),
+        _fraction(protocols, "udp", total),
+        _fraction(protocols, "icmp", total),
+        protocol_other / total,
+        _fraction(services, "dns", total),
+        _fraction(services, "http", total),
+        _fraction(services, "ssl", total),
+        _fraction(services, "ssh", total),
+        service_other / total,
+        _fraction(states, "sf", total),
+        _fraction(states, "s0", total),
+        _fraction(states, "rej", total),
+        _fraction(states, "rsto", total),
+        _fraction(states, "rstr", total),
+        state_other / total,
+    ]
+    features = [round(value, 12) for value in features]
+    label, observed_labels = _choose_label(
+        [event["label"] for event in events], benign_labels, mixed_attack_label
+    )
+    window_id = (
+        f"window-{client_id}-"
+        f"{sha256_bytes(f'{capture_id}:{bucket}'.encode())[:20]}"
+    )
+    source_event_ids = [event["event_id"] for event in events]
+    row = {
+        "window_id": window_id,
+        "window_start_epoch": bucket * window_seconds,
+        "window_end_epoch": (bucket + 1) * window_seconds,
+        "capture_id": capture_id,
+        "split": _stable_split(capture_id, split_seed, split_percentages),
+        "label": label,
+        "observed_labels": observed_labels,
+        "features": features,
+        "source_event_ids": source_event_ids,
+    }
+    lineage = {
+        "source_event_ids": source_event_ids,
+        "feature_schema": "zeek-window-v1",
+        "operations": {
+            "grouping": f"floor(timestamp/{window_seconds}) within capture_id",
+            "feature_names": FEATURE_NAMES,
+            "label_policy": (
+                f"multiple attack labels become {mixed_attack_label}"
+                if mixed_attack_label
+                else "non-benign lexical priority with all observed labels retained"
+            ),
+        },
+    }
+    return row, lineage
+
+
 def normalize_and_window(
     *,
     raw: bytes,
@@ -228,72 +337,20 @@ def normalize_and_window(
     rows: list[dict[str, Any]] = []
     window_lineage: dict[str, Any] = {}
     for (capture_id, bucket), events in sorted(windows.items()):
-        total = len(events)
-        durations = [event["duration"] for event in events]
-        protocols = Counter(event["protocol"] for event in events)
-        services = Counter(event["service"] for event in events)
-        states = Counter(event["connection_state"] for event in events)
-        protocol_other = total - sum(protocols.get(key, 0) for key in ("tcp", "udp", "icmp"))
-        service_other = total - sum(services.get(key, 0) for key in ("dns", "http", "ssl", "ssh"))
-        state_other = total - sum(states.get(key, 0) for key in ("sf", "s0", "rej", "rsto", "rstr"))
-        features = [
-            float(total),
-            float(len({event["responder_host"] for event in events if event["responder_host"]})),
-            float(len({event["responder_port"] for event in events if event["responder_port"]})),
-            statistics.fmean(durations) if durations else 0.0,
-            statistics.pstdev(durations) if len(durations) > 1 else 0.0,
-            max(durations, default=0.0),
-            float(sum(event["originator_bytes"] for event in events)),
-            float(sum(event["responder_bytes"] for event in events)),
-            float(sum(event["originator_packets"] for event in events)),
-            float(sum(event["responder_packets"] for event in events)),
-            _fraction(protocols, "tcp", total),
-            _fraction(protocols, "udp", total),
-            _fraction(protocols, "icmp", total),
-            protocol_other / total,
-            _fraction(services, "dns", total),
-            _fraction(services, "http", total),
-            _fraction(services, "ssl", total),
-            _fraction(services, "ssh", total),
-            service_other / total,
-            _fraction(states, "sf", total),
-            _fraction(states, "s0", total),
-            _fraction(states, "rej", total),
-            _fraction(states, "rsto", total),
-            _fraction(states, "rstr", total),
-            state_other / total,
-        ]
-        features = [round(value, 12) for value in features]
-        label, observed_labels = _choose_label(
-            [event["label"] for event in events], benign_labels, mixed_attack_label
+        row, lineage_entry = build_window_row(
+            events=events,
+            capture_id=capture_id,
+            bucket=bucket,
+            window_seconds=window_seconds,
+            client_id=client_id,
+            benign_labels=benign_labels,
+            mixed_attack_label=mixed_attack_label,
+            split_seed=seed,
+            split_percentages=percentages,
         )
-        window_id = f"window-{client_id}-{sha256_bytes(f'{capture_id}:{bucket}'.encode())[:20]}"
-        rows.append(
-            {
-                "window_id": window_id,
-                "window_start_epoch": bucket * window_seconds,
-                "window_end_epoch": (bucket + 1) * window_seconds,
-                "capture_id": capture_id,
-                "split": _stable_split(capture_id, seed, percentages),
-                "label": label,
-                "observed_labels": observed_labels,
-                "features": features,
-                "source_event_ids": [event["event_id"] for event in events],
-            }
-        )
-        window_lineage[window_id] = {
-            "source_event_ids": [event["event_id"] for event in events],
-            "feature_schema": str(config["schema_version"]),
-            "operations": {
-                "grouping": f"floor(timestamp/{window_seconds}) within capture_id",
-                "feature_names": FEATURE_NAMES,
-                "label_policy": (
-                    f"multiple attack labels become {mixed_attack_label}"
-                    if mixed_attack_label
-                    else "non-benign lexical priority with all observed labels retained"
-                ),
-            },
-        }
+        lineage_entry["feature_schema"] = str(config["schema_version"])
+        rows.append(row)
+        window_lineage[row["window_id"]] = lineage_entry
 
     lineage = {
         "schema_version": "1.0",

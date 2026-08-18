@@ -1,0 +1,28 @@
+schema_version: "1.0"
+experiment:
+  name: uwf-zeekdata24-parquet-stratified
+  seed: 341593
+  dataset: UWF-ZeekData24
+  provenance_boundary: controlled_ingestion
+
+preprocessing:
+  schema_version: zeek-window-v1
+  window_seconds: 60
+  split_seed: 341593
+  split_strategy: grouped-chronological-with-reserved-last-week
+  split_percentages:
+    train: 70
+    validation: 15
+    test: 15
+  label_fields: [label, _label, attack, mitre_tactic]
+  benign_labels: [benign, normal, none, "-"]
+  mixed_attack_label: multi_tactic
+  temporal_holdout_start: "2024-11-03T00:00:00Z"
+  numeric_scaling: standard-score-training-only
+  training_sampling:
+    enabled: true
+    method: deterministic-hash-ranking-within-class
+    seed: 341593
+    majority_labels: [benign, credential_access, reconnaissance]
+    majority_fraction: "0.25"
+    minority_fraction: "1.0"

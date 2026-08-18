@@ -50,13 +50,13 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("--workspace", type=Path, required=True)
 
     m2_audit = subparsers.add_parser(
-        "m2-audit", help="audit the controlled-ingestion UWF-ZeekData24 CSV release"
+        "m2-audit", help="audit a controlled-ingestion UWF-ZeekData24 release"
     )
     m2_audit.add_argument(
         "--input",
         type=Path,
         default=Path("data/raw/uwf-zeekdata24/csv"),
-        help="Data24 CSV root containing download_manifest.json",
+        help="Data24 CSV or Parquet root containing download_manifest.json",
     )
     m2_audit.add_argument(
         "--output",
@@ -71,12 +71,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--input",
         type=Path,
         default=Path("data/raw/uwf-zeekdata24/csv"),
+        help="Data24 CSV or Parquet root containing download_manifest.json",
     )
     m2_prepare.add_argument(
         "--output", type=Path, default=Path("artifacts/m2-data24")
     )
     m2_prepare.add_argument(
-        "--config", type=Path, default=Path("configs/base.yaml")
+        "--config",
+        type=Path,
+        default=Path("configs/base.yaml"),
+        help="preprocessing configuration; use configs/m2-parquet.yaml for the Parquet experiment",
     )
 
     m2_verify = subparsers.add_parser(
