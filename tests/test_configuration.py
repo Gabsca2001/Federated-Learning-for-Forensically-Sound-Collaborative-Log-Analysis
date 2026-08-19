@@ -35,6 +35,16 @@ class ConfigurationTests(unittest.TestCase):
         )
         self.assertEqual(config["training"]["participation_fraction"], 1.0)
         self.assertEqual(config["training"]["minimum_fit_clients"], 15)
+        self.assertEqual(
+            config["training"]["checkpoint_selection"],
+            {
+                "split": "validation",
+                "metric": "macro_f1_all_model_classes",
+                "mode": "maximize",
+                "tie_breaker": "earliest_round",
+                "test_policy": "selected-checkpoint-only",
+            },
+        )
 
     def test_m4_uses_sha256_quote_policy_and_separate_measurement_roles(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "trust.yaml")

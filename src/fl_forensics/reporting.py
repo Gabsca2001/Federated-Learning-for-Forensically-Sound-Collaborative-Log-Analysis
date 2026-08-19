@@ -263,12 +263,15 @@ def _comparison_figure(
     central_test_f1: float | None,
 ) -> Any:
     local_summary = comparison["local_only_summary"]["global_test_macro_f1"]
+    fedavg_checkpoint = comparison.get(
+        "fedavg_selected", comparison.get("fedavg_final")
+    )
+    if not isinstance(fedavg_checkpoint, dict):
+        raise ValueError("comparison artifact contains no FedAvg checkpoint")
     categories = ["Local-only mean", "FedAvg"]
     values = [
         _metric_percent(local_summary["mean"]),
-        _metric_percent(
-            comparison["fedavg_final"]["test"]["macro_f1_all_model_classes"]
-        ),
+        _metric_percent(fedavg_checkpoint["test"]["macro_f1_all_model_classes"]),
     ]
     errors = [_metric_percent(local_summary["population_stddev"]), 0.0]
     if central_test_f1 is not None:
@@ -305,8 +308,13 @@ def _per_client_figure(*, plt: Any, comparison: dict[str, Any]) -> Any:
         _metric_percent(item["global_test"]["macro_f1_all_model_classes"])
         for item in clients
     ]
+    fedavg_checkpoint = comparison.get(
+        "fedavg_selected", comparison.get("fedavg_final")
+    )
+    if not isinstance(fedavg_checkpoint, dict):
+        raise ValueError("comparison artifact contains no FedAvg checkpoint")
     fedavg = _metric_percent(
-        comparison["fedavg_final"]["test"]["macro_f1_all_model_classes"]
+        fedavg_checkpoint["test"]["macro_f1_all_model_classes"]
     )
     fig, ax = plt.subplots(figsize=(10.8, 6.5))
     bars = ax.barh(identifiers, values)
@@ -316,6 +324,42 @@ def _per_client_figure(*, plt: Any, comparison: dict[str, Any]) -> Any:
     ax.set_xlabel("Global test macro-F1 (%)")
     ax.set_ylabel("Local-only client model")
     ax.set_title("Local-only model performance by client")
+    ax.legend(frameon=False, loc="lower right")
+    _style_axes(ax, grid_axis="x")
+    fig.tight_layout()
+    return fig
+
+
+def _selected_global_client_validation_figure(
+    *, plt: Any, comparison: dict[str, Any]
+) -> Any:
+    clients = sorted(
+        comparison.get("selected_global_client_validation", []),
+        key=lambda item: item["client_id"],
+    )
+    if not clients:
+        raise ValueError(
+            "comparison artifact contains no selected-model client validation results"
+        )
+    identifiers = [str(item["client_id"]) for item in clients]
+    values = [
+        _metric_percent(item["validation"]["macro_f1_all_model_classes"])
+        for item in clients
+    ]
+    mean_value = sum(values) / len(values)
+    fig, ax = plt.subplots(figsize=(10.8, 6.5))
+    bars = ax.barh(identifiers, values)
+    ax.bar_label(bars, labels=[f"{value:.2f}%" for value in values], padding=4)
+    ax.axvline(
+        mean_value,
+        linestyle="--",
+        linewidth=2.0,
+        label=f"Client mean: {mean_value:.2f}%",
+    )
+    ax.set_xlim(0, 100)
+    ax.set_xlabel("Client validation macro-F1 (%)")
+    ax.set_ylabel("Client snapshot")
+    ax.set_title("Selected global model performance by client")
     ax.legend(frameon=False, loc="lower right")
     _style_axes(ax, grid_axis="x")
     fig.tight_layout()
@@ -350,8 +394,11 @@ def generate_m3_report(
         }
     )
     report_output = output if output is not None else workspace / "reports"
-    final_test = metrics["final"]["test"]
-    matrix = final_test["confusion_matrix"]
+    selected = metrics.get("selected")
+    legacy_final_round_protocol = not isinstance(selected, dict)
+    evaluated_checkpoint = metrics["final"] if legacy_final_round_protocol else selected
+    selected_test = evaluated_checkpoint["test"]
+    matrix = selected_test["confusion_matrix"]
     labels = [str(label) for label in matrix["labels"]]
     absolute_values = [[float(value) for value in row] for row in matrix["values"]]
     normalized_values = [
@@ -383,7 +430,7 @@ def generate_m3_report(
             filename="per-class-metrics-test.png",
             description="Test precision, recall, F1, and support by class.",
             build=lambda: _per_class_figure(
-                plt=plt, labels=labels, per_class=final_test["per_class"]
+                plt=plt, labels=labels, per_class=selected_test["per_class"]
             ),
             plt=plt,
         ),
@@ -420,6 +467,20 @@ def generate_m3_report(
             plt=plt,
         ),
     ]
+    if comparison.get("selected_global_client_validation"):
+        figures.append(
+            _write_figure(
+                output=report_output,
+                filename="selected-global-per-client-validation.png",
+                description=(
+                    "Validation macro-F1 of the selected global model on each client snapshot."
+                ),
+                build=lambda: _selected_global_client_validation_figure(
+                    plt=plt, comparison=comparison
+                ),
+                plt=plt,
+            )
+        )
     validation_values = [
         (int(item["round"]), float(item["validation"]["macro_f1_all_model_classes"]))
         for item in rounds
@@ -430,7 +491,7 @@ def generate_m3_report(
         validation_values, key=lambda item: item[1]
     )
     summary = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "m3_evaluation_report",
         "dataset": DATASET_NAME,
         "partition_mode": manifest["partition_mode"],
@@ -445,7 +506,13 @@ def generate_m3_report(
             "final_validation_macro_f1": float(
                 metrics["final"]["validation"]["macro_f1_all_model_classes"]
             ),
-            "final_test_macro_f1": float(final_test["macro_f1_all_model_classes"]),
+            "selected_round": int(evaluated_checkpoint["round"]),
+            "selected_validation_macro_f1": float(
+                evaluated_checkpoint["validation"]["macro_f1_all_model_classes"]
+            ),
+            "selected_test_macro_f1": float(
+                selected_test["macro_f1_all_model_classes"]
+            ),
             "best_validation_round": best_validation_round,
             "best_validation_macro_f1": best_validation_f1,
             "local_only_mean_test_macro_f1": float(
@@ -453,12 +520,15 @@ def generate_m3_report(
             ),
             "centralized_test_macro_f1": central_test_f1,
         },
+        "operational_metrics": evaluated_checkpoint.get("operational_metrics"),
         "class_labels": labels,
         "figures": figures,
         "interpretation_constraints": [
             (
-                "The best validation round is diagnostic only; M3 training retained the "
-                "final-round model."
+                "This legacy artifact retained the final-round model; the best validation "
+                "round is diagnostic only."
+                if legacy_final_round_protocol
+                else "The reported checkpoint was selected using validation macro-F1 only."
             ),
             "The test split must not be used to select a round or tune hyperparameters.",
             "The temporal holdout is benign-only and is not presented as a multiclass result.",
@@ -476,6 +546,9 @@ def generate_m3_report(
         "figure_count": len(figures),
         "best_validation_round": best_validation_round,
         "best_validation_macro_f1": best_validation_f1,
-        "final_test_macro_f1": float(final_test["macro_f1_all_model_classes"]),
+        "selected_round": int(evaluated_checkpoint["round"]),
+        "selected_test_macro_f1": float(
+            selected_test["macro_f1_all_model_classes"]
+        ),
         "summary_sha256": sha256_file(report_output / "summary.json"),
     }
