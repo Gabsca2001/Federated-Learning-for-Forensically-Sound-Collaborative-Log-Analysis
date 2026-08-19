@@ -56,6 +56,15 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn("admission-policy", measured_components)
         self.assertIn("trust-policy", measured_components)
 
+    def test_m5_policy_gates_all_fifteen_signed_updates(self) -> None:
+        config, _ = load_yaml(ROOT / "configs" / "secure-round.yaml")
+        policy = config["secure_round"]
+        self.assertEqual(policy["required_clients"], 15)
+        self.assertEqual(policy["aggregation"], "FedAvg")
+        self.assertTrue(policy["require_fresh_attestation"])
+        self.assertTrue(policy["require_tpm_esk_signature"])
+        self.assertTrue(policy["require_exact_tensor_schema"])
+
 
 if __name__ == "__main__":
     unittest.main()
