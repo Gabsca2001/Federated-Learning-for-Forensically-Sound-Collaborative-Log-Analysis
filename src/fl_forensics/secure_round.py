@@ -23,6 +23,7 @@ from .federated_model import (
     architecture_record,
     arrays_from_export,
     build_model,
+    delta_l2,
     dependencies,
     export_state,
     fedavg,
@@ -486,7 +487,16 @@ def create_secure_update(
 
     training_contract = load_json(contract_path)
     base_export = load_json(base_path)
-    np, torch, *_rest = dependencies()
+    (
+        np,
+        torch,
+        _flwr,
+        _sklearn,
+        _aggregate,
+        accuracy_score,
+        confusion_matrix,
+        precision_recall_fscore_support,
+    ) = dependencies()
     model = _model_from_export(base_export, torch=torch, np=np)
     metrics = train_local(
         model=model,
@@ -507,15 +517,27 @@ def create_secure_update(
         device_name="cpu",
         torch=torch,
         np=np,
+        validation_rows=snapshot["rows"].get("validation", []),
+        evaluation_functions=(
+            accuracy_score,
+            confusion_matrix,
+            precision_recall_fscore_support,
+        ),
+        record_history=True,
     )
     updated_export = export_state(
         model,
         architecture=base_export["architecture"],
         class_names=list(base_export["class_names"]),
     )
+    metrics["update_delta_l2"] = delta_l2(
+        arrays_from_export(base_export, np=np),
+        arrays_from_export(updated_export, np=np),
+        np=np,
+    )
     update_bytes = derived_json_bytes(updated_export)
     metrics_artifact = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "secure_local_training_metrics",
         "client_id": client_id,
         "context_id": context.context_id,
