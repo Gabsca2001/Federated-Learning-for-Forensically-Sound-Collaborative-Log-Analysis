@@ -23,7 +23,7 @@
 | 15-pair `swtpm` Compose deployment | Implemented and exercised (M4) | Dedicated state/socket volumes; no client state mount or foreign socket; static topology verifier |
 | TLS 1.3 mutual authentication | Implemented and unit-tested (M4) | Private experiment CA, clientAuth/serverAuth EKU, SAN and enrollment-fingerprint binding, wrong pair rejected |
 | Physical TPM 2.0 adapter | Implemented, hardware run pending (M4) | Same tpm2-tools adapter via `device:/dev/tpmrm0`; no simulator/hardware equivalence claim |
-| Attestation-gated Update Bundle and secure FedAvg checkpoint | Implemented, Docker runtime pending (M5) | Signed context, TPM ESK bundles, replay/idempotency, tensor validator, exact input manifest and independent FedAvg recomputation |
+| Attestation-gated Update Bundle and secure FedAvg checkpoint | Implemented and exercised with 15 Docker clients (M5) | 15/15 TPM-signed bundles accepted; zero errors; independent FedAvg recomputation matched the stored checkpoint |
 | Byzantine attacks and robust aggregation | Planned (M6) | — |
 | Integrated Gradients and deterministic report | Planned (M7) | — |
 
@@ -31,3 +31,5 @@ M2 uses NumPy and scikit-learn only. Flower/PyTorch belong to M3 and the trust
 deployment belongs to M4; neither changes the frozen M2 dataset contract.
 
 The published Data24 CSV release has a documented acquisition-time/class confound, 328 cross-label connection identities, and a benign-only final-week holdout. The implementation preserves these facts in machine-readable audit, split, lineage, and metrics artifacts; the baseline scores must not be interpreted as evidence that those dataset limitations have been removed.
+
+

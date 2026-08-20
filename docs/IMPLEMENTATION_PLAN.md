@@ -52,7 +52,6 @@ enrollment, client snapshot, base model, training contract, and federation
 configuration for every participant. TPM ESK-signed Update Bundles pass a
 fail-closed structural and cryptographic validator before signed Contribution
 Decisions are preserved. Replay slots accept only byte-identical retries, and
-the signed checkpoint enumerates every admitted digest and weight. Unit and
-topology tests are complete; the remaining acceptance gate is the 15-swtpm
-runtime producing 15 accepted bundles and an independently reproduced FedAvg
-checkpoint.
+the signed checkpoint enumerates every admitted digest and weight. Unit, topology, and 15-swtpm runtime gates are complete. All 15 TPM-signed
+bundles were accepted without errors, and independent verification reproduced
+the stored FedAvg checkpoint exactly.

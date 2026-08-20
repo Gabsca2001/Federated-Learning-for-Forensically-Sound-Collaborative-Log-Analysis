@@ -2,11 +2,10 @@
 
 This repository is the experimental implementation of the architecture defined in Chapter 4 of the thesis. The target system joins controlled Zeek log acquisition, cryptographic preservation, deterministic preprocessing, federated learning, Byzantine-resilient aggregation, end-to-end lineage, explainability, and investigative reporting.
 
-Milestones 1–4 are implemented and tested, including the IID/non-IID M3 runs and
-the 15/15 swtpm M4 runtime gate. Milestone 5 implements the attestation-gated,
-container-isolated secure round; its final Docker runtime gate remains explicit.
-The shared physical-TPM adapter remains a separate hardware experiment. The
-evidence vertical slice is:
+Milestones 1–5 are implemented and tested, including the IID/non-IID M3 runs,
+the 15/15 swtpm M4 runtime gate, and the attestation-gated container-isolated
+M5 secure round. Its Docker runtime gate accepted all 15 signed bundles and
+independently reproduced the FedAvg checkpoint.
 
 `Zeek JSONL → raw batch → canonical manifest → SHA-256 chain → ECDSA signature → attestation-aware admission → content-addressed vault → deterministic snapshot → lineage`
 
