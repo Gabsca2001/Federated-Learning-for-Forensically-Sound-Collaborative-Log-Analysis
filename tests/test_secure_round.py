@@ -427,7 +427,11 @@ class SecureRoundDeploymentTests(unittest.TestCase):
         services = compose["services"]
         clients = [f"client{index:02d}" for index in range(1, 16)]
         self.assertTrue(all(client in services for client in clients))
+        runtime_image = services["coordinator"]["image"]
+        self.assertIn("build", services["coordinator"])
         for index, client in enumerate(clients, start=1):
+            self.assertEqual(services[client]["image"], runtime_image)
+            self.assertNotIn("build", services[client])
             volumes = "\n".join(services[client]["volumes"])
             expected = f"tpm{index:02d}_socket:/run/swtpm"
             self.assertIn(expected, volumes)

@@ -85,11 +85,8 @@ def main() -> int:
         *compose,
         "--profile",
         "coordinator",
-        "--profile",
-        "secure-round",
         "build",
         "coordinator",
-        *CLIENT_IDS,
     ]
     if arguments.action == "build":
         run(build_command, root=root, environment=environment)

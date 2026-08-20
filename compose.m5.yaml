@@ -18,9 +18,7 @@ x-m5-tpm: &m5-tpm
     retries: 30
 
 x-m5-client: &m5-client
-  build:
-    context: .
-    dockerfile: Dockerfile.m5
+  image: "${M5_RUNTIME_IMAGE:-flforensics-m5-runtime:latest}"
   profiles: ["secure-round"]
   user: "${M5_UID:-1000}:${M5_GID:-1000}"
   read_only: true
@@ -256,6 +254,7 @@ services:
       - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client15:/submission
 
   coordinator:
+    image: "${M5_RUNTIME_IMAGE:-flforensics-m5-runtime:latest}"
     build:
       context: .
       dockerfile: Dockerfile.m5
