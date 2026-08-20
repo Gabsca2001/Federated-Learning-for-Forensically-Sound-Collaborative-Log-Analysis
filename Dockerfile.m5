@@ -1,0 +1,27 @@
+FROM python:3.12-slim-bookworm
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       ca-certificates \
+       tpm2-tools \
+       libtss2-tcti-swtpm0 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY pyproject.toml README.md Dockerfile.m4 Dockerfile.m5 compose.m5.yaml ./
+COPY src ./src
+COPY configs ./configs
+COPY scripts ./scripts
+
+# The CPU wheel keeps the reproducible 15-container runtime substantially smaller.
+# M3 may still use the host CUDA profile; secure-round clients intentionally use CPU.
+RUN python -m pip install --no-cache-dir \
+      --index-url https://download.pytorch.org/whl/cpu "torch>=2.7,<3" \
+    && python -m pip install --no-cache-dir ".[federated]" \
+    && mkdir -p /campaign /client /runtime /submission \
+       /trust/authority /trust/registry /trust/results \
+    && chown -R 65532:65532 /campaign /submission
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENTRYPOINT ["fl-forensics"]

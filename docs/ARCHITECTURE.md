@@ -49,9 +49,24 @@ Quote checker, consults revocation and transport identity, and signs an
 Attestation Result v2. The Admission Controller consumes that result but cannot
 approve its own attestation.
 
+## M5 secure-round derivation path
+
+The round coordinator first requires 15 signed, passed, unexpired M4 results
+bound to 15 active enrollments. Its signed Round Context commits to the initial
+global model, public training contract, partition manifest, federation policy,
+and each client's snapshot and attestation. Each isolated client trains only on
+its mounted snapshot and signs the resulting Update Bundle with its TPM ESK.
+The coordinator revalidates that complete chain, tensor structure, finite
+values, content hashes, and the campaign/round/client replay slot. Only 15
+accepted Contribution Decisions can produce a checkpoint. The checkpoint names
+the exact decisions, bundles, updates, and example weights, and its model is
+independently reproducible with example-weighted FedAvg.
+
 ## Trust boundaries
 
 - The Flower Server never mounts raw client datasets or client workspaces.
+- The M5 coordinator never mounts any client snapshot; every M5 client mounts
+  exactly one snapshot and one paired TPM socket.
 - The Evidence Vault and the federated coordinator have separate storage and permissions.
 - `swtpm` validates protocol behavior but does not provide hardware non-exportability or resistance to a hostile host administrator.
 - The physical TPM experiment validates key use and measured-state appraisal on one node; it does not prove 15-node physical scalability.

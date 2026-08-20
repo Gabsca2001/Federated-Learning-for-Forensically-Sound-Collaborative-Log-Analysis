@@ -13,7 +13,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY pyproject.toml README.md Dockerfile.m4 ./
+COPY pyproject.toml README.md Dockerfile.m4 Dockerfile.m5 compose.m5.yaml ./
 COPY src ./src
 COPY configs ./configs
 COPY scripts ./scripts

@@ -14,6 +14,12 @@ from .demo import run_demo
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
 from .reporting import generate_m3_report
+from .secure_round import (
+    admit_and_aggregate,
+    create_secure_update,
+    initialize_secure_round,
+    verify_secure_round,
+)
 from .tpm_adapter import (
     create_tpm_quote_evidence,
     physical_tpm_preflight,
@@ -264,6 +270,44 @@ def build_parser() -> argparse.ArgumentParser:
         "m4-physical-preflight", help="check the physical TPM adapter without changing TPM state"
     )
     m4_physical.add_argument("--tcti", default="device:/dev/tpmrm0")
+
+    m5_init = subparsers.add_parser(
+        "m5-init", help="create an attestation-gated signed secure-round context"
+    )
+    m5_init.add_argument("--workspace", type=Path, required=True)
+    m5_init.add_argument("--trust-workspace", type=Path, required=True)
+    m5_init.add_argument("--partition-manifest", type=Path, required=True)
+    m5_init.add_argument(
+        "--config", type=Path, default=Path("configs/federation.yaml")
+    )
+    m5_init.add_argument(
+        "--secure-config", type=Path, default=Path("configs/secure-round.yaml")
+    )
+
+    m5_client = subparsers.add_parser(
+        "m5-client-update", help="train one isolated client and TPM-sign its Update Bundle"
+    )
+    m5_client.add_argument("--public-workspace", type=Path, required=True)
+    m5_client.add_argument("--client-dataset", type=Path, required=True)
+    m5_client.add_argument("--client-manifest", type=Path, required=True)
+    m5_client.add_argument("--node-workspace", type=Path, required=True)
+    m5_client.add_argument("--submission-workspace", type=Path, required=True)
+    m5_client.add_argument("--client-id", required=True)
+    m5_client.add_argument("--tcti", required=True)
+
+    m5_aggregate = subparsers.add_parser(
+        "m5-admit-aggregate", help="admit 15 bundles and create a signed FedAvg checkpoint"
+    )
+    m5_aggregate.add_argument("--workspace", type=Path, required=True)
+    m5_aggregate.add_argument("--trust-workspace", type=Path, required=True)
+    m5_aggregate.add_argument("--submissions", type=Path, required=True)
+
+    m5_verify = subparsers.add_parser(
+        "m5-verify", help="revalidate M5 inputs and independently recompute FedAvg"
+    )
+    m5_verify.add_argument("--workspace", type=Path, required=True)
+    m5_verify.add_argument("--trust-workspace", type=Path, required=True)
+    m5_verify.add_argument("--submissions", type=Path, required=True)
     return parser
 
 
@@ -427,6 +471,44 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result.model_dump(mode="json"), indent=2, sort_keys=True))
         return 0
+    if arguments.command == "m5-init":
+        result = initialize_secure_round(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_manifest_path=arguments.partition_manifest,
+            config_path=arguments.config,
+            secure_config_path=arguments.secure_config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-client-update":
+        result = create_secure_update(
+            public_workspace=arguments.public_workspace,
+            client_dataset_path=arguments.client_dataset,
+            client_manifest_path=arguments.client_manifest,
+            node_workspace=arguments.node_workspace,
+            submission_workspace=arguments.submission_workspace,
+            tcti=arguments.tcti,
+            client_id=arguments.client_id,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-admit-aggregate":
+        result = admit_and_aggregate(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            submissions_root=arguments.submissions,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "aggregated" else 1
+    if arguments.command == "m5-verify":
+        result = verify_secure_round(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            submissions_root=arguments.submissions,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
     result = physical_tpm_preflight(tcti=arguments.tcti)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

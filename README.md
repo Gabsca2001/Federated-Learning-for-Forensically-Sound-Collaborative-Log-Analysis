@@ -2,11 +2,10 @@
 
 This repository is the experimental implementation of the architecture defined in Chapter 4 of the thesis. The target system joins controlled Zeek log acquisition, cryptographic preservation, deterministic preprocessing, federated learning, Byzantine-resilient aggregation, end-to-end lineage, explainability, and investigative reporting.
 
-Milestones 1–3 are implemented and tested; the clean IID FedAvg run has also
-completed. Milestone 4 implements the versioned trust protocol, 15-pair swtpm
-deployment, TLS 1.3 mutual authentication, and the shared swtpm/physical TPM
-adapter. Its Docker and physical-hardware runtime gates remain explicit. The
-evidence vertical slice is:
+Milestones 1–5 are implemented and tested, including the IID/non-IID M3 runs,
+the 15/15 swtpm M4 runtime gate, and the attestation-gated container-isolated
+M5 secure round. Its Docker runtime gate accepted all 15 signed bundles and
+independently reproduced the FedAvg checkpoint.
 
 `Zeek JSONL → raw batch → canonical manifest → SHA-256 chain → ECDSA signature → attestation-aware admission → content-addressed vault → deterministic snapshot → lineage`
 
@@ -21,6 +20,10 @@ The clean federated path is:
 The trust path is:
 
 `client/node/TPM pair → EK/AK/ESK provisioning → signed enrollment → mTLS identity → one-use nonce → TPM2 Quote → PCR/log replay → signed Attestation Result v2 → admission or quarantine`
+
+The secure-round path is:
+
+`15 fresh M4 attestations → signed Round Context → 15 isolated client containers → TPM ESK-signed Update Bundles → fail-closed contribution admission → exact-input FedAvg checkpoint → independent recomputation`
 
 It intentionally does **not** claim that a software key is equivalent to a TPM. The signer and attestation interfaces are already separated so that `swtpm` and the physical TPM 2.0 adapter can replace the development implementation without changing the artifact formats.
 
@@ -108,7 +111,7 @@ python -m pip install -e ".[federated,reporting,dev]"
 ```
 
 `m3-report` validates the digests of `metrics.json`, `comparison.json`, and the
-optional centralized metrics before generating seven immutable PNG figures and a
+optional centralized metrics before generating eight immutable PNG figures and a
 machine-readable `reports\summary.json`. The outputs include absolute and
 row-normalized test confusion matrices, per-class precision/recall/F1, validation
 and loss curves by round, the local/FedAvg/centralized comparison, and per-client
@@ -186,6 +189,33 @@ fl-forensics m4-physical-preflight --tcti device:/dev/tpmrm0
 
 See `docs/MILESTONE_4_TRUST_DEPLOYMENT.md` for artifact semantics, negative
 tests, and the limits of swtpm assurance.
+
+## Milestone 5 — secure containerized round
+
+M5 measures the training runtime itself, so it requires a fresh M4 trust
+workspace and TPM namespace after these source changes. Build the M5 image
+before issuing the final short-lived quotes, then run the secure round while all
+15 attestations remain valid:
+
+```bash
+python -m pip install -e ".[federated,dev]"
+export COMPOSE_PROJECT_NAME=flforensics_m5
+
+python scripts/run_m5_secure_round.py build \
+  --partition-workspace artifacts/m3-data24-parquet-iid
+
+# Recreate M4 enrollment and obtain a fresh 15/15 attestation campaign first.
+python scripts/run_m5_secure_round.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --workspace artifacts/m5-secure-round \
+  --workers 4
+```
+
+The final gate is `accepted_count: 15`,
+`matches_reference_checkpoint: true`, `error_count: 0`, and `status: verified`.
+The coordinator never mounts client snapshots. See
+`docs/MILESTONE_5_SECURE_ROUND.md` for the required fresh-M4 sequence, artifact
+semantics, threat boundary, and debugging actions.
 
 ## Source-of-truth rules
 

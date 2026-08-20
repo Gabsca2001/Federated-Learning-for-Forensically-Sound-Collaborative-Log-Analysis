@@ -1,0 +1,16 @@
+schema_version: "1.0"
+
+secure_round:
+  protocol_id: m5-attested-update-bundle
+  protocol_version: "1.0.0"
+  context_lifetime_seconds: 600
+  minimum_attestation_remaining_seconds: 120
+  required_clients: 15
+  aggregation: FedAvg
+  replay_slot: campaign-round-client
+  idempotency: byte-identical-bundle-only
+  require_active_enrollment: true
+  require_fresh_attestation: true
+  require_tpm_esk_signature: true
+  require_exact_tensor_schema: true
+  require_finite_tensors: true

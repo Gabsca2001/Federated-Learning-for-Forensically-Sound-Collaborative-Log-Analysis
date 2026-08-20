@@ -1,0 +1,308 @@
+version: "3.9"
+
+x-m5-tpm: &m5-tpm
+  build:
+    context: .
+    dockerfile: Dockerfile.m4
+  entrypoint: ["/app/scripts/run_swtpm.sh"]
+  read_only: true
+  cap_drop: [ALL]
+  cap_add: [FOWNER]
+  security_opt: ["no-new-privileges:true"]
+  network_mode: "none"
+  tmpfs: ["/tmp:size=16m,mode=1777"]
+  healthcheck:
+    test: ["CMD-SHELL", "TPM2TOOLS_TCTI=swtpm:path=/run/swtpm/swtpm.sock tpm2_getcap -Q properties-fixed >/dev/null 2>&1"]
+    interval: 2s
+    timeout: 2s
+    retries: 30
+
+x-m5-client: &m5-client
+  image: "${M5_RUNTIME_IMAGE:-flforensics-m5-runtime:latest}"
+  profiles: ["secure-round"]
+  user: "${M5_UID:-1000}:${M5_GID:-1000}"
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  network_mode: "none"
+  tmpfs: ["/tmp:size=64m,mode=1777"]
+
+services:
+  tpm01:
+    <<: *m5-tpm
+    volumes: [tpm01_state:/var/lib/swtpm, tpm01_socket:/run/swtpm]
+  client01:
+    <<: *m5-client
+    depends_on: {tpm01: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client01", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm01_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client01:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client01/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client01/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client01:/submission
+
+  tpm02:
+    <<: *m5-tpm
+    volumes: [tpm02_state:/var/lib/swtpm, tpm02_socket:/run/swtpm]
+  client02:
+    <<: *m5-client
+    depends_on: {tpm02: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client02", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm02_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client02:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client02/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client02/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client02:/submission
+
+  tpm03:
+    <<: *m5-tpm
+    volumes: [tpm03_state:/var/lib/swtpm, tpm03_socket:/run/swtpm]
+  client03:
+    <<: *m5-client
+    depends_on: {tpm03: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client03", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm03_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client03:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client03/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client03/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client03:/submission
+
+  tpm04:
+    <<: *m5-tpm
+    volumes: [tpm04_state:/var/lib/swtpm, tpm04_socket:/run/swtpm]
+  client04:
+    <<: *m5-client
+    depends_on: {tpm04: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client04", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm04_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client04:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client04/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client04/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client04:/submission
+
+  tpm05:
+    <<: *m5-tpm
+    volumes: [tpm05_state:/var/lib/swtpm, tpm05_socket:/run/swtpm]
+  client05:
+    <<: *m5-client
+    depends_on: {tpm05: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client05", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm05_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client05:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client05/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client05/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client05:/submission
+
+  tpm06:
+    <<: *m5-tpm
+    volumes: [tpm06_state:/var/lib/swtpm, tpm06_socket:/run/swtpm]
+  client06:
+    <<: *m5-client
+    depends_on: {tpm06: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client06", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm06_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client06:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client06/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client06/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client06:/submission
+
+  tpm07:
+    <<: *m5-tpm
+    volumes: [tpm07_state:/var/lib/swtpm, tpm07_socket:/run/swtpm]
+  client07:
+    <<: *m5-client
+    depends_on: {tpm07: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client07", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm07_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client07:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client07/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client07/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client07:/submission
+
+  tpm08:
+    <<: *m5-tpm
+    volumes: [tpm08_state:/var/lib/swtpm, tpm08_socket:/run/swtpm]
+  client08:
+    <<: *m5-client
+    depends_on: {tpm08: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client08", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm08_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client08:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client08/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client08/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client08:/submission
+
+  tpm09:
+    <<: *m5-tpm
+    volumes: [tpm09_state:/var/lib/swtpm, tpm09_socket:/run/swtpm]
+  client09:
+    <<: *m5-client
+    depends_on: {tpm09: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client09", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm09_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client09:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client09/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client09/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client09:/submission
+
+  tpm10:
+    <<: *m5-tpm
+    volumes: [tpm10_state:/var/lib/swtpm, tpm10_socket:/run/swtpm]
+  client10:
+    <<: *m5-client
+    depends_on: {tpm10: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client10", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm10_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client10:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client10/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client10/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client10:/submission
+
+  tpm11:
+    <<: *m5-tpm
+    volumes: [tpm11_state:/var/lib/swtpm, tpm11_socket:/run/swtpm]
+  client11:
+    <<: *m5-client
+    depends_on: {tpm11: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client11", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm11_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client11:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client11/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client11/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client11:/submission
+
+  tpm12:
+    <<: *m5-tpm
+    volumes: [tpm12_state:/var/lib/swtpm, tpm12_socket:/run/swtpm]
+  client12:
+    <<: *m5-client
+    depends_on: {tpm12: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client12", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm12_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client12:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client12/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client12/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client12:/submission
+
+  tpm13:
+    <<: *m5-tpm
+    volumes: [tpm13_state:/var/lib/swtpm, tpm13_socket:/run/swtpm]
+  client13:
+    <<: *m5-client
+    depends_on: {tpm13: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client13", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm13_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client13:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client13/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client13/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client13:/submission
+
+  tpm14:
+    <<: *m5-tpm
+    volumes: [tpm14_state:/var/lib/swtpm, tpm14_socket:/run/swtpm]
+  client14:
+    <<: *m5-client
+    depends_on: {tpm14: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client14", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm14_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client14:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client14/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client14/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client14:/submission
+
+  tpm15:
+    <<: *m5-tpm
+    volumes: [tpm15_state:/var/lib/swtpm, tpm15_socket:/run/swtpm]
+  client15:
+    <<: *m5-client
+    depends_on: {tpm15: {condition: service_healthy}}
+    command: ["m5-client-update", "--public-workspace", "/campaign/public", "--client-dataset", "/client/dataset.json", "--client-manifest", "/client/manifest.json", "--node-workspace", "/runtime", "--submission-workspace", "/submission", "--client-id", "client15", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock"]
+    volumes:
+      - tpm15_socket:/run/swtpm
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}/client15:/runtime:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client15/dataset.json:/client/dataset.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/clients/client15/manifest.json:/client/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/public:/campaign/public:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions/client15:/submission
+
+  coordinator:
+    image: "${M5_RUNTIME_IMAGE:-flforensics-m5-runtime:latest}"
+    build:
+      context: .
+      dockerfile: Dockerfile.m5
+    profiles: ["coordinator"]
+    user: "${M5_UID:-1000}:${M5_GID:-1000}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    network_mode: "none"
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    command: ["m5-init", "--workspace", "/campaign", "--trust-workspace", "/trust", "--partition-manifest", "/partition/manifest.json", "--config", "/app/configs/federation.yaml", "--secure-config", "/app/configs/secure-round.yaml"]
+    volumes:
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}:/campaign
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/registry:/trust/registry:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/results:/trust/results:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/enrollment-authority.public.pem:/trust/authority/enrollment-authority.public.pem:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/attestation-verifier.public.pem:/trust/authority/attestation-verifier.public.pem:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/manifest.json:/partition/manifest.json:ro
+      - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions:/submissions:ro
+
+volumes:
+  tpm01_state: {}
+  tpm01_socket: {}
+  tpm02_state: {}
+  tpm02_socket: {}
+  tpm03_state: {}
+  tpm03_socket: {}
+  tpm04_state: {}
+  tpm04_socket: {}
+  tpm05_state: {}
+  tpm05_socket: {}
+  tpm06_state: {}
+  tpm06_socket: {}
+  tpm07_state: {}
+  tpm07_socket: {}
+  tpm08_state: {}
+  tpm08_socket: {}
+  tpm09_state: {}
+  tpm09_socket: {}
+  tpm10_state: {}
+  tpm10_socket: {}
+  tpm11_state: {}
+  tpm11_socket: {}
+  tpm12_state: {}
+  tpm12_socket: {}
+  tpm13_state: {}
+  tpm13_socket: {}
+  tpm14_state: {}
+  tpm14_socket: {}
+  tpm15_state: {}
+  tpm15_socket: {}

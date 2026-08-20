@@ -41,5 +41,17 @@ without client access to TPM state. The Verifier reconstructs PCR values from th
 approved ordered measurement log and supplies those independent expected values
 to `tpm2_checkquote`, while nonce consumption is recorded with idempotent replay
 semantics. TLS 1.3 client certificates are bound to the same enrolled client.
-The protocol, topology, and adverse cases are unit-tested; the 15-swtpm Docker
-run and the separate physical-node experiment remain runtime acceptance gates.
+The protocol, topology, adverse cases, and 15-swtpm Docker campaign are tested;
+the separate physical-node experiment remains a runtime acceptance gate.
+
+## M5 implementation gate
+
+M5 implements one attestation-gated FedAvg round with 15 isolated Docker client
+containers. A signed short-lived Round Context binds M4 attestation,
+enrollment, client snapshot, base model, training contract, and federation
+configuration for every participant. TPM ESK-signed Update Bundles pass a
+fail-closed structural and cryptographic validator before signed Contribution
+Decisions are preserved. Replay slots accept only byte-identical retries, and
+the signed checkpoint enumerates every admitted digest and weight. Unit, topology, and 15-swtpm runtime gates are complete. All 15 TPM-signed
+bundles were accepted without errors, and independent verification reproduced
+the stored FedAvg checkpoint exactly.

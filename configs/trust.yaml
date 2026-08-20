@@ -7,8 +7,8 @@ enrollment:
 
 attestation:
   policy_id: m4-node-integrity
-  policy_version: "1.0.0"
-  baseline_id: m4-container-baseline
+  policy_version: "2.0.0"
+  baseline_id: m5-secure-client-baseline
   baseline_version: "1.0.0"
   pcr_bank: sha256
   pcr_selection: [0, 2, 4, 7, 10]
@@ -24,7 +24,7 @@ mtls:
 # The order is part of the approved baseline because PCR extension is order-sensitive.
 measurements:
   - component_id: container-build-contract
-    component_version: "0.4.0"
+    component_version: "0.5.0"
     pcr_index: 0
     path: Dockerfile.m4
   - component_id: swtpm-entrypoint
@@ -40,10 +40,42 @@ measurements:
     pcr_index: 7
     path: configs/policies/admission.yaml
   - component_id: trust-policy
-    component_version: "1.0.0"
+    component_version: "2.0.0"
     pcr_index: 10
     path: configs/trust.yaml
   - component_id: experiment-configuration
     component_version: "1.0.0"
     pcr_index: 10
     path: configs/base.yaml
+  - component_id: secure-client-build-contract
+    component_version: "0.5.0"
+    pcr_index: 0
+    path: Dockerfile.m5
+  - component_id: secure-round-client
+    component_version: "0.5.0"
+    pcr_index: 4
+    path: src/fl_forensics/secure_round.py
+  - component_id: secure-round-schemas
+    component_version: "0.5.0"
+    pcr_index: 4
+    path: src/fl_forensics/secure_round_models.py
+  - component_id: tpm-signing-adapter
+    component_version: "0.5.0"
+    pcr_index: 4
+    path: src/fl_forensics/tpm_adapter.py
+  - component_id: federated-model
+    component_version: "0.5.0"
+    pcr_index: 4
+    path: src/fl_forensics/federated_model.py
+  - component_id: secure-round-policy
+    component_version: "1.0.0"
+    pcr_index: 7
+    path: configs/secure-round.yaml
+  - component_id: secure-round-topology
+    component_version: "1.0.0"
+    pcr_index: 7
+    path: compose.m5.yaml
+  - component_id: federation-configuration
+    component_version: "1.0.0"
+    pcr_index: 10
+    path: configs/federation.yaml
