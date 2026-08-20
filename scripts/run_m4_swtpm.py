@@ -40,7 +40,15 @@ def main() -> int:
     for index, client_id in enumerate(CLIENT_IDS, start=1):
         if arguments.action == "provision":
             run(
-                [*compose, "--profile", "provision", "run", "--rm", client_id],
+                [
+                    *compose,
+                    "--profile",
+                    "provision",
+                    "run",
+                    "--build",
+                    "--rm",
+                    client_id,
+                ],
                 root=root,
             )
         else:
