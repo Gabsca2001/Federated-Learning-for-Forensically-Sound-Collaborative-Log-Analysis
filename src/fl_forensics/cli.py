@@ -14,6 +14,7 @@ from .demo import run_demo
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
 from .reporting import generate_m3_report
+from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
     admit_and_aggregate,
     create_secure_update,
@@ -283,6 +284,18 @@ def build_parser() -> argparse.ArgumentParser:
     m5_init.add_argument(
         "--secure-config", type=Path, default=Path("configs/secure-round.yaml")
     )
+    m5_init.add_argument(
+        "--coordinator-workspace",
+        type=Path,
+        help="shared campaign workspace containing the coordinator authority",
+    )
+    m5_init.add_argument("--campaign-id")
+    m5_init.add_argument("--round-number", type=int, default=1)
+    m5_init.add_argument(
+        "--previous-round-workspace",
+        type=Path,
+        help="verified previous round used to chain the next base model",
+    )
 
     m5_client = subparsers.add_parser(
         "m5-client-update", help="train one isolated client and TPM-sign its Update Bundle"
@@ -301,6 +314,11 @@ def build_parser() -> argparse.ArgumentParser:
     m5_aggregate.add_argument("--workspace", type=Path, required=True)
     m5_aggregate.add_argument("--trust-workspace", type=Path, required=True)
     m5_aggregate.add_argument("--submissions", type=Path, required=True)
+    m5_aggregate.add_argument(
+        "--coordinator-workspace",
+        type=Path,
+        help="shared campaign workspace containing the coordinator authority",
+    )
 
     m5_verify = subparsers.add_parser(
         "m5-verify", help="revalidate M5 inputs and independently recompute FedAvg"
@@ -308,6 +326,25 @@ def build_parser() -> argparse.ArgumentParser:
     m5_verify.add_argument("--workspace", type=Path, required=True)
     m5_verify.add_argument("--trust-workspace", type=Path, required=True)
     m5_verify.add_argument("--submissions", type=Path, required=True)
+
+    m5_finalize = subparsers.add_parser(
+        "m5-finalize-campaign",
+        help="select a secure checkpoint on validation and evaluate the test split",
+    )
+    m5_finalize.add_argument("--workspace", type=Path, required=True)
+    m5_finalize.add_argument("--trust-workspace", type=Path, required=True)
+    m5_finalize.add_argument("--partition-manifest", type=Path, required=True)
+    m5_finalize.add_argument("--server-evaluation", type=Path, required=True)
+    m5_finalize.add_argument("--rounds", type=int, required=True)
+
+    m5_verify_campaign = subparsers.add_parser(
+        "m5-verify-campaign",
+        help="verify every secure round, the checkpoint chain, and final selection",
+    )
+    m5_verify_campaign.add_argument("--workspace", type=Path, required=True)
+    m5_verify_campaign.add_argument("--trust-workspace", type=Path, required=True)
+    m5_verify_campaign.add_argument("--partition-manifest", type=Path, required=True)
+    m5_verify_campaign.add_argument("--server-evaluation", type=Path, required=True)
     return parser
 
 
@@ -478,6 +515,10 @@ def main(argv: list[str] | None = None) -> int:
             partition_manifest_path=arguments.partition_manifest,
             config_path=arguments.config,
             secure_config_path=arguments.secure_config,
+            coordinator_workspace=arguments.coordinator_workspace,
+            campaign_id=arguments.campaign_id,
+            round_number=arguments.round_number,
+            previous_round_workspace=arguments.previous_round_workspace,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -498,6 +539,7 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             trust_workspace=arguments.trust_workspace,
             submissions_root=arguments.submissions,
+            coordinator_workspace=arguments.coordinator_workspace,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "aggregated" else 1
@@ -506,6 +548,25 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             trust_workspace=arguments.trust_workspace,
             submissions_root=arguments.submissions,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m5-finalize-campaign":
+        result = finalize_secure_campaign(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_manifest_path=arguments.partition_manifest,
+            server_evaluation_path=arguments.server_evaluation,
+            expected_rounds=arguments.rounds,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-verify-campaign":
+        result = verify_secure_campaign(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_manifest_path=arguments.partition_manifest,
+            server_evaluation_path=arguments.server_evaluation,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

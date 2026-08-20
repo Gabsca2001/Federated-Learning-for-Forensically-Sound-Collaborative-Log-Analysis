@@ -55,12 +55,27 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn("acquisition-agent", measured_components)
         self.assertIn("admission-policy", measured_components)
         self.assertIn("trust-policy", measured_components)
+        self.assertIn("secure-campaign-coordinator", measured_components)
+        self.assertIn("command-interface", measured_components)
+        self.assertIn("secure-multiround-orchestrator", measured_components)
 
     def test_m5_policy_gates_all_fifteen_signed_updates(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "secure-round.yaml")
         policy = config["secure_round"]
         self.assertEqual(policy["required_clients"], 15)
         self.assertEqual(policy["aggregation"], "FedAvg")
+        self.assertEqual(policy["campaign_rounds"], 30)
+        self.assertEqual(policy["attestation_refresh_interval_rounds"], 5)
+        self.assertEqual(
+            policy["checkpoint_selection"],
+            {
+                "split": "validation",
+                "metric": "macro_f1_all_model_classes",
+                "mode": "maximize",
+                "tie_breaker": "earliest_round",
+                "test_policy": "selected-checkpoint-only",
+            },
+        )
         self.assertTrue(policy["require_fresh_attestation"])
         self.assertTrue(policy["require_tpm_esk_signature"])
         self.assertTrue(policy["require_exact_tensor_schema"])

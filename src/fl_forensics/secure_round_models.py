@@ -151,6 +151,54 @@ class SecureCheckpoint(StrictModel):
     signature: SignatureBlock
 
 
+class SecureCampaignRoundReference(StrictModel):
+    round_number: int = Field(gt=0)
+    context_id: str
+    context_sha256: str = Field(pattern=HEX_256_PATTERN)
+    checkpoint_id: str
+    checkpoint_sha256: str = Field(pattern=HEX_256_PATTERN)
+    base_model_sha256: str = Field(pattern=HEX_256_PATTERN)
+    global_model_sha256: str = Field(pattern=HEX_256_PATTERN)
+    validation_metrics_sha256: str = Field(pattern=HEX_256_PATTERN)
+    accepted_count: int = Field(gt=0)
+
+
+class SecureCampaignManifestCore(StrictModel):
+    campaign_id: str
+    round_count: int = Field(gt=0)
+    required_client_count: int = Field(gt=0)
+    total_accepted_contributions: int = Field(gt=0)
+    partition_manifest_sha256: str = Field(pattern=HEX_256_PATTERN)
+    server_evaluation_sha256: str = Field(pattern=HEX_256_PATTERN)
+    federation_config_sha256: str = Field(pattern=HEX_256_PATTERN)
+    selection_split: Literal["validation"] = "validation"
+    selection_metric: Literal["macro_f1_all_model_classes"] = (
+        "macro_f1_all_model_classes"
+    )
+    selection_mode: Literal["maximize"] = "maximize"
+    tie_breaker: Literal["earliest_round"] = "earliest_round"
+    selected_round: int = Field(gt=0)
+    selected_checkpoint_sha256: str = Field(pattern=HEX_256_PATTERN)
+    selected_model_sha256: str = Field(pattern=HEX_256_PATTERN)
+    selected_validation_macro_f1_decimal: str
+    final_evaluation_sha256: str = Field(pattern=HEX_256_PATTERN)
+    rounds: list[SecureCampaignRoundReference]
+    created_at: str
+
+    _created_utc = field_validator("created_at")(_require_utc)
+
+
+class SecureCampaignManifest(StrictModel):
+    schema_version: Literal["1.0"] = "1.0"
+    artifact_type: Literal["secure_multiround_campaign_manifest"] = (
+        "secure_multiround_campaign_manifest"
+    )
+    manifest_id: str
+    core: SecureCampaignManifestCore
+    core_digest: str = Field(pattern=HEX_256_PATTERN)
+    signature: SignatureBlock
+
+
 def tensor_schema(model_export: dict[str, Any]) -> list[dict[str, Any]]:
     """Return the signed structural contract without including tensor values."""
 

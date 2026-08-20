@@ -41,6 +41,7 @@ from .secure_round_models import (
     SecureCheck,
     SecureCheckpoint,
     SecureCheckpointCore,
+    SecureCampaignManifest,
     SecureRoundContext,
     SecureRoundContextCore,
     UpdateBundle,
@@ -77,9 +78,15 @@ def _signature(signer: DigestSigner, digest: str, trust_level: str) -> Signature
     )
 
 
-def _coordinator_signer(workspace: Path, *, create: bool) -> SoftwareECDSASigner:
-    private_path = workspace / "authority" / "round-coordinator.private.pem"
-    public_path = workspace / "authority" / "round-coordinator.public.pem"
+def _coordinator_signer(
+    workspace: Path,
+    *,
+    create: bool,
+    coordinator_workspace: Path | None = None,
+) -> SoftwareECDSASigner:
+    authority_workspace = coordinator_workspace or workspace
+    private_path = authority_workspace / "authority" / "round-coordinator.private.pem"
+    public_path = authority_workspace / "authority" / "round-coordinator.public.pem"
     if private_path.is_file():
         return SoftwareECDSASigner.load(private_path)
     if not create:
@@ -105,6 +112,7 @@ def _verify_signed(value: Any, public_key: Any) -> bool:
         UpdateBundle: ("bundle_id", "update-bundle-"),
         ContributionDecision: ("decision_id", "contribution-"),
         SecureCheckpoint: ("checkpoint_id", "secure-checkpoint-"),
+        SecureCampaignManifest: ("manifest_id", "secure-campaign-"),
     }
     identity = identity_fields.get(type(value))
     identity_valid = identity is not None and getattr(value, identity[0]) == (
@@ -231,6 +239,10 @@ def initialize_secure_round(
     partition_manifest_path: Path,
     config_path: Path,
     secure_config_path: Path,
+    coordinator_workspace: Path | None = None,
+    campaign_id: str | None = None,
+    round_number: int = 1,
+    previous_round_workspace: Path | None = None,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """Create a signed round context after validating all 15 M4 attestations."""
@@ -242,17 +254,29 @@ def initialize_secure_round(
         submitted_files = list(submissions.rglob("*")) if submissions.is_dir() else []
         if protected or any(path.is_file() for path in submitted_files):
             raise FileExistsError(f"M5 workspace must be new and empty: {workspace}")
+    if round_number < 1:
+        raise SecureRoundError("round number must be positive")
+    if round_number == 1 and previous_round_workspace is not None:
+        raise SecureRoundError("round 1 cannot reference a previous checkpoint")
+    if round_number > 1 and (campaign_id is None or previous_round_workspace is None):
+        raise SecureRoundError(
+            "later rounds require a campaign id and previous round workspace"
+        )
     manifest = load_json(partition_manifest_path)
     config, config_digest = load_yaml(config_path)
     secure_config, _secure_digest = load_yaml(secure_config_path)
     records = manifest.get("clients", [])
     declared_clients = [item["client_id"] for item in records]
-    if manifest.get("client_count") != 15 or declared_clients != EXPECTED_CLIENTS:
+    required_client_count = len(EXPECTED_CLIENTS)
+    if (
+        manifest.get("client_count") != required_client_count
+        or declared_clients != EXPECTED_CLIENTS
+    ):
         raise SecureRoundError("M5 requires the complete ordered 15-client partition")
     training = config["training"]
     secure_policy = secure_config["secure_round"]
     if (
-        int(secure_policy["required_clients"]) != 15
+        int(secure_policy["required_clients"]) != required_client_count
         or str(secure_policy["aggregation"]) != "FedAvg"
     ):
         raise SecureRoundError("M5 policy must require 15-client FedAvg")
@@ -265,7 +289,7 @@ def initialize_secure_round(
     if manifest.get("class_weighting") != training.get("class_weighting"):
         raise SecureRoundError("partition/training class-weighting contract mismatch")
     if (
-        int(training["minimum_fit_clients"]) != 15
+        int(training["minimum_fit_clients"]) != required_client_count
         or float(training["participation_fraction"]) != 1.0
     ):
         raise SecureRoundError("M5 clean round requires all 15 clients")
@@ -302,18 +326,70 @@ def initialize_secure_round(
     if expires <= now + timedelta(seconds=minimum_remaining):
         raise SecureRoundError("attestations expire too soon for an M5 round; issue fresh quotes")
 
-    signer = _coordinator_signer(workspace, create=True)
+    signer = _coordinator_signer(
+        workspace,
+        create=True,
+        coordinator_workspace=coordinator_workspace,
+    )
     public = workspace / "public"
     public.mkdir(parents=True, exist_ok=True)
     write_once(public / "round-coordinator.public.pem", signer.public_pem())
     write_once(public / "partition-manifest.json", partition_manifest_path.read_bytes())
     write_once(public / "federation.yaml", config_path.read_bytes())
 
-    model, architecture = _new_model(manifest, config)
-    base_export = export_state(
-        model, architecture=architecture, class_names=list(manifest["class_names"])
-    )
-    base_bytes = derived_json_bytes(base_export)
+    expected_model, expected_architecture = _new_model(manifest, config)
+    if previous_round_workspace is None:
+        architecture = expected_architecture
+        base_export = export_state(
+            expected_model,
+            architecture=architecture,
+            class_names=list(manifest["class_names"]),
+        )
+        base_bytes = derived_json_bytes(base_export)
+        previous_checkpoint_sha256 = GENESIS_DIGEST
+    else:
+        previous_context = _load_context(previous_round_workspace / "public")
+        previous_checkpoint_path = (
+            previous_round_workspace / "checkpoint" / "manifest.json"
+        )
+        previous_model_path = (
+            previous_round_workspace / "checkpoint" / "global-model.json"
+        )
+        previous_checkpoint = SecureCheckpoint.model_validate(
+            load_json(previous_checkpoint_path)
+        )
+        coordinator_key = signer.private_key.public_key()
+        previous_valid = (
+            _verify_signed(previous_context, coordinator_key)
+            and _verify_signed(previous_checkpoint, coordinator_key)
+            and previous_context.core.campaign_id == campaign_id
+            and previous_checkpoint.core.campaign_id == campaign_id
+            and previous_context.core.round_number == round_number - 1
+            and previous_checkpoint.core.round_number == round_number - 1
+            and previous_checkpoint.core.context_digest == previous_context.core_digest
+            and previous_checkpoint.core.required_client_count
+            == required_client_count
+            and previous_checkpoint.core.accepted_count == required_client_count
+            and previous_checkpoint.core.quarantined_count == 0
+            and previous_model_path.is_file()
+            and sha256_file(previous_model_path)
+            == previous_checkpoint.core.global_model_sha256
+        )
+        if not previous_valid:
+            raise SecureRoundError(
+                "previous round checkpoint is invalid or belongs to another campaign"
+            )
+        base_bytes = previous_model_path.read_bytes()
+        base_export = load_json(previous_model_path)
+        architecture = base_export.get("architecture")
+        if (
+            architecture != expected_architecture
+            or base_export.get("class_names") != manifest.get("class_names")
+        ):
+            raise SecureRoundError(
+                "previous checkpoint model architecture/class order changed"
+            )
+        previous_checkpoint_sha256 = sha256_file(previous_checkpoint_path)
     base_digest = sha256_bytes(base_bytes)
     write_once(public / "base-model.json", base_bytes)
 
@@ -351,9 +427,9 @@ def initialize_secure_round(
     write_once(public / "training-contract.json", contract_bytes)
 
     context_core = SecureRoundContextCore(
-        campaign_id=f"campaign-{secrets.token_hex(12)}",
-        round_number=1,
-        previous_checkpoint_sha256=GENESIS_DIGEST,
+        campaign_id=campaign_id or f"campaign-{secrets.token_hex(12)}",
+        round_number=round_number,
+        previous_checkpoint_sha256=previous_checkpoint_sha256,
         base_model_sha256=base_digest,
         training_contract_sha256=contract_digest,
         partition_manifest_sha256=sha256_file(partition_manifest_path),
@@ -362,7 +438,7 @@ def initialize_secure_round(
         local_epochs=int(training["local_epochs"]),
         batch_size=int(training["batch_size"]),
         learning_rate_decimal=str(Decimal(str(training["learning_rate"]))),
-        required_client_count=15,
+        required_client_count=required_client_count,
         clients=client_contracts,
         issued_at=_utc(now),
         expires_at=_utc(expires),
@@ -388,8 +464,10 @@ def initialize_secure_round(
         "status": "prepared",
         "campaign_id": context.core.campaign_id,
         "context_id": context.context_id,
-        "client_count": 15,
-        "attested_count": 15,
+        "round_number": context.core.round_number,
+        "previous_checkpoint_sha256": context.core.previous_checkpoint_sha256,
+        "client_count": required_client_count,
+        "attested_count": required_client_count,
         "base_model_sha256": base_digest,
         "expires_at": context.core.expires_at,
         "workspace": str(workspace),
@@ -825,6 +903,7 @@ def admit_and_aggregate(
     workspace: Path,
     trust_workspace: Path,
     submissions_root: Path,
+    coordinator_workspace: Path | None = None,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """Admit signed bundles, enforce replay slots, and create a signed FedAvg checkpoint."""
@@ -839,7 +918,11 @@ def admit_and_aggregate(
         or context_clients != EXPECTED_CLIENTS
     ):
         raise SecureRoundError("signed context does not contain the required 15 clients")
-    signer = _coordinator_signer(workspace, create=False)
+    signer = _coordinator_signer(
+        workspace,
+        create=False,
+        coordinator_workspace=coordinator_workspace,
+    )
     base_path = workspace / "public" / "base-model.json"
     contract_path = workspace / "public" / "training-contract.json"
     if sha256_file(base_path) != context.core.base_model_sha256:
