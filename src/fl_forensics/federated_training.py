@@ -96,6 +96,81 @@ def _mean_metric(items: list[dict[str, Any]], key: str) -> dict[str, Any]:
     }
 
 
+SELECTION_METRIC = "macro_f1_all_model_classes"
+SELECTION_POLICY = {
+    "split": "validation",
+    "metric": SELECTION_METRIC,
+    "mode": "maximize",
+    "tie_breaker": "earliest_round",
+    "test_policy": "selected-checkpoint-only",
+}
+
+
+def _select_validation_checkpoint(
+    metrics_history: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Select the earliest round with the highest validation macro-F1."""
+
+    if not metrics_history:
+        raise ValueError("cannot select a checkpoint without round metrics")
+    return max(
+        metrics_history,
+        key=lambda item: (
+            float(item["validation"][SELECTION_METRIC]),
+            -int(item["round"]),
+        ),
+    )
+
+
+def _benign_false_alarm_summary(
+    evaluation: dict[str, Any], *, benign_label: str = "benign"
+) -> dict[str, Any]:
+    """Summarize attack alerts raised for rows whose actual class is benign."""
+
+    matrix = evaluation["confusion_matrix"]
+    labels = [str(value) for value in matrix["labels"]]
+    if benign_label not in labels:
+        raise ValueError(f"evaluation does not contain the benign class: {benign_label}")
+    benign_index = labels.index(benign_label)
+    benign_row = [int(value) for value in matrix["values"][benign_index]]
+    benign_count = sum(benign_row)
+    false_alarm_count = benign_count - benign_row[benign_index]
+    return {
+        "actual_benign_count": benign_count,
+        "false_alarm_count": false_alarm_count,
+        "false_alarm_rate": (
+            false_alarm_count / benign_count if benign_count else None
+        ),
+        "definition": "actual benign rows predicted as any non-benign class",
+    }
+
+
+def _same_json(left: Any, right: Any) -> bool:
+    return derived_json_bytes(left) == derived_json_bytes(right)
+
+
+def _model_from_export(
+    value: dict[str, Any], *, torch: Any, np: Any
+) -> tuple[Any, list[str]]:
+    architecture = value["architecture"]
+    class_names = [str(item) for item in value["class_names"]]
+    model = build_model(
+        input_features=int(architecture["input_features"]),
+        class_count=int(architecture["classification_head_outputs"]),
+        hidden_layers=[int(item) for item in architecture["encoder_hidden_layers"]],
+        embedding_size=int(architecture["embedding_size"]),
+        dropout=float(architecture["dropout"]),
+        torch=torch,
+    )
+    load_ndarrays(
+        model,
+        arrays_from_export(value, np=np),
+        torch=torch,
+        np=np,
+    )
+    return model, class_names
+
+
 def run_federated_baseline(
     *,
     partition_workspace: Path,
@@ -136,6 +211,12 @@ def run_federated_baseline(
         raise ValueError("M3 clean baseline participation fraction must be 1.0")
     if str(training["aggregator"]).lower() != "fedavg":
         raise ValueError("M3 baseline aggregator must be FedAvg")
+    configured_selection = training.get("checkpoint_selection", SELECTION_POLICY)
+    if configured_selection != SELECTION_POLICY:
+        raise ValueError(
+            "M3 checkpoint selection must maximize validation macro-F1, break ties "
+            "by earliest round, and evaluate test only after selection"
+        )
 
     class_names = list(partition_manifest["class_names"])
     feature_names = list(partition_manifest["feature_names"])
@@ -274,14 +355,13 @@ def run_federated_baseline(
         )
         global_model_path, global_model_digest = _store_object(output, "models", global_export)
         global_metrics = {
-            split: _evaluate(
+            "validation": _evaluate(
                 model=global_model,
-                rows=server_evaluation["rows"][split],
+                rows=server_evaluation["rows"]["validation"],
                 class_names=class_names,
                 batch_size=batch_size,
                 dependency_values=dependency_values,
             )
-            for split in ("validation", "test", "temporal_holdout")
         }
         round_record = {
             "schema_version": "1.0",
@@ -328,12 +408,75 @@ def run_federated_baseline(
                 "global_model_sha256": global_model_digest,
                 "weighted_training_loss": weighted_loss_sum / weighted_examples,
                 "validation": global_metrics["validation"],
-                "test": global_metrics["test"],
-                "temporal_holdout": global_metrics["temporal_holdout"],
             }
         )
         previous_round_hash = round_hash
         previous_model_digest = global_model_digest
+
+    selected_round_metrics = _select_validation_checkpoint(metrics_history)
+    selected_round_number = int(selected_round_metrics["round"])
+    selected_round_entry = round_index[selected_round_number - 1]
+    selected_model_path = str(
+        json.loads(
+            (output / selected_round_entry["path"]).read_text(encoding="utf-8")
+        )["aggregated_global_model_path"]
+    )
+    selected_model_digest = str(selected_round_entry["aggregated_global_model_sha256"])
+    selected_model_export = json.loads(
+        (output / selected_model_path).read_text(encoding="utf-8")
+    )
+    selected_model, selected_class_names = _model_from_export(
+        selected_model_export, torch=torch, np=np
+    )
+    if selected_class_names != class_names:
+        raise ValueError("selected checkpoint class order does not match the partition")
+    selected_evaluations = {
+        split: _evaluate(
+            model=selected_model,
+            rows=server_evaluation["rows"][split],
+            class_names=class_names,
+            batch_size=batch_size,
+            dependency_values=dependency_values,
+        )
+        for split in ("validation", "test", "temporal_holdout")
+    }
+    selected_global_client_validation = [
+        {
+            "client_id": record["client_id"],
+            "client_snapshot_sha256": record["dataset_sha256"],
+            "validation": _evaluate(
+                model=selected_model,
+                rows=snapshot["rows"]["validation"],
+                class_names=class_names,
+                batch_size=batch_size,
+                dependency_values=dependency_values,
+            ),
+        }
+        for record, snapshot in clients
+    ]
+    selected_checkpoint = {
+        "round": selected_round_number,
+        "round_record_path": selected_round_entry["path"],
+        "round_record_sha256": selected_round_entry["sha256"],
+        "model_path": selected_model_path,
+        "model_sha256": selected_model_digest,
+        "selection": {
+            "split": "validation",
+            "metric": SELECTION_METRIC,
+            "mode": "maximize",
+            "tie_breaker": "earliest_round",
+            "value": selected_evaluations["validation"][SELECTION_METRIC],
+        },
+        **selected_evaluations,
+        "operational_metrics": {
+            "test_benign_false_alarms": _benign_false_alarm_summary(
+                selected_evaluations["test"]
+            ),
+            "temporal_holdout_benign_false_alarms": _benign_false_alarm_summary(
+                selected_evaluations["temporal_holdout"]
+            ),
+        },
+    }
 
     local_baselines: list[dict[str, Any]] = []
     if bool(training.get("run_local_baselines", True)):
@@ -395,7 +538,7 @@ def run_federated_baseline(
     local_global_validation = [item["global_validation"] for item in local_baselines]
     local_global_test = [item["global_test"] for item in local_baselines]
     comparison = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "m3_local_fedavg_comparison",
         "comparison_fairness": {
             "same_initial_model": initial_model_digest,
@@ -404,10 +547,13 @@ def run_federated_baseline(
             "same_optimizer": str(training["optimizer"]),
             "same_learning_rate": learning_rate,
         },
-        "fedavg_final": {
-            "validation": final_global_metrics["validation"],
-            "test": final_global_metrics["test"],
-            "temporal_holdout": final_global_metrics["temporal_holdout"],
+        "fedavg_selected": selected_checkpoint,
+        "selected_global_client_validation": selected_global_client_validation,
+        "selected_global_client_validation_summary": {
+            "macro_f1_all_model_classes": _mean_metric(
+                [item["validation"] for item in selected_global_client_validation],
+                SELECTION_METRIC,
+            )
         },
         "local_only_clients": local_baselines,
         "local_only_summary": {
@@ -421,16 +567,21 @@ def run_federated_baseline(
     }
     comparison_bytes = derived_json_bytes(comparison)
     metrics_artifact = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "m3_fedavg_metrics",
         "dataset": DATASET_NAME,
         "partition_mode": partition_manifest["partition_mode"],
         "rounds": metrics_history,
         "final": final_global_metrics,
+        "selected": selected_checkpoint,
         "interpretation_constraints": [
             "The temporal holdout is benign-only and is not a multiclass test.",
             "Data24 retains its documented acquisition-time/class confound.",
             "This is a clean FedAvg baseline; Byzantine behavior and defenses are not active.",
+            (
+                "FedAvg checkpoint selection uses validation macro-F1 only; test and temporal "
+                "holdout are evaluated only after selection."
+            ),
         ],
     }
     metrics_bytes = derived_json_bytes(metrics_artifact)
@@ -446,7 +597,7 @@ def run_federated_baseline(
     write_once(output / "comparison.json", comparison_bytes)
     write_once(output / "round_index.json", round_index_bytes)
     run_manifest = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "m3_fedavg_run_manifest",
         "dataset": DATASET_NAME,
         "code_version": __version__,
@@ -480,6 +631,11 @@ def run_federated_baseline(
         "initial_model_sha256": initial_model_digest,
         "final_model_sha256": previous_model_digest,
         "final_round_sha256": previous_round_hash,
+        "selected_round": selected_round_number,
+        "selected_round_sha256": selected_round_entry["sha256"],
+        "selected_model_path": selected_model_path,
+        "selected_model_sha256": selected_model_digest,
+        "selection_policy": SELECTION_POLICY,
         "metrics_sha256": sha256_bytes(metrics_bytes),
         "comparison_sha256": sha256_bytes(comparison_bytes),
         "round_index_sha256": sha256_bytes(round_index_bytes),
@@ -493,10 +649,10 @@ def run_federated_baseline(
         "rounds": rounds,
         "workspace": str(output),
         "final_model_sha256": previous_model_digest,
-        "validation_macro_f1": final_global_metrics["validation"][
-            "macro_f1_all_model_classes"
-        ],
-        "test_macro_f1": final_global_metrics["test"]["macro_f1_all_model_classes"],
+        "selected_round": selected_round_number,
+        "selected_model_sha256": selected_model_digest,
+        "validation_macro_f1": selected_evaluations["validation"][SELECTION_METRIC],
+        "test_macro_f1": selected_evaluations["test"][SELECTION_METRIC],
         "local_only_mean_test_macro_f1": comparison["local_only_summary"][
             "global_test_macro_f1"
         ]["mean"],
@@ -551,10 +707,17 @@ def verify_federated_baseline(
         }
 
     dependency_values = dependencies()
-    np, _torch, _flwr, _sklearn, aggregate, *_metrics = dependency_values
+    np, torch, _flwr, _sklearn, aggregate, *_metrics = dependency_values
     index = json.loads((workspace / "round_index.json").read_text(encoding="utf-8"))
+    metrics = json.loads((workspace / "metrics.json").read_text(encoding="utf-8"))
+    comparison = json.loads((workspace / "comparison.json").read_text(encoding="utf-8"))
+    partition_manifest = json.loads(
+        (partition_workspace / "manifest.json").read_text(encoding="utf-8")
+    )
+    schema_version = str(manifest.get("schema_version", "1.0"))
     previous_round_hash = "0" * 64
     previous_model_digest = manifest.get("initial_model_sha256")
+    round_records: dict[int, dict[str, Any]] = {}
     for expected_round, item in enumerate(index.get("rounds", []), start=1):
         path = workspace / item["path"]
         if not path.is_file() or sha256_file(path) != item.get("sha256"):
@@ -567,6 +730,12 @@ def verify_federated_baseline(
             errors.append(f"round hash-chain mismatch: {expected_round}")
         if record.get("base_global_model_sha256") != previous_model_digest:
             errors.append(f"round base-model mismatch: {expected_round}")
+        if schema_version == "2.0" and set(record.get("global_metrics", {})) != {
+            "validation"
+        }:
+            errors.append(
+                f"round metrics are not validation-only: {expected_round}"
+            )
         updates: list[tuple[list[Any], int]] = []
         for update_ref in record.get("updates", []):
             update_record_path = workspace / update_ref["record_path"]
@@ -618,11 +787,245 @@ def verify_federated_baseline(
                     errors.append(f"FedAvg recomputation mismatch: round {expected_round}")
         previous_round_hash = item["sha256"]
         previous_model_digest = record.get("aggregated_global_model_sha256")
+        round_records[expected_round] = record
 
     if previous_round_hash != manifest.get("final_round_sha256"):
         errors.append("final round hash does not match run manifest")
     if previous_model_digest != manifest.get("final_model_sha256"):
         errors.append("final model digest does not match run manifest")
+
+    if schema_version == "2.0":
+        metrics_history = metrics.get("rounds", [])
+        server_evaluation = json.loads(
+            (
+                partition_workspace
+                / partition_manifest["server_evaluation_path"]
+            ).read_text(encoding="utf-8")
+        )
+        batch_size = int(manifest["training"]["batch_size"])
+        if len(metrics_history) != len(index.get("rounds", [])):
+            errors.append("metrics history length does not match round index")
+        for position, metric_record in enumerate(metrics_history, start=1):
+            if metric_record.get("round") != position:
+                errors.append(f"metrics round sequence mismatch: {position}")
+                continue
+            if "test" in metric_record or "temporal_holdout" in metric_record:
+                errors.append(f"pre-selection metrics expose test data: {position}")
+            round_record = round_records.get(position)
+            if round_record is None:
+                continue
+            if metric_record.get("global_model_sha256") != round_record.get(
+                "aggregated_global_model_sha256"
+            ):
+                errors.append(f"metrics model digest mismatch: {position}")
+            if not _same_json(
+                metric_record.get("validation"),
+                round_record.get("global_metrics", {}).get("validation"),
+            ):
+                errors.append(f"round validation metrics mismatch: {position}")
+            if metric_record.get("weighted_training_loss") != round_record.get(
+                "weighted_training_loss"
+            ):
+                errors.append(f"round training loss mismatch: {position}")
+            checkpoint_path = workspace / str(
+                round_record.get("aggregated_global_model_path")
+            )
+            if checkpoint_path.is_file():
+                try:
+                    checkpoint_export = json.loads(
+                        checkpoint_path.read_text(encoding="utf-8")
+                    )
+                    checkpoint_model, checkpoint_classes = _model_from_export(
+                        checkpoint_export, torch=torch, np=np
+                    )
+                    if checkpoint_classes != partition_manifest.get("class_names"):
+                        errors.append(f"checkpoint class order mismatch: {position}")
+                    recomputed_validation = _evaluate(
+                        model=checkpoint_model,
+                        rows=server_evaluation["rows"]["validation"],
+                        class_names=checkpoint_classes,
+                        batch_size=batch_size,
+                        dependency_values=dependency_values,
+                    )
+                    if not _same_json(
+                        metric_record.get("validation"), recomputed_validation
+                    ):
+                        errors.append(
+                            f"round validation inference mismatch: {position}"
+                        )
+                except (json.JSONDecodeError, KeyError, OSError, TypeError, ValueError) as exc:
+                    errors.append(
+                        f"round validation verification failed: {position}: {exc}"
+                    )
+        if metrics_history and not _same_json(
+            metrics.get("final"), metrics_history[-1]
+        ):
+            errors.append("final metrics do not match the final round")
+
+        selected = metrics.get("selected")
+        if not isinstance(selected, dict):
+            errors.append("missing selected checkpoint metrics")
+        elif metrics_history:
+            expected_selection = _select_validation_checkpoint(metrics_history)
+            selected_round = int(expected_selection["round"])
+            selected_record = round_records.get(selected_round)
+            selected_index = next(
+                (
+                    item
+                    for item in index.get("rounds", [])
+                    if item.get("round") == selected_round
+                ),
+                {},
+            )
+            if selected_record is None or not selected_index:
+                errors.append("selected round is absent from the verified round chain")
+            expected_model_path = (
+                selected_record.get("aggregated_global_model_path")
+                if selected_record is not None
+                else None
+            )
+            expected_model_digest = selected_index.get(
+                "aggregated_global_model_sha256"
+            )
+            selection_expectations = {
+                "selected round": (selected.get("round"), selected_round),
+                "manifest selected round": (
+                    manifest.get("selected_round"),
+                    selected_round,
+                ),
+                "selected round digest": (
+                    selected.get("round_record_sha256"),
+                    selected_index.get("sha256"),
+                ),
+                "selected round path": (
+                    selected.get("round_record_path"),
+                    selected_index.get("path"),
+                ),
+                "manifest selected round digest": (
+                    manifest.get("selected_round_sha256"),
+                    selected_index.get("sha256"),
+                ),
+                "selected model path": (
+                    selected.get("model_path"),
+                    expected_model_path,
+                ),
+                "manifest selected model path": (
+                    manifest.get("selected_model_path"),
+                    expected_model_path,
+                ),
+                "selected model digest": (
+                    selected.get("model_sha256"),
+                    expected_model_digest,
+                ),
+                "manifest selected model digest": (
+                    manifest.get("selected_model_sha256"),
+                    expected_model_digest,
+                ),
+            }
+            for description, (actual, expected) in selection_expectations.items():
+                if actual != expected:
+                    errors.append(f"{description} mismatch")
+            policy = manifest.get("selection_policy", {})
+            if policy != SELECTION_POLICY:
+                errors.append("checkpoint selection policy mismatch")
+            selection_record = selected.get("selection", {})
+            expected_selection_criterion = {
+                "split": "validation",
+                "metric": SELECTION_METRIC,
+                "mode": "maximize",
+                "tie_breaker": "earliest_round",
+                "value": expected_selection.get("validation", {}).get(
+                    SELECTION_METRIC
+                ),
+            }
+            if selection_record != expected_selection_criterion:
+                errors.append("selected checkpoint criterion mismatch")
+            if not _same_json(
+                selected.get("validation"), expected_selection.get("validation")
+            ):
+                errors.append("selected validation metrics mismatch")
+
+            selected_model_path = workspace / str(expected_model_path)
+            if (
+                not selected_model_path.is_file()
+                or sha256_file(selected_model_path) != expected_model_digest
+            ):
+                errors.append("selected model object mismatch")
+            else:
+                try:
+                    selected_export = json.loads(
+                        selected_model_path.read_text(encoding="utf-8")
+                    )
+                    selected_model, class_names = _model_from_export(
+                        selected_export, torch=torch, np=np
+                    )
+                    if class_names != partition_manifest.get("class_names"):
+                        errors.append("selected checkpoint class order mismatch")
+                    recomputed_evaluations = {
+                        split: _evaluate(
+                            model=selected_model,
+                            rows=server_evaluation["rows"][split],
+                            class_names=class_names,
+                            batch_size=batch_size,
+                            dependency_values=dependency_values,
+                        )
+                        for split in ("validation", "test", "temporal_holdout")
+                    }
+                    for split, evaluation in recomputed_evaluations.items():
+                        if not _same_json(selected.get(split), evaluation):
+                            errors.append(
+                                f"selected checkpoint {split} inference mismatch"
+                            )
+                    expected_operational = {
+                        "test_benign_false_alarms": _benign_false_alarm_summary(
+                            recomputed_evaluations["test"]
+                        ),
+                        "temporal_holdout_benign_false_alarms": (
+                            _benign_false_alarm_summary(
+                                recomputed_evaluations["temporal_holdout"]
+                            )
+                        ),
+                    }
+                    if not _same_json(
+                        selected.get("operational_metrics"), expected_operational
+                    ):
+                        errors.append("selected checkpoint operational metrics mismatch")
+
+                    client_results = comparison.get(
+                        "selected_global_client_validation", []
+                    )
+                    clients = _load_client_snapshots(
+                        partition_workspace, partition_manifest
+                    )
+                    expected_clients = []
+                    for client_record, snapshot in clients:
+                        expected_clients.append(
+                            {
+                                "client_id": client_record["client_id"],
+                                "client_snapshot_sha256": client_record[
+                                    "dataset_sha256"
+                                ],
+                                "validation": _evaluate(
+                                    model=selected_model,
+                                    rows=snapshot["rows"]["validation"],
+                                    class_names=class_names,
+                                    batch_size=batch_size,
+                                    dependency_values=dependency_values,
+                                ),
+                            }
+                        )
+                    if not _same_json(client_results, expected_clients):
+                        errors.append("selected model per-client validation mismatch")
+                    if not _same_json(comparison.get("fedavg_selected"), selected):
+                        errors.append("selected checkpoint comparison mismatch")
+                except (
+                    json.JSONDecodeError,
+                    KeyError,
+                    OSError,
+                    TypeError,
+                    ValueError,
+                ) as exc:
+                    errors.append(f"selected checkpoint verification failed: {exc}")
     return {
         "status": "verified" if not errors else "failed",
         "dataset": manifest.get("dataset"),
@@ -631,6 +1034,8 @@ def verify_federated_baseline(
         "workspace": str(workspace),
         "final_model_sha256": manifest.get("final_model_sha256"),
         "final_round_sha256": manifest.get("final_round_sha256"),
+        "selected_round": manifest.get("selected_round"),
+        "selected_model_sha256": manifest.get("selected_model_sha256"),
         "error_count": len(errors),
         "errors": errors,
     }

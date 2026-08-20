@@ -51,17 +51,23 @@ def _build_workspace(root: Path) -> tuple[Path, Path]:
                 "global_model_sha256": f"model-{number}",
                 "weighted_training_loss": 1.0 / number,
                 "validation": _evaluation(factor),
-                "test": _evaluation(1.0),
-                "temporal_holdout": _evaluation(0.5),
             }
         )
+    selected = {
+        "round": 2,
+        "model_sha256": "model-2",
+        "validation": rounds[1]["validation"],
+        "test": _evaluation(1.0),
+        "temporal_holdout": _evaluation(0.5),
+    }
     metrics = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "m3_fedavg_metrics",
         "dataset": "UWF-ZeekData24",
         "partition_mode": "iid",
         "rounds": rounds,
         "final": rounds[-1],
+        "selected": selected,
         "interpretation_constraints": [],
     }
     clients = [
@@ -75,9 +81,19 @@ def _build_workspace(root: Path) -> tuple[Path, Path]:
         for number in range(1, 4)
     ]
     comparison = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "artifact_type": "m3_local_fedavg_comparison",
-        "fedavg_final": {"test": _evaluation(1.0)},
+        "fedavg_selected": selected,
+        "selected_global_client_validation": [
+            {
+                "client_id": f"client{number:02d}",
+                "validation": {
+                    **_evaluation(0.8 + number / 100),
+                    "macro_f1_all_model_classes": 0.60 + number / 100,
+                },
+            }
+            for number in range(1, 4)
+        ],
         "local_only_clients": clients,
         "local_only_summary": {
             "global_test_macro_f1": {
@@ -94,7 +110,7 @@ def _build_workspace(root: Path) -> tuple[Path, Path]:
     _write(
         workspace / "manifest.json",
         {
-            "schema_version": "1.0",
+            "schema_version": "2.0",
             "artifact_type": "m3_fedavg_run_manifest",
             "dataset": "UWF-ZeekData24",
             "partition_mode": "iid",
@@ -136,11 +152,13 @@ class ReportingTests(unittest.TestCase):
                 workspace=workspace, central_workspace=central
             )
             self.assertEqual(first["status"], "reported")
-            self.assertEqual(first["figure_count"], 7)
+            self.assertEqual(first["figure_count"], 8)
             self.assertEqual(first["best_validation_round"], 2)
+            self.assertEqual(first["selected_round"], 2)
             self.assertEqual(first_summary_digest, second["summary_sha256"])
             summary = json.loads((workspace / "reports" / "summary.json").read_text())
-            self.assertEqual(len(summary["figures"]), 7)
+            self.assertEqual(len(summary["figures"]), 8)
+            self.assertEqual(summary["metrics"]["selected_round"], 2)
             for figure in summary["figures"]:
                 path = workspace / "reports" / figure["path"]
                 self.assertTrue(path.is_file())

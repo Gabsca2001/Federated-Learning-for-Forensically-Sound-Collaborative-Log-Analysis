@@ -30,6 +30,12 @@ training:
   seed: 341593
   device: cpu
   run_local_baselines: true
+  checkpoint_selection:
+    split: validation
+    metric: macro_f1_all_model_classes
+    mode: maximize
+    tie_breaker: earliest_round
+    test_policy: selected-checkpoint-only
 
 forensic_audit:
   preserve_local_update_objects: true
