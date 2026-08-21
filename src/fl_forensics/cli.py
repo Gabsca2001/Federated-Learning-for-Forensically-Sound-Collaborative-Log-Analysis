@@ -366,6 +366,7 @@ def build_parser() -> argparse.ArgumentParser:
             "label_flip",
             "gaussian_noise",
             "sign_flip",
+            "update_amplification",
             "model_replacement",
             "backdoor",
             "colluding",

@@ -24,7 +24,7 @@
 | TLS 1.3 mutual authentication | Implemented and unit-tested (M4) | Private experiment CA, clientAuth/serverAuth EKU, SAN and enrollment-fingerprint binding, wrong pair rejected |
 | Physical TPM 2.0 adapter | Implemented, hardware run pending (M4) | Same tpm2-tools adapter via `device:/dev/tpmrm0`; no simulator/hardware equivalence claim |
 | Attestation-gated Update Bundles and secure FedAvg campaign | Implemented and Docker-runtime verified (M5) | Single-round 15/15 gate plus 30 signed/chained checkpoints; 450/450 TPM ESK bundles accepted, zero quarantines, independent reconstruction, validation-only selection; round 11 validation/test macro-F1 0.94833/0.92257 |
-| Byzantine attacks and robust aggregation | Planned (M6) | — |
+| Byzantine attacks and robust aggregation | Implemented; runtime campaign in progress (M6) | Deterministic freeze/compare/verify pipeline and ten defense profiles; verified `f=3` amplification and targeted model-replacement scenarios; malicious FedAvg test macro-F1 0.54348 versus 0.91318 with clipping; remaining attacks, `f` values, and repeated seeds pending |
 | Integrated Gradients and deterministic report | Planned (M7) | — |
 
 M2 uses NumPy and scikit-learn only. Flower/PyTorch belong to M3 and the trust

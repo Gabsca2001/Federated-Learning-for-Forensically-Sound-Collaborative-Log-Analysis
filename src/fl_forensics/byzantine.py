@@ -120,10 +120,23 @@ def clip_delta_l2(delta: Sequence[Any], *, max_norm: float) -> tuple[list[np.nda
     ], float(scale)
 
 
+def model_replacement_delta(
+    base: Sequence[Any], malicious_model: Sequence[Any], *, scale: float
+) -> list[np.ndarray]:
+    """Scale the delta from the round base to an explicitly malicious model."""
+
+    if not math.isfinite(scale) or scale <= 0:
+        raise ValueError("model replacement scale must be a finite positive number")
+    return [
+        np.asarray(value, dtype=np.float64) * scale
+        for value in model_delta(base, malicious_model)
+    ]
+
+
 def attack_delta(
     delta: Sequence[Any],
     *,
-    attack: Literal["gaussian_noise", "sign_flip", "model_replacement"],
+    attack: Literal["gaussian_noise", "sign_flip", "update_amplification"],
     seed: int,
     scale: float = 1.0,
 ) -> list[np.ndarray]:
@@ -140,7 +153,7 @@ def attack_delta(
         attacked = vector + rng.normal(0.0, standard_deviation, size=vector.shape)
     elif attack == "sign_flip":
         attacked = -scale * vector
-    elif attack == "model_replacement":
+    elif attack == "update_amplification":
         attacked = scale * vector
     else:  # pragma: no cover - Literal protects typed callers
         raise ValueError(f"unsupported model-poisoning attack: {attack}")

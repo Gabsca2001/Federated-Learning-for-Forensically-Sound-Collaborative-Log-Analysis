@@ -20,6 +20,7 @@ from .byzantine import (
     clip_delta_l2,
     label_flip_rows,
     model_delta,
+    model_replacement_delta,
     update_indicators,
 )
 from .canonical import sha256_bytes, sha256_file
@@ -42,6 +43,7 @@ ATTACKS = {
     "label_flip",
     "gaussian_noise",
     "sign_flip",
+    "update_amplification",
     "model_replacement",
     "backdoor",
     "colluding",
@@ -377,11 +379,11 @@ def freeze_byzantine_scenario(
         derivation: dict[str, Any] = {"attack": attack if attacked else "clean"}
         if not attacked or attack == "clean":
             frozen_update = clean_updates[client_id]
-        elif attack in {"gaussian_noise", "sign_flip", "model_replacement"}:
+        elif attack in {"gaussian_noise", "sign_flip", "update_amplification"}:
             scale_key = {
                 "gaussian_noise": "gaussian_noise_scale",
                 "sign_flip": "sign_flip_scale",
-                "model_replacement": "model_replacement_scale",
+                "update_amplification": "model_replacement_scale",
             }[attack]
             scale = float(attack_config[scale_key])
             transformed = attack_delta(
@@ -392,6 +394,46 @@ def freeze_byzantine_scenario(
             )
             frozen_update = _export_with_arrays(base, apply_delta(base_arrays, transformed))
             derivation["scale"] = scale
+        elif attack == "model_replacement":
+            client_record = next(
+                item
+                for item in partition_manifest["clients"]
+                if item["client_id"] == client_id
+            )
+            client_dataset = load_json(
+                partition_workspace / str(client_record["dataset_path"])
+            )
+            objective = attack_config["model_replacement"]["objective"]
+            malicious_update, detail = _train_data_attack(
+                base=base,
+                client_dataset=client_dataset,
+                partition_id=int(client_record["partition_id"]),
+                context=context,
+                training_contract=training_contract,
+                attack="label_flip",
+                attack_config={**attack_config, "label_flip": objective},
+                seed=seed + int(client_id[-2:]),
+            )
+            if int(detail["changed_row_count"]) == 0:
+                raise ByzantineExperimentError(
+                    f"model replacement objective changed no rows: {client_id}"
+                )
+            scale = float(attack_config["model_replacement_scale"])
+            replacement = model_replacement_delta(
+                base_arrays,
+                arrays_from_export(malicious_update, np=np),
+                scale=scale,
+            )
+            frozen_update = _export_with_arrays(
+                base, apply_delta(base_arrays, replacement)
+            )
+            derivation.update(
+                {
+                    "objective": str(objective["type"]),
+                    "scale": scale,
+                    **detail,
+                }
+            )
         elif attack == "colluding":
             assert collusion_template is not None
             scale = float(attack_config["model_replacement_scale"])

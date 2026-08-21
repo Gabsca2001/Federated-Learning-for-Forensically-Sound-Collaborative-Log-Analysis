@@ -7,12 +7,14 @@ import numpy as np
 from fl_forensics.byzantine import (
     ByzantineConfigurationError,
     aggregate_deltas,
+    apply_delta,
     attack_delta,
     backdoor_rows,
     clip_delta_l2,
     colluding_deltas,
     delta_l2,
     label_flip_rows,
+    model_replacement_delta,
     poison_prototypes,
     update_indicators,
 )
@@ -36,10 +38,21 @@ class ByzantineAttackTests(unittest.TestCase):
             self.assertEqual(left.dtype, reference.dtype)
         flipped = attack_delta(original, attack="sign_flip", seed=0, scale=3.0)
         np.testing.assert_allclose(flipped[0], -3.0 * original[0])
-        replacement = attack_delta(
-            original, attack="model_replacement", seed=0, scale=15.0
+        amplified = attack_delta(
+            original, attack="update_amplification", seed=0, scale=15.0
         )
-        np.testing.assert_allclose(replacement[1], 15.0 * original[1])
+        np.testing.assert_allclose(amplified[1], 15.0 * original[1])
+
+    def test_model_replacement_scales_an_explicit_malicious_target(self) -> None:
+        base = delta(1.0)
+        malicious = delta(-2.0)
+        replacement = model_replacement_delta(base, malicious, scale=4.0)
+        submitted = apply_delta(base, replacement)
+        for actual, base_tensor, malicious_tensor in zip(
+            submitted, base, malicious, strict=True
+        ):
+            expected = base_tensor + 4.0 * (malicious_tensor - base_tensor)
+            np.testing.assert_allclose(actual, expected)
 
     def test_label_flip_and_backdoor_do_not_mutate_clean_rows(self) -> None:
         rows = [

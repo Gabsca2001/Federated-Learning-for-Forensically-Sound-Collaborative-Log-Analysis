@@ -99,6 +99,20 @@ class ConfigurationTests(unittest.TestCase):
         )
         self.assertTrue(config["acceptance"]["invalid_byzantine_bounds_halt"])
 
+    def test_m6_malicious_model_replacement_has_an_explicit_objective(self) -> None:
+        config, _ = load_yaml(
+            ROOT / "configs" / "byzantine-malicious-model-replacement.yaml"
+        )
+        self.assertIn("update_amplification", config["attacks"]["enabled"])
+        self.assertEqual(
+            config["attacks"]["model_replacement"]["objective"],
+            {
+                "type": "targeted_label_flip",
+                "source": "reconnaissance",
+                "target": "benign",
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
