@@ -516,3 +516,82 @@ Before execution, `m6-prototype-sensitivity-plan` exposes the ordered cells,
 nested attacker identities, campaign-configuration digest, primary anchor, and
 the false test-access/selection flags. The plan can therefore be committed and
 published before any new sensitivity result is observed.
+
+## Verified prototype sensitivity result
+
+The predeclared six-cell campaign completed without selecting or suppressing a
+scenario. `m6-prototype-verify-sensitivity` independently re-extracted the
+client prototypes and recomputed all frozen scenarios, four-profile
+comparisons, confusion matrices, per-class metrics, and the report-all summary.
+
+- campaign configuration SHA-256:
+  `37918141f170ad4048295a4a5ba508f848d09a54a65ade3144505aa382e99f39`;
+- sensitivity SHA-256:
+  `d8f8d8c1fc54f007583198b63eb471c6c6ca7810b388baae664e44adf9e0c47f`;
+- campaign manifest SHA-256:
+  `84cdfa3733963af1673fbf74b18f250a7d3185b9da1aee27137f3d4e70999726`;
+- primary anchor: `f3-scale-1p5`;
+- result policy: six of six scenarios reported, no test-based selection, zero
+  verification errors.
+
+| Scenario | Baseline prototype shift | Baseline test source-recall delta | Baseline test macro-F1 delta | Robust test source-recall delta |
+| --- | ---: | ---: | ---: | ---: |
+| `f1-scale-1p5` | 1.661660 | 0.000000 | +0.001491 | 0.000000 |
+| `f2-scale-1p5` | 3.462868 | -0.056801 | -0.004131 | 0.000000 |
+| `f3-scale-0p5` | 1.753967 | 0.000000 | +0.002320 | 0.000000 |
+| `f3-scale-1p0` | 3.507933 | -0.056801 | -0.004131 | 0.000000 |
+| `f3-scale-1p5` | 5.261900 | -0.167414 | +0.017572 | 0.000000 |
+| `f3-scale-2p0` | 7.015866 | -0.917788 | -0.119023 | 0.000000 |
+
+The support-weighted displacement grows with both Byzantine participation and
+poisoning scale, but the classification response is nonlinear. In particular,
+`f3-scale-1p5` loses 0.167414 source recall while its macro-F1 rises by
+0.017572. At scale 2.0 the attacked source recall falls to 0.071749 and the
+macro-F1 also collapses. The approximately equal effect of `f2-scale-1p5` and
+`f3-scale-1p0` is consistent with total poisoning mass being more informative
+than either factor alone in this deterministic run; it is an observation, not
+a causal estimate.
+
+The declared benign target is never reached in any cell: targeted test ASR is
+zero throughout. The harm is non-targeted redistribution into other attack
+classes. Coordinate-median aggregation preserves the clean source recall and
+macro-F1 in all six cells while limiting geometric displacement to about
+0.05--0.10. These findings are evidence for this fixed checkpoint and client
+set, not confidence intervals or population-level generalization.
+
+`m6-prototype-sensitivity-report` accepts only a campaign that first passes the
+full sensitivity verifier. It emits a 12-row CSV, a report-all Markdown table,
+and six deterministic curves that separately show source recall, macro-F1, and
+prototype displacement against `f` and scale. Every file is bound into
+`report.json` and `manifest.json` by SHA-256. The report labels extrema as
+descriptive and retains the false selection flags.
+
+`m6-prototype-verify-sensitivity-report` repeats the complete source campaign
+verification, regenerates every table and PNG byte-for-byte, checks the report
+and manifest, and rejects missing, changed, or unexpected report files. The
+source scenario directories remain unchanged; the reporting workspace is a
+separate derived artifact family.
+
+## Verified sensitivity report
+
+The report was generated from the verified six-scenario campaign and then
+accepted by the independent report gate. The verifier recomputed the source
+campaign before regenerating all eight derived artifacts: the 12-row CSV, the
+Markdown summary, and six PNG curves. No stored metric or stored figure was
+trusted as an input to verification.
+
+- report SHA-256:
+  `e6fba4e4693b591ed6161ceda3e3de6fde15519c067572a3c6e396a441f89b91`;
+- report manifest SHA-256:
+  `190414638c3a01df73c43e1afc4926ef7778b5a4028ef8a44ed01f267f590edb`;
+- external ZIP SHA-256:
+  `ba1d2b85cc666e6511faa7c280a961881e335573da7d84b36be3682c74b15844`;
+- rendering backend: Matplotlib 3.11.1, PNG, 180 DPI;
+- verified contents: six scenarios, 12 CSV rows, six figures, zero errors;
+- forensic controls: source recomputed, report-all policy retained, no
+  test-based selection, and byte-identical regeneration of every artifact.
+
+The ZIP digest identifies the transport package and is intentionally separate
+from the internal report manifest. The internal manifest binds the logical
+report artifacts, whereas a ZIP digest also depends on archive metadata and
+packaging order.

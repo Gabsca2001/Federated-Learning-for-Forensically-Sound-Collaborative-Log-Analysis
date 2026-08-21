@@ -30,6 +30,10 @@ from .prototype_sensitivity import (
     run_prototype_sensitivity,
     verify_prototype_sensitivity,
 )
+from .prototype_sensitivity_reporting import (
+    generate_prototype_sensitivity_report,
+    verify_prototype_sensitivity_report,
+)
 from .reporting import generate_m3_report
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
@@ -550,6 +554,54 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("configs/byzantine-prototype-sensitivity.yaml"),
     )
+
+    m6_prototype_sensitivity_report = subparsers.add_parser(
+        "m6-prototype-sensitivity-report",
+        help="render deterministic tables and curves from verified sensitivity evidence",
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--sensitivity-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument("--output", type=Path, required=True)
+    m6_prototype_sensitivity_report.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_verify_sensitivity_report = subparsers.add_parser(
+        "m6-prototype-verify-sensitivity-report",
+        help="recompute and verify every M6 prototype sensitivity report artifact",
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--sensitivity-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--report-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
     return parser
 
 
@@ -870,6 +922,28 @@ def main(argv: list[str] | None = None) -> int:
             trust_workspace=arguments.trust_workspace,
             partition_workspace=arguments.partition_workspace,
             workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-sensitivity-report":
+        result = generate_prototype_sensitivity_report(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            sensitivity_workspace=arguments.sensitivity_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify-sensitivity-report":
+        result = verify_prototype_sensitivity_report(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            sensitivity_workspace=arguments.sensitivity_workspace,
+            report_workspace=arguments.report_workspace,
             config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
