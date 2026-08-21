@@ -19,6 +19,12 @@ from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .prototype_experiment import (
+    freeze_prototype_scenario,
+    run_prototype_comparison,
+    verify_frozen_prototype_scenario,
+    verify_prototype_comparison,
+)
 from .reporting import generate_m3_report
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
@@ -408,6 +414,85 @@ def build_parser() -> argparse.ArgumentParser:
     m6_verify.add_argument(
         "--config", type=Path, default=Path("configs/byzantine.yaml")
     )
+
+    m6_prototype_freeze = subparsers.add_parser(
+        "m6-prototype-freeze",
+        help="freeze class prototypes from a verified M5 global checkpoint",
+    )
+    m6_prototype_freeze.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_freeze.add_argument("--trust-workspace", type=Path, required=True)
+    m6_prototype_freeze.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_freeze.add_argument("--output", type=Path, required=True)
+    m6_prototype_freeze.add_argument("--f", type=int, required=True)
+    m6_prototype_freeze.add_argument(
+        "--attacker-id",
+        action="append",
+        dest="attacker_ids",
+        help="explicit attacker identity; repeat exactly f times",
+    )
+    m6_prototype_freeze.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_verify_frozen = subparsers.add_parser(
+        "m6-prototype-verify-frozen",
+        help="re-extract and verify every frozen prototype submission",
+    )
+    m6_prototype_verify_frozen.add_argument("--workspace", type=Path, required=True)
+    m6_prototype_verify_frozen.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_frozen.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_frozen.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_frozen.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_compare = subparsers.add_parser(
+        "m6-prototype-compare",
+        help="compare baseline and robust aggregation on frozen prototypes",
+    )
+    m6_prototype_compare.add_argument(
+        "--frozen-workspace", type=Path, required=True
+    )
+    m6_prototype_compare.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_compare.add_argument("--output", type=Path, required=True)
+    m6_prototype_compare.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_verify = subparsers.add_parser(
+        "m6-prototype-verify",
+        help="recompute and verify the M6 prototype comparison",
+    )
+    m6_prototype_verify.add_argument(
+        "--frozen-workspace", type=Path, required=True
+    )
+    m6_prototype_verify.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify.add_argument("--workspace", type=Path, required=True)
+    m6_prototype_verify.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
     return parser
 
 
@@ -661,6 +746,46 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if arguments.command == "m6-verify":
         result = verify_byzantine_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-freeze":
+        result = freeze_prototype_scenario(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            f=arguments.f,
+            config_path=arguments.config,
+            attacker_ids=arguments.attacker_ids,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify-frozen":
+        result = verify_frozen_prototype_scenario(
+            workspace=arguments.workspace,
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-compare":
+        result = run_prototype_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify":
+        result = verify_prototype_comparison(
             frozen_workspace=arguments.frozen_workspace,
             partition_workspace=arguments.partition_workspace,
             workspace=arguments.workspace,

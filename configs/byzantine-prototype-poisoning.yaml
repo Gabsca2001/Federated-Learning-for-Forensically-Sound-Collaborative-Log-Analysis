@@ -1,0 +1,41 @@
+schema_version: "1.0"
+dataset: UWF-ZeekData24
+
+experiment:
+  seed: 341593
+  client_count: 15
+  attack: prototype_poisoning
+  source_model: verified-m5-selected-round-global-checkpoint
+  partition_mode: iid
+
+attack:
+  source_class: reconnaissance
+  target_class: benign
+  scale: 1.5
+
+prototypes:
+  minimum_local_support: 5
+  class_quorum: 3
+  batch_size: 256
+  baseline_aggregation: support_weighted_mean
+  robust_aggregation: coordinate_median
+
+evaluation:
+  classifier: nearest_global_prototype
+  distance: euclidean
+  splits: [validation, test, temporal_holdout]
+  reference_endpoint: frozen_m5_classification_head
+
+forensic_audit:
+  preserve_clean_and_submitted_prototypes: true
+  preserve_aggregate_prototypes: true
+  preserve_row_embeddings: false
+  bind_signed_partition_snapshot: true
+  bind_verified_m5_checkpoint: true
+  deterministic_recomputation: true
+
+acceptance:
+  same_frozen_submissions_for_every_aggregator: true
+  minimum_support_is_fail_closed: true
+  class_quorum_is_fail_closed: true
+  invalid_f_is_fail_closed: true

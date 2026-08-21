@@ -26,12 +26,24 @@ The M6 core provides:
 - training-data transformations for label flip and feature-trigger backdoors;
 - model-delta transformations for Gaussian noise, sign flip, and model
   replacement;
-- class-prototype poisoning and byte-equivalent colluding deltas;
+- deterministic encoder-centroid extraction with local-support filtering,
+  support-weighted mean and coordinate-median prototype aggregation, explicit
+  class quorum, distance indicators, and class-prototype poisoning;
+- byte-equivalent colluding deltas;
 - global L2 clipping with an explicit threshold and preserved scale;
 - relative norm, cosine-to-median, coordinate-median distance, and MAD
   indicators;
 - FedAvg, coordinate median, trimmed mean, MultiKrum, and Bulyan over the same
   validated delta tensors.
+
+Prototype extraction operates on the encoder embedding, not on raw input
+features. Each local class record preserves its true support and is emitted only
+when it meets the configured minimum. Aggregation requires the configured
+number of supporting clients for that class; insufficient quorum is an explicit
+result without a prototype vector. Model parameters and prototype vectors never
+share an aggregation call or artifact schema. The pure numerical contract is
+unit-tested before it is bound to the signed M5 model and partition lineage in a
+separate freeze/compare/verify runtime increment.
 
 The numerical functions do not mutate their inputs. Gaussian noise, backdoor
 selection, and collusion are deterministic for the recorded seed. Comparison
@@ -358,6 +370,118 @@ backdoor-targeted (when applicable), and
 benign-only temporal-holdout metrics. Altering one frozen update, model, metric,
 input ordering, configuration digest, or partition reference makes the gate
 fail. Label flip and backdoor scenarios retrain only the designated compromised
-clients from copies of their frozen local snapshots. Prototype aggregation is
-kept out of this model-parameter comparison and remains the next separate M6
-artifact family.
+clients from copies of their frozen local snapshots.
+
+## Separate prototype-poisoning artifact family
+
+Prototype poisoning is intentionally kept out of the model-parameter comparison.
+It is implemented as a separate post-training overlay on the verified global
+checkpoint of the selected M5 round. This is not prototype-aware training and it
+must not be described as the PROTEAN objective. PROTEAN remains a separate
+non-IID experiment with its own validation lock and final evaluation.
+
+`m6-prototype-freeze` first verifies the complete M5 round, binds the signed M5
+copy of the IID partition manifest, and loads `checkpoint/global-model.json`.
+For each of the 15 clients it passes the frozen training rows through that
+checkpoint encoder and computes one centroid per eligible class. A class is
+eligible only with at least five local observations. The artifact preserves the
+clean and submitted centroid records, their supports, the attacker identities,
+and every relevant SHA-256 digest. It never preserves row-level embeddings and
+does not access validation, test, or temporal-holdout rows.
+
+For the declared attackers, the reconnaissance centroid is moved toward and
+through the benign centroid with scale 1.5. Support is preserved so that the
+attack changes only the submitted vector. `m6-prototype-verify-frozen`
+independently verifies M5 again, re-extracts all 15 clean centroids, reapplies
+the declared transformation, and requires byte-identical submissions.
+
+`m6-prototype-compare` evaluates four profiles on exactly the same frozen
+submissions: clean and attacked support-weighted means, and clean and attacked
+coordinate medians. A class requires a quorum of three clients; missing quorum
+halts evaluation. Each aggregate is evaluated with nearest-global-prototype
+inference on validation, test, and temporal holdout. The unchanged M5
+classification head is reported only as a reference endpoint.
+
+The comparison preserves full confusion matrices and per-class metrics, the
+reconnaissance-to-benign attack-success rate, aggregate centroid displacement,
+macro-F1 deltas against the corresponding clean counterfactual, and per-client
+distance/MAD indicators. Schema `1.1` additionally separates targeted success
+from any loss of source-class integrity. It records source recall, total source
+misclassification rate, target-class predictions, and predictions into all
+other classes. This prevents a stable or improved macro-F1 from concealing a
+class-specific degradation when the declared target is not reached. The
+verifier remains compatible with schema `1.0` evidence.
+
+`m6-prototype-verify` recomputes encoder inference, every aggregate, and every
+metric. A modified submission, aggregate, metric, configuration, checkpoint,
+signed partition reference, or evaluation snapshot therefore fails
+verification.
+
+## Verified prototype-poisoning result
+
+The controlled run uses the verified M5 round-11 global checkpoint, the signed
+IID partition snapshot, `f=3`, and the same attacker identities used by the
+other M6 scenarios: `client02`, `client05`, and `client14`. The extraction and
+poisoning stage does not access evaluation data.
+
+- frozen manifest SHA-256:
+  `39202178879825a8b49915553a2394e72046a64d5362ed11d8068034c1d564bd`;
+- backward-compatible schema `1.0` comparison SHA-256:
+  `f851239b35584b2858e4bb66261eb53fba4ef8064b80e70e1a7ad9930b9bd72f`;
+- schema `1.1` comparison SHA-256:
+  `9b11bf2385d257512a1ca5dc87c023385ea8c9c5af91378c58361bb703b49c8d`;
+- schema `1.1` comparison implementation SHA-256:
+  `74c0a62178102669f25b8ed850bbf193f9a7a896c4ba14a9b6858d637d759823`;
+- verification: 15 recomputed client submissions, four recomputed aggregate
+  profiles, recomputed model inference, and zero errors;
+- regression gate: 93 tests passed and changed-file Ruff checks passed.
+
+The three declared attackers are the three largest reconnaissance-prototype
+outliers. Their distances to the coordinate median are 25.457--27.539, their
+relative distances are 93.771--101.440, and their MAD scores are
+61.686--65.630. The largest benign distance is 0.484, relative distance 1.784,
+and MAD score 1.087. This separation attributes the controlled transformation
+under the known experimental ground truth. In an uncontrolled deployment the
+scores would identify suspicious submissions for investigation, not prove
+malicious intent by themselves.
+
+Support-weighted aggregation moves the global reconnaissance prototype by L2
+distance 5.261900 and reduces its distance to the benign prototype from
+17.887543 to 12.626144. Coordinate-median aggregation limits the displacement
+to 0.095305 and changes the source-to-target distance only from 17.864588 to
+17.816119.
+
+| Aggregation | Validation source recall | Test source recall | Test source errors | Targeted test ASR |
+| --- | ---: | ---: | ---: | ---: |
+| clean support-weighted mean | 0.985423 | 0.989537 | 7 / 669 | 0.000000 |
+| attacked support-weighted mean | 0.822157 | 0.822123 | 119 / 669 | 0.000000 |
+| clean coordinate median | 0.985423 | 0.989537 | 7 / 669 | 0.000000 |
+| attacked coordinate median | 0.985423 | 0.989537 | 7 / 669 | 0.000000 |
+
+The support-weighted source-recall deltas are -0.163265 on validation and
+-0.167414 on test. None of the additional errors reaches the declared benign
+target: the poisoned test profile redirects 40 reconnaissance rows to
+exfiltration and 79 to multi-tactic. The targeted attack therefore fails, but
+the unprotected aggregate suffers a reproducible non-targeted source-class
+integrity loss. The coordinate median preserves the clean confusion row and
+has zero recall, misclassification-rate, and targeted-ASR deltas.
+
+The support-weighted test macro-F1 rises from 0.760242 to 0.777814 even while
+reconnaissance recall falls by 16.741 percentage points. This is not a defense
+success or a beneficial attack: class-wise changes in precision and errors
+increase the global average while hiding the source-class degradation. The
+result establishes why macro-F1, targeted ASR, geometric indicators, and
+source-class integrity must be interpreted together.
+
+The nearest-prototype endpoint remains below the unchanged M5 classification
+head: its clean test macro-F1 is 0.760242--0.765478, versus 0.922567 for the
+head. This experiment supports the forensic value of prototype evidence and
+robust prototype aggregation; it does not establish the post-training
+nearest-prototype overlay as a replacement for the operational classifier.
+The temporal holdout contains only benign observations, so its six-class macro
+F1 of 0.166667 is not a multi-class performance estimate. All four prototype
+profiles classify that holdout with accuracy 1.0.
+
+Scale 1.5 is retained as the primary declared scenario. Any later scale or
+`f` sweep must be labelled exploratory, preserve every result, and must not
+select a preferred configuration retrospectively from test performance.
