@@ -191,6 +191,9 @@ def train_local(
     device_name: str,
     torch: Any,
     np: Any,
+    validation_rows: list[dict[str, Any]] | None = None,
+    evaluation_functions: tuple[Any, Any, Any] | None = None,
+    record_history: bool = False,
 ) -> dict[str, Any]:
     if not rows:
         raise ValueError("a client cannot train on an empty snapshot")
@@ -214,10 +217,15 @@ def train_local(
     criterion = torch.nn.CrossEntropyLoss(weight=weights)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     model.to(device)
-    model.train()
     total_loss = 0.0
     total_seen = 0
-    for _epoch in range(epochs):
+    history: list[dict[str, Any]] = []
+    if record_history and evaluation_functions is None:
+        raise ValueError("record_history requires evaluation metric functions")
+    for epoch in range(epochs):
+        model.train()
+        epoch_loss = 0.0
+        epoch_seen = 0
         for batch_features, batch_labels in loader:
             batch_features = batch_features.to(device)
             batch_labels = batch_labels.to(device)
@@ -227,15 +235,69 @@ def train_local(
             loss.backward()
             optimizer.step()
             count = len(batch_labels)
-            total_loss += float(loss.detach().cpu().item()) * count
+            weighted_loss = float(loss.detach().cpu().item()) * count
+            total_loss += weighted_loss
             total_seen += count
+            epoch_loss += weighted_loss
+            epoch_seen += count
+        if record_history:
+            assert evaluation_functions is not None
+            accuracy_score, confusion_matrix, precision_recall_fscore_support = (
+                evaluation_functions
+            )
+            train_evaluation = evaluate_rows(
+                model=model,
+                rows=rows,
+                class_names=class_names,
+                batch_size=batch_size,
+                torch=torch,
+                np=np,
+                accuracy_score=accuracy_score,
+                confusion_matrix=confusion_matrix,
+                precision_recall_fscore_support=precision_recall_fscore_support,
+                device_name=device_name,
+                move_to_cpu_after=False,
+            )
+            validation_evaluation = evaluate_rows(
+                model=model,
+                rows=validation_rows or [],
+                class_names=class_names,
+                batch_size=batch_size,
+                torch=torch,
+                np=np,
+                accuracy_score=accuracy_score,
+                confusion_matrix=confusion_matrix,
+                precision_recall_fscore_support=precision_recall_fscore_support,
+                device_name=device_name,
+                move_to_cpu_after=False,
+            )
+            history.append(
+                {
+                    "epoch": epoch + 1,
+                    "optimizer_train_loss": epoch_loss / epoch_seen,
+                    "train": train_evaluation,
+                    "validation": validation_evaluation,
+                }
+            )
     model.to("cpu")
-    return {
+    result = {
         "train_loss": total_loss / total_seen,
         "num_examples": len(dataset),
         "optimizer_steps": epochs * len(loader),
         "epochs": epochs,
     }
+    if record_history:
+        result.update(
+            {
+                "validation_num_examples": len(validation_rows or []),
+                "history": history,
+                "final": {
+                    "train": history[-1]["train"],
+                    "validation": history[-1]["validation"],
+                },
+            }
+        )
+    return result
 
 
 def evaluate_rows(
@@ -249,6 +311,8 @@ def evaluate_rows(
     accuracy_score: Any,
     confusion_matrix: Any,
     precision_recall_fscore_support: Any,
+    device_name: str = "cpu",
+    move_to_cpu_after: bool = True,
 ) -> dict[str, Any]:
     if not rows:
         return {
@@ -271,16 +335,21 @@ def evaluate_rows(
     loader = torch.utils.data.DataLoader(
         dataset, batch_size=min(batch_size, len(dataset)), shuffle=False, num_workers=0
     )
-    model.to("cpu")
+    device = torch.device(device_name)
+    model.to(device)
     model.eval()
-    criterion = torch.nn.CrossEntropyLoss(reduction="sum")
+    criterion = torch.nn.CrossEntropyLoss(reduction="sum").to(device)
     predictions: list[int] = []
     total_loss = 0.0
     with torch.no_grad():
         for batch_features, batch_labels in loader:
+            batch_features = batch_features.to(device)
+            batch_labels = batch_labels.to(device)
             outputs = model(batch_features)
             total_loss += float(criterion(outputs, batch_labels).item())
             predictions.extend(outputs.argmax(dim=1).cpu().tolist())
+    if move_to_cpu_after:
+        model.to("cpu")
     prediction_array = np.asarray(predictions, dtype=np.int64)
     label_ids = list(range(len(class_names)))
     precision, recall, f1, support = precision_recall_fscore_support(

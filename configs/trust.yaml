@@ -52,11 +52,11 @@ measurements:
     pcr_index: 0
     path: Dockerfile.m5
   - component_id: secure-round-client
-    component_version: "0.5.0"
+    component_version: "0.5.1"
     pcr_index: 4
     path: src/fl_forensics/secure_round.py
   - component_id: secure-round-schemas
-    component_version: "0.5.0"
+    component_version: "0.5.1"
     pcr_index: 4
     path: src/fl_forensics/secure_round_models.py
   - component_id: tpm-signing-adapter
@@ -64,18 +64,30 @@ measurements:
     pcr_index: 4
     path: src/fl_forensics/tpm_adapter.py
   - component_id: federated-model
-    component_version: "0.5.0"
+    component_version: "0.5.1"
     pcr_index: 4
     path: src/fl_forensics/federated_model.py
+  - component_id: secure-campaign-coordinator
+    component_version: "0.5.1"
+    pcr_index: 4
+    path: src/fl_forensics/secure_campaign.py
+  - component_id: command-interface
+    component_version: "0.5.1"
+    pcr_index: 4
+    path: src/fl_forensics/cli.py
   - component_id: secure-round-policy
-    component_version: "1.0.0"
+    component_version: "1.1.0"
     pcr_index: 7
     path: configs/secure-round.yaml
   - component_id: secure-round-topology
-    component_version: "1.0.0"
+    component_version: "1.1.0"
     pcr_index: 7
     path: compose.m5.yaml
   - component_id: federation-configuration
     component_version: "1.0.0"
     pcr_index: 10
     path: configs/federation.yaml
+  - component_id: secure-multiround-orchestrator
+    component_version: "0.5.1"
+    pcr_index: 7
+    path: scripts/run_m5_secure_multiround.py

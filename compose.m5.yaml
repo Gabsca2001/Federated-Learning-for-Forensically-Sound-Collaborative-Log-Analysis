@@ -1,5 +1,3 @@
-version: "3.9"
-
 x-m5-tpm: &m5-tpm
   build:
     context: .
@@ -268,11 +266,13 @@ services:
     command: ["m5-init", "--workspace", "/campaign", "--trust-workspace", "/trust", "--partition-manifest", "/partition/manifest.json", "--config", "/app/configs/federation.yaml", "--secure-config", "/app/configs/secure-round.yaml"]
     volumes:
       - ${M5_WORKSPACE:-./artifacts/m5-secure-round}:/campaign
+      - ${M5_COORDINATOR_WORKSPACE:-./artifacts/m5-secure-campaign}:/coordinator
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/registry:/trust/registry:ro
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/results:/trust/results:ro
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/enrollment-authority.public.pem:/trust/authority/enrollment-authority.public.pem:ro
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/attestation-verifier.public.pem:/trust/authority/attestation-verifier.public.pem:ro
       - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/manifest.json:/partition/manifest.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/server/evaluation.json:/partition/server-evaluation.json:ro
       - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions:/submissions:ro
 
 volumes:

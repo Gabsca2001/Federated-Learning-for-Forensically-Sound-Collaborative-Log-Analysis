@@ -445,6 +445,8 @@ class SecureRoundDeploymentTests(unittest.TestCase):
         self.assertNotIn("private.pem", coordinator_volumes)
         self.assertIn("enrollment-authority.public.pem", coordinator_volumes)
         self.assertIn("attestation-verifier.public.pem", coordinator_volumes)
+        self.assertIn("/coordinator", coordinator_volumes)
+        self.assertIn("/partition/server-evaluation.json:ro", coordinator_volumes)
 
 
 if __name__ == "__main__":

@@ -44,14 +44,24 @@ semantics. TLS 1.3 client certificates are bound to the same enrolled client.
 The protocol, topology, adverse cases, and 15-swtpm Docker campaign are tested;
 the separate physical-node experiment remains a runtime acceptance gate.
 
-## M5 implementation gate
+## Completed M5 implementation gate
 
-M5 implements one attestation-gated FedAvg round with 15 isolated Docker client
-containers. A signed short-lived Round Context binds M4 attestation,
+M5 first implements one attestation-gated FedAvg round with 15 isolated Docker
+client containers. A signed short-lived Round Context binds M4 attestation,
 enrollment, client snapshot, base model, training contract, and federation
 configuration for every participant. TPM ESK-signed Update Bundles pass a
 fail-closed structural and cryptographic validator before signed Contribution
 Decisions are preserved. Replay slots accept only byte-identical retries, and
-the signed checkpoint enumerates every admitted digest and weight. Unit, topology, and 15-swtpm runtime gates are complete. All 15 TPM-signed
+the signed checkpoint enumerates every admitted digest and weight. Unit,
+topology, and 15-swtpm runtime gates are complete. All 15 TPM-signed
 bundles were accepted without errors, and independent verification reproduced
 the stored FedAvg checkpoint exactly.
+The chained extension then executed 30 secure rounds with the same 15 clients.
+Round `r` is cryptographically bound to the accepted checkpoint from round
+`r - 1`; every checkpoint lists the exact admitted bundle digests and weights.
+The runtime accepted 450/450 TPM ESK-signed contributions with zero quarantines
+and no campaign-verification errors. Validation-only selection chose round 11
+(validation macro-F1 0.94833), after which the selected checkpoint obtained test
+macro-F1 0.92257. A digest-linked report preserves the local learning curves,
+update norms, global validation metrics, confusion matrices, and per-class
+results.
