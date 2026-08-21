@@ -67,6 +67,14 @@ as if it had occurred inside a compromised client before that client hashed and
 signed its contribution. The derived artifact is explicitly labelled as an M6
 simulation; it is never presented as the original TPM-signed M5 update.
 
+The authoritative partition reference is the immutable
+`public/partition-manifest.json` copy whose SHA-256 digest is bound by the signed
+M5 Round Context. M6 preserves that exact copy and checks the bytes of all 15
+client datasets, all 15 client manifests, and the server evaluation snapshot
+against its per-file digests. A later regeneration of the top-level M3 manifest
+may change metadata such as `code_version` without changing those frozen files;
+it is not used to replace the signed M5 reference.
+
 For example, freeze three deterministic model-replacement attackers from round
 11 of the accepted M5 campaign:
 

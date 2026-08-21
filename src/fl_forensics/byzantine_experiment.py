@@ -58,6 +58,60 @@ def _write_json(path: Path, value: dict[str, Any]) -> str:
     return sha256_bytes(content)
 
 
+def _verified_snapshot_file(
+    *, root: Path, relative_path: Any, expected_sha256: Any, description: str
+) -> Path:
+    relative = Path(str(relative_path))
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ByzantineExperimentError(
+            f"partition snapshot contains an unsafe path: {description}"
+        )
+    path = root / relative
+    if not path.is_file():
+        raise ByzantineExperimentError(
+            f"partition snapshot file is missing: {description}"
+        )
+    if sha256_file(path) != str(expected_sha256):
+        raise ByzantineExperimentError(
+            f"partition snapshot digest mismatch: {description}"
+        )
+    return path
+
+
+def _verify_partition_snapshot_files(
+    *, partition_workspace: Path, partition_manifest: dict[str, Any]
+) -> Path:
+    records = partition_manifest.get("clients")
+    if not isinstance(records, list):
+        raise ByzantineExperimentError("partition manifest has no client records")
+    client_ids = [str(item.get("client_id")) for item in records]
+    expected_ids = [f"client{index:02d}" for index in range(1, 16)]
+    if client_ids != expected_ids:
+        raise ByzantineExperimentError(
+            "partition manifest does not contain 15 ordered unique clients"
+        )
+    for item in records:
+        client_id = str(item["client_id"])
+        _verified_snapshot_file(
+            root=partition_workspace,
+            relative_path=item.get("dataset_path"),
+            expected_sha256=item.get("dataset_sha256"),
+            description=f"{client_id} dataset",
+        )
+        _verified_snapshot_file(
+            root=partition_workspace,
+            relative_path=item.get("manifest_path"),
+            expected_sha256=item.get("manifest_sha256"),
+            description=f"{client_id} manifest",
+        )
+    return _verified_snapshot_file(
+        root=partition_workspace,
+        relative_path=partition_manifest.get("server_evaluation_path"),
+        expected_sha256=partition_manifest.get("server_evaluation_sha256"),
+        description="server evaluation",
+    )
+
+
 def _model_from_export(value: dict[str, Any], *, torch: Any) -> Any:
     architecture = value["architecture"]
     model = build_model(
@@ -241,16 +295,44 @@ def freeze_byzantine_scenario(
     context_path = source_round_workspace / "public" / "round-context.json"
     base_path = source_round_workspace / "public" / "base-model.json"
     contract_path = source_round_workspace / "public" / "training-contract.json"
-    partition_manifest_path = partition_workspace / "manifest.json"
+    partition_manifest_path = (
+        source_round_workspace / "public" / "partition-manifest.json"
+    )
     context = load_json(context_path)
     base = load_json(base_path)
     training_contract = load_json(contract_path)
     partition_manifest = load_json(partition_manifest_path)
     if sha256_file(partition_manifest_path) != context["core"]["partition_manifest_sha256"]:
-        raise ByzantineExperimentError("partition manifest differs from signed M5 context")
+        raise ByzantineExperimentError(
+            "M5 public partition manifest differs from signed round context"
+        )
     client_ids = [str(item["client_id"]) for item in context["core"]["clients"]]
     if len(client_ids) != int(experiment_config["client_count"]):
         raise ByzantineExperimentError("M6 client count differs from signed M5 context")
+    partition_client_ids = [
+        str(item.get("client_id")) for item in partition_manifest.get("clients", [])
+    ]
+    if partition_client_ids != client_ids:
+        raise ByzantineExperimentError(
+            "signed partition manifest client order differs from signed M5 context"
+        )
+    for context_client, partition_client in zip(
+        context["core"]["clients"], partition_manifest["clients"], strict=True
+    ):
+        if (
+            context_client["snapshot_sha256"] != partition_client["dataset_sha256"]
+            or context_client["snapshot_manifest_sha256"]
+            != partition_client["manifest_sha256"]
+            or int(context_client["train_row_count"])
+            != int(partition_client["train_row_count"])
+        ):
+            raise ByzantineExperimentError(
+                f"signed M5 client snapshot binding mismatch: {context_client['client_id']}"
+            )
+    _verify_partition_snapshot_files(
+        partition_workspace=partition_workspace,
+        partition_manifest=partition_manifest,
+    )
     seed = int(experiment_config["seed"])
     selected_attackers = (
         _select_attackers(client_ids, f=f, seed=seed)
@@ -358,6 +440,8 @@ def freeze_byzantine_scenario(
             }
         )
     _write_json(output / "base-model.json", base)
+    frozen_partition_path = output / "source-partition-manifest.json"
+    write_once(frozen_partition_path, partition_manifest_path.read_bytes())
     manifest = {
         "schema_version": "1.0",
         "artifact_type": "m6_frozen_byzantine_update_set",
@@ -375,6 +459,7 @@ def freeze_byzantine_scenario(
             source_round_workspace / "checkpoint" / "manifest.json"
         ),
         "base_model_sha256": sha256_file(output / "base-model.json"),
+        "partition_manifest_path": "source-partition-manifest.json",
         "partition_manifest_sha256": sha256_file(partition_manifest_path),
         "byzantine_config_sha256": config_digest,
         "implementation_sha256": sha256_file(Path(__file__)),
@@ -411,6 +496,17 @@ def verify_frozen_update_set(*, workspace: Path) -> dict[str, Any]:
         "base_model_sha256"
     ):
         errors.append("frozen base model digest mismatch")
+    partition_manifest_relative = manifest.get("partition_manifest_path")
+    if partition_manifest_relative is not None:
+        try:
+            _verified_snapshot_file(
+                root=workspace,
+                relative_path=partition_manifest_relative,
+                expected_sha256=manifest.get("partition_manifest_sha256"),
+                description="frozen source partition manifest",
+            )
+        except ByzantineExperimentError as exc:
+            errors.append(str(exc))
     clients = manifest.get("clients", [])
     identities = [item.get("client_id") for item in clients]
     if len(identities) != 15 or len(set(identities)) != 15 or identities != sorted(identities):
@@ -477,13 +573,27 @@ def _compute_comparison(
         raise ByzantineExperimentError(f"frozen inputs do not verify: {verification['errors']}")
     config, config_digest = load_yaml(config_path)
     manifest = load_json(frozen_workspace / "manifest.json")
-    partition_manifest_path = partition_workspace / "manifest.json"
+    partition_manifest_relative = manifest.get("partition_manifest_path")
+    partition_manifest_path = (
+        frozen_workspace / str(partition_manifest_relative)
+        if partition_manifest_relative is not None
+        else partition_workspace / "manifest.json"
+    )
     if sha256_file(partition_manifest_path) != manifest["partition_manifest_sha256"]:
-        raise ByzantineExperimentError("comparison partition manifest digest mismatch")
+        raise ByzantineExperimentError("frozen partition manifest digest mismatch")
     partition_manifest = load_json(partition_manifest_path)
-    server_path = partition_workspace / str(partition_manifest["server_evaluation_path"])
-    if sha256_file(server_path) != partition_manifest["server_evaluation_sha256"]:
-        raise ByzantineExperimentError("server evaluation snapshot digest mismatch")
+    if partition_manifest_relative is not None:
+        server_path = _verify_partition_snapshot_files(
+            partition_workspace=partition_workspace,
+            partition_manifest=partition_manifest,
+        )
+    else:
+        server_path = _verified_snapshot_file(
+            root=partition_workspace,
+            relative_path=partition_manifest.get("server_evaluation_path"),
+            expected_sha256=partition_manifest.get("server_evaluation_sha256"),
+            description="legacy server evaluation",
+        )
     server_evaluation = load_json(server_path)
     base = load_json(frozen_workspace / "base-model.json")
     base_arrays = arrays_from_export(base, np=np)
