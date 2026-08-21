@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from fl_forensics.byzantine_experiment import (
+    _compute_comparison,
     run_byzantine_comparison,
     verify_byzantine_comparison,
     verify_frozen_update_set,
@@ -20,7 +21,7 @@ from fl_forensics.federated_model import (
     dependencies,
 )
 from fl_forensics.preprocessing import derived_json_bytes
-from fl_forensics.storage import write_once
+from fl_forensics.storage import load_json, write_once
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -174,6 +175,23 @@ class ByzantineExperimentTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "compared")
         self.assertEqual(result["profile_count"], 10)
+        comparison = load_json(self.output / "comparison.json")
+        self.assertEqual(comparison["schema_version"], "1.1")
+        self.assertIn("validation_impact_reference", comparison)
+        for indicator in comparison["indicators"]:
+            self.assertIn("validation_macro_f1", indicator)
+            self.assertIn("validation_impact", indicator)
+        legacy, _models = _compute_comparison(
+            frozen_workspace=self.frozen,
+            partition_workspace=self.partition,
+            config_path=ROOT / "configs" / "byzantine.yaml",
+            include_validation_impact=False,
+        )
+        self.assertEqual(legacy["schema_version"], "1.0")
+        self.assertNotIn("validation_impact_reference", legacy)
+        for indicator in legacy["indicators"]:
+            self.assertNotIn("validation_macro_f1", indicator)
+            self.assertNotIn("validation_impact", indicator)
         verification = verify_byzantine_comparison(
             frozen_workspace=self.frozen,
             partition_workspace=self.partition,

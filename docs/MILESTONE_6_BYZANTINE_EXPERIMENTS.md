@@ -34,7 +34,17 @@ The M6 core provides:
   validated delta tensors.
 
 The numerical functions do not mutate their inputs. Gaussian noise, backdoor
-selection, and collusion are deterministic for the recorded seed.
+selection, and collusion are deterministic for the recorded seed. Comparison
+schema `1.1` also evaluates the round base model and every individual frozen
+client model on the server validation split. For client $k$, the semantic
+indicator is
+
+\[
+I_k = F_{1,\mathrm{macro}}(w_t) - F_{1,\mathrm{macro}}(w_k).
+\]
+
+A positive value measures validation degradation relative to the round base.
+Schema `1.0` remains reproducible for already preserved comparisons.
 
 ## Byzantine bounds
 
@@ -139,8 +149,10 @@ The three local objectives changed 28, 28, and 29 rows respectively.
 
 - frozen manifest SHA-256:
   `4ff9af4265c58277cb457188a01be553851b3049bb60797cf760db211cd25c66`;
-- comparison SHA-256:
+- schema `1.0` comparison SHA-256:
   `abf7be98f4e8f02f2aed689bc22d01acee56c36eac08c31da81b36d18e0aa33d`;
+- schema `1.1` comparison SHA-256 with validation impact:
+  `32f2300f615684c806be7c1037b77396a5982d8c5657f27d34c71670786e544f`;
 - verification: 15 clients, 10 profiles, zero errors;
 - regression gate: 84 tests passed and the changed-file Ruff gate passed.
 
@@ -170,6 +182,14 @@ to 38.952--47.985. Clipping acts only on the three attackers, with scales
 Bulyan obtain the highest test macro-F1, 0.918417. These results demonstrate
 that a valid TPM-backed signature establishes origin and integrity, but cannot
 establish that the signed update is semantically benign.
+
+The schema `1.1` base validation macro-F1 is 0.928967. Each malicious client
+model falls to 0.102938, producing validation impact 0.826029. Benign-client
+impact ranges from -0.023644 to 0.055805, so the smallest malicious impact is
+approximately 14.8 times the largest benign impact in this frozen scenario.
+This is a diagnostic result, not an automatic malicious-intent verdict or a
+universal quarantine threshold. Threshold calibration and false-positive
+analysis remain bound to clean development campaigns and repeated seeds.
 
 The verifier recomputes every aggregate model and the validation, test, and
 benign-only temporal-holdout metrics. Altering one frozen update, model, metric,

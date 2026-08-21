@@ -609,6 +609,7 @@ def _compute_comparison(
     frozen_workspace: Path,
     partition_workspace: Path,
     config_path: Path,
+    include_validation_impact: bool = True,
 ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     verification = verify_frozen_update_set(workspace=frozen_workspace)
     if verification["status"] != "verified":
@@ -640,18 +641,42 @@ def _compute_comparison(
     base = load_json(frozen_workspace / "base-model.json")
     base_arrays = arrays_from_export(base, np=np)
     records = manifest["clients"]
+    frozen_updates = [
+        load_json(frozen_workspace / item["frozen_update_path"]) for item in records
+    ]
     deltas = [
         model_delta(
             base_arrays,
-            arrays_from_export(
-                load_json(frozen_workspace / item["frozen_update_path"]), np=np
-            ),
+            arrays_from_export(update, np=np),
         )
-        for item in records
+        for update in frozen_updates
     ]
     indicators = update_indicators(
         deltas, client_ids=[str(item["client_id"]) for item in records]
     )
+    validation_impact_reference: dict[str, Any] | None = None
+    if include_validation_impact:
+        base_validation_f1 = float(
+            _evaluate_export(
+                model_export=base,
+                server_evaluation=server_evaluation,
+                batch_size=128,
+            )["validation"]["macro_f1_all_model_classes"]
+        )
+        for indicator, update in zip(indicators, frozen_updates, strict=True):
+            client_validation_f1 = float(
+                _evaluate_export(
+                    model_export=update,
+                    server_evaluation=server_evaluation,
+                    batch_size=128,
+                )["validation"]["macro_f1_all_model_classes"]
+            )
+            indicator["validation_macro_f1"] = client_validation_f1
+            indicator["validation_impact"] = base_validation_f1 - client_validation_f1
+        validation_impact_reference = {
+            "metric": "base_validation_macro_f1_minus_client_validation_macro_f1",
+            "base_validation_macro_f1": base_validation_f1,
+        }
     threshold = float(manifest["clip_threshold"]["max_norm"])
     clipped: list[list[np.ndarray]] = []
     clip_scales: list[float] = []
@@ -697,7 +722,7 @@ def _compute_comparison(
                 }
             )
     comparison = {
-        "schema_version": "1.0",
+        "schema_version": "1.1" if include_validation_impact else "1.0",
         "artifact_type": "m6_byzantine_aggregator_comparison",
         "attack": manifest["attack"],
         "f": f,
@@ -716,6 +741,8 @@ def _compute_comparison(
         "indicators": indicators,
         "outcomes": outcomes,
     }
+    if validation_impact_reference is not None:
+        comparison["validation_impact_reference"] = validation_impact_reference
     return comparison, models
 
 
@@ -779,10 +806,16 @@ def verify_byzantine_comparison(
         }
     stored = load_json(stored_path)
     try:
+        schema_version = str(stored.get("schema_version", "1.0"))
+        if schema_version not in {"1.0", "1.1"}:
+            raise ByzantineExperimentError(
+                f"unsupported M6 comparison schema: {schema_version}"
+            )
         recomputed, models = _compute_comparison(
             frozen_workspace=frozen_workspace,
             partition_workspace=partition_workspace,
             config_path=config_path,
+            include_validation_impact=schema_version == "1.1",
         )
         model_records = stored.get("models", [])
         if [item.get("profile_id") for item in model_records] != sorted(models):
