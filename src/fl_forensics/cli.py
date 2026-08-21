@@ -6,6 +6,12 @@ import argparse
 import json
 from pathlib import Path
 
+from .byzantine_experiment import (
+    freeze_byzantine_scenario,
+    run_byzantine_comparison,
+    verify_byzantine_comparison,
+    verify_frozen_update_set,
+)
 from .central_baseline import train_central_baseline, verify_central_baseline
 from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
@@ -345,6 +351,62 @@ def build_parser() -> argparse.ArgumentParser:
     m5_verify_campaign.add_argument("--trust-workspace", type=Path, required=True)
     m5_verify_campaign.add_argument("--partition-manifest", type=Path, required=True)
     m5_verify_campaign.add_argument("--server-evaluation", type=Path, required=True)
+
+    m6_freeze = subparsers.add_parser(
+        "m6-freeze", help="freeze one deterministic attack set from a verified M5 round"
+    )
+    m6_freeze.add_argument("--source-round-workspace", type=Path, required=True)
+    m6_freeze.add_argument("--trust-workspace", type=Path, required=True)
+    m6_freeze.add_argument("--partition-workspace", type=Path, required=True)
+    m6_freeze.add_argument("--output", type=Path, required=True)
+    m6_freeze.add_argument(
+        "--attack",
+        choices=(
+            "clean",
+            "label_flip",
+            "gaussian_noise",
+            "sign_flip",
+            "model_replacement",
+            "backdoor",
+            "colluding",
+        ),
+        required=True,
+    )
+    m6_freeze.add_argument("--f", type=int, required=True)
+    m6_freeze.add_argument(
+        "--attacker-id",
+        action="append",
+        dest="attacker_ids",
+        help="explicit attacker identity; repeat exactly f times",
+    )
+    m6_freeze.add_argument(
+        "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
+
+    m6_verify_frozen = subparsers.add_parser(
+        "m6-verify-frozen", help="verify every digest in a frozen M6 update set"
+    )
+    m6_verify_frozen.add_argument("--workspace", type=Path, required=True)
+
+    m6_compare = subparsers.add_parser(
+        "m6-compare", help="compare every M6 aggregator on one frozen update set"
+    )
+    m6_compare.add_argument("--frozen-workspace", type=Path, required=True)
+    m6_compare.add_argument("--partition-workspace", type=Path, required=True)
+    m6_compare.add_argument("--output", type=Path, required=True)
+    m6_compare.add_argument(
+        "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
+
+    m6_verify = subparsers.add_parser(
+        "m6-verify", help="independently recompute an M6 aggregator comparison"
+    )
+    m6_verify.add_argument("--frozen-workspace", type=Path, required=True)
+    m6_verify.add_argument("--partition-workspace", type=Path, required=True)
+    m6_verify.add_argument("--workspace", type=Path, required=True)
+    m6_verify.add_argument(
+        "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
     return parser
 
 
@@ -567,6 +629,41 @@ def main(argv: list[str] | None = None) -> int:
             trust_workspace=arguments.trust_workspace,
             partition_manifest_path=arguments.partition_manifest,
             server_evaluation_path=arguments.server_evaluation,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-freeze":
+        result = freeze_byzantine_scenario(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            attack=arguments.attack,
+            f=arguments.f,
+            config_path=arguments.config,
+            attacker_ids=arguments.attacker_ids,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify-frozen":
+        result = verify_frozen_update_set(workspace=arguments.workspace)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-compare":
+        result = run_byzantine_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify":
+        result = verify_byzantine_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

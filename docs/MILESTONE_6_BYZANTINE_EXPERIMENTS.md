@@ -57,3 +57,52 @@ still requires generation and preservation of the signed/frozen attack sets,
 evaluation of every configured aggregator on those exact bytes, repeated seeds,
 and a digest-verified comparison report. M6 is not complete until that campaign
 has been executed and independently verified.
+
+## Freezing and comparing one real M5 round
+
+The first runtime integration derives a controlled attack scenario from a
+previously verified M5 round. The original bundle and update digests are kept in
+the frozen manifest. A model- or data-poisoning transformation is then applied
+as if it had occurred inside a compromised client before that client hashed and
+signed its contribution. The derived artifact is explicitly labelled as an M6
+simulation; it is never presented as the original TPM-signed M5 update.
+
+For example, freeze three deterministic model-replacement attackers from round
+11 of the accepted M5 campaign:
+
+```bash
+fl-forensics m6-freeze \
+  --source-round-workspace artifacts/m5-secure-multiround-v2/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --output artifacts/m6-model-replacement-f3 \
+  --attack model_replacement \
+  --f 3
+
+fl-forensics m6-verify-frozen \
+  --workspace artifacts/m6-model-replacement-f3
+```
+
+The comparison runs FedAvg, coordinate median, trimmed mean, MultiKrum, and
+Bulyan both with and without the clean-reference L2 clipping threshold. Every
+profile receives the same ordered frozen update set:
+
+```bash
+fl-forensics m6-compare \
+  --frozen-workspace artifacts/m6-model-replacement-f3 \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --output artifacts/m6-model-replacement-f3-comparison
+
+fl-forensics m6-verify \
+  --frozen-workspace artifacts/m6-model-replacement-f3 \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --workspace artifacts/m6-model-replacement-f3-comparison
+```
+
+The verifier recomputes every aggregate model and the validation, test, and
+benign-only temporal-holdout metrics. Altering one frozen update, model, metric,
+input ordering, configuration digest, or partition reference makes the gate
+fail. Label flip and backdoor scenarios retrain only the designated compromised
+clients from copies of their frozen local snapshots. Prototype aggregation is
+kept out of this model-parameter comparison and remains the next separate M6
+artifact family.
