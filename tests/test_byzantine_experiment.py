@@ -273,6 +273,81 @@ class ByzantineExperimentTests(unittest.TestCase):
         )
         self.assertEqual(verification["status"], "verified")
 
+    def test_colluding_comparison_records_exact_update_groups(self) -> None:
+        try:
+            dependencies()
+        except FederatedDependencyError as exc:
+            self.skipTest(str(exc))
+        manifest_path = self.frozen / "manifest.json"
+        manifest = load_json(manifest_path)
+        attacker_ids = ["client01", "client02", "client03"]
+        template_path = self.frozen / manifest["clients"][0][
+            "frozen_update_path"
+        ]
+        template_bytes = template_path.read_bytes()
+        template_digest = sha256_file(template_path)
+        manifest["attack"] = "colluding"
+        manifest["f"] = 3
+        manifest["attacker_ids"] = attacker_ids
+        for record in manifest["clients"]:
+            client_id = str(record["client_id"])
+            attacked = client_id in attacker_ids
+            record["attacker"] = attacked
+            if attacked:
+                path = self.frozen / record["frozen_update_path"]
+                if path != template_path:
+                    path.chmod(0o644)
+                    path.write_bytes(template_bytes)
+                record["frozen_update_sha256"] = template_digest
+                record["derivation"] = {
+                    "attack": "colluding",
+                    "scale": 15.0,
+                    "template_client_id": "client01",
+                }
+            else:
+                record["derivation"] = {"attack": "clean"}
+        manifest_path.chmod(0o644)
+        manifest_path.write_bytes(derived_json_bytes(manifest))
+
+        result = run_byzantine_comparison(
+            frozen_workspace=self.frozen,
+            partition_workspace=self.partition,
+            output=self.output,
+            config_path=ROOT / "configs" / "byzantine.yaml",
+        )
+        self.assertEqual(result["status"], "compared")
+        comparison = load_json(self.output / "comparison.json")
+        self.assertEqual(comparison["schema_version"], "1.4")
+        evidence = comparison["collusion_evidence"]
+        self.assertEqual(evidence["declared_attacker_ids"], attacker_ids)
+        self.assertEqual(evidence["unique_update_count"], 13)
+        self.assertEqual(evidence["exact_duplicate_group_count"], 1)
+        self.assertEqual(evidence["groups"], [
+            {
+                "frozen_update_sha256": template_digest,
+                "client_ids": attacker_ids,
+                "group_size": 3,
+            }
+        ])
+        indicators = {
+            item["client_id"]: item for item in comparison["indicators"]
+        }
+        for client_id in attacker_ids:
+            self.assertEqual(indicators[client_id]["exact_update_group_size"], 3)
+            self.assertEqual(
+                indicators[client_id]["exact_update_peer_ids"],
+                [item for item in attacker_ids if item != client_id],
+            )
+        self.assertEqual(indicators["client04"]["exact_update_group_size"], 1)
+        self.assertEqual(indicators["client04"]["exact_update_peer_ids"], [])
+        verification = verify_byzantine_comparison(
+            frozen_workspace=self.frozen,
+            partition_workspace=self.partition,
+            workspace=self.output,
+            config_path=ROOT / "configs" / "byzantine.yaml",
+        )
+        self.assertEqual(verification["status"], "verified")
+
 
 if __name__ == "__main__":
     unittest.main()

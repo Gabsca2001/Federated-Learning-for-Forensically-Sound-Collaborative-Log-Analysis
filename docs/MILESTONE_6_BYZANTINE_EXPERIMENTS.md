@@ -75,6 +75,21 @@ the partition snapshot, reevaluates every preserved client and aggregate model,
 and rejects any difference in metrics or lineage. Schemas `1.0`, `1.1`, and
 `1.2` remain supported for previously frozen comparisons.
 
+Colluding-update comparisons use schema `1.4`. The controlled collusion
+primitive produces byte-identical frozen model updates from one explicitly
+recorded template client and scale. The comparison groups all 15 contributions
+by their already verified frozen-update SHA-256 digest and records the shared
+digest, ordered client identities, group size, unique-update count, and exact
+peer identities for every client. Verification rejects a declared colluding
+scenario when its attackers do not share the same frozen coordination contract
+and exact update bytes.
+
+Exact equality is strong evidence of coordination in this controlled campaign,
+but is not by itself a universal proof of malicious intent. An operational
+decision must also consider the declared training contract, expected sources of
+determinism, semantic validation impact, update geometry, aggregate behavior,
+and authenticated client provenance.
+
 ## Byzantine bounds
 
 Let `n` be the number of admitted updates and `f` the assumed upper bound on
@@ -91,18 +106,19 @@ silent fallbacks to FedAvg.
 
 ## Runtime gate status
 
-The freeze/compare/verify runtime gate has been exercised on six `f=3`
+The freeze/compare/verify runtime gate has been exercised on seven `f=3`
 scenarios derived from the same verified M5 round: the legacy magnitude-only
 amplification baseline, targeted malicious model replacement, label flip, sign
-flip, Gaussian noise, and feature-trigger backdoor. Every defense profile was
-recomputed from the exact ordered frozen bytes and independently verified by
-digest. Backdoor evaluation additionally reconstructs one content-addressed
-triggered test set for both individual-client and aggregate-model evaluation.
+flip, Gaussian noise, feature-trigger backdoor, and byte-identical collusion.
+Every defense profile was recomputed from the exact ordered frozen bytes and
+independently verified by digest. Backdoor evaluation additionally reconstructs
+one content-addressed triggered test set for both individual-client and
+aggregate-model evaluation. Collusion evaluation groups all admitted updates by
+their already verified frozen-update digest.
 
-The remaining M6 campaign covers collusion, the separate prototype artifact
-family, other configured `f` values, and repeated seeds. M6 therefore remains
-in progress even though the current runtime slices are implemented and
-verified.
+The remaining M6 campaign covers the separate prototype artifact family, other
+configured `f` values, and repeated seeds. M6 therefore remains in progress even
+though the current runtime slices are implemented and verified.
 
 ## Freezing and comparing one real M5 round
 
@@ -278,6 +294,64 @@ The result also demonstrates why a generic anomaly or validation score cannot
 establish backdoor absence. The forensic decision requires the attack-specific,
 digest-bound evaluation set, client-level attribution, aggregate-level ASR, and
 clean utility metrics together.
+
+## Verified byte-identical collusion result
+
+The verified run reuses round 11, `f=3`, and attackers `client02`, `client05`,
+and `client14`. All three submit the same model update derived from the clean
+`client02` delta with scale 15. The controlled derivation therefore tests an
+exact coordinated cluster rather than merely three independent large updates.
+
+- frozen manifest SHA-256:
+  `f830b26d4a991be0e5146c645da8da0f7bf9ec219d4673cbe7ff02505d442c7c`;
+- schema `1.4` comparison SHA-256:
+  `ed2ed5516f449addd99342b8434ab5ab3a62f8a8e37024c2815cdabf3789771e`;
+- shared attacker update SHA-256:
+  `0e1725cdc13f529f051b71939dbb85bd5034c2a815eac4239948ef69d7a18ba6`;
+- evidence inventory: 13 unique updates and one exact-duplicate group of size 3;
+- verification: 15 clients, 10 profiles, zero errors;
+- regression gate: 86 tests passed and the changed-file Ruff gate passed.
+
+The sole duplicate group contains exactly `client02`, `client05`, and
+`client14`; every benign client has group size one. Each colluder has relative
+norm 14.656, cosine-to-median 0.873, MAD score 25.419, and validation impact
+0.492368. Cosine alone is not decisive because several benign updates have a
+similar direction. Exact digest grouping, norm, MAD, validation impact, signed
+identity, and the declared experiment contract together provide the attribution.
+
+The clean-reference clipping threshold is L2 norm 0.533394518, derived from
+clean median 0.464454602 and MAD 0.022979972. Clipping applies scale 0.076562132
+to exactly the three colluding clients and scale 1 to all 12 benign clients.
+This independently agrees with the digest-defined group without using the
+declared attacker labels to calculate the threshold.
+
+| Profile | Validation macro-F1 | Test macro-F1 |
+| --- | ---: | ---: |
+| coordinate median | 0.948505 | 0.924420 |
+| trimmed mean | 0.948505 | 0.924420 |
+| FedAvg + clipping | 0.947671 | 0.924163 |
+| coordinate median + clipping | 0.947671 | 0.924163 |
+| MultiKrum + clipping | 0.947671 | 0.924059 |
+| trimmed mean + clipping | 0.947350 | 0.923830 |
+| MultiKrum | 0.941390 | 0.918417 |
+| FedAvg | 0.938281 | 0.943052 |
+| Bulyan | 0.938203 | 0.918417 |
+| Bulyan + clipping | 0.938203 | 0.918417 |
+
+Validation-only selection chooses coordinate median or trimmed mean, both with
+0.948505 validation and 0.924420 test macro-F1. Unclipped FedAvg has the highest
+reported test value, 0.943052, but lower validation, 0.938281. It cannot be
+selected retrospectively from the test result without violating the frozen
+evaluation protocol. The validation/test disagreement is preserved as evidence
+rather than reported as a successful defense or a successful attack.
+
+This controlled collusion is detected exactly, but it does not produce a
+test-set degradation in the unprotected aggregate. It therefore demonstrates
+coordinated-update detection and defense comparison, not successful semantic
+poisoning. A detected anomaly is not equivalent to harmful impact, just as
+cryptographic validity is not equivalent to benign semantics. Repeated seeds,
+other `f` values, and end-to-end signed malicious-client campaigns remain
+necessary for generalization beyond this frozen case.
 
 The verifier recomputes every aggregate model and the validation, test,
 backdoor-targeted (when applicable), and

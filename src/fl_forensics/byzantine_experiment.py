@@ -717,6 +717,69 @@ def _backdoor_evaluation_contract(
     return triggered_rows, contract
 
 
+def _collusion_evidence(manifest: dict[str, Any]) -> dict[str, Any]:
+    records = manifest["clients"]
+    attackers = [item for item in records if item.get("attacker")]
+    if not attackers:
+        raise ByzantineExperimentError("colluding scenario has no attackers")
+    profiles = [
+        {
+            "template_client_id": str(item["derivation"]["template_client_id"]),
+            "scale": float(item["derivation"]["scale"]),
+        }
+        for item in attackers
+        if item.get("derivation", {}).get("attack") == "colluding"
+    ]
+    if len(profiles) != len(attackers):
+        raise ByzantineExperimentError(
+            "colluding attacker has a different frozen derivation"
+        )
+    profile = profiles[0]
+    if any(
+        derived_json_bytes(item) != derived_json_bytes(profile)
+        for item in profiles[1:]
+    ):
+        raise ByzantineExperimentError(
+            "colluding attackers do not share one frozen coordination contract"
+        )
+    clients_by_digest: dict[str, list[str]] = {}
+    for record in records:
+        digest = str(record["frozen_update_sha256"])
+        clients_by_digest.setdefault(digest, []).append(str(record["client_id"]))
+    attacker_digests = {
+        str(item["frozen_update_sha256"]) for item in attackers
+    }
+    if len(attacker_digests) != 1:
+        raise ByzantineExperimentError(
+            "frozen colluding attackers are not byte-identical"
+        )
+    groups = [
+        {
+            "frozen_update_sha256": digest,
+            "client_ids": sorted(client_ids),
+            "group_size": len(client_ids),
+        }
+        for digest, client_ids in sorted(clients_by_digest.items())
+        if len(client_ids) > 1
+    ]
+    attacker_digest = next(iter(attacker_digests))
+    attacker_group = clients_by_digest[attacker_digest]
+    declared_attacker_ids = [str(item) for item in manifest["attacker_ids"]]
+    if not set(declared_attacker_ids).issubset(attacker_group):
+        raise ByzantineExperimentError(
+            "declared colluding attackers do not share one frozen update digest"
+        )
+    return {
+        "method": "byte-identical-frozen-model-update-sha256",
+        "template_client_id": profile["template_client_id"],
+        "scale": profile["scale"],
+        "declared_attacker_ids": declared_attacker_ids,
+        "unique_update_count": len(clients_by_digest),
+        "exact_duplicate_group_count": len(groups),
+        "groups": groups,
+    }
+
+
 def _compute_comparison(
     *,
     frozen_workspace: Path,
@@ -725,6 +788,7 @@ def _compute_comparison(
     include_validation_impact: bool = True,
     include_backdoor_evaluation: bool = True,
     include_backdoor_client_impact: bool = True,
+    include_collusion_evidence: bool = True,
 ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     verification = verify_frozen_update_set(workspace=frozen_workspace)
     if verification["status"] != "verified":
@@ -769,6 +833,24 @@ def _compute_comparison(
     indicators = update_indicators(
         deltas, client_ids=[str(item["client_id"]) for item in records]
     )
+    collusion_evidence: dict[str, Any] | None = None
+    if include_collusion_evidence and manifest["attack"] == "colluding":
+        collusion_evidence = _collusion_evidence(manifest)
+        clients_by_digest: dict[str, list[str]] = {}
+        for record in records:
+            digest = str(record["frozen_update_sha256"])
+            clients_by_digest.setdefault(digest, []).append(
+                str(record["client_id"])
+            )
+        for indicator, record in zip(indicators, records, strict=True):
+            client_id = str(record["client_id"])
+            digest = str(record["frozen_update_sha256"])
+            group = sorted(clients_by_digest[digest])
+            indicator["frozen_update_sha256"] = digest
+            indicator["exact_update_group_size"] = len(group)
+            indicator["exact_update_peer_ids"] = [
+                peer_id for peer_id in group if peer_id != client_id
+            ]
     validation_impact_reference: dict[str, Any] | None = None
     if include_validation_impact:
         base_validation_f1 = float(
@@ -884,7 +966,9 @@ def _compute_comparison(
                 )
                 outcome["backdoor_targeted_evaluation"] = triggered
             outcomes.append(outcome)
-    if backdoor_evaluation is not None:
+    if collusion_evidence is not None:
+        schema_version = "1.4"
+    elif backdoor_evaluation is not None:
         schema_version = (
             "1.3" if include_backdoor_client_impact else "1.2"
         )
@@ -914,6 +998,8 @@ def _compute_comparison(
         comparison["validation_impact_reference"] = validation_impact_reference
     if backdoor_evaluation is not None:
         comparison["backdoor_evaluation"] = backdoor_evaluation
+    if collusion_evidence is not None:
+        comparison["collusion_evidence"] = collusion_evidence
     return comparison, models
 
 
@@ -978,7 +1064,7 @@ def verify_byzantine_comparison(
     stored = load_json(stored_path)
     try:
         schema_version = str(stored.get("schema_version", "1.0"))
-        if schema_version not in {"1.0", "1.1", "1.2", "1.3"}:
+        if schema_version not in {"1.0", "1.1", "1.2", "1.3", "1.4"}:
             raise ByzantineExperimentError(
                 f"unsupported M6 comparison schema: {schema_version}"
             )
@@ -986,9 +1072,11 @@ def verify_byzantine_comparison(
             frozen_workspace=frozen_workspace,
             partition_workspace=partition_workspace,
             config_path=config_path,
-            include_validation_impact=schema_version in {"1.1", "1.2", "1.3"},
+            include_validation_impact=schema_version
+            in {"1.1", "1.2", "1.3", "1.4"},
             include_backdoor_evaluation=schema_version in {"1.2", "1.3"},
             include_backdoor_client_impact=schema_version == "1.3",
+            include_collusion_evidence=schema_version == "1.4",
         )
         model_records = stored.get("models", [])
         if [item.get("profile_id") for item in model_records] != sorted(models):
