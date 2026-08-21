@@ -5,7 +5,6 @@ from pathlib import Path
 
 from fl_forensics.config import load_yaml
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -79,6 +78,26 @@ class ConfigurationTests(unittest.TestCase):
         self.assertTrue(policy["require_fresh_attestation"])
         self.assertTrue(policy["require_tpm_esk_signature"])
         self.assertTrue(policy["require_exact_tensor_schema"])
+
+    def test_m6_compares_all_defenses_on_the_same_frozen_updates(self) -> None:
+        config, _ = load_yaml(ROOT / "configs" / "byzantine.yaml")
+        self.assertEqual(config["experiment"]["client_count"], 15)
+        self.assertEqual(config["experiment"]["byzantine_counts"], [1, 2, 3])
+        self.assertEqual(
+            config["defenses"]["aggregators"],
+            [
+                "fedavg",
+                "coordinate_median",
+                "trimmed_mean",
+                "multikrum",
+                "bulyan",
+            ],
+        )
+        self.assertEqual(len(config["attacks"]["enabled"]), 7)
+        self.assertTrue(
+            config["acceptance"]["same_frozen_updates_for_every_aggregator"]
+        )
+        self.assertTrue(config["acceptance"]["invalid_byzantine_bounds_halt"])
 
 
 if __name__ == "__main__":
