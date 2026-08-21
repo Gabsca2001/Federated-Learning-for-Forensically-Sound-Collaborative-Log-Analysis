@@ -25,6 +25,11 @@ from .prototype_experiment import (
     verify_frozen_prototype_scenario,
     verify_prototype_comparison,
 )
+from .prototype_sensitivity import (
+    plan_prototype_sensitivity,
+    run_prototype_sensitivity,
+    verify_prototype_sensitivity,
+)
 from .reporting import generate_m3_report
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
@@ -493,6 +498,58 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("configs/byzantine-prototype-poisoning.yaml"),
     )
+
+    m6_prototype_sensitivity_plan = subparsers.add_parser(
+        "m6-prototype-sensitivity-plan",
+        help="show the predeclared sensitivity cells without accessing data",
+    )
+    m6_prototype_sensitivity_plan.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_sensitivity = subparsers.add_parser(
+        "m6-prototype-sensitivity",
+        help="run every predeclared exploratory prototype sensitivity scenario",
+    )
+    m6_prototype_sensitivity.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity.add_argument("--output", type=Path, required=True)
+    m6_prototype_sensitivity.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_verify_sensitivity = subparsers.add_parser(
+        "m6-prototype-verify-sensitivity",
+        help="recompute and verify every prototype sensitivity scenario",
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
     return parser
 
 
@@ -787,6 +844,30 @@ def main(argv: list[str] | None = None) -> int:
     if arguments.command == "m6-prototype-verify":
         result = verify_prototype_comparison(
             frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-sensitivity-plan":
+        result = plan_prototype_sensitivity(config_path=arguments.config)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-sensitivity":
+        result = run_prototype_sensitivity(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify-sensitivity":
+        result = verify_prototype_sensitivity(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
             partition_workspace=arguments.partition_workspace,
             workspace=arguments.workspace,
             config_path=arguments.config,

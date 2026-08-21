@@ -485,3 +485,34 @@ profiles classify that holdout with accuracy 1.0.
 Scale 1.5 is retained as the primary declared scenario. Any later scale or
 `f` sweep must be labelled exploratory, preserve every result, and must not
 select a preferred configuration retrospectively from test performance.
+
+## Predeclared prototype sensitivity design
+
+The follow-up prototype analysis is explicitly exploratory and uses a
+one-factor-at-a-time design. It is not a new model-selection phase. The primary
+anchor remains `f=3`, scale 1.5, with its already observed schema `1.1` result.
+The `f` sweep holds scale at 1.5 and evaluates `f=1,2,3`. The scale sweep holds
+`f=3` and evaluates 0.5, 1.0, 1.5, and 2.0. Their geometric meanings are,
+respectively, the midpoint between source and target, replacement by the target
+prototype, half a source-target distance beyond the target, and reflection of
+the source through the target. The union contains six unique cells.
+
+Attacker sets are nested and fixed before execution: `client02`; `client02` and
+`client05`; then `client02`, `client05`, and `client14`. Every cell receives its
+own effective configuration, frozen submissions, aggregates, comparison, and
+digest chain. The campaign records every cell and sets both
+`test_based_selection_permitted` and `selection_performed` to false.
+
+`m6-prototype-sensitivity` executes the six-cell design and emits one immutable
+summary rather than ranking or selecting a scenario. The summary preserves the
+targeted ASR, source-class recall and misclassification, macro-F1, and prototype
+shift for baseline and robust aggregation. `m6-prototype-verify-sensitivity`
+re-extracts all frozen client prototypes, recomputes every aggregate and model
+inference, and reconstructs the report-all summary. Repeated random seeds,
+dispersion, and confidence intervals remain M8 work and are not inferred from
+this deterministic M6 sensitivity analysis.
+
+Before execution, `m6-prototype-sensitivity-plan` exposes the ordered cells,
+nested attacker identities, campaign-configuration digest, primary anchor, and
+the false test-access/selection flags. The plan can therefore be committed and
+published before any new sensitivity result is observed.
