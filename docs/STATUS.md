@@ -23,7 +23,7 @@
 | 15-pair `swtpm` Compose deployment | Implemented and exercised (M4) | Dedicated state/socket volumes; no client state mount or foreign socket; static topology verifier |
 | TLS 1.3 mutual authentication | Implemented and unit-tested (M4) | Private experiment CA, clientAuth/serverAuth EKU, SAN and enrollment-fingerprint binding, wrong pair rejected |
 | Physical TPM 2.0 adapter | Implemented, hardware run pending (M4) | Same tpm2-tools adapter via `device:/dev/tpmrm0`; no simulator/hardware equivalence claim |
-| Attestation-gated Update Bundle and secure FedAvg checkpoint | Implemented and exercised with 15 Docker clients (M5) | 15/15 TPM-signed bundles accepted; zero errors; independent FedAvg recomputation matched the stored checkpoint |
+| Attestation-gated Update Bundles and secure FedAvg campaign | Implemented and Docker-runtime verified (M5) | Single-round 15/15 gate plus 30 signed/chained checkpoints; 450/450 TPM ESK bundles accepted, zero quarantines, independent reconstruction, validation-only selection; round 11 validation/test macro-F1 0.94833/0.92257 |
 | Byzantine attacks and robust aggregation | Planned (M6) | — |
 | Integrated Gradients and deterministic report | Planned (M7) | — |
 

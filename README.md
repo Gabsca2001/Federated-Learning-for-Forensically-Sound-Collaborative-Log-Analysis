@@ -190,7 +190,7 @@ fl-forensics m4-physical-preflight --tcti device:/dev/tpmrm0
 See `docs/MILESTONE_4_TRUST_DEPLOYMENT.md` for artifact semantics, negative
 tests, and the limits of swtpm assurance.
 
-## Milestone 5 — secure containerized round
+## Milestone 5 — secure containerized multi-round campaign
 
 M5 measures the training runtime itself, so it requires a fresh M4 trust
 workspace and TPM namespace after these source changes. Build the M5 image
@@ -211,11 +211,33 @@ python scripts/run_m5_secure_round.py run \
   --workers 4
 ```
 
-The final gate is `accepted_count: 15`,
+The single-round gate is `accepted_count: 15`,
 `matches_reference_checkpoint: true`, `error_count: 0`, and `status: verified`.
-The coordinator never mounts client snapshots. See
-`docs/MILESTONE_5_SECURE_ROUND.md` for the required fresh-M4 sequence, artifact
-semantics, threat boundary, and debugging actions.
+
+After that independent gate, run or resume the chained 30-round campaign and
+verify its signed campaign manifest:
+
+```bash
+python scripts/run_m5_secure_multiround.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --workspace artifacts/m5-secure-multiround \
+  --rounds 30 \
+  --workers 4 \
+  --attestation-refresh-interval 5
+
+python scripts/run_m5_secure_multiround.py verify \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --workspace artifacts/m5-secure-multiround \
+  --rounds 30
+```
+
+The completed Docker gate verified 30 chained checkpoints and accepted all 450
+TPM ESK-signed contributions with zero quarantines. Validation-only selection
+chose round 11 (validation macro-F1 0.94833; test macro-F1 0.92257). The
+coordinator never mounts client snapshots, and test data is evaluated only
+after selection. See `docs/MILESTONE_5_SECURE_ROUND.md` for the single-round
+artifact and threat contract and `docs/MILESTONE_5_SECURE_MULTIROUND.md` for the
+campaign chain, runtime gate, and learning report.
 
 ## Source-of-truth rules
 

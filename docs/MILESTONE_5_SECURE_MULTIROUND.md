@@ -116,3 +116,27 @@ macro-F1 across all local epochs, per-client validation and update-norm
 heatmaps, selected validation/test confusion matrices, a CSV export, and a
 SHA-256 report manifest. The report refuses to run unless the whole secure
 campaign verifies.
+
+## Completed runtime gate
+
+The 15-client Docker campaign completed on the verified IID Parquet snapshot
+with the following preserved result:
+
+- campaign ID: `campaign-0824bcc4005bacc3420d2c1b`;
+- 30 verified rounds and 450 accepted TPM ESK-signed contributions;
+- zero quarantined contributions and zero campaign-verification errors;
+- validation-selected checkpoint: round 11;
+- selected validation macro-F1: `0.9483333731727267`;
+- selected test macro-F1: `0.9225672285470168`;
+- benign-only temporal-holdout accuracy: `0.9958333333333333`;
+- campaign manifest SHA-256:
+  `a62417acaaafcf217176c63032291c604d0e0177667145c4fe8ad53c86d80f88`;
+- report manifest SHA-256:
+  `34e0bcfbf4305de88562e0d30c801471b7d63cc5b450c4486aeeedf2da4605dd`.
+
+The selected secure checkpoint reproduces the validation and test metrics of
+the validation-selected clean M3 IID reference. This demonstrates that the M5
+signature, admission, replay, attestation, and checkpoint-chain controls did
+not change the deterministic FedAvg learning result. The temporal holdout is
+benign-only, so its multiclass macro-F1 is not interpreted as a six-class
+generalization score.
