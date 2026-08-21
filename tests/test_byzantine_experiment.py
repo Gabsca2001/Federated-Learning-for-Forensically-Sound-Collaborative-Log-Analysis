@@ -200,6 +200,79 @@ class ByzantineExperimentTests(unittest.TestCase):
         )
         self.assertEqual(verification["status"], "verified")
 
+    def test_backdoor_comparison_records_triggered_asr_and_lineage(self) -> None:
+        try:
+            dependencies()
+        except FederatedDependencyError as exc:
+            self.skipTest(str(exc))
+        manifest_path = self.frozen / "manifest.json"
+        manifest = load_json(manifest_path)
+        manifest["attack"] = "backdoor"
+        manifest["clients"][0]["derivation"] = {
+            "attack": "backdoor",
+            "poisoned_row_count": 1,
+            "selected_window_ids_sha256": "4" * 64,
+            "target_label": "benign",
+            "feature_indices": [0],
+            "trigger_value": 12.0,
+            "fraction": 0.1,
+        }
+        manifest_path.chmod(0o644)
+        manifest_path.write_bytes(derived_json_bytes(manifest))
+
+        result = run_byzantine_comparison(
+            frozen_workspace=self.frozen,
+            partition_workspace=self.partition,
+            output=self.output,
+            config_path=ROOT / "configs" / "byzantine.yaml",
+        )
+        self.assertEqual(result["status"], "compared")
+        comparison = load_json(self.output / "comparison.json")
+        self.assertEqual(comparison["schema_version"], "1.3")
+        contract = comparison["backdoor_evaluation"]
+        self.assertEqual(contract["target_label"], "benign")
+        self.assertEqual(contract["feature_indices"], [0])
+        self.assertEqual(contract["trigger_value"], 12.0)
+        self.assertEqual(contract["triggered_row_count"], 1)
+        self.assertEqual(contract["original_label_counts"], {"attack": 1})
+        self.assertEqual(len(contract["eligible_source_rows_sha256"]), 64)
+        self.assertEqual(len(contract["triggered_rows_sha256"]), 64)
+        baseline = contract["base_model_attack_success_rate"]
+        for indicator in comparison["indicators"]:
+            client_asr = indicator["backdoor_attack_success_rate"]
+            self.assertGreaterEqual(client_asr, 0.0)
+            self.assertLessEqual(client_asr, 1.0)
+            self.assertAlmostEqual(
+                indicator["backdoor_attack_success_rate_lift"],
+                client_asr - baseline,
+            )
+        aggregate_only, _models = _compute_comparison(
+            frozen_workspace=self.frozen,
+            partition_workspace=self.partition,
+            config_path=ROOT / "configs" / "byzantine.yaml",
+            include_backdoor_client_impact=False,
+        )
+        self.assertEqual(aggregate_only["schema_version"], "1.2")
+        for indicator in aggregate_only["indicators"]:
+            self.assertNotIn("backdoor_attack_success_rate", indicator)
+            self.assertNotIn("backdoor_attack_success_rate_lift", indicator)
+        for outcome in comparison["outcomes"]:
+            attack_success_rate = outcome["backdoor_attack_success_rate"]
+            self.assertGreaterEqual(attack_success_rate, 0.0)
+            self.assertLessEqual(attack_success_rate, 1.0)
+            self.assertAlmostEqual(
+                outcome["backdoor_attack_success_rate_lift"],
+                attack_success_rate - baseline,
+            )
+            self.assertIn("backdoor_targeted_evaluation", outcome)
+        verification = verify_byzantine_comparison(
+            frozen_workspace=self.frozen,
+            partition_workspace=self.partition,
+            workspace=self.output,
+            config_path=ROOT / "configs" / "byzantine.yaml",
+        )
+        self.assertEqual(verification["status"], "verified")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -604,12 +604,127 @@ def _evaluate_export(
     }
 
 
+def _evaluate_export_rows(
+    *, model_export: dict[str, Any], rows: list[dict[str, Any]], batch_size: int
+) -> dict[str, Any]:
+    (
+        _np,
+        torch,
+        _flwr,
+        _sklearn,
+        _aggregate,
+        accuracy_score,
+        confusion_matrix,
+        precision_recall_fscore_support,
+    ) = dependencies()
+    model = _model_from_export(model_export, torch=torch)
+    return evaluate_rows(
+        model=model,
+        rows=rows,
+        class_names=[str(item) for item in model_export["class_names"]],
+        batch_size=batch_size,
+        torch=torch,
+        np=np,
+        accuracy_score=accuracy_score,
+        confusion_matrix=confusion_matrix,
+        precision_recall_fscore_support=precision_recall_fscore_support,
+    )
+
+
+def _backdoor_evaluation_contract(
+    *,
+    manifest: dict[str, Any],
+    server_evaluation: dict[str, Any],
+    base: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    profiles: list[dict[str, Any]] = []
+    for record in manifest["clients"]:
+        if not record.get("attacker"):
+            continue
+        derivation = record.get("derivation", {})
+        if derivation.get("attack") != "backdoor":
+            raise ByzantineExperimentError(
+                f"backdoor attacker has a different derivation: {record['client_id']}"
+            )
+        profiles.append(
+            {
+                "target_label": str(derivation["target_label"]),
+                "feature_indices": [
+                    int(item) for item in derivation["feature_indices"]
+                ],
+                "trigger_value": float(derivation["trigger_value"]),
+                "training_poison_fraction": float(derivation["fraction"]),
+            }
+        )
+    if not profiles:
+        raise ByzantineExperimentError("backdoor scenario has no attacker profile")
+    profile = profiles[0]
+    if any(
+        derived_json_bytes(item) != derived_json_bytes(profile)
+        for item in profiles[1:]
+    ):
+        raise ByzantineExperimentError(
+            "backdoor attackers do not share one frozen trigger contract"
+        )
+    target_label = profile["target_label"]
+    if target_label not in [str(item) for item in base["class_names"]]:
+        raise ByzantineExperimentError(
+            "backdoor target label is outside the frozen model classes"
+        )
+    feature_indices = profile["feature_indices"]
+    if not feature_indices or len(set(feature_indices)) != len(feature_indices):
+        raise ByzantineExperimentError(
+            "backdoor evaluation feature indices must be non-empty and unique"
+        )
+    source_rows = [
+        copy.deepcopy(row)
+        for row in server_evaluation["rows"]["test"]
+        if str(row.get("label")) != target_label
+    ]
+    if not source_rows:
+        raise ByzantineExperimentError(
+            "backdoor evaluation has no non-target test rows"
+        )
+    original_label_counts: dict[str, int] = {}
+    triggered_rows = copy.deepcopy(source_rows)
+    for row in triggered_rows:
+        original_label = str(row.get("label"))
+        original_label_counts[original_label] = (
+            original_label_counts.get(original_label, 0) + 1
+        )
+        features = row.get("features", [])
+        if any(index < 0 or index >= len(features) for index in feature_indices):
+            raise ByzantineExperimentError(
+                "backdoor trigger index is outside a server test feature vector"
+            )
+        for feature_index in feature_indices:
+            features[feature_index] = profile["trigger_value"]
+        row["label"] = target_label
+    contract = {
+        **profile,
+        "source_split": "test",
+        "eligibility": "original_label != target_label",
+        "metric": "predicted_target_count / triggered_non_target_row_count",
+        "triggered_row_count": len(triggered_rows),
+        "original_label_counts": dict(sorted(original_label_counts.items())),
+        "eligible_source_rows_sha256": sha256_bytes(
+            derived_json_bytes(source_rows)
+        ),
+        "triggered_rows_sha256": sha256_bytes(
+            derived_json_bytes(triggered_rows)
+        ),
+    }
+    return triggered_rows, contract
+
+
 def _compute_comparison(
     *,
     frozen_workspace: Path,
     partition_workspace: Path,
     config_path: Path,
     include_validation_impact: bool = True,
+    include_backdoor_evaluation: bool = True,
+    include_backdoor_client_impact: bool = True,
 ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     verification = verify_frozen_update_set(workspace=frozen_workspace)
     if verification["status"] != "verified":
@@ -677,6 +792,39 @@ def _compute_comparison(
             "metric": "base_validation_macro_f1_minus_client_validation_macro_f1",
             "base_validation_macro_f1": base_validation_f1,
         }
+    backdoor_rows_for_evaluation: list[dict[str, Any]] | None = None
+    backdoor_evaluation: dict[str, Any] | None = None
+    if include_backdoor_evaluation and manifest["attack"] == "backdoor":
+        backdoor_rows_for_evaluation, backdoor_evaluation = (
+            _backdoor_evaluation_contract(
+                manifest=manifest,
+                server_evaluation=server_evaluation,
+                base=base,
+            )
+        )
+        base_triggered = _evaluate_export_rows(
+            model_export=base, rows=backdoor_rows_for_evaluation, batch_size=128
+        )
+        backdoor_evaluation["base_model_attack_success_rate"] = float(
+            base_triggered["accuracy"]
+        )
+        if include_backdoor_client_impact:
+            baseline_asr = float(
+                backdoor_evaluation["base_model_attack_success_rate"]
+            )
+            for indicator, update in zip(
+                indicators, frozen_updates, strict=True
+            ):
+                client_triggered = _evaluate_export_rows(
+                    model_export=update,
+                    rows=backdoor_rows_for_evaluation,
+                    batch_size=128,
+                )
+                client_asr = float(client_triggered["accuracy"])
+                indicator["backdoor_attack_success_rate"] = client_asr
+                indicator["backdoor_attack_success_rate_lift"] = (
+                    client_asr - baseline_asr
+                )
     threshold = float(manifest["clip_threshold"]["max_norm"])
     clipped: list[list[np.ndarray]] = []
     clip_scales: list[float] = []
@@ -706,23 +854,44 @@ def _compute_comparison(
                 server_evaluation=server_evaluation,
                 batch_size=128,
             )
-            outcomes.append(
-                {
-                    "profile_id": profile_id,
-                    "aggregator": strategy,
-                    "clipping": use_clipping,
-                    "validation_macro_f1": evaluation["validation"][
-                        "macro_f1_all_model_classes"
-                    ],
-                    "test_macro_f1": evaluation["test"]["macro_f1_all_model_classes"],
-                    "temporal_holdout_accuracy": evaluation["temporal_holdout"][
-                        "accuracy"
-                    ],
-                    "evaluation": evaluation,
-                }
-            )
+            outcome = {
+                "profile_id": profile_id,
+                "aggregator": strategy,
+                "clipping": use_clipping,
+                "validation_macro_f1": evaluation["validation"][
+                    "macro_f1_all_model_classes"
+                ],
+                "test_macro_f1": evaluation["test"]["macro_f1_all_model_classes"],
+                "temporal_holdout_accuracy": evaluation["temporal_holdout"][
+                    "accuracy"
+                ],
+                "evaluation": evaluation,
+            }
+            if (
+                backdoor_rows_for_evaluation is not None
+                and backdoor_evaluation is not None
+            ):
+                triggered = _evaluate_export_rows(
+                    model_export=model_export,
+                    rows=backdoor_rows_for_evaluation,
+                    batch_size=128,
+                )
+                attack_success_rate = float(triggered["accuracy"])
+                outcome["backdoor_attack_success_rate"] = attack_success_rate
+                outcome["backdoor_attack_success_rate_lift"] = (
+                    attack_success_rate
+                    - float(backdoor_evaluation["base_model_attack_success_rate"])
+                )
+                outcome["backdoor_targeted_evaluation"] = triggered
+            outcomes.append(outcome)
+    if backdoor_evaluation is not None:
+        schema_version = (
+            "1.3" if include_backdoor_client_impact else "1.2"
+        )
+    else:
+        schema_version = "1.1" if include_validation_impact else "1.0"
     comparison = {
-        "schema_version": "1.1" if include_validation_impact else "1.0",
+        "schema_version": schema_version,
         "artifact_type": "m6_byzantine_aggregator_comparison",
         "attack": manifest["attack"],
         "f": f,
@@ -743,6 +912,8 @@ def _compute_comparison(
     }
     if validation_impact_reference is not None:
         comparison["validation_impact_reference"] = validation_impact_reference
+    if backdoor_evaluation is not None:
+        comparison["backdoor_evaluation"] = backdoor_evaluation
     return comparison, models
 
 
@@ -807,7 +978,7 @@ def verify_byzantine_comparison(
     stored = load_json(stored_path)
     try:
         schema_version = str(stored.get("schema_version", "1.0"))
-        if schema_version not in {"1.0", "1.1"}:
+        if schema_version not in {"1.0", "1.1", "1.2", "1.3"}:
             raise ByzantineExperimentError(
                 f"unsupported M6 comparison schema: {schema_version}"
             )
@@ -815,7 +986,9 @@ def verify_byzantine_comparison(
             frozen_workspace=frozen_workspace,
             partition_workspace=partition_workspace,
             config_path=config_path,
-            include_validation_impact=schema_version == "1.1",
+            include_validation_impact=schema_version in {"1.1", "1.2", "1.3"},
+            include_backdoor_evaluation=schema_version in {"1.2", "1.3"},
+            include_backdoor_client_impact=schema_version == "1.3",
         )
         model_records = stored.get("models", [])
         if [item.get("profile_id") for item in model_records] != sorted(models):

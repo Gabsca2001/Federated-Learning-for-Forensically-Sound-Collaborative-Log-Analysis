@@ -46,6 +46,35 @@ I_k = F_{1,\mathrm{macro}}(w_t) - F_{1,\mathrm{macro}}(w_k).
 A positive value measures validation degradation relative to the round base.
 Schema `1.0` remains reproducible for already preserved comparisons.
 
+Backdoor comparison schema `1.2` adds an aggregate-model targeted evaluation
+gate. The
+gate selects only server test rows whose original label differs from the frozen
+backdoor target, applies the exact recorded feature indices and trigger value,
+and then measures
+
+\[
+\mathrm{ASR} = \frac{\text{triggered non-target rows predicted as the target}}
+                     {\text{all triggered non-target rows}}.
+\]
+
+Schema `1.3` additionally evaluates every individual frozen client model on the
+same content-addressed triggered set. This distinguishes a backdoor that was
+never learned locally from one learned by compromised clients but rejected by
+the aggregate defense. The comparison records client, aggregate-model, and
+round-base ASR. Their difference from the base is the ASR lift, which prevents a
+model's pre-existing target
+bias from being misreported as attack-induced behavior. The clean validation,
+test, and temporal-holdout results remain in every outcome so attack success and
+utility degradation are evaluated separately.
+
+The targeted-evaluation contract preserves the source split, eligibility rule,
+target label, feature indices, trigger value, poisoned-training fraction,
+original-label counts, row count, and SHA-256 digests of both the eligible source
+rows and the triggered rows. Verification reconstructs the triggered set from
+the partition snapshot, reevaluates every preserved client and aggregate model,
+and rejects any difference in metrics or lineage. Schemas `1.0`, `1.1`, and
+`1.2` remain supported for previously frozen comparisons.
+
 ## Byzantine bounds
 
 Let `n` be the number of admitted updates and `f` the assumed upper bound on
@@ -62,15 +91,18 @@ silent fallbacks to FedAvg.
 
 ## Runtime gate status
 
-The freeze/compare/verify runtime gate has been exercised on two `f=3`
+The freeze/compare/verify runtime gate has been exercised on six `f=3`
 scenarios derived from the same verified M5 round: the legacy magnitude-only
-amplification baseline and a targeted malicious model replacement. All ten
-defense profiles were recomputed from the exact frozen bytes and independently
-verified by digest.
+amplification baseline, targeted malicious model replacement, label flip, sign
+flip, Gaussian noise, and feature-trigger backdoor. Every defense profile was
+recomputed from the exact ordered frozen bytes and independently verified by
+digest. Backdoor evaluation additionally reconstructs one content-addressed
+triggered test set for both individual-client and aggregate-model evaluation.
 
-The remaining M6 campaign covers the other configured attacks, `f` values, and
-repeated seeds. M6 therefore remains in progress even though this runtime slice
-is implemented and verified.
+The remaining M6 campaign covers collusion, the separate prototype artifact
+family, other configured `f` values, and repeated seeds. M6 therefore remains
+in progress even though the current runtime slices are implemented and
+verified.
 
 ## Freezing and comparing one real M5 round
 
@@ -191,7 +223,64 @@ This is a diagnostic result, not an automatic malicious-intent verdict or a
 universal quarantine threshold. Threshold calibration and false-positive
 analysis remain bound to clean development campaigns and repeated seeds.
 
-The verifier recomputes every aggregate model and the validation, test, and
+## Verified feature-trigger backdoor result
+
+The verified run reuses round 11, `f=3`, and attackers `client02`, `client05`,
+and `client14`. Each compromised client deterministically poisons 48 local
+training rows (10 percent) by setting feature indices 0 and 1 to 12 and changing
+the label to `benign`. The targeted server evaluation contains all 3,497
+originally non-benign test rows after applying the same trigger.
+
+- frozen manifest SHA-256:
+  `3b509127fe54bb4be622d7802036702c937ce48e5c62d00193bd01a27c3329d5`;
+- schema `1.2` aggregate-ASR comparison SHA-256:
+  `d2c160cd0414498e4a4f2281838a2f35d3036e5e5c6bca9afc7bea038f6629df`;
+- schema `1.3` client-and-aggregate-ASR comparison SHA-256:
+  `04fe1be494ea33bcb0da5d36c7a031366f8ccd14a701e286acc9622c8099d0c4`;
+- eligible source-row-set SHA-256:
+  `ddb9c0c7849a1ebeaa163bfae7d20e162bb672deff87e46a780d552364aa33ab`;
+- triggered-row-set SHA-256:
+  `a1abe33fd50f5d547cb7d0f74d61537e1c0ac6dc3acbcbb92edfe60423c096e9`;
+- verification: 15 clients, 10 profiles, zero errors;
+- regression gate: 85 tests passed and the changed-file Ruff gate passed.
+
+The round base model and all 12 benign client models have zero ASR. The three
+attacker models have ASR 0.995711 (`client02`), 0.998284 (`client05`), and
+0.995139 (`client14`). The trigger is therefore learned locally and the ASR
+indicator separates the compromised and benign clients in this frozen
+scenario. In contrast, ordinary validation impact does not: `client05` has
+impact -0.001592 and therefore slightly improves validation macro-F1, while the
+other two attacker impacts overlap the benign range.
+
+| Profile | Test macro-F1 | Backdoor ASR | ASR lift from base |
+| --- | ---: | ---: | ---: |
+| coordinate median | 0.918822 | 0.000000 | 0.000000 |
+| coordinate median + clipping | 0.918822 | 0.000000 | 0.000000 |
+| MultiKrum | 0.918417 | 0.000000 | 0.000000 |
+| MultiKrum + clipping | 0.918417 | 0.000000 | 0.000000 |
+| Bulyan | 0.918417 | 0.000000 | 0.000000 |
+| Bulyan + clipping | 0.918417 | 0.000000 | 0.000000 |
+| trimmed mean | 0.914856 | 0.000000 | 0.000000 |
+| trimmed mean + clipping | 0.914856 | 0.000000 | 0.000000 |
+| FedAvg + clipping | 0.913009 | 0.000000 | 0.000000 |
+| FedAvg | 0.894659 | 0.000000 | 0.000000 |
+
+All aggregate profiles reduce ASR to zero. This demonstrates a locally
+successful attack that does not survive aggregation, rather than an attack that
+failed to train. Coordinate median preserves the highest clean test macro-F1.
+Unclipped FedAvg also removes the trigger behavior but degrades clean test
+macro-F1 to 0.894659; zero ASR alone is therefore not evidence that utility was
+preserved. Clipping recovers FedAvg to 0.913009. The unchanged schema `1.2`
+comparison remains independently reproducible after introducing schema `1.3`,
+which confirms verifier backward compatibility.
+
+The result also demonstrates why a generic anomaly or validation score cannot
+establish backdoor absence. The forensic decision requires the attack-specific,
+digest-bound evaluation set, client-level attribution, aggregate-level ASR, and
+clean utility metrics together.
+
+The verifier recomputes every aggregate model and the validation, test,
+backdoor-targeted (when applicable), and
 benign-only temporal-holdout metrics. Altering one frozen update, model, metric,
 input ordering, configuration digest, or partition reference makes the gate
 fail. Label flip and backdoor scenarios retrain only the designated compromised
