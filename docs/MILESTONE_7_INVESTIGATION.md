@@ -174,17 +174,17 @@ the ATT&CK result as `unresolved-multi-tactic`, demonstrating that prototype
 geometry cannot override the mapping policy.
 
 The verified report bundle identifier is
-`m7-investigation-report-bundle-54cee841904ab35cc2a7eb8e`. Its canonical core
+`m7-investigation-report-bundle-83055e579b164b0b905bf119`. Its canonical core
 SHA-256 is
-`54cee841904ab35cc2a7eb8efafcd3a27aeaee338c6fc8ed3f328207750bbab7`.
+`83055e579b164b0b905bf11935b97c26f19d8e8c47dfe872c034cacb000ea223`.
 The generated artifact digests are:
 
 - `investigation-report.json`:
   `7e8d4f20229bfb268197383829a91265a19fd8b94e3e4b6a72643270b33bb2a9`;
 - `report.md`:
-  `f43f104e34d8e97d01f9d6f68cffecda7c4d34debf15e0a228a24bdd08c908db`;
+  `aa9be255a6f7ac1149d849fd7a2947e0d63d6b09152a55b4327e0932d90f87f2`;
 - `manifest.json`:
-  `3e4d5faa6ff49760692386caae8f91c10b8037dcaaccfbf6644f0e19c618ca5f`.
+  `09b8892959471285dfe198ef58e421ea989952fe0fb9f533aa55ef9cdb118bfc`.
 
 The verifier returned `verified`, zero errors, `reportable=true`,
 `source_attack_verified=true`, and
@@ -227,3 +227,11 @@ geometry in the learned M5 embedding; proximity is not proof of class
 membership. ATT&CK mapping is a versioned investigative hypothesis rather
 than a technique-level forensic conclusion. None of these layers modifies or
 replaces the source-event lineage.
+
+The human-readable `report.md` separates rapid analyst review from the
+complete technical evidence trail. Each case provides an executive
+interpretation, model measurement, explanation context, ATT&CK hypothesis,
+and compact primary-evidence summary, while full event- and source-record-level
+digest references are retained in a deterministic Technical Evidence Appendix.
+This presentation change does not alter the canonical machine-readable
+`investigation-report.json`.
