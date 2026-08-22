@@ -1,0 +1,77 @@
+schema_version: "1.0"
+dataset: UWF-ZeekData24
+method: auditable-protean-adaptation
+paper_reference: https://arxiv.org/abs/2507.05524
+
+model:
+  hidden_layers: [128, 64]
+  embedding_size: 32
+  dropout: 0.0
+  activation: relu
+
+training:
+  rounds: 30
+  local_epochs: 2
+  batch_size: 128
+  learning_rate: 0.001
+  optimizer: adam
+  class_weighting: global-sqrt-balanced-training-only
+  participation_fraction: 1.0
+  minimum_available_clients: 15
+  minimum_fit_clients: 15
+  seed: 341593
+  device: cpu
+  checkpoint_selection:
+    classifier: nearest_global_prototype
+    split: validation
+    metric: macro_f1_all_model_classes
+    mode: maximize
+    tie_breaker: earliest_round
+    test_policy: withheld_until_cross_candidate_selection
+
+protean:
+  objective:
+    supervised: weighted_multiclass_cross_entropy
+    prototype_alignment: squared_euclidean_distance
+    prototype_alignment_weight_selection:
+      candidates: [0.001, 0.01, 0.1, 1.0]
+      split: validation
+      metric: macro_f1_all_model_classes
+      mode: maximize
+      tie_breaker: smallest_weight
+      test_policy: never_used_for_hyperparameter_selection
+    proximal_parameter_alignment: squared_l2_to_round_base_model
+    proximal_weight: 0.1
+  minimum_local_support: 5
+  class_quorum: 3
+  baseline_aggregation: support_weighted_mean
+  robust_reference_aggregation: coordinate_median
+  initial_prototype_policy: first_round_without_prototype_alignment
+  inference:
+    classifier: nearest_global_prototype
+    distance: euclidean
+    report_classification_head_separately: true
+
+comparison:
+  required_partition_mode: non-iid
+  fedavg_control_is_separate_immutable_workspace: true
+  same_partition_snapshot: true
+  same_initial_model_seed: true
+  same_rounds: true
+  same_local_epochs: true
+  same_optimizer: true
+  selection_uses_validation_only: true
+  required_outputs:
+    - classification_head_metrics
+    - nearest_prototype_metrics
+    - per_client_per_class_metrics
+    - prototype_support_and_quorum_decisions
+    - prototype_communication_bytes
+
+forensic_audit:
+  preserve_local_prototype_objects: true
+  preserve_every_global_prototype_checkpoint: true
+  bind_prototypes_to_client_snapshot_model_and_round: true
+  prototype_hash_chain: true
+  deterministic_runner: true
+  claim_boundary: adaptation_of_protean_not_exact_paper_reproduction

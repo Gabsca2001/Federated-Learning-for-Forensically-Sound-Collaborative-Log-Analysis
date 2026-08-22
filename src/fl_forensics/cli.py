@@ -25,6 +25,22 @@ from .explanation_bundle import create_explanation_bundle, verify_explanation_bu
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
+from .protean_finalization import (
+    finalize_protean_endpoints,
+    verify_protean_finalization,
+)
+from .protean_reporting import (
+    generate_protean_validation_report,
+    verify_protean_validation_report,
+)
+from .protean_selection_lock import (
+    create_protean_selection_lock,
+    verify_protean_selection_lock,
+)
+from .protean_training import (
+    run_protean_candidate,
+    verify_protean_candidate,
+)
 from .prototype_experiment import (
     freeze_prototype_scenario,
     run_prototype_comparison,
@@ -166,6 +182,144 @@ def build_parser() -> argparse.ArgumentParser:
     m3_train.add_argument("--output", type=Path, required=True)
     m3_train.add_argument(
         "--config", type=Path, default=Path("configs/federation.yaml")
+    )
+
+    m3_protean_train = subparsers.add_parser(
+        "m3-protean-train",
+        help="run one validation-only auditable PROTEAN lambda candidate",
+    )
+    m3_protean_train.add_argument("--partition-workspace", type=Path, required=True)
+    m3_protean_train.add_argument("--dataset-workspace", type=Path, required=True)
+    m3_protean_train.add_argument("--output", type=Path, required=True)
+    m3_protean_train.add_argument(
+        "--prototype-alignment-weight", type=float, required=True
+    )
+    m3_protean_train.add_argument("--device", choices=("cpu", "cuda"))
+    m3_protean_train.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_verify = subparsers.add_parser(
+        "m3-protean-verify",
+        help="verify a PROTEAN candidate without accessing test data",
+    )
+    m3_protean_verify.add_argument("--workspace", type=Path, required=True)
+    m3_protean_verify.add_argument("--partition-workspace", type=Path, required=True)
+    m3_protean_verify.add_argument("--dataset-workspace", type=Path, required=True)
+    m3_protean_verify.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_report = subparsers.add_parser(
+        "m3-protean-report",
+        help="select and plot verified PROTEAN candidates using validation only",
+    )
+    m3_protean_report.add_argument(
+        "--candidate-workspace",
+        action="append",
+        type=Path,
+        required=True,
+        help="repeat once for every configured lambda candidate",
+    )
+    m3_protean_report.add_argument("--fedavg-workspace", type=Path, required=True)
+    m3_protean_report.add_argument("--output", type=Path, required=True)
+    m3_protean_report.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_verify_report = subparsers.add_parser(
+        "m3-protean-verify-report",
+        help="rebuild and verify the complete validation-only PROTEAN report",
+    )
+    m3_protean_verify_report.add_argument(
+        "--candidate-workspace", action="append", type=Path, required=True
+    )
+    m3_protean_verify_report.add_argument(
+        "--fedavg-workspace", type=Path, required=True
+    )
+    m3_protean_verify_report.add_argument("--workspace", type=Path, required=True)
+    m3_protean_verify_report.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_lock = subparsers.add_parser(
+        "m3-protean-lock",
+        help="freeze paper-faithful and operational endpoints before test access",
+    )
+    m3_protean_lock.add_argument(
+        "--candidate-workspace", action="append", type=Path, required=True
+    )
+    m3_protean_lock.add_argument("--fedavg-workspace", type=Path, required=True)
+    m3_protean_lock.add_argument("--report-workspace", type=Path, required=True)
+    m3_protean_lock.add_argument("--output", type=Path, required=True)
+    m3_protean_lock.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_verify_lock = subparsers.add_parser(
+        "m3-protean-verify-lock",
+        help="recreate and verify the PROTEAN pre-test selection lock",
+    )
+    m3_protean_verify_lock.add_argument(
+        "--candidate-workspace", action="append", type=Path, required=True
+    )
+    m3_protean_verify_lock.add_argument(
+        "--fedavg-workspace", type=Path, required=True
+    )
+    m3_protean_verify_lock.add_argument(
+        "--report-workspace", type=Path, required=True
+    )
+    m3_protean_verify_lock.add_argument("--workspace", type=Path, required=True)
+    m3_protean_verify_lock.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_finalize = subparsers.add_parser(
+        "m3-protean-finalize",
+        help="evaluate the two locked PROTEAN endpoints once on final splits",
+    )
+    m3_protean_finalize.add_argument(
+        "--candidate-workspace", action="append", type=Path, required=True
+    )
+    m3_protean_finalize.add_argument("--fedavg-workspace", type=Path, required=True)
+    m3_protean_finalize.add_argument("--report-workspace", type=Path, required=True)
+    m3_protean_finalize.add_argument(
+        "--selection-lock-workspace", type=Path, required=True
+    )
+    m3_protean_finalize.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m3_protean_finalize.add_argument("--dataset-workspace", type=Path, required=True)
+    m3_protean_finalize.add_argument("--output", type=Path, required=True)
+    m3_protean_finalize.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
+    )
+
+    m3_protean_verify_final = subparsers.add_parser(
+        "m3-protean-verify-final",
+        help="verify final PROTEAN evidence without rerunning model inference",
+    )
+    m3_protean_verify_final.add_argument(
+        "--candidate-workspace", action="append", type=Path, required=True
+    )
+    m3_protean_verify_final.add_argument(
+        "--fedavg-workspace", type=Path, required=True
+    )
+    m3_protean_verify_final.add_argument(
+        "--report-workspace", type=Path, required=True
+    )
+    m3_protean_verify_final.add_argument(
+        "--selection-lock-workspace", type=Path, required=True
+    )
+    m3_protean_verify_final.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m3_protean_verify_final.add_argument(
+        "--dataset-workspace", type=Path, required=True
+    )
+    m3_protean_verify_final.add_argument("--workspace", type=Path, required=True)
+    m3_protean_verify_final.add_argument(
+        "--config", type=Path, default=Path("configs/federation-protean.yaml")
     )
 
     m3_verify = subparsers.add_parser(
@@ -876,6 +1030,90 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
+    if arguments.command == "m3-protean-train":
+        result = run_protean_candidate(
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+            prototype_alignment_weight=arguments.prototype_alignment_weight,
+            device_override=arguments.device,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-protean-verify":
+        result = verify_protean_candidate(
+            workspace=arguments.workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m3-protean-report":
+        result = generate_protean_validation_report(
+            candidate_workspaces=arguments.candidate_workspace,
+            fedavg_workspace=arguments.fedavg_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-protean-verify-report":
+        result = verify_protean_validation_report(
+            candidate_workspaces=arguments.candidate_workspace,
+            fedavg_workspace=arguments.fedavg_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m3-protean-lock":
+        result = create_protean_selection_lock(
+            candidate_workspaces=arguments.candidate_workspace,
+            fedavg_workspace=arguments.fedavg_workspace,
+            report_workspace=arguments.report_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-protean-verify-lock":
+        result = verify_protean_selection_lock(
+            candidate_workspaces=arguments.candidate_workspace,
+            fedavg_workspace=arguments.fedavg_workspace,
+            report_workspace=arguments.report_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m3-protean-finalize":
+        result = finalize_protean_endpoints(
+            candidate_workspaces=arguments.candidate_workspace,
+            fedavg_workspace=arguments.fedavg_workspace,
+            report_workspace=arguments.report_workspace,
+            selection_lock_workspace=arguments.selection_lock_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-protean-verify-final":
+        result = verify_protean_finalization(
+            candidate_workspaces=arguments.candidate_workspace,
+            fedavg_workspace=arguments.fedavg_workspace,
+            report_workspace=arguments.report_workspace,
+            selection_lock_workspace=arguments.selection_lock_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
     if arguments.command == "m3-report":
         result = generate_m3_report(
             workspace=arguments.workspace,
