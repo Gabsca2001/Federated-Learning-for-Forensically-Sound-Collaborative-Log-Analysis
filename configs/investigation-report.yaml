@@ -1,0 +1,25 @@
+schema_version: "1.0"
+
+investigation_report:
+  case_order: prediction-id-lexicographic
+  integrated_gradients_top_features: 5
+
+  primary_evidence:
+    include_source_file_url: false
+    source_record_fields:
+      - relative_path
+      - row_number
+      - source_record_sha256
+      - source_file_sha256
+      - source_file_size_bytes
+
+  label_policy:
+    include_reference_labels: false
+    include_dataset_attack_labels: false
+    use_dataset_labels_for_reporting: false
+
+  interpretation:
+    primary_evidence_role: source-record-digest-reference
+    model_measurement_role: model-derived-measurement
+    derived_interpretation_role: model-derived-interpretation
+    allow_report_to_resolve_multi_tactic: false
