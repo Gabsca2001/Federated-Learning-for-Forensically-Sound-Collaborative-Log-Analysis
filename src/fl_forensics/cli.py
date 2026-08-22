@@ -6,6 +6,10 @@ import argparse
 import json
 from pathlib import Path
 
+from .attack_mapping import (
+    create_attack_mapping_bundle,
+    verify_attack_mapping_bundle,
+)
 from .byzantine_experiment import (
     freeze_byzantine_scenario,
     run_byzantine_comparison,
@@ -17,8 +21,10 @@ from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
+from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
 from .prototype_experiment import (
     freeze_prototype_scenario,
     run_prototype_comparison,
@@ -602,6 +608,200 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("configs/byzantine-prototype-sensitivity.yaml"),
     )
+
+    m7_predict = subparsers.add_parser(
+        "m7-predict",
+        help="create reportable predictions with complete Zeek-event lineage",
+    )
+    m7_predict.add_argument("--round-workspace", type=Path, required=True)
+    m7_predict.add_argument("--trust-workspace", type=Path, required=True)
+    m7_predict.add_argument("--partition-workspace", type=Path, required=True)
+    m7_predict.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_predict.add_argument("--output", type=Path, required=True)
+    m7_predict.add_argument(
+        "--split",
+        choices=("validation", "test", "temporal_holdout"),
+        required=True,
+    )
+    m7_selection = m7_predict.add_mutually_exclusive_group(required=True)
+    m7_selection.add_argument("--window-id", action="append", dest="window_ids")
+    m7_selection.add_argument("--first", type=int)
+    m7_predict.add_argument(
+        "--config", type=Path, default=Path("configs/investigation.yaml")
+    )
+
+    m7_verify_predictions = subparsers.add_parser(
+        "m7-verify-predictions",
+        help="recompute M7 inference and verify complete source-event lineage",
+    )
+    m7_verify_predictions.add_argument("--round-workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument("--trust-workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m7_verify_predictions.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument("--workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument(
+        "--config", type=Path, default=Path("configs/investigation.yaml")
+    )
+
+    m7_explain = subparsers.add_parser(
+        "m7-explain",
+        help="explain a verified Prediction Bundle with IG and prototype distances",
+    )
+    m7_explain.add_argument("--round-workspace", type=Path, required=True)
+    m7_explain.add_argument("--trust-workspace", type=Path, required=True)
+    m7_explain.add_argument("--partition-workspace", type=Path, required=True)
+    m7_explain.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_explain.add_argument("--prediction-workspace", type=Path, required=True)
+    m7_explain.add_argument("--output", type=Path, required=True)
+    m7_explain.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_explain.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+
+    m7_verify_explanations = subparsers.add_parser(
+        "m7-verify-explanations",
+        help="recompute and verify M7 IG and prototype-distance explanations",
+    )
+    m7_verify_explanations.add_argument("--round-workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument("--trust-workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m7_verify_explanations.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument(
+        "--prediction-workspace", type=Path, required=True
+    )
+    m7_verify_explanations.add_argument("--workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_verify_explanations.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+
+    m7_map_attack = subparsers.add_parser(
+        "m7-map-attack",
+        help="map verified M7 explanations to versioned ATT&CK hypotheses",
+    )
+    m7_map_attack.add_argument(
+        "--round-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--trust-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--partition-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--dataset-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--prediction-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--explanation-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_map_attack.add_argument(
+        "--explanation-config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+    m7_map_attack.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-attack.yaml"),
+    )
+
+    m7_verify_attack = subparsers.add_parser(
+        "m7-verify-attack",
+        help="recompute and verify versioned M7 ATT&CK hypotheses",
+    )
+    m7_verify_attack.add_argument(
+        "--round-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--trust-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--partition-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--dataset-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--prediction-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--explanation-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_verify_attack.add_argument(
+        "--explanation-config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+    m7_verify_attack.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-attack.yaml"),
+    )
+
+
     return parser
 
 
@@ -948,6 +1148,90 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m7-predict":
+        result = create_prediction_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+            split=arguments.split,
+            window_ids=arguments.window_ids,
+            first=arguments.first,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m7-verify-predictions":
+        result = verify_prediction_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m7-explain":
+        result = create_explanation_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            output=arguments.output,
+            prediction_config_path=arguments.prediction_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m7-verify-explanations":
+        result = verify_explanation_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            workspace=arguments.workspace,
+            prediction_config_path=arguments.prediction_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m7-map-attack":
+        result = create_attack_mapping_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            explanation_workspace=arguments.explanation_workspace,
+            output=arguments.output,
+            prediction_config_path=arguments.prediction_config,
+            explanation_config_path=arguments.explanation_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m7-verify-attack":
+        result = verify_attack_mapping_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            explanation_workspace=arguments.explanation_workspace,
+            workspace=arguments.workspace,
+            prediction_config_path=arguments.prediction_config,
+            explanation_config_path=arguments.explanation_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
     result = physical_tpm_preflight(tcti=arguments.tcti)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

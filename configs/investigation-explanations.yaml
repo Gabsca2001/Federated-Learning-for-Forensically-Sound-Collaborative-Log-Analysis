@@ -1,0 +1,22 @@
+schema_version: "1.0"
+
+investigation_explanations:
+  integrated_gradients:
+    target: predicted-class-logit
+    baseline: training-feature-coordinate-median
+    integration_rule: trapezoidal
+    initial_steps: 256
+    maximum_steps: 4096
+    absolute_completeness_tolerance: 0.001
+  prototypes:
+    source_split: train
+    embedding: verified-m5-global-encoder
+    aggregation: coordinate_median
+    minimum_local_support: 5
+    class_quorum: 3
+    batch_size: 256
+    distance: euclidean
+    preserve_row_embeddings: false
+  interpretation:
+    require_verified_prediction_bundle: true
+    primary_evidence: false

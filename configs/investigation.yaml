@@ -1,0 +1,17 @@
+investigation:
+  schema_version: "1.0"
+  allowed_splits:
+    - validation
+    - test
+    - temporal_holdout
+  maximum_windows_per_bundle: 16
+  inference:
+    method: classification-head-softmax-argmax
+    device: cpu
+    round_digits: 12
+  reportability:
+    require_verified_checkpoint: true
+    require_verified_partition: true
+    require_verified_m2_snapshot: true
+    require_complete_event_lineage: true
+    require_source_record_digests: true
