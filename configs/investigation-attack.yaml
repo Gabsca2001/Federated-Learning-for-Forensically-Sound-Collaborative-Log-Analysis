@@ -1,0 +1,87 @@
+schema_version: "1.0"
+
+investigation_attack:
+  framework: MITRE ATT&CK
+  domain: enterprise
+  version: "19.2"
+
+  mapping_policy: predicted-class-only-versioned-tactic-hypothesis
+
+  interpretation:
+    assertion_type: investigative-hypothesis
+    primary_evidence: false
+    allow_technique_claims: false
+    require_verified_explanation_bundle: true
+    use_reference_labels: false
+    use_dataset_attack_labels: false
+    use_integrated_gradients_for_rule_selection: false
+    use_prototype_distances_for_rule_selection: false
+
+  model_taxonomy:
+    source: frozen-m5-classification-contract
+    class_names:
+      - benign
+      - credential_access
+      - exfiltration
+      - initial_access
+      - multi_tactic
+      - reconnaissance
+
+  rules:
+    benign:
+      rule_id: m7-attack-v1-benign
+      mapping_status: not-applicable
+      tactic_candidates: []
+      rationale: >
+        A benign model prediction does not produce an ATT&CK tactic
+        hypothesis.
+
+    credential_access:
+      rule_id: m7-attack-v1-credential-access
+      mapping_status: candidate-tactic
+      tactic_candidates:
+        - tactic_id: TA0006
+          tactic_name: Credential Access
+      rationale: >
+        The frozen model class maps to the corresponding current Enterprise
+        ATT&CK tactic. The result remains a derived investigative hypothesis.
+
+    exfiltration:
+      rule_id: m7-attack-v1-exfiltration
+      mapping_status: candidate-tactic
+      tactic_candidates:
+        - tactic_id: TA0010
+          tactic_name: Exfiltration
+      rationale: >
+        The frozen model class maps to the corresponding current Enterprise
+        ATT&CK tactic. The result remains a derived investigative hypothesis.
+
+    initial_access:
+      rule_id: m7-attack-v1-initial-access
+      mapping_status: candidate-tactic
+      tactic_candidates:
+        - tactic_id: TA0001
+          tactic_name: Initial Access
+      rationale: >
+        The frozen model class maps to the corresponding current Enterprise
+        ATT&CK tactic. The result remains a derived investigative hypothesis.
+
+    multi_tactic:
+      rule_id: m7-attack-v1-multi-tactic
+      mapping_status: unresolved-multi-tactic
+      tactic_candidates: []
+      rationale: >
+        The frozen model class represents a multi-tactic condition and does
+        not independently identify one ATT&CK tactic. Reference labels,
+        Integrated Gradients and prototype geometry are not used to resolve
+        the ambiguity.
+
+    reconnaissance:
+      rule_id: m7-attack-v1-reconnaissance
+      mapping_status: candidate-tactic
+      tactic_candidates:
+        - tactic_id: TA0043
+          tactic_name: Reconnaissance
+      rationale: >
+        The frozen model class maps to the corresponding current Enterprise
+        ATT&CK tactic. The result remains a derived investigative hypothesis.

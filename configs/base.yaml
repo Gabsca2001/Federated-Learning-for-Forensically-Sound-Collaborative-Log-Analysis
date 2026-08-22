@@ -76,7 +76,7 @@ robustness:
   clip_norm_source: benign-development-campaign
   indicators: [relative_norm, cosine_to_median, coordinate_median_distance, mad_score, validation_impact]
   comparison_aggregators: [fedavg, coordinate_median, trimmed_mean, multikrum, bulyan]
-  attacks: [label_flip, gaussian_noise, sign_flip, model_replacement, backdoor, prototype_poisoning, colluding]
+  attacks: [label_flip, gaussian_noise, sign_flip, update_amplification, model_replacement, backdoor, prototype_poisoning, colluding]
 
 reporting:
   explanation: integrated_gradients

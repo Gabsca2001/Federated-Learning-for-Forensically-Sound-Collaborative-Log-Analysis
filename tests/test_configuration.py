@@ -5,7 +5,6 @@ from pathlib import Path
 
 from fl_forensics.config import load_yaml
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -79,6 +78,70 @@ class ConfigurationTests(unittest.TestCase):
         self.assertTrue(policy["require_fresh_attestation"])
         self.assertTrue(policy["require_tpm_esk_signature"])
         self.assertTrue(policy["require_exact_tensor_schema"])
+
+    def test_m6_compares_all_defenses_on_the_same_frozen_updates(self) -> None:
+        config, _ = load_yaml(ROOT / "configs" / "byzantine.yaml")
+        self.assertEqual(config["experiment"]["client_count"], 15)
+        self.assertEqual(config["experiment"]["byzantine_counts"], [1, 2, 3])
+        self.assertEqual(
+            config["defenses"]["aggregators"],
+            [
+                "fedavg",
+                "coordinate_median",
+                "trimmed_mean",
+                "multikrum",
+                "bulyan",
+            ],
+        )
+        self.assertEqual(len(config["attacks"]["enabled"]), 7)
+        self.assertTrue(
+            config["acceptance"]["same_frozen_updates_for_every_aggregator"]
+        )
+        self.assertTrue(config["acceptance"]["invalid_byzantine_bounds_halt"])
+
+    def test_m6_prototype_contract_has_support_quorum_and_separate_aggregators(self) -> None:
+        config, _ = load_yaml(ROOT / "configs" / "base.yaml")
+        prototypes = config["prototypes"]
+        self.assertTrue(prototypes["enabled"])
+        self.assertEqual(prototypes["minimum_local_support"], 5)
+        self.assertEqual(prototypes["class_quorum"], 3)
+        self.assertEqual(
+            prototypes["baseline_aggregation"], "support_weighted_mean"
+        )
+        self.assertEqual(
+            prototypes["robust_aggregation"], "coordinate_median"
+        )
+
+        experiment, _ = load_yaml(
+            ROOT / "configs" / "byzantine-prototype-poisoning.yaml"
+        )
+        self.assertEqual(
+            experiment["experiment"]["source_model"],
+            "verified-m5-selected-round-global-checkpoint",
+        )
+        self.assertEqual(experiment["experiment"]["partition_mode"], "iid")
+        self.assertFalse(
+            experiment["forensic_audit"]["preserve_row_embeddings"]
+        )
+        self.assertTrue(
+            experiment["acceptance"][
+                "same_frozen_submissions_for_every_aggregator"
+            ]
+        )
+
+    def test_m6_malicious_model_replacement_has_an_explicit_objective(self) -> None:
+        config, _ = load_yaml(
+            ROOT / "configs" / "byzantine-malicious-model-replacement.yaml"
+        )
+        self.assertIn("update_amplification", config["attacks"]["enabled"])
+        self.assertEqual(
+            config["attacks"]["model_replacement"]["objective"],
+            {
+                "type": "targeted_label_flip",
+                "source": "reconnaissance",
+                "target": "benign",
+            },
+        )
 
 
 if __name__ == "__main__":

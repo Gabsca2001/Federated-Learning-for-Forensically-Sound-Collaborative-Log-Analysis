@@ -1,0 +1,53 @@
+schema_version: "1.0"
+experiment:
+  seed: 341593
+  client_count: 15
+  byzantine_counts: [1, 2, 3]
+  frozen_update_source: m5-verified-update-bundles
+
+attacks:
+  enabled:
+    - label_flip
+    - gaussian_noise
+    - sign_flip
+    - model_replacement
+    - backdoor
+    - prototype_poisoning
+    - colluding
+  gaussian_noise_scale: 3.0
+  sign_flip_scale: 1.0
+  model_replacement_scale: 15.0
+  label_flip:
+    source: reconnaissance
+    target: benign
+  backdoor:
+    target: benign
+    fraction: 0.10
+    feature_indices: [0, 1]
+    trigger_value: 12.0
+  prototype_poisoning:
+    source: reconnaissance
+    target: benign
+    scale: 1.5
+
+defenses:
+  clipping:
+    enabled: true
+    threshold_source: clean-development-median-plus-3-mad
+  aggregators:
+    - fedavg
+    - coordinate_median
+    - trimmed_mean
+    - multikrum
+    - bulyan
+  indicators:
+    - relative_norm
+    - cosine_to_median
+    - coordinate_median_distance
+    - mad_score
+    - validation_impact
+
+acceptance:
+  same_frozen_updates_for_every_aggregator: true
+  preserve_every_attacked_update: true
+  invalid_byzantine_bounds_halt: true

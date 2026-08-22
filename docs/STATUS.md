@@ -24,8 +24,8 @@
 | TLS 1.3 mutual authentication | Implemented and unit-tested (M4) | Private experiment CA, clientAuth/serverAuth EKU, SAN and enrollment-fingerprint binding, wrong pair rejected |
 | Physical TPM 2.0 adapter | Implemented, hardware run pending (M4) | Same tpm2-tools adapter via `device:/dev/tpmrm0`; no simulator/hardware equivalence claim |
 | Attestation-gated Update Bundles and secure FedAvg campaign | Implemented and Docker-runtime verified (M5) | Single-round 15/15 gate plus 30 signed/chained checkpoints; 450/450 TPM ESK bundles accepted, zero quarantines, independent reconstruction, validation-only selection; round 11 validation/test macro-F1 0.94833/0.92257 |
-| Byzantine attacks and robust aggregation | Planned (M6) | — |
-| Integrated Gradients and deterministic report | Planned (M7) | — |
+| Byzantine attacks and robust aggregation | Deterministic campaigns implemented and verified (M6) | Seven `f=3` model-update scenarios plus prototype poisoning over real M5 inputs; six-cell prototype sensitivity reports all results with no post-test selection; support-weighted source-recall loss reaches 0.91779 at scale 2.0 while coordinate median remains unchanged; 12-row/six-figure report regenerates byte-identically; repeated seeds and signed malicious-client replay remain future work |
+| Investigative prediction, explanation, ATT&CK mapping, and report | Prediction lineage verified; explanation core implemented (M7) | Official six-window Prediction Bundle independently reconstructed with 69 source events, 81 source records, and zero violations; Integrated Gradients has a training-only median baseline and fail-closed completeness check; coordinate-median class prototypes use only verified client training snapshots and preserve no row embeddings; runtime explanation verification, ATT&CK mapping, and final Report Bundle remain |
 
 M2 uses NumPy and scikit-learn only. Flower/PyTorch belong to M3 and the trust
 deployment belongs to M4; neither changes the frozen M2 dataset contract.

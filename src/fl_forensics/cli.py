@@ -6,13 +6,40 @@ import argparse
 import json
 from pathlib import Path
 
+from .attack_mapping import (
+    create_attack_mapping_bundle,
+    verify_attack_mapping_bundle,
+)
+from .byzantine_experiment import (
+    freeze_byzantine_scenario,
+    run_byzantine_comparison,
+    verify_byzantine_comparison,
+    verify_frozen_update_set,
+)
 from .central_baseline import train_central_baseline, verify_central_baseline
 from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
+from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
+from .prototype_experiment import (
+    freeze_prototype_scenario,
+    run_prototype_comparison,
+    verify_frozen_prototype_scenario,
+    verify_prototype_comparison,
+)
+from .prototype_sensitivity import (
+    plan_prototype_sensitivity,
+    run_prototype_sensitivity,
+    verify_prototype_sensitivity,
+)
+from .prototype_sensitivity_reporting import (
+    generate_prototype_sensitivity_report,
+    verify_prototype_sensitivity_report,
+)
 from .reporting import generate_m3_report
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
@@ -345,6 +372,436 @@ def build_parser() -> argparse.ArgumentParser:
     m5_verify_campaign.add_argument("--trust-workspace", type=Path, required=True)
     m5_verify_campaign.add_argument("--partition-manifest", type=Path, required=True)
     m5_verify_campaign.add_argument("--server-evaluation", type=Path, required=True)
+
+    m6_freeze = subparsers.add_parser(
+        "m6-freeze", help="freeze one deterministic attack set from a verified M5 round"
+    )
+    m6_freeze.add_argument("--source-round-workspace", type=Path, required=True)
+    m6_freeze.add_argument("--trust-workspace", type=Path, required=True)
+    m6_freeze.add_argument("--partition-workspace", type=Path, required=True)
+    m6_freeze.add_argument("--output", type=Path, required=True)
+    m6_freeze.add_argument(
+        "--attack",
+        choices=(
+            "clean",
+            "label_flip",
+            "gaussian_noise",
+            "sign_flip",
+            "update_amplification",
+            "model_replacement",
+            "backdoor",
+            "colluding",
+        ),
+        required=True,
+    )
+    m6_freeze.add_argument("--f", type=int, required=True)
+    m6_freeze.add_argument(
+        "--attacker-id",
+        action="append",
+        dest="attacker_ids",
+        help="explicit attacker identity; repeat exactly f times",
+    )
+    m6_freeze.add_argument(
+        "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
+
+    m6_verify_frozen = subparsers.add_parser(
+        "m6-verify-frozen", help="verify every digest in a frozen M6 update set"
+    )
+    m6_verify_frozen.add_argument("--workspace", type=Path, required=True)
+
+    m6_compare = subparsers.add_parser(
+        "m6-compare", help="compare every M6 aggregator on one frozen update set"
+    )
+    m6_compare.add_argument("--frozen-workspace", type=Path, required=True)
+    m6_compare.add_argument("--partition-workspace", type=Path, required=True)
+    m6_compare.add_argument("--output", type=Path, required=True)
+    m6_compare.add_argument(
+        "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
+
+    m6_verify = subparsers.add_parser(
+        "m6-verify", help="independently recompute an M6 aggregator comparison"
+    )
+    m6_verify.add_argument("--frozen-workspace", type=Path, required=True)
+    m6_verify.add_argument("--partition-workspace", type=Path, required=True)
+    m6_verify.add_argument("--workspace", type=Path, required=True)
+    m6_verify.add_argument(
+        "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
+
+    m6_prototype_freeze = subparsers.add_parser(
+        "m6-prototype-freeze",
+        help="freeze class prototypes from a verified M5 global checkpoint",
+    )
+    m6_prototype_freeze.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_freeze.add_argument("--trust-workspace", type=Path, required=True)
+    m6_prototype_freeze.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_freeze.add_argument("--output", type=Path, required=True)
+    m6_prototype_freeze.add_argument("--f", type=int, required=True)
+    m6_prototype_freeze.add_argument(
+        "--attacker-id",
+        action="append",
+        dest="attacker_ids",
+        help="explicit attacker identity; repeat exactly f times",
+    )
+    m6_prototype_freeze.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_verify_frozen = subparsers.add_parser(
+        "m6-prototype-verify-frozen",
+        help="re-extract and verify every frozen prototype submission",
+    )
+    m6_prototype_verify_frozen.add_argument("--workspace", type=Path, required=True)
+    m6_prototype_verify_frozen.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_frozen.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_frozen.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_frozen.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_compare = subparsers.add_parser(
+        "m6-prototype-compare",
+        help="compare baseline and robust aggregation on frozen prototypes",
+    )
+    m6_prototype_compare.add_argument(
+        "--frozen-workspace", type=Path, required=True
+    )
+    m6_prototype_compare.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_compare.add_argument("--output", type=Path, required=True)
+    m6_prototype_compare.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_verify = subparsers.add_parser(
+        "m6-prototype-verify",
+        help="recompute and verify the M6 prototype comparison",
+    )
+    m6_prototype_verify.add_argument(
+        "--frozen-workspace", type=Path, required=True
+    )
+    m6_prototype_verify.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify.add_argument("--workspace", type=Path, required=True)
+    m6_prototype_verify.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-poisoning.yaml"),
+    )
+
+    m6_prototype_sensitivity_plan = subparsers.add_parser(
+        "m6-prototype-sensitivity-plan",
+        help="show the predeclared sensitivity cells without accessing data",
+    )
+    m6_prototype_sensitivity_plan.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_sensitivity = subparsers.add_parser(
+        "m6-prototype-sensitivity",
+        help="run every predeclared exploratory prototype sensitivity scenario",
+    )
+    m6_prototype_sensitivity.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity.add_argument("--output", type=Path, required=True)
+    m6_prototype_sensitivity.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_verify_sensitivity = subparsers.add_parser(
+        "m6-prototype-verify-sensitivity",
+        help="recompute and verify every prototype sensitivity scenario",
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_sensitivity_report = subparsers.add_parser(
+        "m6-prototype-sensitivity-report",
+        help="render deterministic tables and curves from verified sensitivity evidence",
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument(
+        "--sensitivity-workspace", type=Path, required=True
+    )
+    m6_prototype_sensitivity_report.add_argument("--output", type=Path, required=True)
+    m6_prototype_sensitivity_report.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m6_prototype_verify_sensitivity_report = subparsers.add_parser(
+        "m6-prototype-verify-sensitivity-report",
+        help="recompute and verify every M6 prototype sensitivity report artifact",
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--source-round-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--sensitivity-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--report-workspace", type=Path, required=True
+    )
+    m6_prototype_verify_sensitivity_report.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/byzantine-prototype-sensitivity.yaml"),
+    )
+
+    m7_predict = subparsers.add_parser(
+        "m7-predict",
+        help="create reportable predictions with complete Zeek-event lineage",
+    )
+    m7_predict.add_argument("--round-workspace", type=Path, required=True)
+    m7_predict.add_argument("--trust-workspace", type=Path, required=True)
+    m7_predict.add_argument("--partition-workspace", type=Path, required=True)
+    m7_predict.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_predict.add_argument("--output", type=Path, required=True)
+    m7_predict.add_argument(
+        "--split",
+        choices=("validation", "test", "temporal_holdout"),
+        required=True,
+    )
+    m7_selection = m7_predict.add_mutually_exclusive_group(required=True)
+    m7_selection.add_argument("--window-id", action="append", dest="window_ids")
+    m7_selection.add_argument("--first", type=int)
+    m7_predict.add_argument(
+        "--config", type=Path, default=Path("configs/investigation.yaml")
+    )
+
+    m7_verify_predictions = subparsers.add_parser(
+        "m7-verify-predictions",
+        help="recompute M7 inference and verify complete source-event lineage",
+    )
+    m7_verify_predictions.add_argument("--round-workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument("--trust-workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m7_verify_predictions.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument("--workspace", type=Path, required=True)
+    m7_verify_predictions.add_argument(
+        "--config", type=Path, default=Path("configs/investigation.yaml")
+    )
+
+    m7_explain = subparsers.add_parser(
+        "m7-explain",
+        help="explain a verified Prediction Bundle with IG and prototype distances",
+    )
+    m7_explain.add_argument("--round-workspace", type=Path, required=True)
+    m7_explain.add_argument("--trust-workspace", type=Path, required=True)
+    m7_explain.add_argument("--partition-workspace", type=Path, required=True)
+    m7_explain.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_explain.add_argument("--prediction-workspace", type=Path, required=True)
+    m7_explain.add_argument("--output", type=Path, required=True)
+    m7_explain.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_explain.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+
+    m7_verify_explanations = subparsers.add_parser(
+        "m7-verify-explanations",
+        help="recompute and verify M7 IG and prototype-distance explanations",
+    )
+    m7_verify_explanations.add_argument("--round-workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument("--trust-workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m7_verify_explanations.add_argument("--dataset-workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument(
+        "--prediction-workspace", type=Path, required=True
+    )
+    m7_verify_explanations.add_argument("--workspace", type=Path, required=True)
+    m7_verify_explanations.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_verify_explanations.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+
+    m7_map_attack = subparsers.add_parser(
+        "m7-map-attack",
+        help="map verified M7 explanations to versioned ATT&CK hypotheses",
+    )
+    m7_map_attack.add_argument(
+        "--round-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--trust-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--partition-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--dataset-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--prediction-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--explanation-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+    )
+    m7_map_attack.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_map_attack.add_argument(
+        "--explanation-config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+    m7_map_attack.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-attack.yaml"),
+    )
+
+    m7_verify_attack = subparsers.add_parser(
+        "m7-verify-attack",
+        help="recompute and verify versioned M7 ATT&CK hypotheses",
+    )
+    m7_verify_attack.add_argument(
+        "--round-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--trust-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--partition-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--dataset-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--prediction-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--explanation-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_attack.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_verify_attack.add_argument(
+        "--explanation-config",
+        type=Path,
+        default=Path("configs/investigation-explanations.yaml"),
+    )
+    m7_verify_attack.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-attack.yaml"),
+    )
+
+
     return parser
 
 
@@ -570,6 +1027,211 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-freeze":
+        result = freeze_byzantine_scenario(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            attack=arguments.attack,
+            f=arguments.f,
+            config_path=arguments.config,
+            attacker_ids=arguments.attacker_ids,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify-frozen":
+        result = verify_frozen_update_set(workspace=arguments.workspace)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-compare":
+        result = run_byzantine_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify":
+        result = verify_byzantine_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-freeze":
+        result = freeze_prototype_scenario(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            f=arguments.f,
+            config_path=arguments.config,
+            attacker_ids=arguments.attacker_ids,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify-frozen":
+        result = verify_frozen_prototype_scenario(
+            workspace=arguments.workspace,
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-compare":
+        result = run_prototype_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify":
+        result = verify_prototype_comparison(
+            frozen_workspace=arguments.frozen_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-sensitivity-plan":
+        result = plan_prototype_sensitivity(config_path=arguments.config)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-sensitivity":
+        result = run_prototype_sensitivity(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify-sensitivity":
+        result = verify_prototype_sensitivity(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-prototype-sensitivity-report":
+        result = generate_prototype_sensitivity_report(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            sensitivity_workspace=arguments.sensitivity_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-prototype-verify-sensitivity-report":
+        result = verify_prototype_sensitivity_report(
+            source_round_workspace=arguments.source_round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            sensitivity_workspace=arguments.sensitivity_workspace,
+            report_workspace=arguments.report_workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m7-predict":
+        result = create_prediction_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+            split=arguments.split,
+            window_ids=arguments.window_ids,
+            first=arguments.first,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m7-verify-predictions":
+        result = verify_prediction_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m7-explain":
+        result = create_explanation_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            output=arguments.output,
+            prediction_config_path=arguments.prediction_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m7-verify-explanations":
+        result = verify_explanation_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            workspace=arguments.workspace,
+            prediction_config_path=arguments.prediction_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m7-map-attack":
+        result = create_attack_mapping_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            explanation_workspace=arguments.explanation_workspace,
+            output=arguments.output,
+            prediction_config_path=arguments.prediction_config,
+            explanation_config_path=arguments.explanation_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m7-verify-attack":
+        result = verify_attack_mapping_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            explanation_workspace=arguments.explanation_workspace,
+            workspace=arguments.workspace,
+            prediction_config_path=arguments.prediction_config,
+            explanation_config_path=arguments.explanation_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
     result = physical_tpm_preflight(tcti=arguments.tcti)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
