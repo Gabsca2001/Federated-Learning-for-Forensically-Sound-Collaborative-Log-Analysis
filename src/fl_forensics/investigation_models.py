@@ -292,3 +292,124 @@ class AttackMappingBundleManifest(StrictModel):
     integrity_assurance: Literal["content-addressed-unanchored"] = (
         "content-addressed-unanchored"
     )
+
+class InvestigationReportSourceReferences(StrictModel):
+    attack_mapping_bundle_id: str
+    attack_manifest_sha256: str = Field(pattern=HEX_256_PATTERN)
+    attack_mappings_sha256: str = Field(pattern=HEX_256_PATTERN)
+
+    explanation_bundle_id: str
+    explanation_manifest_sha256: str = Field(pattern=HEX_256_PATTERN)
+    integrated_gradients_sha256: str = Field(pattern=HEX_256_PATTERN)
+    prototype_reference_sha256: str = Field(pattern=HEX_256_PATTERN)
+    prototype_distances_sha256: str = Field(pattern=HEX_256_PATTERN)
+
+    prediction_bundle_id: str
+    prediction_manifest_sha256: str = Field(pattern=HEX_256_PATTERN)
+    predictions_sha256: str = Field(pattern=HEX_256_PATTERN)
+    lineage_sha256: str = Field(pattern=HEX_256_PATTERN)
+
+    campaign_id: str
+    round_number: int = Field(gt=0)
+    global_model_sha256: str = Field(pattern=HEX_256_PATTERN)
+    partition_manifest_sha256: str = Field(pattern=HEX_256_PATTERN)
+
+
+class InvestigationReportabilityGate(StrictModel):
+    policy: Literal[
+        "verified-attack-and-complete-evidence-report-required"
+    ] = "verified-attack-and-complete-evidence-report-required"
+
+    attack_mapping_bundle_verified: Literal[True] = True
+    explanation_bundle_transitively_verified: Literal[True] = True
+    prediction_bundle_transitively_verified: Literal[True] = True
+
+    complete_case_coverage: Literal[True] = True
+    complete_primary_evidence_lineage: Literal[True] = True
+
+    reference_labels_included: Literal[False] = False
+    dataset_attack_labels_included: Literal[False] = False
+    dataset_labels_used_for_reporting: Literal[False] = False
+
+    model_measurements_separated: Literal[True] = True
+    derived_interpretations_separated: Literal[True] = True
+
+    complete_case_count: int = Field(gt=0)
+    incomplete_case_count: Literal[0] = 0
+    invariant_violation_count: Literal[0] = 0
+    reportable: Literal[True] = True
+
+
+class InvestigationReportBundleCore(StrictModel):
+    code_version: str
+    implementation_sha256: str = Field(pattern=HEX_256_PATTERN)
+    report_config_sha256: str = Field(pattern=HEX_256_PATTERN)
+
+    source: InvestigationReportSourceReferences
+
+    case_count: int = Field(gt=0)
+    source_event_count: int = Field(gt=0)
+    source_record_count: int = Field(gt=0)
+
+    candidate_tactic_case_count: int = Field(ge=0)
+    not_applicable_attack_case_count: int = Field(ge=0)
+    unresolved_attack_case_count: int = Field(ge=0)
+
+    investigation_report_sha256: str = Field(
+        pattern=HEX_256_PATTERN
+    )
+    report_markdown_sha256: str = Field(
+        pattern=HEX_256_PATTERN
+    )
+
+    reportability_gate: InvestigationReportabilityGate
+
+    @model_validator(mode="after")
+    def _case_counts_match(
+        self,
+    ) -> InvestigationReportBundleCore:
+        attack_cases = (
+            self.candidate_tactic_case_count
+            + self.not_applicable_attack_case_count
+            + self.unresolved_attack_case_count
+        )
+
+        if attack_cases != self.case_count:
+            raise ValueError(
+                "investigation ATT&CK case counts do not sum correctly"
+            )
+
+        if (
+            self.reportability_gate.complete_case_count
+            != self.case_count
+        ):
+            raise ValueError(
+                "investigation case count does not match "
+                "reportability gate"
+            )
+
+        return self
+
+
+class InvestigationReportBundleManifest(StrictModel):
+    schema_version: Literal["1.0"] = "1.0"
+    artifact_type: Literal[
+        "m7_investigation_report_bundle_manifest"
+    ] = "m7_investigation_report_bundle_manifest"
+
+    investigation_report_bundle_id: str
+    core: InvestigationReportBundleCore
+
+    canonical_core_sha256: str = Field(
+        pattern=HEX_256_PATTERN
+    )
+
+    evidence_boundary: Literal[
+        "primary-source-record-digests-separated-from-model-interpretation"
+    ] = (
+        "primary-source-record-digests-separated-from-model-interpretation"
+    )
+
+    integrity_assurance: Literal[
+        "content-addressed-unanchored"
+    ] = "content-addressed-unanchored"

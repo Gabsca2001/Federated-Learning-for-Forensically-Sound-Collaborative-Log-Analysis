@@ -24,6 +24,10 @@ from .demo import run_demo
 from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .investigation_report import (
+    create_investigation_report_bundle,
+    verify_investigation_report_bundle,
+)
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
 from .protean_finalization import (
     finalize_protean_endpoints,
@@ -954,6 +958,139 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("configs/investigation-attack.yaml"),
     )
+    m7_report = subparsers.add_parser(
+        "m7-report",
+        help="create a deterministic verified M7 investigation report",
+    )
+    m7_report.add_argument(
+        "--round-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--trust-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--partition-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--dataset-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--prediction-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--explanation-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--attack-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+    )
+    m7_report.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_report.add_argument(
+        "--explanation-config",
+        type=Path,
+        default=Path(
+            "configs/investigation-explanations.yaml"
+        ),
+    )
+    m7_report.add_argument(
+        "--attack-config",
+        type=Path,
+        default=Path("configs/investigation-attack.yaml"),
+    )
+    m7_report.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-report.yaml"),
+    )
+
+    m7_verify_report = subparsers.add_parser(
+        "m7-verify-report",
+        help="recompute and verify an M7 investigation report",
+    )
+    m7_verify_report.add_argument(
+        "--round-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--trust-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--partition-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--dataset-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--prediction-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--explanation-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--attack-workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--workspace",
+        type=Path,
+        required=True,
+    )
+    m7_verify_report.add_argument(
+        "--prediction-config",
+        type=Path,
+        default=Path("configs/investigation.yaml"),
+    )
+    m7_verify_report.add_argument(
+        "--explanation-config",
+        type=Path,
+        default=Path(
+            "configs/investigation-explanations.yaml"
+        ),
+    )
+    m7_verify_report.add_argument(
+        "--attack-config",
+        type=Path,
+        default=Path("configs/investigation-attack.yaml"),
+    )
+    m7_verify_report.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/investigation-report.yaml"),
+    )
 
 
     return parser
@@ -1465,6 +1602,42 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             prediction_config_path=arguments.prediction_config,
             explanation_config_path=arguments.explanation_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m7-report":
+        result = create_investigation_report_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            explanation_workspace=arguments.explanation_workspace,
+            attack_workspace=arguments.attack_workspace,
+            output=arguments.output,
+            prediction_config_path=arguments.prediction_config,
+            explanation_config_path=arguments.explanation_config,
+            attack_config_path=arguments.attack_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m7-verify-report":
+        result = verify_investigation_report_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            prediction_workspace=arguments.prediction_workspace,
+            explanation_workspace=arguments.explanation_workspace,
+            attack_workspace=arguments.attack_workspace,
+            workspace=arguments.workspace,
+            prediction_config_path=arguments.prediction_config,
+            explanation_config_path=arguments.explanation_config,
+            attack_config_path=arguments.attack_config,
             config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))

@@ -92,6 +92,106 @@ Bundle. It then recreates the training baseline, all client/global prototypes,
 Integrated Gradients, and distances byte-for-byte. Missing, changed, or
 unexpected files fail verification.
 
+## ATT&CK Mapping Bundle v1
+
+`m7-map-attack` accepts only an Explanation Bundle that passes
+`m7-verify-explanations`. The mapping contract is versioned independently in
+`configs/investigation-attack.yaml` and freezes MITRE ATT&CK Enterprise v19.2.
+Rule selection depends only on the model's predicted class. Reference labels,
+dataset ATT&CK annotations, Integrated Gradients, and prototype distances are
+explicitly excluded from rule selection.
+
+The current model taxonomy maps `credential_access`, `exfiltration`,
+`initial_access`, and `reconnaissance` to candidate ATT&CK tactics. `benign`
+is represented as not applicable. `multi_tactic` is deliberately preserved as
+`unresolved-multi-tactic`; prototype geometry or feature attribution cannot be
+used to force a single tactic. Technique-level claims are disabled in this
+version because the available model output does not provide sufficient
+evidentiary support for them.
+
+The immutable output contains:
+
+- `attack-mappings.json`, with one versioned investigative hypothesis per
+  verified prediction;
+- `manifest.json`, binding the verified Explanation and Prediction Bundles,
+  ATT&CK configuration and implementation digests, model taxonomy, mapping
+  counts, and the reportability gate.
+
+`m7-verify-attack` transitively re-verifies the Explanation and Prediction
+Bundles, recomputes every mapping, and compares the complete bundle
+byte-for-byte. Unknown model classes, missing mappings, modified artifacts,
+and unexpected bundle entries fail closed.
+
+The exercised six-case bundle contains two `candidate-tactic` mappings and
+four `unresolved-multi-tactic` mappings, with zero unmapped predictions. Its
+verified bundle identifier is
+`m7-attack-mapping-bundle-6e6be31f1e3592d5f47286af`.
+
+## Investigation Report Bundle v1
+
+`m7-report` is the terminal reporting layer of M7. It accepts only an ATT&CK
+Mapping Bundle that passes `m7-verify-attack`; therefore publication also
+depends transitively on successful verification of explanations, predictions,
+the M5 checkpoint, M3 evaluation rows, and the M2 controlled-ingestion
+lineage.
+
+The report is deterministic and has no dynamic timestamp or other
+non-reproducible field. Cases are ordered lexicographically by prediction
+identifier. Each case combines the verified case identity, model prediction
+and confidence, a bounded Integrated Gradients summary, prototype geometry,
+the versioned ATT&CK hypothesis, and the complete source-event lineage needed
+to resolve the case back to controlled-ingestion source records and source
+files.
+
+Primary-evidence references are constructed through an explicit allowlist.
+For each source record the report retains only the relative source path, row
+number, source-record SHA-256, source-file SHA-256, and source-file size.
+Dataset fields such as `label_binary`, `label_tactic`, and `label_technique`
+are not copied. The experimental `reference_label` is likewise excluded.
+Tests demonstrate that changing those labels does not change the generated
+investigation report.
+
+The bundle contains exactly:
+
+- `investigation-report.json`, the canonical machine-readable investigative
+  artifact;
+- `report.md`, a deterministic human-readable representation of the same
+  cases;
+- `manifest.json`, binding the verified upstream bundles, report
+  configuration, implementation, both report digests, case counts, evidence
+  counts, and the final reportability gate.
+
+`m7-verify-report` first re-runs the complete upstream ATT&CK verification and
+then regenerates the JSON report, Markdown report, and manifest. Verification
+requires byte-for-byte equality and rejects missing, modified, or unexpected
+files.
+
+The exercised six-case report resolves 69 source events and 81 controlled-
+ingestion source records. Two cases carry candidate ATT&CK tactics and four
+remain unresolved multi-tactic hypotheses. In two of the multi-tactic cases
+the nearest prototype is `reconnaissance`; the report nevertheless preserves
+the ATT&CK result as `unresolved-multi-tactic`, demonstrating that prototype
+geometry cannot override the mapping policy.
+
+The verified report bundle identifier is
+`m7-investigation-report-bundle-54cee841904ab35cc2a7eb8e`. Its canonical core
+SHA-256 is
+`54cee841904ab35cc2a7eb8efafcd3a27aeaee338c6fc8ed3f328207750bbab7`.
+The generated artifact digests are:
+
+- `investigation-report.json`:
+  `7e8d4f20229bfb268197383829a91265a19fd8b94e3e4b6a72643270b33bb2a9`;
+- `report.md`:
+  `f43f104e34d8e97d01f9d6f68cffecda7c4d34debf15e0a228a24bdd08c908db`;
+- `manifest.json`:
+  `3e4d5faa6ff49760692386caae8f91c10b8037dcaaccfbf6644f0e19c618ca5f`.
+
+The verifier returned `verified`, zero errors, `reportable=true`,
+`source_attack_verified=true`, and
+`verification_recomputed_report=true`. The complete repository test suite
+passes with 139 tests.
+
+
 ## Evidentiary interpretation
 
 The source boundary is the controlled-ingestion evidence already preserved by
@@ -103,11 +203,27 @@ observed facts.
 
 Prediction confidence is a model-derived measurement. The reference label is
 retained only for experimental evaluation and never enters the inference
-tensor. Integrated Gradients and prototype distances are separate derived
-artifacts; ATT&CK mappings will follow the same separation. All remain
-interpretations rather than primary Zeek evidence.
+tensor.
+
+Prediction confidence is a model-derived measurement. The reference label is
+retained only in the Prediction Bundle for experimental evaluation and never
+enters inference, ATT&CK rule selection, or the final investigation report.
+Integrated Gradients and prototype distances are derived model
+interpretations. ATT&CK mappings are investigative hypotheses derived only
+from the predicted class under the frozen mapping policy. None of these
+artifacts is promoted to primary Zeek evidence.
+
+The final Investigation Report preserves this distinction explicitly:
+controlled-ingestion source-record and source-file digest references form the
+primary-evidence boundary; predictions and confidence are model-derived
+measurements; Integrated Gradients, prototype geometry, and ATT&CK mappings
+are derived interpretations. The report does not claim that these model
+outputs establish the historical truth of an attack or retrospectively attest
+the original UWF capture.
 
 Integrated Gradients describes local model sensitivity along one declared
 baseline path; it is not a causal attribution. Prototype distance describes
 geometry in the learned M5 embedding; proximity is not proof of class
-membership. Neither artifact modifies or replaces the source-event lineage.
+membership. ATT&CK mapping is a versioned investigative hypothesis rather
+than a technique-level forensic conclusion. None of these layers modifies or
+replaces the source-event lineage.
