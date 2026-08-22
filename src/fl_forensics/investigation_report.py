@@ -389,7 +389,7 @@ def _source_record_reference(
         )
 
     # Deliberate allowlist:
-    # label_binary, label_tactic and label_technique are not copied.
+    # dataset labels are never copied into the final report.
     return {
         "relative_path": relative_path,
         "row_number": row_number,
@@ -416,7 +416,9 @@ def _validated_report_inputs(
     predictions_path = (
         prediction_workspace / "predictions.json"
     )
-    lineage_path = prediction_workspace / "lineage.json"
+    lineage_path = (
+        prediction_workspace / "lineage.json"
+    )
 
     explanation_manifest_path = (
         explanation_workspace / "manifest.json"
@@ -431,7 +433,9 @@ def _validated_report_inputs(
         explanation_workspace / "prototype-distances.json"
     )
 
-    attack_manifest_path = attack_workspace / "manifest.json"
+    attack_manifest_path = (
+        attack_workspace / "manifest.json"
+    )
     attack_mappings_path = (
         attack_workspace / "attack-mappings.json"
     )
@@ -445,6 +449,7 @@ def _validated_report_inputs(
                 )
             )
         )
+
         explanation_manifest = (
             ExplanationBundleManifest.model_validate(
                 _read_json(
@@ -453,6 +458,7 @@ def _validated_report_inputs(
                 )
             )
         )
+
         attack_manifest = (
             AttackMappingBundleManifest.model_validate(
                 _read_json(
@@ -470,18 +476,22 @@ def _validated_report_inputs(
         predictions_path,
         "Prediction Bundle predictions",
     )
+
     lineage = _read_json(
         lineage_path,
         "Prediction Bundle lineage",
     )
+
     integrated_gradients = _read_json(
         integrated_gradients_path,
         "Integrated Gradients artifact",
     )
+
     prototype_distances = _read_json(
         prototype_distances_path,
         "prototype distances artifact",
     )
+
     attack_mappings = _read_json(
         attack_mappings_path,
         "ATT&CK mapping artifact",
@@ -502,8 +512,12 @@ def _validated_report_inputs(
     prediction_manifest_sha256 = _sha256_file(
         prediction_manifest_path
     )
-    predictions_sha256 = _sha256_file(predictions_path)
-    lineage_sha256 = _sha256_file(lineage_path)
+    predictions_sha256 = _sha256_file(
+        predictions_path
+    )
+    lineage_sha256 = _sha256_file(
+        lineage_path
+    )
 
     explanation_manifest_sha256 = _sha256_file(
         explanation_manifest_path
@@ -598,7 +612,10 @@ def _validated_report_inputs(
             "ATT&CK predictions binding mismatch"
         )
 
-    if attack_source.lineage_sha256 != lineage_sha256:
+    if (
+        attack_source.lineage_sha256
+        != lineage_sha256
+    ):
         raise InvestigationReportError(
             "ATT&CK lineage binding mismatch"
         )
@@ -646,19 +663,26 @@ def _validated_report_inputs(
             "reference-label independence"
         )
 
-    if lineage.get("complete_window_count") != (
-        prediction_manifest.core.prediction_count
+    if (
+        lineage.get("complete_window_count")
+        != prediction_manifest.core.prediction_count
     ):
         raise InvestigationReportError(
             "lineage complete-window count mismatch"
         )
 
-    if lineage.get("incomplete_window_count") != 0:
+    if (
+        lineage.get("incomplete_window_count")
+        != 0
+    ):
         raise InvestigationReportError(
             "lineage contains incomplete windows"
         )
 
-    if lineage.get("invariant_violation_count") != 0:
+    if (
+        lineage.get("invariant_violation_count")
+        != 0
+    ):
         raise InvestigationReportError(
             "lineage contains invariant violations"
         )
@@ -699,7 +723,9 @@ def _validated_report_inputs(
         artifact="ATT&CK mappings",
     )
 
-    prediction_ids = set(predictions_by_id)
+    prediction_ids = set(
+        predictions_by_id
+    )
 
     for description, indexed in (
         ("lineage windows", windows_by_prediction),
@@ -712,26 +738,39 @@ def _validated_report_inputs(
                 f"{description} coverage differs from predictions"
             )
 
-    expected_count = prediction_manifest.core.prediction_count
+    expected_count = (
+        prediction_manifest.core.prediction_count
+    )
 
-    if len(predictions_by_id) != expected_count:
+    if (
+        len(predictions_by_id)
+        != expected_count
+    ):
         raise InvestigationReportError(
             "Prediction Bundle count mismatch"
         )
 
-    if attack_manifest.core.mapping_count != expected_count:
+    if (
+        attack_manifest.core.mapping_count
+        != expected_count
+    ):
         raise InvestigationReportError(
             "ATT&CK mapping count differs from predictions"
         )
 
-    source_files = lineage.get("source_files")
+    source_files = lineage.get(
+        "source_files"
+    )
 
     if not isinstance(source_files, list):
         raise InvestigationReportError(
             "lineage source_files must be a list"
         )
 
-    source_files_by_path: dict[str, dict[str, Any]] = {}
+    source_files_by_path: dict[
+        str,
+        dict[str, Any],
+    ] = {}
 
     for source_file in source_files:
         if not isinstance(source_file, dict):
@@ -739,7 +778,9 @@ def _validated_report_inputs(
                 "lineage contains invalid source-file record"
             )
 
-        relative_path = source_file.get("relative_path")
+        relative_path = source_file.get(
+            "relative_path"
+        )
 
         if (
             not isinstance(relative_path, str)
@@ -751,110 +792,196 @@ def _validated_report_inputs(
 
         if relative_path in source_files_by_path:
             raise InvestigationReportError(
-                f"duplicate lineage source file: {relative_path}"
+                f"duplicate lineage source file: "
+                f"{relative_path}"
             )
 
-        source_files_by_path[relative_path] = source_file
+        source_files_by_path[
+            relative_path
+        ] = source_file
 
     referenced_event_ids: set[str] = set()
-    referenced_source_record_digests: set[str] = set()
 
-    for prediction_id in sorted(prediction_ids):
-        prediction = predictions_by_id[prediction_id]
-        window = windows_by_prediction[prediction_id]
-        ig = ig_by_prediction[prediction_id]
-        distance = distances_by_prediction[prediction_id]
-        mapping = mappings_by_prediction[prediction_id]
+    referenced_source_record_digests: set[
+        str
+    ] = set()
 
-        window_id = prediction.get("window_id")
-        predicted_class = prediction.get("predicted_class")
+    for prediction_id in sorted(
+        prediction_ids
+    ):
+        prediction = predictions_by_id[
+            prediction_id
+        ]
+
+        window = windows_by_prediction[
+            prediction_id
+        ]
+
+        ig = ig_by_prediction[
+            prediction_id
+        ]
+
+        distance = distances_by_prediction[
+            prediction_id
+        ]
+
+        mapping = mappings_by_prediction[
+            prediction_id
+        ]
+
+        window_id = prediction.get(
+            "window_id"
+        )
+
+        predicted_class = prediction.get(
+            "predicted_class"
+        )
+
         input_sha256 = prediction.get(
             "inference_input_sha256"
         )
 
-        if window.get("window_id") != window_id:
+        if (
+            window.get("window_id")
+            != window_id
+        ):
             raise InvestigationReportError(
-                f"lineage window mismatch for {prediction_id}"
-            )
-
-        if window.get("lineage_complete") is not True:
-            raise InvestigationReportError(
-                f"incomplete lineage for {prediction_id}"
+                f"lineage window mismatch for "
+                f"{prediction_id}"
             )
 
         if (
-            window.get("inference_input_sha256")
+            window.get("lineage_complete")
+            is not True
+        ):
+            raise InvestigationReportError(
+                f"incomplete lineage for "
+                f"{prediction_id}"
+            )
+
+        if (
+            window.get(
+                "inference_input_sha256"
+            )
             != input_sha256
         ):
             raise InvestigationReportError(
-                f"lineage input digest mismatch for {prediction_id}"
-            )
-
-        if ig.get("window_id") != window_id:
-            raise InvestigationReportError(
-                f"IG window mismatch for {prediction_id}"
-            )
-
-        if ig.get("target_class") != predicted_class:
-            raise InvestigationReportError(
-                f"IG target mismatch for {prediction_id}"
+                f"lineage input digest mismatch "
+                f"for {prediction_id}"
             )
 
         if (
-            ig.get("inference_input_sha256")
-            != input_sha256
+            ig.get("window_id")
+            != window_id
         ):
             raise InvestigationReportError(
-                f"IG input digest mismatch for {prediction_id}"
-            )
-
-        if distance.get("window_id") != window_id:
-            raise InvestigationReportError(
-                f"prototype window mismatch for {prediction_id}"
+                f"IG window mismatch for "
+                f"{prediction_id}"
             )
 
         if (
-            distance.get("predicted_class")
+            ig.get("target_class")
             != predicted_class
         ):
             raise InvestigationReportError(
-                f"prototype class mismatch for {prediction_id}"
+                f"IG target mismatch for "
+                f"{prediction_id}"
             )
 
         if (
-            distance.get("inference_input_sha256")
+            ig.get(
+                "inference_input_sha256"
+            )
             != input_sha256
         ):
             raise InvestigationReportError(
-                f"prototype input mismatch for {prediction_id}"
+                f"IG input digest mismatch for "
+                f"{prediction_id}"
             )
 
-        explanation_id = ig.get("explanation_id")
+        if (
+            distance.get("window_id")
+            != window_id
+        ):
+            raise InvestigationReportError(
+                f"prototype window mismatch for "
+                f"{prediction_id}"
+            )
 
         if (
-            distance.get("explanation_id")
+            distance.get(
+                "predicted_class"
+            )
+            != predicted_class
+        ):
+            raise InvestigationReportError(
+                f"prototype class mismatch for "
+                f"{prediction_id}"
+            )
+
+        if (
+            distance.get(
+                "inference_input_sha256"
+            )
+            != input_sha256
+        ):
+            raise InvestigationReportError(
+                f"prototype input mismatch for "
+                f"{prediction_id}"
+            )
+
+        explanation_id = ig.get(
+            "explanation_id"
+        )
+
+        if (
+            distance.get(
+                "explanation_id"
+            )
             != explanation_id
         ):
             raise InvestigationReportError(
-                f"explanation identity mismatch for {prediction_id}"
+                f"explanation identity mismatch "
+                f"for {prediction_id}"
             )
 
-        if mapping.get("window_id") != window_id:
+        if (
+            mapping.get("window_id")
+            != window_id
+        ):
             raise InvestigationReportError(
-                f"ATT&CK window mismatch for {prediction_id}"
+                f"ATT&CK window mismatch for "
+                f"{prediction_id}"
             )
 
-        if mapping.get("explanation_id") != explanation_id:
+        if (
+            mapping.get(
+                "explanation_id"
+            )
+            != explanation_id
+        ):
             raise InvestigationReportError(
-                f"ATT&CK explanation mismatch for {prediction_id}"
+                f"ATT&CK explanation mismatch for "
+                f"{prediction_id}"
             )
 
-        if mapping.get("predicted_class") != predicted_class:
+        if (
+            mapping.get(
+                "predicted_class"
+            )
+            != predicted_class
+        ):
             raise InvestigationReportError(
-                f"ATT&CK class mismatch for {prediction_id}"
+                f"ATT&CK class mismatch for "
+                f"{prediction_id}"
             )
 
-        if mapping.get("primary_evidence") is not False:
+        if (
+            mapping.get(
+                "primary_evidence"
+            )
+            is not False
+        ):
             raise InvestigationReportError(
                 "ATT&CK mapping was incorrectly promoted "
                 "to primary evidence"
@@ -864,7 +991,10 @@ def _validated_report_inputs(
             "explanation_context"
         )
 
-        if not isinstance(explanation_context, dict):
+        if not isinstance(
+            explanation_context,
+            dict,
+        ):
             raise InvestigationReportError(
                 f"missing ATT&CK explanation context "
                 f"for {prediction_id}"
@@ -880,23 +1010,37 @@ def _validated_report_inputs(
                 "ATT&CK rule selection depends on explanation"
             )
 
-        event_ids = window.get("source_event_ids")
+        event_ids = window.get(
+            "source_event_ids"
+        )
 
-        if not isinstance(event_ids, list) or not event_ids:
-            raise InvestigationReportError(
-                f"missing source events for {prediction_id}"
-            )
-
-        if len(set(event_ids)) != len(event_ids):
-            raise InvestigationReportError(
-                f"duplicate source event for {prediction_id}"
-            )
-
-        if window.get("source_event_count") != len(
-            event_ids
+        if (
+            not isinstance(event_ids, list)
+            or not event_ids
         ):
             raise InvestigationReportError(
-                f"source-event count mismatch for {prediction_id}"
+                f"missing source events for "
+                f"{prediction_id}"
+            )
+
+        if (
+            len(set(event_ids))
+            != len(event_ids)
+        ):
+            raise InvestigationReportError(
+                f"duplicate source event for "
+                f"{prediction_id}"
+            )
+
+        if (
+            window.get(
+                "source_event_count"
+            )
+            != len(event_ids)
+        ):
+            raise InvestigationReportError(
+                f"source-event count mismatch for "
+                f"{prediction_id}"
             )
 
         for event_id in event_ids:
@@ -905,29 +1049,47 @@ def _validated_report_inputs(
                     f"unresolved event {event_id}"
                 )
 
-            referenced_event_ids.add(event_id)
+            referenced_event_ids.add(
+                event_id
+            )
 
-            event = events_by_id[event_id]
-            source_records = event.get("source_records")
+            event = events_by_id[
+                event_id
+            ]
+
+            source_records = event.get(
+                "source_records"
+            )
 
             if (
-                not isinstance(source_records, list)
+                not isinstance(
+                    source_records,
+                    list,
+                )
                 or not source_records
             ):
                 raise InvestigationReportError(
-                    f"event {event_id} has no source records"
+                    f"event {event_id} "
+                    "has no source records"
                 )
 
             for source_record in source_records:
-                if not isinstance(source_record, dict):
+                if not isinstance(
+                    source_record,
+                    dict,
+                ):
                     raise InvestigationReportError(
-                        f"event {event_id} has invalid "
-                        "source-record reference"
+                        f"event {event_id} "
+                        "has invalid source-record reference"
                     )
 
-                safe_reference = _source_record_reference(
-                    source_record,
-                    source_files_by_path=source_files_by_path,
+                safe_reference = (
+                    _source_record_reference(
+                        source_record,
+                        source_files_by_path=(
+                            source_files_by_path
+                        ),
+                    )
                 )
 
                 referenced_source_record_digests.add(
@@ -936,20 +1098,27 @@ def _validated_report_inputs(
                     ]
                 )
 
-    if referenced_event_ids != set(events_by_id):
+    if (
+        referenced_event_ids
+        != set(events_by_id)
+    ):
         raise InvestigationReportError(
             "lineage contains events outside selected predictions"
         )
 
-    if len(referenced_event_ids) != (
-        prediction_manifest.core.source_event_count
+    if (
+        len(referenced_event_ids)
+        != prediction_manifest.core.source_event_count
     ):
         raise InvestigationReportError(
             "source-event count differs from Prediction Bundle"
         )
 
-    if len(referenced_source_record_digests) != (
-        prediction_manifest.core.source_record_count
+    if (
+        len(
+            referenced_source_record_digests
+        )
+        != prediction_manifest.core.source_record_count
     ):
         raise InvestigationReportError(
             "source-record count differs from Prediction Bundle"
@@ -959,26 +1128,62 @@ def _validated_report_inputs(
         "config": config,
         "config_sha256": config_sha256,
         "prediction_manifest": prediction_manifest,
-        "prediction_manifest_path": prediction_manifest_path,
-        "predictions_by_id": predictions_by_id,
-        "predictions_path": predictions_path,
+        "prediction_manifest_path": (
+            prediction_manifest_path
+        ),
+        "predictions_by_id": (
+            predictions_by_id
+        ),
+        "predictions_path": (
+            predictions_path
+        ),
         "lineage": lineage,
-        "lineage_path": lineage_path,
-        "windows_by_prediction": windows_by_prediction,
+        "lineage_path": (
+            lineage_path
+        ),
+        "windows_by_prediction": (
+            windows_by_prediction
+        ),
         "events_by_id": events_by_id,
-        "source_files_by_path": source_files_by_path,
-        "explanation_manifest": explanation_manifest,
-        "explanation_manifest_path": explanation_manifest_path,
-        "integrated_gradients_path": integrated_gradients_path,
-        "prototype_reference_path": prototype_reference_path,
-        "prototype_distances_path": prototype_distances_path,
-        "ig_by_prediction": ig_by_prediction,
-        "distances_by_prediction": distances_by_prediction,
-        "attack_manifest": attack_manifest,
-        "attack_manifest_path": attack_manifest_path,
-        "attack_mappings_path": attack_mappings_path,
-        "mappings_by_prediction": mappings_by_prediction,
-        "source_event_count": len(referenced_event_ids),
+        "source_files_by_path": (
+            source_files_by_path
+        ),
+        "explanation_manifest": (
+            explanation_manifest
+        ),
+        "explanation_manifest_path": (
+            explanation_manifest_path
+        ),
+        "integrated_gradients_path": (
+            integrated_gradients_path
+        ),
+        "prototype_reference_path": (
+            prototype_reference_path
+        ),
+        "prototype_distances_path": (
+            prototype_distances_path
+        ),
+        "ig_by_prediction": (
+            ig_by_prediction
+        ),
+        "distances_by_prediction": (
+            distances_by_prediction
+        ),
+        "attack_manifest": (
+            attack_manifest
+        ),
+        "attack_manifest_path": (
+            attack_manifest_path
+        ),
+        "attack_mappings_path": (
+            attack_mappings_path
+        ),
+        "mappings_by_prediction": (
+            mappings_by_prediction
+        ),
+        "source_event_count": len(
+            referenced_event_ids
+        ),
         "source_record_count": len(
             referenced_source_record_digests
         ),
@@ -988,55 +1193,88 @@ def _validated_report_inputs(
 def _build_primary_evidence(
     *,
     window: dict[str, Any],
-    events_by_id: dict[str, dict[str, Any]],
-    source_files_by_path: dict[str, dict[str, Any]],
+    events_by_id: dict[
+        str,
+        dict[str, Any],
+    ],
+    source_files_by_path: dict[
+        str,
+        dict[str, Any],
+    ],
 ) -> dict[str, Any]:
-    events: list[dict[str, Any]] = []
+    events: list[
+        dict[str, Any]
+    ] = []
 
-    for event_id in window["source_event_ids"]:
-        event = events_by_id[event_id]
+    for event_id in window[
+        "source_event_ids"
+    ]:
+        event = events_by_id[
+            event_id
+        ]
 
         source_records = [
             _source_record_reference(
                 record,
-                source_files_by_path=source_files_by_path,
+                source_files_by_path=(
+                    source_files_by_path
+                ),
             )
-            for record in event["source_records"]
+            for record
+            in event["source_records"]
         ]
 
         source_records.sort(
             key=lambda record: (
                 record["relative_path"],
                 record["row_number"],
-                record["source_record_sha256"],
+                record[
+                    "source_record_sha256"
+                ],
             )
         )
 
         events.append(
             {
-                "event_id": event["event_id"],
-                "lineage_record_sha256": event[
-                    "lineage_record_sha256"
-                ],
-                "source_identity_sha256": event[
-                    "source_identity_sha256"
-                ],
-                "source_records": source_records,
+                "event_id": (
+                    event["event_id"]
+                ),
+                "lineage_record_sha256": (
+                    event[
+                        "lineage_record_sha256"
+                    ]
+                ),
+                "source_identity_sha256": (
+                    event[
+                        "source_identity_sha256"
+                    ]
+                ),
+                "source_records": (
+                    source_records
+                ),
             }
         )
 
     return {
         "lineage_complete": True,
-        "m2_window_lineage_record_sha256": window[
-            "m2_window_lineage_record_sha256"
-        ],
-        "m2_window_row_sha256": window[
-            "m2_window_row_sha256"
-        ],
-        "m3_evaluation_row_sha256": window[
-            "m3_evaluation_row_sha256"
-        ],
-        "source_event_count": len(events),
+        "m2_window_lineage_record_sha256": (
+            window[
+                "m2_window_lineage_record_sha256"
+            ]
+        ),
+        "m2_window_row_sha256": (
+            window[
+                "m2_window_row_sha256"
+            ]
+        ),
+        "m3_evaluation_row_sha256": (
+            window[
+                "m3_evaluation_row_sha256"
+            ]
+        ),
+        "source_event_count": (
+            len(events)
+        ),
         "events": events,
     }
 
@@ -1045,18 +1283,38 @@ def _build_case(
     *,
     prediction: dict[str, Any],
     window: dict[str, Any],
-    integrated_gradients: dict[str, Any],
-    prototype_distance: dict[str, Any],
-    attack_mapping: dict[str, Any],
-    events_by_id: dict[str, dict[str, Any]],
-    source_files_by_path: dict[str, dict[str, Any]],
+    integrated_gradients: dict[
+        str,
+        Any,
+    ],
+    prototype_distance: dict[
+        str,
+        Any,
+    ],
+    attack_mapping: dict[
+        str,
+        Any,
+    ],
+    events_by_id: dict[
+        str,
+        dict[str, Any],
+    ],
+    source_files_by_path: dict[
+        str,
+        dict[str, Any],
+    ],
     top_feature_count: int,
 ) -> dict[str, Any]:
-    feature_attributions = integrated_gradients.get(
-        "feature_attributions"
+    feature_attributions = (
+        integrated_gradients.get(
+            "feature_attributions"
+        )
     )
 
-    if not isinstance(feature_attributions, list):
+    if not isinstance(
+        feature_attributions,
+        list,
+    ):
         raise InvestigationReportError(
             "Integrated Gradients feature attributions "
             "are missing"
@@ -1064,54 +1322,106 @@ def _build_case(
 
     ordered_features = sorted(
         feature_attributions,
-        key=lambda record: record["absolute_rank"],
+        key=lambda record: (
+            record["absolute_rank"]
+        ),
     )
 
     top_features = []
 
-    for feature in ordered_features[:top_feature_count]:
+    for feature in ordered_features[
+        :top_feature_count
+    ]:
         top_features.append(
             {
-                "absolute_rank": feature["absolute_rank"],
-                "attribution": feature["attribution"],
-                "direction": feature[
-                    "direction_for_target_logit"
-                ],
-                "feature_name": feature["feature_name"],
+                "absolute_rank": (
+                    feature[
+                        "absolute_rank"
+                    ]
+                ),
+                "attribution": (
+                    feature[
+                        "attribution"
+                    ]
+                ),
+                "direction": (
+                    feature[
+                        "direction_for_target_logit"
+                    ]
+                ),
+                "feature_name": (
+                    feature[
+                        "feature_name"
+                    ]
+                ),
             }
         )
 
-    primary_evidence = _build_primary_evidence(
-        window=window,
-        events_by_id=events_by_id,
-        source_files_by_path=source_files_by_path,
+    primary_evidence = (
+        _build_primary_evidence(
+            window=window,
+            events_by_id=events_by_id,
+            source_files_by_path=(
+                source_files_by_path
+            ),
+        )
     )
 
     case_core = {
         "identity": {
-            "attack_mapping_id": attack_mapping[
-                "mapping_id"
-            ],
-            "capture_id": prediction["capture_id"],
-            "explanation_id": integrated_gradients[
-                "explanation_id"
-            ],
-            "prediction_id": prediction["prediction_id"],
-            "split": prediction["split"],
-            "window_id": prediction["window_id"],
+            "attack_mapping_id": (
+                attack_mapping[
+                    "mapping_id"
+                ]
+            ),
+            "capture_id": (
+                prediction[
+                    "capture_id"
+                ]
+            ),
+            "explanation_id": (
+                integrated_gradients[
+                    "explanation_id"
+                ]
+            ),
+            "prediction_id": (
+                prediction[
+                    "prediction_id"
+                ]
+            ),
+            "split": (
+                prediction["split"]
+            ),
+            "window_id": (
+                prediction[
+                    "window_id"
+                ]
+            ),
         },
         "model_measurement": {
-            "confidence": prediction["confidence"],
-            "inference_input_sha256": prediction[
-                "inference_input_sha256"
-            ],
-            "predicted_class": prediction[
-                "predicted_class"
-            ],
-            "probability_margin": prediction[
-                "probability_margin"
-            ],
-            "role": "model-derived-measurement",
+            "confidence": (
+                prediction[
+                    "confidence"
+                ]
+            ),
+            "inference_input_sha256": (
+                prediction[
+                    "inference_input_sha256"
+                ]
+            ),
+            "predicted_class": (
+                prediction[
+                    "predicted_class"
+                ]
+            ),
+            "probability_margin": (
+                prediction[
+                    "probability_margin"
+                ]
+            ),
+            "role": (
+                "model-derived-measurement"
+            ),
         },
         "explanation": {
             "integrated_gradients": {
@@ -1123,7 +1433,9 @@ def _build_case(
                 "interpretation": (
                     "model-sensitivity-not-causal-evidence"
                 ),
-                "top_features": top_features,
+                "top_features": (
+                    top_features
+                ),
             },
             "prototype_geometry": {
                 "interpretation": (
@@ -1170,31 +1482,53 @@ def _build_case(
                     ]
                 ),
             },
-            "role": "model-derived-interpretation",
+            "role": (
+                "model-derived-interpretation"
+            ),
         },
         "attack_interpretation": {
-            "attack_domain": attack_mapping[
-                "attack_domain"
-            ],
-            "attack_framework": attack_mapping[
-                "attack_framework"
-            ],
-            "attack_version": attack_mapping[
-                "attack_version"
-            ],
-            "mapping_status": attack_mapping[
-                "mapping_status"
-            ],
-            "role": "model-derived-interpretation",
-            "rule_id": attack_mapping["rule_id"],
-            "tactic_candidates": attack_mapping[
-                "tactic_candidates"
-            ],
-            "technique_candidates": attack_mapping[
-                "technique_candidates"
-            ],
+            "attack_domain": (
+                attack_mapping[
+                    "attack_domain"
+                ]
+            ),
+            "attack_framework": (
+                attack_mapping[
+                    "attack_framework"
+                ]
+            ),
+            "attack_version": (
+                attack_mapping[
+                    "attack_version"
+                ]
+            ),
+            "mapping_status": (
+                attack_mapping[
+                    "mapping_status"
+                ]
+            ),
+            "role": (
+                "model-derived-interpretation"
+            ),
+            "rule_id": (
+                attack_mapping[
+                    "rule_id"
+                ]
+            ),
+            "tactic_candidates": (
+                attack_mapping[
+                    "tactic_candidates"
+                ]
+            ),
+            "technique_candidates": (
+                attack_mapping[
+                    "technique_candidates"
+                ]
+            ),
         },
-        "primary_evidence": primary_evidence,
+        "primary_evidence": (
+            primary_evidence
+        ),
         "evidence_roles": {
             "derived_interpretation": (
                 "IG-prototype-and-ATT&CK-not-primary-evidence"
@@ -1209,16 +1543,23 @@ def _build_case(
     }
 
     case_sha256 = _sha256_bytes(
-        _canonical_json_bytes(case_core)
+        _canonical_json_bytes(
+            case_core
+        )
     )
 
     return {
-        "case_id": f"m7-investigation-case-{case_sha256[:24]}",
+        "case_id": (
+            "m7-investigation-case-"
+            f"{case_sha256[:24]}"
+        ),
         **case_core,
     }
 
 
-def _markdown_number(value: Any) -> str:
+def _markdown_number(
+    value: Any,
+) -> str:
     return json.dumps(
         value,
         ensure_ascii=False,
@@ -1226,32 +1567,217 @@ def _markdown_number(value: Any) -> str:
     )
 
 
+def _display_class(
+    value: str,
+) -> str:
+    return (
+        value.replace(
+            "_",
+            " ",
+        ).title()
+    )
+
+
+def _render_tactic_names(
+    tactics: list[
+        dict[str, Any]
+    ],
+) -> str:
+    if not tactics:
+        return "none"
+
+    return ", ".join(
+        (
+            f"{tactic['tactic_id']} — "
+            f"{tactic['tactic_name']}"
+        )
+        for tactic in tactics
+    )
+
+
+def _case_analyst_summary(
+    case: dict[str, Any],
+) -> str:
+    measurement = case["model_measurement"]
+    prototype = case["explanation"]["prototype_geometry"]
+    attack = case["attack_interpretation"]
+
+    predicted_class = measurement["predicted_class"]
+    predicted_display = _display_class(predicted_class)
+
+    nearest_class = prototype["nearest_prototype_class"]
+    nearest_display = _display_class(nearest_class)
+
+    confidence_percent = measurement["confidence"] * 100.0
+
+    status = attack["mapping_status"]
+    tactics = attack["tactic_candidates"]
+
+    parts = [
+        (
+            "The federated model classified the analyzed network window "
+            f"as **{predicted_display}**, with a confidence score of "
+            f"**{confidence_percent:.2f}%**. This value expresses the "
+            "model's confidence in its own classification and does not "
+            "independently establish that malicious activity occurred."
+        ),
+        (
+            "Integrated Gradients identifies the input features most "
+            "associated with the predicted-class logit, while prototype "
+            "analysis provides similarity context within the learned "
+            "representation space. Both are explanatory model outputs "
+            "rather than primary evidence."
+        ),
+    ]
+
+    if nearest_class != predicted_class:
+        parts.append(
+            "The nearest training-derived prototype is "
+            f"**{nearest_display}**, while the predicted class is "
+            f"**{predicted_display}**. This discrepancy is preserved as "
+            "explanatory context and is not used to alter the model "
+            "prediction or the ATT&CK mapping policy."
+        )
+    else:
+        parts.append(
+            "The nearest training-derived prototype is also "
+            f"**{nearest_display}**, providing geometric consistency "
+            "with the model prediction. This agreement does not by "
+            "itself establish class membership as a forensic fact."
+        )
+
+    if status == "candidate-tactic":
+        parts.append(
+            "Under the frozen MITRE ATT&CK Enterprise v19.2 mapping "
+            "policy, the prediction supports the investigative tactic "
+            f"hypothesis **{_render_tactic_names(tactics)}**. No "
+            "technique-level claim is made automatically."
+        )
+    elif status == "unresolved-multi-tactic":
+        parts.append(
+            "Under the frozen ATT&CK mapping policy, the case remains "
+            "**unresolved-multi-tactic**. Explanation and prototype "
+            "information are deliberately prevented from forcing a "
+            "single tactic, so analyst review is required before a "
+            "narrower tactic-level hypothesis can be made."
+        )
+    elif status == "not-applicable":
+        parts.append(
+            "The frozen ATT&CK mapping policy marks this prediction as "
+            "**not applicable**, so no tactic or technique hypothesis "
+            "is generated."
+        )
+    else:
+        raise InvestigationReportError(
+            f"unsupported ATT&CK report status: {status}"
+        )
+
+    return " ".join(parts)
+
+
 def _render_markdown(
     report: dict[str, Any],
 ) -> bytes:
+    candidate_count = sum(
+        case["attack_interpretation"]["mapping_status"]
+        == "candidate-tactic"
+        for case in report["cases"]
+    )
+
+    unresolved_count = sum(
+        case["attack_interpretation"]["mapping_status"]
+        == "unresolved-multi-tactic"
+        for case in report["cases"]
+    )
+
+    not_applicable_count = sum(
+        case["attack_interpretation"]["mapping_status"]
+        == "not-applicable"
+        for case in report["cases"]
+    )
+
     lines = [
         "# M7 Investigation Report",
         "",
+        "## Executive Summary",
+        "",
         (
-            "This report is a deterministic investigative view of "
-            "verified M7 artifacts."
+            "This report presents a deterministic investigative view of "
+            "model outputs whose complete M7 provenance chain has been "
+            "verified."
+        ),
+        "",
+        f"- Cases reviewed: {report['case_count']}",
+        (
+            "- Candidate ATT&CK tactic hypotheses: "
+            f"{candidate_count}"
+        ),
+        (
+            "- Unresolved multi-tactic cases: "
+            f"{unresolved_count}"
+        ),
+        (
+            "- ATT&CK not-applicable cases: "
+            f"{not_applicable_count}"
+        ),
+        (
+            "- Referenced source events: "
+            f"{report['source_event_count']}"
+        ),
+        (
+            "- Referenced source records: "
+            f"{report['source_record_count']}"
         ),
         "",
         (
-            "**Evidence boundary:** primary evidence is represented "
-            "by verified controlled-ingestion source-record and "
-            "source-file digest references. Model predictions, "
-            "explanations and ATT&CK mappings are derived outputs."
+            "**Evidentiary qualification:** this report preserves "
+            "verifiable references to controlled-ingestion source "
+            "records and source files that define the primary-evidence "
+            "boundary. Predictions, confidence values, Integrated "
+            "Gradients, prototype geometry and ATT&CK mappings are "
+            "model-derived measurements or interpretations and must not "
+            "be represented as independently observed attack facts."
         ),
         "",
-        f"- Cases: {report['case_count']}",
-        f"- Source events: {report['source_event_count']}",
-        f"- Source records: {report['source_record_count']}",
-        "- Reference labels included: false",
-        "- Dataset ATT&CK labels included: false",
-        "- Dataset labels used for reporting: false",
+        (
+            "Reference labels and dataset ATT&CK labels are excluded "
+            "from this report and are not used to construct its "
+            "conclusions."
+        ),
         "",
+        "## Case Overview",
+        "",
+        (
+            "| Case | Prediction | Confidence | Nearest prototype | "
+            "ATT&CK status | Candidate tactic |"
+        ),
+        "| --- | --- | ---: | --- | --- | --- |",
     ]
+
+    for case in report["cases"]:
+        measurement = case["model_measurement"]
+        prototype = case["explanation"]["prototype_geometry"]
+        attack = case["attack_interpretation"]
+
+        confidence_percent = measurement["confidence"] * 100.0
+
+        lines.append(
+            "| "
+            f"`{case['case_id']}` | "
+            f"{_display_class(measurement['predicted_class'])} | "
+            f"{confidence_percent:.2f}% | "
+            f"{_display_class(prototype['nearest_prototype_class'])} | "
+            f"{attack['mapping_status']} | "
+            f"{_render_tactic_names(attack['tactic_candidates'])} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Detailed Case Analysis",
+            "",
+        ]
+    )
 
     for case in report["cases"]:
         identity = case["identity"]
@@ -1260,42 +1786,63 @@ def _render_markdown(
         attack = case["attack_interpretation"]
         evidence = case["primary_evidence"]
 
+        prototype = explanation["prototype_geometry"]
+
+        source_record_reference_count = sum(
+            len(event["source_records"])
+            for event in evidence["events"]
+        )
+
         lines.extend(
             [
-                f"## Case {case['case_id']}",
+                f"### Case {case['case_id']}",
                 "",
-                "### Identity",
+                "#### Analyst Summary",
+                "",
+                _case_analyst_summary(case),
+                "",
+                "#### Identity",
                 "",
                 f"- Prediction: `{identity['prediction_id']}`",
                 f"- Explanation: `{identity['explanation_id']}`",
-                f"- ATT&CK mapping: `{identity['attack_mapping_id']}`",
+                (
+                    "- ATT&CK mapping: "
+                    f"`{identity['attack_mapping_id']}`"
+                ),
                 f"- Window: `{identity['window_id']}`",
                 f"- Capture: `{identity['capture_id']}`",
                 f"- Split: `{identity['split']}`",
                 "",
-                "### Model measurement",
+                "#### Model Measurement",
                 "",
                 (
-                    f"- Predicted class: "
+                    "- Predicted class: "
                     f"`{measurement['predicted_class']}`"
                 ),
                 (
-                    f"- Confidence: "
+                    "- Confidence score: "
+                    f"{measurement['confidence'] * 100.0:.2f}%"
+                ),
+                (
+                    "- Raw confidence value: "
                     f"{_markdown_number(measurement['confidence'])}"
                 ),
                 (
-                    f"- Probability margin: "
+                    "- Probability margin: "
                     f"{_markdown_number(measurement['probability_margin'])}"
                 ),
                 (
-                    f"- Inference input SHA-256: "
+                    "- Inference input SHA-256: "
                     f"`{measurement['inference_input_sha256']}`"
                 ),
                 "",
-                "### Integrated Gradients",
+                (
+                    "#### Why the Model Reacted — "
+                    "Integrated Gradients"
+                ),
                 "",
                 (
-                    f"- Absolute completeness error: "
+                    "- Absolute completeness error: "
                     f"{_markdown_number(explanation['integrated_gradients']['absolute_completeness_error'])}"
                 ),
                 "- Top absolute attributions:",
@@ -1306,41 +1853,37 @@ def _render_markdown(
             "integrated_gradients"
         ]["top_features"]:
             lines.append(
-                
-                    f"  {feature['absolute_rank']}. "
-                    f"`{feature['feature_name']}` — "
-                    f"{_markdown_number(feature['attribution'])} "
-                    f"({feature['direction']})"
-                
+                f"  {feature['absolute_rank']}. "
+                f"`{feature['feature_name']}` — "
+                f"{_markdown_number(feature['attribution'])} "
+                f"({feature['direction']})"
             )
-
-        prototype = explanation["prototype_geometry"]
 
         lines.extend(
             [
                 "",
-                "### Prototype geometry",
+                "#### Prototype Context",
                 "",
                 (
-                    f"- Nearest prototype: "
+                    "- Nearest prototype: "
                     f"`{prototype['nearest_prototype_class']}` "
                     f"({_markdown_number(prototype['nearest_prototype_distance'])})"
                 ),
                 (
-                    f"- Second nearest prototype: "
+                    "- Second nearest prototype: "
                     f"`{prototype['second_nearest_prototype_class']}` "
                     f"({_markdown_number(prototype['second_nearest_prototype_distance'])})"
                 ),
                 (
-                    f"- Predicted-class prototype rank: "
+                    "- Predicted-class prototype rank: "
                     f"{prototype['predicted_class_prototype_rank']}"
                 ),
                 (
-                    f"- Prediction matches nearest prototype: "
+                    "- Prediction matches nearest prototype: "
                     f"{str(prototype['prediction_matches_nearest_prototype']).lower()}"
                 ),
                 "",
-                "### ATT&CK interpretation",
+                "#### ATT&CK Interpretation",
                 "",
                 f"- Status: `{attack['mapping_status']}`",
                 f"- Rule: `{attack['rule_id']}`",
@@ -1367,57 +1910,165 @@ def _render_markdown(
             lines.append("- Candidate techniques:")
 
             for technique in techniques:
-                lines.append(
-                    f"  - `{technique}`"
-                )
+                lines.append(f"  - `{technique}`")
         else:
             lines.append("- Candidate techniques: none")
 
         lines.extend(
             [
                 "",
-                "### Primary evidence references",
+                "#### Primary Evidence Summary",
                 "",
+                "- Lineage status: complete",
                 (
-                    f"- M2 window lineage SHA-256: "
+                    "- Source events referenced: "
+                    f"{evidence['source_event_count']}"
+                ),
+                (
+                    "- Source record references: "
+                    f"{source_record_reference_count}"
+                ),
+                (
+                    "- M2 window lineage SHA-256: "
                     f"`{evidence['m2_window_lineage_record_sha256']}`"
                 ),
                 (
-                    f"- M2 window row SHA-256: "
+                    "- M2 window row SHA-256: "
                     f"`{evidence['m2_window_row_sha256']}`"
                 ),
                 (
-                    f"- M3 evaluation row SHA-256: "
+                    "- M3 evaluation row SHA-256: "
+                    f"`{evidence['m3_evaluation_row_sha256']}`"
+                ),
+                "",
+                (
+                    "Complete event- and source-record-level references "
+                    "for this case are preserved in the Technical "
+                    "Evidence Appendix."
+                ),
+                "",
+                "#### Evidentiary Assessment",
+                "",
+                (
+                    "The source-event and source-record references "
+                    "associated with this case define a traceable "
+                    "primary-evidence boundary. The predicted class, "
+                    "confidence score and probability margin are "
+                    "model-derived measurements. Integrated Gradients, "
+                    "prototype geometry and MITRE ATT&CK mappings are "
+                    "derived interpretations. These outputs may support "
+                    "investigative review but do not independently "
+                    "establish that the hypothesized attack activity "
+                    "occurred."
+                ),
+                "",
+            ]
+        )
+
+    lines.extend(
+        [
+            "## Method and Evidence Boundary",
+            "",
+            (
+                "Cases in this report originate from a verified "
+                "Prediction Bundle. Each selected evaluation window is "
+                "resolved through the verified M2/M3 lineage to "
+                "controlled-ingestion source records and source files."
+            ),
+            "",
+            (
+                "The report does not copy the original source-record "
+                "bytes. Instead, it preserves paths, row references and "
+                "SHA-256 commitments that allow those records and their "
+                "source files to be verified against the controlled "
+                "dataset workspace."
+            ),
+            "",
+            (
+                "Integrated Gradients describes local model sensitivity "
+                "along the configured baseline path and must not be "
+                "interpreted as causal attribution. Prototype distance "
+                "describes geometry in the learned embedding space and "
+                "is not proof of class membership."
+            ),
+            "",
+            (
+                "MITRE ATT&CK mappings are versioned investigative "
+                "hypotheses produced under the frozen Enterprise v19.2 "
+                "mapping policy. Explanation artifacts cannot override "
+                "that policy, and technique-level claims are disabled "
+                "in this report version."
+            ),
+            "",
+            (
+                "Reference labels, dataset binary labels and dataset "
+                "ATT&CK labels are excluded from final reporting and "
+                "are not used to formulate investigative conclusions."
+            ),
+            "",
+            "## Technical Evidence Appendix",
+            "",
+            (
+                "This appendix preserves the complete event- and "
+                "source-record-level references used by the cases above. "
+                "It is intended for verification and forensic review "
+                "rather than rapid analyst triage."
+            ),
+            "",
+        ]
+    )
+
+    for case in report["cases"]:
+        identity = case["identity"]
+        evidence = case["primary_evidence"]
+
+        lines.extend(
+            [
+                (
+                    "### Evidence for Case "
+                    f"{case['case_id']}"
+                ),
+                "",
+                f"- Prediction: `{identity['prediction_id']}`",
+                f"- Window: `{identity['window_id']}`",
+                (
+                    "- M2 window lineage SHA-256: "
+                    f"`{evidence['m2_window_lineage_record_sha256']}`"
+                ),
+                (
+                    "- M2 window row SHA-256: "
+                    f"`{evidence['m2_window_row_sha256']}`"
+                ),
+                (
+                    "- M3 evaluation row SHA-256: "
                     f"`{evidence['m3_evaluation_row_sha256']}`"
                 ),
                 (
-                    f"- Source events: "
+                    "- Source events: "
                     f"{evidence['source_event_count']}"
                 ),
+                "",
             ]
         )
 
         for event in evidence["events"]:
             lines.extend(
                 [
-                    "",
                     f"#### Event `{event['event_id']}`",
                     "",
                     (
-                        f"- Lineage record SHA-256: "
+                        "- Lineage record SHA-256: "
                         f"`{event['lineage_record_sha256']}`"
                     ),
                     (
-                        f"- Source identity SHA-256: "
+                        "- Source identity SHA-256: "
                         f"`{event['source_identity_sha256']}`"
                     ),
                     "- Source records:",
                 ]
             )
 
-            for source_record in event[
-                "source_records"
-            ]:
+            for source_record in event["source_records"]:
                 lines.extend(
                     [
                         (
@@ -1425,41 +2076,33 @@ def _render_markdown(
                             f"row {source_record['row_number']}"
                         ),
                         (
-                            f"    - Record SHA-256: "
+                            "    - Record SHA-256: "
                             f"`{source_record['source_record_sha256']}`"
                         ),
                         (
-                            f"    - File SHA-256: "
+                            "    - File SHA-256: "
                             f"`{source_record['source_file_sha256']}`"
                         ),
                     ]
                 )
 
-        lines.extend(
-            [
-                "",
-                (
-                    "> Prediction confidence, Integrated Gradients, "
-                    "prototype geometry and ATT&CK mappings are "
-                    "derived model outputs and are not primary "
-                    "Zeek evidence."
-                ),
-                "",
-            ]
-        )
+            lines.append("")
 
     return ("\n".join(lines).rstrip() + "\n").encode()
-
 
 def _build_report_artifacts(
     inputs: dict[str, Any],
 ) -> dict[str, bytes]:
-    config = inputs["config"]
+    config = inputs[
+        "config"
+    ]
 
     cases = []
 
     for prediction_id in sorted(
-        inputs["predictions_by_id"]
+        inputs[
+            "predictions_by_id"
+        ]
     ):
         cases.append(
             _build_case(
@@ -1478,7 +2121,9 @@ def _build_report_artifacts(
                 attack_mapping=inputs[
                     "mappings_by_prediction"
                 ][prediction_id],
-                events_by_id=inputs["events_by_id"],
+                events_by_id=inputs[
+                    "events_by_id"
+                ],
                 source_files_by_path=inputs[
                     "source_files_by_path"
                 ],
@@ -1489,18 +2134,32 @@ def _build_report_artifacts(
         )
 
     candidate_count = sum(
-        case["attack_interpretation"]["mapping_status"]
-        == "candidate-tactic"
+        (
+            case[
+                "attack_interpretation"
+            ]["mapping_status"]
+            == "candidate-tactic"
+        )
         for case in cases
     )
+
     not_applicable_count = sum(
-        case["attack_interpretation"]["mapping_status"]
-        == "not-applicable"
+        (
+            case[
+                "attack_interpretation"
+            ]["mapping_status"]
+            == "not-applicable"
+        )
         for case in cases
     )
+
     unresolved_count = sum(
-        case["attack_interpretation"]["mapping_status"]
-        == "unresolved-multi-tactic"
+        (
+            case[
+                "attack_interpretation"
+            ]["mapping_status"]
+            == "unresolved-multi-tactic"
+        )
         for case in cases
     )
 
@@ -1516,15 +2175,23 @@ def _build_report_artifacts(
 
     report = {
         "schema_version": "1.0",
-        "artifact_type": "m7_investigation_report",
-        "case_order": "prediction-id-lexicographic",
+        "artifact_type": (
+            "m7_investigation_report"
+        ),
+        "case_order": (
+            "prediction-id-lexicographic"
+        ),
         "case_count": len(cases),
-        "source_event_count": inputs[
-            "source_event_count"
-        ],
-        "source_record_count": inputs[
-            "source_record_count"
-        ],
+        "source_event_count": (
+            inputs[
+                "source_event_count"
+            ]
+        ),
+        "source_record_count": (
+            inputs[
+                "source_record_count"
+            ]
+        ),
         "reference_labels_included": False,
         "dataset_attack_labels_included": False,
         "dataset_labels_used_for_reporting": False,
@@ -1535,125 +2202,211 @@ def _build_report_artifacts(
         "cases": cases,
     }
 
-    report_bytes = _canonical_json_bytes(report)
-    markdown_bytes = _render_markdown(report)
-
-    attack_manifest = inputs["attack_manifest"]
-    attack_source = attack_manifest.core.source
-
-    source = InvestigationReportSourceReferences(
-        attack_mapping_bundle_id=(
-            attack_manifest.attack_mapping_bundle_id
-        ),
-        attack_manifest_sha256=_sha256_file(
-            inputs["attack_manifest_path"]
-        ),
-        attack_mappings_sha256=(
-            attack_manifest.core.attack_mappings_sha256
-        ),
-        explanation_bundle_id=(
-            attack_source.explanation_bundle_id
-        ),
-        explanation_manifest_sha256=(
-            attack_source.explanation_manifest_sha256
-        ),
-        integrated_gradients_sha256=(
-            attack_source.integrated_gradients_sha256
-        ),
-        prototype_reference_sha256=(
-            attack_source.prototype_reference_sha256
-        ),
-        prototype_distances_sha256=(
-            attack_source.prototype_distances_sha256
-        ),
-        prediction_bundle_id=(
-            attack_source.prediction_bundle_id
-        ),
-        prediction_manifest_sha256=(
-            attack_source.prediction_manifest_sha256
-        ),
-        predictions_sha256=(
-            attack_source.predictions_sha256
-        ),
-        lineage_sha256=attack_source.lineage_sha256,
-        campaign_id=attack_source.campaign_id,
-        round_number=attack_source.round_number,
-        global_model_sha256=(
-            attack_source.global_model_sha256
-        ),
-        partition_manifest_sha256=(
-            attack_source.partition_manifest_sha256
-        ),
+    report_bytes = (
+        _canonical_json_bytes(
+            report
+        )
     )
 
-    core = InvestigationReportBundleCore(
-        code_version=attack_manifest.core.code_version,
-        implementation_sha256=_sha256_file(
-            Path(__file__)
-        ),
-        report_config_sha256=inputs[
-            "config_sha256"
-        ],
-        source=source,
-        case_count=len(cases),
-        source_event_count=inputs[
-            "source_event_count"
-        ],
-        source_record_count=inputs[
-            "source_record_count"
-        ],
-        candidate_tactic_case_count=candidate_count,
-        not_applicable_attack_case_count=(
-            not_applicable_count
-        ),
-        unresolved_attack_case_count=unresolved_count,
-        investigation_report_sha256=_sha256_bytes(
-            report_bytes
-        ),
-        report_markdown_sha256=_sha256_bytes(
-            markdown_bytes
-        ),
-        reportability_gate=(
-            InvestigationReportabilityGate(
-                attack_mapping_bundle_verified=True,
-                explanation_bundle_transitively_verified=True,
-                prediction_bundle_transitively_verified=True,
-                complete_case_coverage=True,
-                complete_primary_evidence_lineage=True,
-                reference_labels_included=False,
-                dataset_attack_labels_included=False,
-                dataset_labels_used_for_reporting=False,
-                model_measurements_separated=True,
-                derived_interpretations_separated=True,
-                complete_case_count=len(cases),
-                incomplete_case_count=0,
-                invariant_violation_count=0,
-                reportable=True,
+    markdown_bytes = (
+        _render_markdown(
+            report
+        )
+    )
+
+    attack_manifest = inputs[
+        "attack_manifest"
+    ]
+
+    attack_source = (
+        attack_manifest.core.source
+    )
+
+    source = (
+        InvestigationReportSourceReferences(
+            attack_mapping_bundle_id=(
+                attack_manifest.
+                attack_mapping_bundle_id
+            ),
+            attack_manifest_sha256=(
+                _sha256_file(
+                    inputs[
+                        "attack_manifest_path"
+                    ]
+                )
+            ),
+            attack_mappings_sha256=(
+                attack_manifest.core.
+                attack_mappings_sha256
+            ),
+            explanation_bundle_id=(
+                attack_source.
+                explanation_bundle_id
+            ),
+            explanation_manifest_sha256=(
+                attack_source.
+                explanation_manifest_sha256
+            ),
+            integrated_gradients_sha256=(
+                attack_source.
+                integrated_gradients_sha256
+            ),
+            prototype_reference_sha256=(
+                attack_source.
+                prototype_reference_sha256
+            ),
+            prototype_distances_sha256=(
+                attack_source.
+                prototype_distances_sha256
+            ),
+            prediction_bundle_id=(
+                attack_source.
+                prediction_bundle_id
+            ),
+            prediction_manifest_sha256=(
+                attack_source.
+                prediction_manifest_sha256
+            ),
+            predictions_sha256=(
+                attack_source.
+                predictions_sha256
+            ),
+            lineage_sha256=(
+                attack_source.
+                lineage_sha256
+            ),
+            campaign_id=(
+                attack_source.
+                campaign_id
+            ),
+            round_number=(
+                attack_source.
+                round_number
+            ),
+            global_model_sha256=(
+                attack_source.
+                global_model_sha256
+            ),
+            partition_manifest_sha256=(
+                attack_source.
+                partition_manifest_sha256
+            ),
+        )
+    )
+
+    core = (
+        InvestigationReportBundleCore(
+            code_version=(
+                attack_manifest.core.
+                code_version
+            ),
+            implementation_sha256=(
+                _sha256_file(
+                    Path(__file__)
+                )
+            ),
+            report_config_sha256=(
+                inputs[
+                    "config_sha256"
+                ]
+            ),
+            source=source,
+            case_count=len(
+                cases
+            ),
+            source_event_count=(
+                inputs[
+                    "source_event_count"
+                ]
+            ),
+            source_record_count=(
+                inputs[
+                    "source_record_count"
+                ]
+            ),
+            candidate_tactic_case_count=(
+                candidate_count
+            ),
+            not_applicable_attack_case_count=(
+                not_applicable_count
+            ),
+            unresolved_attack_case_count=(
+                unresolved_count
+            ),
+            investigation_report_sha256=(
+                _sha256_bytes(
+                    report_bytes
+                )
+            ),
+            report_markdown_sha256=(
+                _sha256_bytes(
+                    markdown_bytes
+                )
+            ),
+            reportability_gate=(
+                InvestigationReportabilityGate(
+                    attack_mapping_bundle_verified=True,
+                    explanation_bundle_transitively_verified=True,
+                    prediction_bundle_transitively_verified=True,
+                    complete_case_coverage=True,
+                    complete_primary_evidence_lineage=True,
+                    reference_labels_included=False,
+                    dataset_attack_labels_included=False,
+                    dataset_labels_used_for_reporting=False,
+                    model_measurements_separated=True,
+                    derived_interpretations_separated=True,
+                    complete_case_count=len(
+                        cases
+                    ),
+                    incomplete_case_count=0,
+                    invariant_violation_count=0,
+                    reportable=True,
+                )
+            ),
+        )
+    )
+
+    core_document = (
+        core.model_dump(
+            mode="json"
+        )
+    )
+
+    canonical_core_sha256 = (
+        _sha256_bytes(
+            _canonical_json_bytes(
+                core_document
             )
-        ),
+        )
     )
 
-    core_document = core.model_dump(mode="json")
-
-    canonical_core_sha256 = _sha256_bytes(
-        _canonical_json_bytes(core_document)
-    )
-
-    manifest = InvestigationReportBundleManifest(
-        investigation_report_bundle_id=(
-            "m7-investigation-report-bundle-"
-            f"{canonical_core_sha256[:24]}"
-        ),
-        core=core,
-        canonical_core_sha256=canonical_core_sha256,
+    manifest = (
+        InvestigationReportBundleManifest(
+            investigation_report_bundle_id=(
+                "m7-investigation-report-bundle-"
+                f"{canonical_core_sha256[:24]}"
+            ),
+            core=core,
+            canonical_core_sha256=(
+                canonical_core_sha256
+            ),
+        )
     )
 
     return {
-        "investigation-report.json": report_bytes,
-        "manifest.json": _canonical_json_bytes(
-            manifest.model_dump(mode="json")
+        "investigation-report.json": (
+            report_bytes
         ),
-        "report.md": markdown_bytes,
+        "manifest.json": (
+            _canonical_json_bytes(
+                manifest.model_dump(
+                    mode="json"
+                )
+            )
+        ),
+        "report.md": (
+            markdown_bytes
+        ),
     }
 
 
@@ -1665,10 +2418,18 @@ def _prepare_report_inputs(
     config_path: Path,
 ) -> dict[str, Any]:
     return _validated_report_inputs(
-        prediction_workspace=prediction_workspace,
-        explanation_workspace=explanation_workspace,
-        attack_workspace=attack_workspace,
-        config_path=config_path,
+        prediction_workspace=(
+            prediction_workspace
+        ),
+        explanation_workspace=(
+            explanation_workspace
+        ),
+        attack_workspace=(
+            attack_workspace
+        ),
+        config_path=(
+            config_path
+        ),
     )
 
 
@@ -1691,30 +2452,65 @@ def create_investigation_report_bundle(
 
     if output.exists():
         raise InvestigationReportError(
-            f"investigation report output already exists: {output}"
+            f"investigation report output already exists: "
+            f"{output}"
         )
 
     _verified_attack_source(
-        round_workspace=round_workspace,
-        trust_workspace=trust_workspace,
-        partition_workspace=partition_workspace,
-        dataset_workspace=dataset_workspace,
-        prediction_workspace=prediction_workspace,
-        explanation_workspace=explanation_workspace,
-        attack_workspace=attack_workspace,
-        prediction_config_path=prediction_config_path,
-        explanation_config_path=explanation_config_path,
-        attack_config_path=attack_config_path,
+        round_workspace=(
+            round_workspace
+        ),
+        trust_workspace=(
+            trust_workspace
+        ),
+        partition_workspace=(
+            partition_workspace
+        ),
+        dataset_workspace=(
+            dataset_workspace
+        ),
+        prediction_workspace=(
+            prediction_workspace
+        ),
+        explanation_workspace=(
+            explanation_workspace
+        ),
+        attack_workspace=(
+            attack_workspace
+        ),
+        prediction_config_path=(
+            prediction_config_path
+        ),
+        explanation_config_path=(
+            explanation_config_path
+        ),
+        attack_config_path=(
+            attack_config_path
+        ),
     )
 
-    inputs = _prepare_report_inputs(
-        prediction_workspace=prediction_workspace,
-        explanation_workspace=explanation_workspace,
-        attack_workspace=attack_workspace,
-        config_path=config_path,
+    inputs = (
+        _prepare_report_inputs(
+            prediction_workspace=(
+                prediction_workspace
+            ),
+            explanation_workspace=(
+                explanation_workspace
+            ),
+            attack_workspace=(
+                attack_workspace
+            ),
+            config_path=(
+                config_path
+            ),
+        )
     )
 
-    artifacts = _build_report_artifacts(inputs)
+    artifacts = (
+        _build_report_artifacts(
+            inputs
+        )
+    )
 
     output.parent.mkdir(
         parents=True,
@@ -1725,55 +2521,91 @@ def create_investigation_report_bundle(
         dir=output.parent,
         prefix=".m7-report-",
     ) as temporary:
-        staging = Path(temporary) / "bundle"
+        staging = (
+            Path(temporary)
+            / "bundle"
+        )
+
         staging.mkdir()
 
-        for name in sorted(artifacts):
-            (staging / name).write_bytes(
+        for name in sorted(
+            artifacts
+        ):
+            (
+                staging
+                / name
+            ).write_bytes(
                 artifacts[name]
             )
 
-        os.replace(staging, output)
+        os.replace(
+            staging,
+            output,
+        )
 
     manifest = (
-        InvestigationReportBundleManifest.model_validate(
-            json.loads(artifacts["manifest.json"])
+        InvestigationReportBundleManifest.
+        model_validate(
+            json.loads(
+                artifacts[
+                    "manifest.json"
+                ]
+            )
         )
     )
 
     return {
-        "status": "reported_verified_source",
+        "status": (
+            "reported_verified_source"
+        ),
         "investigation_report_bundle_id": (
-            manifest.investigation_report_bundle_id
+            manifest.
+            investigation_report_bundle_id
         ),
         "attack_mapping_bundle_id": (
-            manifest.core.source.attack_mapping_bundle_id
+            manifest.core.source.
+            attack_mapping_bundle_id
         ),
         "explanation_bundle_id": (
-            manifest.core.source.explanation_bundle_id
+            manifest.core.source.
+            explanation_bundle_id
         ),
         "prediction_bundle_id": (
-            manifest.core.source.prediction_bundle_id
+            manifest.core.source.
+            prediction_bundle_id
         ),
-        "case_count": manifest.core.case_count,
+        "case_count": (
+            manifest.core.
+            case_count
+        ),
         "source_event_count": (
-            manifest.core.source_event_count
+            manifest.core.
+            source_event_count
         ),
         "source_record_count": (
-            manifest.core.source_record_count
+            manifest.core.
+            source_record_count
         ),
         "candidate_tactic_case_count": (
-            manifest.core.candidate_tactic_case_count
+            manifest.core.
+            candidate_tactic_case_count
         ),
         "unresolved_attack_case_count": (
-            manifest.core.unresolved_attack_case_count
+            manifest.core.
+            unresolved_attack_case_count
         ),
-        "manifest_sha256": _sha256_bytes(
-            artifacts["manifest.json"]
+        "manifest_sha256": (
+            _sha256_bytes(
+                artifacts[
+                    "manifest.json"
+                ]
+            )
         ),
         "reportable": True,
         "source_attack_verified": True,
-        "workspace": str(output),
+        "workspace": str(
+            output
+        ),
     }
 
 
@@ -1795,42 +2627,100 @@ def verify_investigation_report_bundle(
     """Recompute M7 report artifacts and compare them byte-for-byte."""
 
     errors: list[str] = []
-    source_attack_verified = False
-    verification_recomputed_report = False
 
-    expected: dict[str, bytes] | None = None
-    manifest: InvestigationReportBundleManifest | None = None
+    source_attack_verified = (
+        False
+    )
+
+    verification_recomputed_report = (
+        False
+    )
+
+    expected: (
+        dict[str, bytes]
+        | None
+    ) = None
+
+    manifest: (
+        InvestigationReportBundleManifest
+        | None
+    ) = None
 
     try:
         _verified_attack_source(
-            round_workspace=round_workspace,
-            trust_workspace=trust_workspace,
-            partition_workspace=partition_workspace,
-            dataset_workspace=dataset_workspace,
-            prediction_workspace=prediction_workspace,
-            explanation_workspace=explanation_workspace,
-            attack_workspace=attack_workspace,
-            prediction_config_path=prediction_config_path,
-            explanation_config_path=explanation_config_path,
-            attack_config_path=attack_config_path,
+            round_workspace=(
+                round_workspace
+            ),
+            trust_workspace=(
+                trust_workspace
+            ),
+            partition_workspace=(
+                partition_workspace
+            ),
+            dataset_workspace=(
+                dataset_workspace
+            ),
+            prediction_workspace=(
+                prediction_workspace
+            ),
+            explanation_workspace=(
+                explanation_workspace
+            ),
+            attack_workspace=(
+                attack_workspace
+            ),
+            prediction_config_path=(
+                prediction_config_path
+            ),
+            explanation_config_path=(
+                explanation_config_path
+            ),
+            attack_config_path=(
+                attack_config_path
+            ),
         )
-        source_attack_verified = True
-    except (InvestigationReportError, OSError, ValueError) as exc:
-        errors.append(str(exc))
+
+        source_attack_verified = (
+            True
+        )
+
+    except (
+        InvestigationReportError,
+        OSError,
+        ValueError,
+    ) as exc:
+        errors.append(
+            str(exc)
+        )
 
     if not errors:
         try:
-            inputs = _prepare_report_inputs(
-                prediction_workspace=prediction_workspace,
-                explanation_workspace=explanation_workspace,
-                attack_workspace=attack_workspace,
-                config_path=config_path,
+            inputs = (
+                _prepare_report_inputs(
+                    prediction_workspace=(
+                        prediction_workspace
+                    ),
+                    explanation_workspace=(
+                        explanation_workspace
+                    ),
+                    attack_workspace=(
+                        attack_workspace
+                    ),
+                    config_path=(
+                        config_path
+                    ),
+                )
             )
 
-            expected = _build_report_artifacts(
-                inputs
+            expected = (
+                _build_report_artifacts(
+                    inputs
+                )
             )
-            verification_recomputed_report = True
+
+            verification_recomputed_report = (
+                True
+            )
 
         except (
             InvestigationReportError,
@@ -1838,79 +2728,122 @@ def verify_investigation_report_bundle(
             ValueError,
             ValidationError,
         ) as exc:
-            errors.append(str(exc))
+            errors.append(
+                str(exc)
+            )
 
     if not workspace.is_dir():
         errors.append(
-            f"investigation report workspace does not exist: "
-            f"{workspace}"
+
+                "investigation report workspace "
+                f"does not exist: {workspace}"
+
         )
+
     else:
         actual_entries = {
             path.name
-            for path in workspace.iterdir()
+            for path
+            in workspace.iterdir()
         }
 
         missing = sorted(
-            EXPECTED_OUTPUT_FILES - actual_entries
+            EXPECTED_OUTPUT_FILES
+            - actual_entries
         )
+
         unexpected = sorted(
-            actual_entries - EXPECTED_OUTPUT_FILES
+            actual_entries
+            - EXPECTED_OUTPUT_FILES
         )
 
         if missing:
             errors.append(
-                f"missing investigation report files: {missing}"
+
+                    "missing investigation report files: "
+                    f"{missing}"
+
             )
 
         if unexpected:
             errors.append(
-                f"unexpected investigation report files: "
-                f"{unexpected}"
+
+                    "unexpected investigation report files: "
+                    f"{unexpected}"
+
             )
 
-    if expected is not None and workspace.is_dir():
-        for name in sorted(EXPECTED_OUTPUT_FILES):
-            path = workspace / name
+    if (
+        expected is not None
+        and workspace.is_dir()
+    ):
+        for name in sorted(
+            EXPECTED_OUTPUT_FILES
+        ):
+            path = (
+                workspace
+                / name
+            )
 
             if not path.is_file():
                 continue
 
-            if path.read_bytes() != expected[name]:
+            if (
+                path.read_bytes()
+                != expected[name]
+            ):
                 errors.append(
-                    "investigation report artifact differs "
-                    f"from recomputation: {name}"
+
+                        "investigation report artifact differs "
+                        f"from recomputation: {name}"
+
                 )
 
-    manifest_path = workspace / "manifest.json"
+    manifest_path = (
+        workspace
+        / "manifest.json"
+    )
 
     if manifest_path.is_file():
         try:
             manifest = (
-                InvestigationReportBundleManifest.model_validate(
+                InvestigationReportBundleManifest.
+                model_validate(
                     _read_json(
                         manifest_path,
-                        "investigation report manifest",
+                        (
+                            "investigation report "
+                            "manifest"
+                        ),
                     )
                 )
             )
+
         except (
             InvestigationReportError,
             ValidationError,
         ) as exc:
-            errors.append(str(exc))
+            errors.append(
+                str(exc)
+            )
 
-    status = "verified" if not errors else "failed"
+    status = (
+        "verified"
+        if not errors
+        else "failed"
+    )
 
     return {
         "status": status,
         "investigation_report_bundle_id": (
-            manifest.investigation_report_bundle_id
+            manifest.
+            investigation_report_bundle_id
             if manifest is not None
             else None
         ),
         "attack_mapping_bundle_id": (
-            manifest.core.source.attack_mapping_bundle_id
+            manifest.core.source.
+            attack_mapping_bundle_id
             if manifest is not None
             else None
         ),
@@ -1930,24 +2863,32 @@ def verify_investigation_report_bundle(
             else 0
         ),
         "candidate_tactic_case_count": (
-            manifest.core.candidate_tactic_case_count
+            manifest.core.
+            candidate_tactic_case_count
             if manifest is not None
             else 0
         ),
         "unresolved_attack_case_count": (
-            manifest.core.unresolved_attack_case_count
+            manifest.core.
+            unresolved_attack_case_count
             if manifest is not None
             else 0
         ),
         "manifest_sha256": (
-            _sha256_file(manifest_path)
+            _sha256_file(
+                manifest_path
+            )
             if manifest_path.is_file()
             else None
         ),
         "reportable": (
             status == "verified"
             and manifest is not None
-            and manifest.core.reportability_gate.reportable
+            and (
+                manifest.core.
+                reportability_gate.
+                reportable
+            )
         ),
         "source_attack_verified": (
             source_attack_verified
@@ -1955,7 +2896,11 @@ def verify_investigation_report_bundle(
         "verification_recomputed_report": (
             verification_recomputed_report
         ),
-        "error_count": len(errors),
+        "error_count": len(
+            errors
+        ),
         "errors": errors,
-        "workspace": str(workspace),
+        "workspace": str(
+            workspace
+        ),
     }
