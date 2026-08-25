@@ -28,6 +28,7 @@ from .investigation_report import (
     create_investigation_report_bundle,
     verify_investigation_report_bundle,
 )
+from .merkle import create_merkle_tree, verify_merkle_tree
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
 from .preservation import (
     create_preservation_manifest,
@@ -1118,6 +1119,28 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("artifacts/m8-preservation-manifest-v1"),
     )
 
+    m8_merkle = subparsers.add_parser(
+        "m8-build-merkle", help="commit the M8.1 inventory in a deterministic Merkle tree"
+    )
+    m8_merkle.add_argument(
+        "--config", type=Path, default=Path("configs/merkle.yaml")
+    )
+    m8_merkle.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-merkle-tree-v1")
+    )
+
+    m8_verify_merkle = subparsers.add_parser(
+        "m8-verify-merkle", help="reconstruct and verify the M8.2 Merkle commitment"
+    )
+    m8_verify_merkle.add_argument(
+        "--config", type=Path, default=Path("configs/merkle.yaml")
+    )
+    m8_verify_merkle.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-merkle-tree-v1"),
+    )
+
 
     return parser
 
@@ -1679,6 +1702,22 @@ def main(argv: list[str] | None = None) -> int:
 
     if arguments.command == "m8-verify-preservation":
         result = verify_preservation_manifest(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-build-merkle":
+        result = create_merkle_tree(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-merkle":
+        result = verify_merkle_tree(
             workspace=arguments.workspace,
             config_path=arguments.config,
         )
