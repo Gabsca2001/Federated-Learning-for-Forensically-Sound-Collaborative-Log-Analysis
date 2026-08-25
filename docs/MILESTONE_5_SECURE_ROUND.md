@@ -26,8 +26,10 @@ active attestation*. A successful M3 run alone does not answer either question.
   host administrator.
 - The present PCR profile is a source-file measurement prototype, not a Linux
   measured-boot proof of the final container image or resolved dependency
-  graph. Image-digest attestation and external root anchoring remain later
-  hardening work.
+  graph. Image-digest attestation remains later hardening work. M8 now anchors
+  the final preservation Merkle root with an RFC 3161 timestamp; that closes
+  the preserved campaign but does not convert the M5 PCR profile into a
+  measured-boot proof.
 
 ## Signed and committed artifacts
 

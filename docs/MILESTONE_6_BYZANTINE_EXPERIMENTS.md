@@ -128,9 +128,10 @@ one content-addressed triggered test set for both individual-client and
 aggregate-model evaluation. Collusion evaluation groups all admitted updates by
 their already verified frozen-update digest.
 
-The remaining M6 campaign covers the separate prototype artifact family, other
-configured `f` values, and repeated seeds. M6 therefore remains in progress even
-though the current runtime slices are implemented and verified.
+The completed M6 reference campaign covers the model-update attack family and
+the separate prototype artifact family under their declared `f=3` and
+sensitivity contracts. Additional fault bounds and repeated random seeds would
+strengthen external/statistical validity, but they are not part of this gate.
 
 ## Freezing and comparing one real M5 round
 
@@ -509,8 +510,9 @@ targeted ASR, source-class recall and misclassification, macro-F1, and prototype
 shift for baseline and robust aggregation. `m6-prototype-verify-sensitivity`
 re-extracts all frozen client prototypes, recomputes every aggregate and model
 inference, and reconstructs the report-all summary. Repeated random seeds,
-dispersion, and confidence intervals remain M8 work and are not inferred from
-this deterministic M6 sensitivity analysis.
+dispersion, and confidence intervals remain future statistical-validation work
+and are not inferred from this deterministic M6 sensitivity analysis. M8
+preserves the completed reference chain; it does not add statistical runs.
 
 Before execution, `m6-prototype-sensitivity-plan` exposes the ordered cells,
 nested attacker identities, campaign-configuration digest, primary anchor, and

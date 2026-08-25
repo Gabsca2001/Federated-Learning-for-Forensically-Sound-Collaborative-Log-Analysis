@@ -1,35 +1,84 @@
 # Implementation status
 
+## Summary
+
+The deterministic M1–M8 reference chain is implemented and merged. The complete local test
+suite contains 214 passing tests. The principal remaining gaps are physical-TPM execution,
+production-grade evidence storage/key management, multi-seed statistical replication, and
+external-dataset generalization.
+
+## Current coverage
+
 | Component | State | Current assurance |
-| --- | --- | --- |
-| Canonical manifests and SHA-256 commitments | Implemented | Unit-tested integer-only canonical profile |
-| ECDSA P-256 signing interface | Implemented (M1–M5) | Software authority signer plus TPM ESK adapter for swtpm/physical TPM and M5 bundles |
-| Signed Attestation Result artifact | Implemented (M1, M4) | Schema v1 remains valid; v2 binds enrollment, challenge, AK, Quote evidence, PCR policy, mTLS peer and Verifier signature |
-| Acquisition queue and batch chain | Implemented | Single-process prototype with atomic publication |
-| Admission and idempotency | Implemented | Identity, content, chain, signature, attestation status/expiry |
-| Content-addressed Evidence Vault | Implemented | Tamper-evident prototype; WORM/object lock pending |
-| Chained custody events | Implemented | Local append-only convention; external time anchor pending |
-| UWF-ZeekData24 controlled download and audit | Implemented (M2) | 8 CSV partitions; size/SHA-256 verification; 95,871-row schema, label, null, time, duplicate, and leakage audit |
-| Deterministic Zeek normalization/window snapshot | Implemented (M1–M2) | Generic JSONL and real Data24 CSV path; frozen 25-feature/60-second schema; repeated real preparation has identical digest |
-| Group/time split and training-only scaling | Implemented (M2) | Capture-date groups are disjoint; final week reserved; scaler row count and digest verified |
-| Lineage from source CSV rows to windows | Implemented (M2) | Raw line digest/path/line, consolidated identity, normalized event, and window links; rebuild/contamination traversal pending |
-| Central MLP baseline | Implemented and verified (M2) | Parquet profile, sqrt-balanced sklearn encoder 128/64, embedding 32, six-class head; validation macro-F1 0.94567, test macro-F1 0.92307 |
-| Deterministic 15-client IID/non-IID snapshots | Implemented and verified (M3) | Exact M2 train/validation coverage; raw-data boundary; Parquet IID 473–474 rows/client, non-IID 52–1,688 |
-| Flower Message API ClientApp/ServerApp | Implemented (M3) | Current ArrayRecord/MetricRecord API; 15-node full-participation FedAvg |
-| Auditable PyTorch/FedAvg runner | IID and non-IID experiments completed (M3) | Validation-only selection; IID round 11 test macro-F1 0.92257; non-IID round 28 test macro-F1 0.94385 |
-| Deterministic M3 evaluation report | Implemented (M3) | Digest-validated confusion matrices, per-class metrics, round curves, local/FedAvg/centralized and per-client plots; figure SHA-256 manifest |
-| Versioned enrollment, AK/ESK separation, challenge and revocation | Implemented and unit-tested (M4) | Signed ESK request; one-to-one client/node/TPM binding; append-only revocation; emulator assurance explicitly limited |
-| Quote/PCR appraisal and Attestation Result v2 | Implemented and exercised with 15 swtpm nodes (M4) | One-use nonce; independent PCR replay; 15/15 runtime gate passed |
-| 15-pair `swtpm` Compose deployment | Implemented and exercised (M4) | Dedicated state/socket volumes; no client state mount or foreign socket; static topology verifier |
-| TLS 1.3 mutual authentication | Implemented and unit-tested (M4) | Private experiment CA, clientAuth/serverAuth EKU, SAN and enrollment-fingerprint binding, wrong pair rejected |
-| Physical TPM 2.0 adapter | Implemented, hardware run pending (M4) | Same tpm2-tools adapter via `device:/dev/tpmrm0`; no simulator/hardware equivalence claim |
-| Attestation-gated Update Bundles and secure FedAvg campaign | Implemented and Docker-runtime verified (M5) | Single-round 15/15 gate plus 30 signed/chained checkpoints; 450/450 TPM ESK bundles accepted, zero quarantines, independent reconstruction, validation-only selection; round 11 validation/test macro-F1 0.94833/0.92257 |
-| Byzantine attacks and robust aggregation | Deterministic campaigns implemented and verified (M6) | Seven `f=3` model-update scenarios plus prototype poisoning over real M5 inputs; six-cell prototype sensitivity reports all results with no post-test selection; support-weighted source-recall loss reaches 0.91779 at scale 2.0 while coordinate median remains unchanged; 12-row/six-figure report regenerates byte-identically; repeated seeds and signed malicious-client replay remain future work |
-| Investigative prediction, explanation, ATT&CK mapping, and report | Implemented and verified end-to-end (M7) | Six-case deterministic investigation pipeline transitively verifies Prediction → Explanation → ATT&CK → Report; 69 source events and 81 controlled-ingestion source records resolve with zero invariant violations; IG uses a training-only median baseline with fail-closed completeness, prototypes use training-only client centroids, ATT&CK Enterprise v19.2 mapping uses predicted class only, four multi-tactic cases remain explicitly unresolved, dataset/reference labels are excluded from final reporting, and the final JSON/Markdown/manifest bundle regenerates byte-for-byte; full suite: 139 passed |
+|---|---|---|
+| Canonical manifests and SHA-256 commitments | Implemented | Integer-safe canonical profile; deterministic and tamper-tested |
+| ECDSA P-256 signing | Implemented | Software authorities plus TPM ESK adapter; key roles remain explicit |
+| Acquisition, batch chain, and custody | Implemented | Atomic local publication and chained events; production WORM storage not implemented |
+| Admission and idempotency | Implemented | Identity, content, chain, signature, attestation status/expiry, replay semantics |
+| Content-addressed evidence vault | Implemented | Tamper-evident prototype; object lock and retention service remain external |
+| UWF-ZeekData24 controlled ingestion | Implemented (M2) | Canonical Parquet manifest covers seven source partitions and their sizes/digests |
+| Deterministic normalization/windowing | Implemented (M1–M2) | Frozen 25-feature, 60-second contract; source/event/window lineage verified |
+| Group/time split and training-only scaling | Implemented (M2) | Capture-date groups are disjoint; final capture reserved; scaler provenance checked |
+| Central MLP baseline | Implemented and verified (M2) | Validation macro-F1 `0.945674`; test macro-F1 `0.923073` |
+| 15-client IID/non-IID partitioning | Implemented and verified (M3) | Exact train/validation coverage; client artifacts exclude raw-event data |
+| Flower ClientApp/ServerApp | Implemented (M3) | Current Message API; 15-client full-participation FedAvg profile |
+| Auditable FedAvg runner | Implemented and verified (M3) | All round inputs preserved; aggregation independently reconstructed |
+| PROTEAN adaptation | Implemented and verified (M3 extension) | Four validation-only lambda candidates; two endpoints locked before test access |
+| Enrollment, AK/ESK separation, challenge, revocation | Implemented (M4) | Signed one-to-one bindings and append-only revocation semantics |
+| Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; 15/15 `swtpm` gate passed |
+| TLS 1.3 mutual authentication | Implemented (M4) | EKU, SAN, enrollment-fingerprint, and wrong-pair checks |
+| Physical TPM adapter | Implemented; runtime pending | Same `tpm2-tools` interface via `device:/dev/tpmrm0`; no hardware result claimed |
+| Secure FedAvg campaign | Implemented and verified (M5) | 30 chained rounds; 450/450 bundles admitted; zero quarantines; round 11 selected |
+| Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model and prototype campaigns; deterministic reports |
+| Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
+| Preservation inventory | Implemented and verified (M8.1) | 2,363 artifacts, seven external bindings, 2,631,940,087 payload bytes |
+| Merkle commitment | Implemented and verified (M8.2) | 2,370 leaves, 13 levels, deterministic duplicate-last rule |
+| Trusted timestamp | Implemented and verified (M8.3) | RFC 3161 token over the M8 Merkle root; offline verification succeeds |
+| Offline recovery export | Implemented and verified (M8.4) | Deterministic TAR, 2,363 payload entries, 11 assurance entries |
+| Campaign invariant accounting | Implemented and verified (M8.5) | 30 rounds, 15 clients, 450 contributions reconstructed from recovery TAR |
+| Final preservation verification | Implemented and verified (M8.6) | Five assurance stages; offline inputs only; zero errors |
 
-M2 uses NumPy and scikit-learn only. Flower/PyTorch belong to M3 and the trust
-deployment belongs to M4; neither changes the frozen M2 dataset contract.
+## Canonical reference chain
 
-The published Data24 CSV release has a documented acquisition-time/class confound, 328 cross-label connection identities, and a benign-only final-week holdout. The implementation preserves these facts in machine-readable audit, split, lineage, and metrics artifacts; the baseline scores must not be interpreted as evidence that those dataset limitations have been removed.
+| Stage | Workspace or identifier |
+|---|---|
+| M2 dataset | `artifacts/m2-data24-parquet` |
+| M3 IID partitions | `artifacts/m3-data24-parquet-iid` |
+| M4 trust | `artifacts/m4-trust` |
+| M5 campaign | `artifacts/m5-secure-multiround-v2` |
+| M7 report | `artifacts/m7-investigation-report-test-first6-v1` |
+| M8 inventory | `m8-preservation-07101d8294c8798f9a0b8f15` |
+| M8 Merkle tree | `m8-merkle-tree-bd598d3ac8ed86eacff47611` |
+| M8 timestamp | `m8-timestamp-anchor-7fe093ea54ecce8bf8e791db` |
+| M8 recovery | `m8-recovery-export-eec242458090f9a22b62d86a` |
+| M8 accounting | `m8-campaign-accounting-8145d39622bf25d39a135c38` |
+| M8 final receipt | `m8-final-verification-2b1eb8e1ecba88dcaf234edc` |
 
+The final assurance state is
+`merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
 
+## Important boundaries
+
+- The RFC 3161 timestamp anchors the M8 preservation root. It does not convert the local M1
+  custody-event store into a continuously externally anchored production ledger.
+- `swtpm` confirms protocol and artifact behavior but is not equivalent to hardware-backed
+  key non-exportability.
+- The M8 recovery package preserves the selected reference chain; it is not a substitute for
+  an organizational retention, access-control, backup, or legal-admissibility policy.
+- The temporal holdout is benign-only and cannot support a multiclass generalization claim.
+- The reported scores come from deterministic reference runs, not a multi-seed confidence
+  interval study.
+- Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
+
+## Outstanding validation and engineering work
+
+1. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+2. Replicate selected M3/M6 results across seeds and report dispersion and uncertainty.
+3. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
+4. Store retained packages in access-controlled WORM/object-lock storage.
+5. Define production certificate/key lifecycle, service separation, monitoring, and recovery.
+6. Validate multi-host performance and failure recovery outside the single-host research
+   deployment.
+
+See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and
+[Architecture](ARCHITECTURE.md) for the trust and claim boundaries.

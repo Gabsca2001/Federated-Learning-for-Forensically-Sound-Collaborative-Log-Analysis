@@ -1,256 +1,455 @@
 # Federated Learning for Forensically-Sound Collaborative Log Analysis
 
-This repository is the experimental implementation of the architecture defined in Chapter 4 of the thesis. The target system joins controlled Zeek log acquisition, cryptographic preservation, deterministic preprocessing, federated learning, Byzantine-resilient aggregation, end-to-end lineage, explainability, and investigative reporting.
+This repository is the experimental implementation of the architecture developed for the
+thesis. It combines controlled Zeek-log acquisition, deterministic data preparation,
+federated learning, trust-aware admission, Byzantine-resilience experiments, investigative
+reporting, and final evidence preservation.
 
-Milestones 1–5 are implemented and tested, including the IID/non-IID M3 runs,
-the 15/15 swtpm M4 runtime gate, and the attestation-gated container-isolated
-M5 secure round. Its Docker runtime gate accepted all 15 signed bundles and
-independently reproduced the FedAvg checkpoint.
+The implemented reference chain covers Milestones 1 through 8. Every stage emits immutable
+or append-only artifacts, binds its inputs by digest, and has a separate verifier that
+reconstructs the relevant claim from disk. The final M8 workflow inventories the complete
+M2-to-M7 evidence chain, commits it in a Merkle tree, anchors that root with an RFC 3161
+timestamp, exports an offline recovery package, and verifies the campaign invariants again
+from that package.
 
-`Zeek JSONL → raw batch → canonical manifest → SHA-256 chain → ECDSA signature → attestation-aware admission → content-addressed vault → deterministic snapshot → lineage`
+> This is a research prototype, not a production forensic appliance. A valid digest,
+> signature, TPM Quote, or timestamp establishes a specific integrity or provenance claim;
+> it does not by itself prove that an event is true, that a participant is benign, or that a
+> model prediction is correct.
 
-The Data24 centralized path is:
+## What the repository implements
 
-`controlled UWF-ZeekData24 CSV ingestion → schema/label audit → cross-label consolidation → 60 s feature windows → group/time split → training-only scaler → MLP encoder + classification head → metrics and digests`
+```text
+M1  controlled Zeek JSONL acquisition and chain of custody
+ ↓
+M2  deterministic UWF-ZeekData24 preprocessing and centralized baseline
+ ↓
+M3  15-client IID/non-IID FedAvg baseline and auditable PROTEAN adaptation
+ ↓
+M4  one-client/one-TPM trust deployment, enrollment, mTLS, Quote appraisal
+ ↓
+M5  attestation-gated secure round and chained 30-round campaign
+ ↓
+M6  frozen Byzantine scenarios and reproducible aggregation comparisons
+ ↓
+M7  predictions → explanations → ATT&CK mapping → human-readable report
+ ↓
+M8  inventory → Merkle root → trusted timestamp → offline recovery → final audit
+```
 
-The clean federated path is:
+The reference experiment uses 15 logical clients. The clean learning baseline is FedAvg;
+robust aggregation is evaluated separately against frozen malicious-update sets so each
+aggregator receives exactly the same inputs.
 
-`M2 feature snapshot → 15 IID/non-IID client snapshots → PyTorch local training → Flower FedAvg → chained round records → global model registry → local/FedAvg comparison`
+## Repository layout
 
-The trust path is:
+```text
+.
+├── src/fl_forensics/       Python package and `fl-forensics` CLI
+├── configs/                Versioned experiment contracts
+│   ├── policies/           Admission policies
+│   └── schemas/            JSON Schemas for signed/canonical artifacts
+├── scripts/                Dataset downloaders and runtime orchestrators
+├── tests/                  Unit, integration, tamper, and verifier tests
+├── docs/                   Architecture, status, datasets, and milestone reports
+├── data/                   Downloaded source data; generated locally, ignored by Git
+├── artifacts/              Experiment workspaces; generated locally, ignored by Git
+├── compose.phase1.yaml     M1 evidence demonstration
+├── compose.m4.yaml         15-client/15-swtpm trust deployment
+├── compose.m5.yaml         Isolated M5 secure-training runtime
+├── Dockerfile*             Reproducible runtime images
+└── pyproject.toml          Package metadata, dependencies, CLI, pytest, and Ruff config
+```
 
-`client/node/TPM pair → EK/AK/ESK provisioning → signed enrollment → mTLS identity → one-use nonce → TPM2 Quote → PCR/log replay → signed Attestation Result v2 → admission or quarantine`
+The division is intentional:
 
-The secure-round path is:
+- `src/`, `configs/`, `scripts/`, `tests/`, and `docs/` are the version-controlled recipe.
+- `data/` contains downloaded inputs and is not redistributed by this repository.
+- `artifacts/` contains generated evidence, models, reports, private trust state, and large
+  recovery packages. It is excluded from Git to avoid publishing secrets and multi-gigabyte
+  runtime output.
+- Reproducibility comes from versioned code/configuration plus immutable input digests and
+  verifier receipts—not from committing every generated byte to source control.
+- Evidence that must be retained should be stored in controlled external storage. M8 creates
+  a deterministic recovery archive specifically for offline retention and re-verification.
 
-`15 fresh M4 attestations → signed Round Context → 15 isolated client containers → TPM ESK-signed Update Bundles → fail-closed contribution admission → exact-input FedAvg checkpoint → independent recomputation`
+See [Architecture](docs/ARCHITECTURE.md) for the component boundaries and trust model.
 
-It intentionally does **not** claim that a software key is equivalent to a TPM. The signer and attestation interfaces are already separated so that `swtpm` and the physical TPM 2.0 adapter can replace the development implementation without changing the artifact formats.
+## Requirements and installation
 
-## Quick start
+- Python 3.11 or newer
+- Git
+- Docker Engine with Compose for the containerized M1, M4, and M5 gates
+- Linux or WSL2 for the full `swtpm`, TPM tooling, and Flower simulation workflows
+- OpenSSL and a system CA bundle for RFC 3161 timestamp acquisition/verification
+- CUDA is optional; the deterministic runners also support CPU execution
 
-Linux/macOS:
+Create one virtual environment at the repository root:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e ".[dev]"
-fl-forensics demo --input tests/fixtures/zeek_conn.jsonl --output demo-output
-fl-forensics verify --workspace demo-output
-python -m unittest discover -s tests -v
+python -m pip install --upgrade pip
+python -m pip install -e ".[ml,dev]"
 ```
 
-PowerShell:
+The extras can also be installed separately:
 
-```powershell
-py -3.14 -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev]"
-fl-forensics demo --input tests\fixtures\zeek_conn.jsonl --output demo-output
-fl-forensics verify --workspace demo-output
-python -m unittest discover -s tests -v
+| Extra | Purpose |
+|---|---|
+| `m2` | NumPy, PyArrow, and scikit-learn for dataset preparation |
+| `federated` | Flower, PyTorch, NumPy, and scikit-learn |
+| `simulation` | Flower Simulation Runtime and Ray dependencies |
+| `reporting` | Matplotlib figures |
+| `ml` | Complete numerical, federated, and reporting stack |
+| `dev` | pytest and Ruff |
+
+Confirm the installation with:
+
+```bash
+fl-forensics --help
+pytest -q
+ruff check --select E9,F63,F7,F82 src tests
 ```
 
-The demo output is disposable operational data. Formal experimental campaigns will use a separate namespace for every `experiment_id`, persistent Docker volumes, `swtpm`/TPM-backed keys, mutual TLS, and external root anchoring.
+## Five-minute integrity smoke test
 
-## Milestone 2 — UWF-ZeekData24 and centralized baseline
+The small fixture demonstrates the M1 artifact contract without downloading Data24:
 
-Install only the numerical dependencies required by M2; Flower and PyTorch remain M3 dependencies:
+```bash
+fl-forensics demo \
+  --input tests/fixtures/zeek_conn.jsonl \
+  --output artifacts/demo-output
 
-```powershell
-python -m pip install -e ".[m2,dev]"
-python scripts\download_uwf_zeekdata24.py
-fl-forensics m2-audit --input data\raw\uwf-zeekdata24\csv --output artifacts\m2-data24-audit.json
-fl-forensics m2-prepare --input data\raw\uwf-zeekdata24\csv --output artifacts\m2-data24
-fl-forensics m2-verify --workspace artifacts\m2-data24
-fl-forensics m2-train --workspace artifacts\m2-data24 --output artifacts\m2-data24-central
-fl-forensics m2-verify-baseline --workspace artifacts\m2-data24-central --dataset-workspace artifacts\m2-data24
+fl-forensics verify --workspace artifacts/demo-output
 ```
 
-The scaler is fitted only on `train`. Capture dates are indivisible groups. The partition beginning on 3 November 2024 is kept as `temporal_holdout`; in the published CSV release it contains only benign records, so it is reported separately from the multiclass development test.
+The verifier must return `"status": "verified"`. The workspace is disposable and can be
+regenerated; it is not the thesis reference campaign.
 
-## Milestone 3 — clean 15-client Flower/FedAvg baseline
+## Canonical experiment chain
 
-Install the M3 dependencies. The auditable runner uses Flower and PyTorch but does
-not require Ray:
+All commands below are run from the repository root with the virtual environment active.
+Paths use the Linux/WSL form because the containerized trust workflows are validated there.
+The configuration files contain the complete parameters and upstream bindings.
 
-```powershell
-python -m pip install -e ".[federated,dev]"
+### M2 — UWF-ZeekData24 preparation and centralized baseline
+
+The canonical M2-to-M8 chain uses the Parquet release:
+
+```bash
+python scripts/download_uwf_zeekdata24_parquet.py
+
+fl-forensics m2-audit \
+  --input data/raw/uwf-zeekdata24/parquet \
+  --output artifacts/m2-data24-parquet-audit.json
+
+fl-forensics m2-prepare \
+  --input data/raw/uwf-zeekdata24/parquet \
+  --config configs/m2-parquet.yaml \
+  --output artifacts/m2-data24-parquet
+
+fl-forensics m2-verify --workspace artifacts/m2-data24-parquet
+
+fl-forensics m2-train \
+  --workspace artifacts/m2-data24-parquet \
+  --output artifacts/m2-data24-parquet-central
+
+fl-forensics m2-verify-baseline \
+  --workspace artifacts/m2-data24-parquet-central \
+  --dataset-workspace artifacts/m2-data24-parquet
 ```
 
-Create and verify both frozen partition profiles:
+The pipeline consolidates source rows by event identity, creates deterministic 60-second
+feature windows, preserves capture dates as indivisible groups, fits preprocessing only on
+the training split, and keeps the final capture as a temporal holdout. The CSV ingestion
+profile remains supported as an earlier controlled-ingestion variant, but it is not the
+canonical M8 preservation source.
 
-```powershell
-fl-forensics m3-partition --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-iid --mode iid
-fl-forensics m3-verify-partitions --workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24
-fl-forensics m3-partition --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-non-iid --mode non-iid
-fl-forensics m3-verify-partitions --workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24
+See [Dataset and preprocessing](docs/DATASET_UWF_ZEEKDATA24.md).
+
+### M3 — clean federation and PROTEAN adaptation
+
+Create the 15-client IID and non-IID partition workspaces, then run the clean FedAvg
+campaigns:
+
+```bash
+fl-forensics m3-partition \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --output artifacts/m3-data24-parquet-iid \
+  --mode iid
+
+fl-forensics m3-verify-partitions \
+  --workspace artifacts/m3-data24-parquet-iid \
+  --dataset-workspace artifacts/m2-data24-parquet
+
+fl-forensics m3-partition \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --output artifacts/m3-data24-parquet-non-iid \
+  --mode non-iid
+
+fl-forensics m3-verify-partitions \
+  --workspace artifacts/m3-data24-parquet-non-iid \
+  --dataset-workspace artifacts/m2-data24-parquet
+
+fl-forensics m3-train \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --output artifacts/m3-data24-parquet-iid-fedavg
+
+fl-forensics m3-verify \
+  --workspace artifacts/m3-data24-parquet-iid-fedavg \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --dataset-workspace artifacts/m2-data24-parquet
 ```
 
-Run and verify the clean FedAvg campaign first on IID and then on non-IID:
+Repeat `m3-train` and `m3-verify` with the non-IID partition workspace for the heterogeneity
+baseline. `m3-report` generates immutable learning figures after validating the metrics and
+comparison inputs. The separate `m3-protean-*` workflow evaluates validation-only
+prototype-alignment candidates, locks both endpoints before test access, and publishes a
+final auditable comparison.
 
-```powershell
-fl-forensics m3-train --partition-workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-iid-fedavg
-fl-forensics m3-verify --workspace artifacts\m3-data24-iid-fedavg --partition-workspace artifacts\m3-data24-iid --dataset-workspace artifacts\m2-data24
-fl-forensics m3-report --workspace artifacts\m3-data24-iid-fedavg --central-workspace artifacts\m2-data24-central
+See [M3 baseline](docs/MILESTONE_3_FEDERATED_BASELINE.md) and
+[M3 PROTEAN evaluation](docs/MILESTONE_3_PROTEAN.md).
 
-fl-forensics m3-train --partition-workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24 --output artifacts\m3-data24-non-iid-fedavg
-fl-forensics m3-verify --workspace artifacts\m3-data24-non-iid-fedavg --partition-workspace artifacts\m3-data24-non-iid --dataset-workspace artifacts\m2-data24
-```
+### M4 — trust deployment and TPM appraisal
 
-`m3-train` performs 30 rounds, two local epochs, full participation and
-example-weighted FedAvg. It preserves every local update object, every global
-checkpoint, a hash-chained record for each round, centralized evaluation, and a
-fair local-only comparison using the same initial model and the same total number
-of local epochs.
+M4 binds each logical client to one TPM identity, TLS certificate, and approved measurement
+baseline. The repository's completed runtime gate uses 15 independent `swtpm` states:
 
-Install the reporting extra before generating figures:
+```bash
+fl-forensics m4-verify-deployment \
+  --compose compose.m4.yaml \
+  --clients configs/clients.yaml
 
-```powershell
-python -m pip install -e ".[federated,reporting,dev]"
-```
+fl-forensics m4-init --workspace artifacts/m4-trust --project-root .
+python scripts/run_m4_swtpm.py provision
 
-`m3-report` validates the digests of `metrics.json`, `comparison.json`, and the
-optional centralized metrics before generating eight immutable PNG figures and a
-machine-readable `reports\summary.json`. The outputs include absolute and
-row-normalized test confusion matrices, per-class precision/recall/F1, validation
-and loss curves by round, the local/FedAvg/centralized comparison, and per-client
-local-only performance. It does not repeat training or inference.
+fl-forensics m4-enroll \
+  --workspace artifacts/m4-trust \
+  --node-root artifacts/m4-nodes
 
-The repository also exposes a current Flower Message API `ClientApp` and
-`ServerApp`. To validate Flower's Simulation Runtime, install the separate Ray
-extra and run 15 SuperNodes:
+fl-forensics m4-mtls-test \
+  --workspace artifacts/m4-trust \
+  --node-root artifacts/m4-nodes
 
-```powershell
-python -m pip install -e ".[federated,simulation,dev]"
-flwr run . --stream --federation-config="num-supernodes=15 client-resources-num-cpus=1"
-```
+fl-forensics m4-challenge \
+  --workspace artifacts/m4-trust \
+  --node-root artifacts/m4-nodes
 
-Flower documents native Windows/Ray support as experimental and recommends WSL2
-for the Simulation Runtime. This limitation does not apply to the auditable
-single-process `m3-train` runner.
-
-## Milestone 4 — trust deployment, swtpm, Quote appraisal, and mTLS
-
-M4 does not retrain the model or modify Data24. Install the project, run the full
-suite, and verify the declared one-to-one topology:
-
-```powershell
-python -m pip install -e ".[m4,dev]"
-python -m unittest discover -s tests -v
-fl-forensics m4-verify-deployment --compose compose.m4.yaml --clients configs\clients.yaml
-```
-
-Initialize the experiment authorities, private PKI, and approved measurement
-baseline. The command refuses partial or ambiguous existing state:
-
-```powershell
-fl-forensics m4-init --workspace artifacts\m4-trust --project-root .
-```
-
-Provision 15 independent TPM states. Every client generates a distinct EK, AK,
-and ESK inside its paired emulator, extends the approved measurements, generates
-its own TLS CSR, and writes an ESK-signed enrollment request:
-
-```powershell
-python scripts\run_m4_swtpm.py provision
-fl-forensics m4-enroll --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
-```
-
-Exercise a real TLS 1.3 mutual-authentication handshake for every enrolled
-client, then issue one-use challenges and produce Quotes:
-
-```powershell
-fl-forensics m4-mtls-test --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
-fl-forensics m4-challenge --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
-python scripts\run_m4_swtpm.py quote
+python scripts/run_m4_swtpm.py quote
 docker compose -f compose.m4.yaml --profile verify run --rm verifier
 ```
 
-The final command must report `client_count: 15`, `passed_count: 15`, and
-`status: verified`. It verifies the AK signature, exact nonce, registered pair,
-revocation state, TLS certificate binding, measurement-log digest, and expected
-PCR values. Identical evidence is idempotent; changed evidence using a consumed
-nonce is rejected as stale.
+The gate requires 15/15 valid attestations. `swtpm` validates the protocol and artifact
+semantics but is not equivalent to a hardware root of trust. A physical TPM 2.0 run remains
+a separate deployment-validation task.
 
-Stop containers without deleting TPM state:
+See [M4 trust deployment](docs/MILESTONE_4_TRUST_DEPLOYMENT.md).
 
-```powershell
-python scripts\run_m4_swtpm.py stop
-```
+### M5 — attestation-gated secure training
 
-Never add `--volumes` during normal cleanup. Deleting a TPM state volume changes
-the device identity and requires a new enrollment. The separate physical-node
-preflight is Linux-only:
+M5 admits only signed update bundles whose client identity, round context, trust decision,
+model shape, and digests agree. The single-round gate independently recomputes FedAvg; the
+reference campaign then chains 30 such rounds:
 
 ```bash
-fl-forensics m4-physical-preflight --tcti device:/dev/tpmrm0
-```
-
-See `docs/MILESTONE_4_TRUST_DEPLOYMENT.md` for artifact semantics, negative
-tests, and the limits of swtpm assurance.
-
-## Milestone 5 — secure containerized multi-round campaign
-
-M5 measures the training runtime itself, so it requires a fresh M4 trust
-workspace and TPM namespace after these source changes. Build the M5 image
-before issuing the final short-lived quotes, then run the secure round while all
-15 attestations remain valid:
-
-```bash
-python -m pip install -e ".[federated,dev]"
 export COMPOSE_PROJECT_NAME=flforensics_m5
 
 python scripts/run_m5_secure_round.py build \
   --partition-workspace artifacts/m3-data24-parquet-iid
 
-# Recreate M4 enrollment and obtain a fresh 15/15 attestation campaign first.
-python scripts/run_m5_secure_round.py run \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-round \
-  --workers 4
-```
-
-The single-round gate is `accepted_count: 15`,
-`matches_reference_checkpoint: true`, `error_count: 0`, and `status: verified`.
-
-After that independent gate, run or resume the chained 30-round campaign and
-verify its signed campaign manifest:
-
-```bash
+# Recreate or refresh M4 evidence immediately before the secure run.
 python scripts/run_m5_secure_multiround.py run \
   --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-multiround \
+  --workspace artifacts/m5-secure-multiround-v2 \
   --rounds 30 \
   --workers 4 \
   --attestation-refresh-interval 5
 
 python scripts/run_m5_secure_multiround.py verify \
   --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-multiround \
+  --workspace artifacts/m5-secure-multiround-v2 \
   --rounds 30
 ```
 
-The completed Docker gate verified 30 chained checkpoints and accepted all 450
-TPM ESK-signed contributions with zero quarantines. Validation-only selection
-chose round 11 (validation macro-F1 0.94833; test macro-F1 0.92257). The
-coordinator never mounts client snapshots, and test data is evaluated only
-after selection. See `docs/MILESTONE_5_SECURE_ROUND.md` for the single-round
-artifact and threat contract and `docs/MILESTONE_5_SECURE_MULTIROUND.md` for the
-campaign chain, runtime gate, and learning report.
+The completed campaign contains 30 chained checkpoints and 450 admitted contributions. Its
+validation-only selection chose round 11 before test evaluation.
 
-## Source-of-truth rules
+See [M5 secure round](docs/MILESTONE_5_SECURE_ROUND.md) and
+[M5 multi-round campaign](docs/MILESTONE_5_SECURE_MULTIROUND.md).
 
-- The finalized Chapter 4 takes precedence over earlier design notes.
-- The target virtual federation contains 15 clients and 15 independent `swtpm` instances.
-- FedAvg is the learning baseline; trimmed mean is the operational robust reference profile.
-- Model parameters and class prototypes are validated and aggregated separately.
-- UWF-ZeekData24 is the primary development dataset. Its provenance begins at controlled ingestion, not at the historical capture performed by UWF.
-- UWF-ZeekData22 is reserved for a later external-generalization experiment and is not part of the M2 baseline.
-- Raw evidence is never overwritten by normalized data or feature snapshots.
-- Rejected artifacts are preserved with a resolvable reason.
-- A valid signature proves origin/integrity after signing, not semantic truth or benign behavior.
+### M6 — Byzantine-resilience experiments
 
-See `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION_PLAN.md`, and `docs/STATUS.md` for boundaries, milestones, and current coverage.
+M6 freezes one clean or attacked contribution set from an already verified M5 round. Each
+aggregation method then consumes that same frozen set, preventing data drift between
+comparisons:
 
-Dataset setup is documented in `docs/DATASET_UWF_ZEEKDATA24.md`. The data itself is intentionally excluded from Git.
+```bash
+fl-forensics m6-freeze \
+  --source-round-workspace artifacts/m5-secure-multiround-v2/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --attack model_replacement \
+  --f 3 \
+  --output artifacts/m6-model-replacement-f3 \
+  --config configs/byzantine-malicious-model-replacement.yaml
+
+fl-forensics m6-verify-frozen --workspace artifacts/m6-model-replacement-f3
+```
+
+The remaining `m6-*` commands compare FedAvg and robust strategies, verify every output,
+run prototype-poisoning sensitivity studies, and build machine-readable and human-readable
+reports. Use `fl-forensics --help` for the exact variant required by an experiment.
+
+See [M6 Byzantine experiments](docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md).
+
+### M7 — investigation bundles and reports
+
+M7 starts from the selected M5 checkpoint and a frozen split. It publishes four separately
+verifiable workspaces: predictions, explanations, ATT&CK mappings, and the final report.
+The prediction command makes the source selection explicit:
+
+```bash
+fl-forensics m7-predict \
+  --round-workspace artifacts/m5-secure-multiround-v2/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --split test \
+  --first 6 \
+  --output artifacts/m7-prediction-bundle-test-first6-v1
+
+fl-forensics m7-verify-predictions \
+  --round-workspace artifacts/m5-secure-multiround-v2/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust \
+  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m7-prediction-bundle-test-first6-v1
+```
+
+Continue with `m7-explain`, `m7-map-attack`, and `m7-report`, and run the matching verifier
+after each stage. Configurations in `configs/investigation*.yaml` bind the exact upstream
+workspaces and presentation policy.
+
+See [M7 investigation workflow](docs/MILESTONE_7_INVESTIGATION.md).
+
+### M8 — preservation and offline recovery
+
+M8 is the final assurance layer. It does not retrain the model; it closes and preserves the
+existing chain:
+
+```bash
+fl-forensics m8-preserve
+fl-forensics m8-verify-preservation
+
+fl-forensics m8-build-merkle
+fl-forensics m8-verify-merkle
+
+# The acquisition step contacts the configured RFC 3161 timestamp authority.
+fl-forensics m8-anchor-time
+fl-forensics m8-verify-timestamp
+
+fl-forensics m8-export-recovery
+fl-forensics m8-verify-recovery
+
+fl-forensics m8-account-campaign
+fl-forensics m8-verify-campaign-accounting
+
+fl-forensics m8-verify-final-preservation
+```
+
+Except for acquiring the timestamp, the final verification path works from local preserved
+inputs. The recovery verifier reads the exported package rather than trusting the live
+source workspaces; campaign accounting then reconstructs all 30 rounds and 450 accepted
+contributions from the offline package.
+
+See [M8 preservation and recovery](docs/MILESTONE_8_PRESERVATION.md).
+
+## Verified reference results
+
+| Stage | Reference result |
+|---|---|
+| M2 | 1,897,812 unique source events; 19,576 retained feature windows |
+| M2 central | validation macro-F1 `0.945674`; test macro-F1 `0.923073` |
+| M3 IID FedAvg | selected round 11; test macro-F1 `0.922567` |
+| M3 non-IID FedAvg | selected round 28; test macro-F1 `0.943849` |
+| M4 | 15/15 software-TPM Quotes appraised successfully |
+| M5 | 30 rounds; 450/450 admitted contributions; zero quarantines |
+| M7 | six report cases bound to 69 events and 81 source records |
+| M8 | 2,363 artifacts preserved; 2,370 Merkle leaves; all five assurance stages verified |
+
+These figures describe one deterministic reference campaign, not population-level confidence
+intervals or a claim of universal generalization. See the milestone documents for the
+selection rules, threat assumptions, and experiment identifiers.
+
+## Verification model
+
+Generation and verification are deliberately separate operations:
+
+- generators refuse ambiguous output state instead of silently overwriting evidence;
+- canonical JSON and deterministic serialization make digests reproducible;
+- manifests bind configurations, upstream workspaces, identities, and outputs;
+- verifiers recompute digests, signatures, lineage, counts, and semantic invariants;
+- negative tests mutate evidence and assert fail-closed rejection;
+- rejected contributions remain attributable and carry machine-readable reasons;
+- test data is not used for model or hyperparameter selection.
+
+If a verifier fails, preserve the workspace before investigating. Do not edit a signed or
+hashed artifact in place to make the check pass; regenerate a new workspace with a new
+identifier after identifying the cause.
+
+## Tests and development checks
+
+Run the complete local suite:
+
+```bash
+pytest -q
+ruff check --select E9,F63,F7,F82 src tests
+git diff --check
+```
+
+The repository-wide Ruff command above is the critical syntax/name-error gate. When changing
+Python code, also run the complete configured Ruff rule set against the files you touched,
+for example `ruff check src/fl_forensics/example.py tests/test_example.py`. This keeps a new
+change from expanding unrelated pre-existing style cleanup.
+
+The test suite includes deterministic rebuilds, digest and signature checks, replay/staleness
+handling, malformed bundle rejection, lineage reconstruction, offline recovery, and tamper
+tests. Docker runtime gates are intentionally separate because they require `swtpm`, network
+namespaces, persistent volumes, and substantially more runtime than unit tests.
+
+## Documentation index
+
+- [Architecture and trust boundaries](docs/ARCHITECTURE.md)
+- [Implementation plan and milestone gates](docs/IMPLEMENTATION_PLAN.md)
+- [Current status and remaining limitations](docs/STATUS.md)
+- [UWF-ZeekData24 dataset contract](docs/DATASET_UWF_ZEEKDATA24.md)
+- [M3 federated baseline](docs/MILESTONE_3_FEDERATED_BASELINE.md)
+- [M3 auditable PROTEAN evaluation](docs/MILESTONE_3_PROTEAN.md)
+- [M4 trust deployment](docs/MILESTONE_4_TRUST_DEPLOYMENT.md)
+- [M5 secure round](docs/MILESTONE_5_SECURE_ROUND.md)
+- [M5 secure multi-round campaign](docs/MILESTONE_5_SECURE_MULTIROUND.md)
+- [M6 Byzantine experiments](docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md)
+- [M7 investigation workflow](docs/MILESTONE_7_INVESTIGATION.md)
+- [M8 preservation and recovery](docs/MILESTONE_8_PRESERVATION.md)
+
+## Source-of-truth and claim rules
+
+- Versioned YAML files are experiment contracts; changing one creates a new experiment.
+- UWF-ZeekData24 provenance starts at this project's controlled download and ingestion, not
+  at the historical capture performed by the dataset publisher.
+- UWF-ZeekData22 is not part of the completed reference campaign.
+- Raw evidence, normalized events, feature snapshots, and model outputs are distinct layers.
+- The 15 `swtpm` instances validate integration semantics, not hardware-backed assurance.
+- FedAvg is the clean baseline; robust methods are comparative defenses under declared
+  attack and fault assumptions.
+- An ATT&CK mapping is an analyst-oriented interpretation, not proof of an adversary or
+  technique.
+- Git history preserves the implementation and configuration; M8 preserves the generated
+  evidentiary state.
+
+The dataset and all generated workspaces are intentionally excluded from Git. Before deleting
+or moving an experiment, create and verify its M8 recovery export and retain the archive,
+timestamp material, and verification receipt under the evidence-retention policy chosen for
+the thesis.
