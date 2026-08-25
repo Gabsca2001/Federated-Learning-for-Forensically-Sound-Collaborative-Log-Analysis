@@ -16,6 +16,10 @@ from .byzantine_experiment import (
     verify_byzantine_comparison,
     verify_frozen_update_set,
 )
+from .campaign_accounting import (
+    create_campaign_accounting,
+    verify_campaign_accounting,
+)
 from .central_baseline import train_central_baseline, verify_central_baseline
 from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
@@ -24,11 +28,17 @@ from .demo import run_demo
 from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .final_preservation import verify_final_preservation
 from .investigation_report import (
     create_investigation_report_bundle,
     verify_investigation_report_bundle,
 )
+from .merkle import create_merkle_tree, verify_merkle_tree
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
+from .preservation import (
+    create_preservation_manifest,
+    verify_preservation_manifest,
+)
 from .protean_finalization import (
     finalize_protean_endpoints,
     verify_protean_finalization,
@@ -60,6 +70,7 @@ from .prototype_sensitivity_reporting import (
     generate_prototype_sensitivity_report,
     verify_prototype_sensitivity_report,
 )
+from .recovery import create_recovery_export, verify_recovery_export
 from .reporting import generate_m3_report
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
@@ -67,6 +78,10 @@ from .secure_round import (
     create_secure_update,
     initialize_secure_round,
     verify_secure_round,
+)
+from .timestamp_anchor import (
+    create_timestamp_anchor,
+    verify_timestamp_anchor,
 )
 from .tpm_adapter import (
     create_tpm_quote_evidence,
@@ -1092,6 +1107,133 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("configs/investigation-report.yaml"),
     )
 
+    m8_preserve = subparsers.add_parser(
+        "m8-preserve", help="publish the deterministic M8.1 preservation inventory"
+    )
+    m8_preserve.add_argument(
+        "--config", type=Path, default=Path("configs/preservation.yaml")
+    )
+    m8_preserve.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-preservation-manifest-v1")
+    )
+
+    m8_verify = subparsers.add_parser(
+        "m8-verify-preservation", help="reconstruct and verify an M8.1 inventory"
+    )
+    m8_verify.add_argument(
+        "--config", type=Path, default=Path("configs/preservation.yaml")
+    )
+    m8_verify.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-preservation-manifest-v1"),
+    )
+
+    m8_merkle = subparsers.add_parser(
+        "m8-build-merkle", help="commit the M8.1 inventory in a deterministic Merkle tree"
+    )
+    m8_merkle.add_argument(
+        "--config", type=Path, default=Path("configs/merkle.yaml")
+    )
+    m8_merkle.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-merkle-tree-v1")
+    )
+
+    m8_verify_merkle = subparsers.add_parser(
+        "m8-verify-merkle", help="reconstruct and verify the M8.2 Merkle commitment"
+    )
+    m8_verify_merkle.add_argument(
+        "--config", type=Path, default=Path("configs/merkle.yaml")
+    )
+    m8_verify_merkle.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-merkle-tree-v1"),
+    )
+
+    m8_timestamp = subparsers.add_parser(
+        "m8-anchor-time", help="obtain and verify an RFC 3161 timestamp for M8.2"
+    )
+    m8_timestamp.add_argument(
+        "--config", type=Path, default=Path("configs/timestamp.yaml")
+    )
+    m8_timestamp.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-timestamp-anchor-v1")
+    )
+
+    m8_verify_timestamp = subparsers.add_parser(
+        "m8-verify-timestamp", help="offline-verify the M8.3 RFC 3161 proof"
+    )
+    m8_verify_timestamp.add_argument(
+        "--config", type=Path, default=Path("configs/timestamp.yaml")
+    )
+    m8_verify_timestamp.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-timestamp-anchor-v1"),
+    )
+
+    m8_recovery = subparsers.add_parser(
+        "m8-export-recovery", help="create the deterministic M8.4 offline recovery TAR"
+    )
+    m8_recovery.add_argument(
+        "--config", type=Path, default=Path("configs/recovery.yaml")
+    )
+    m8_recovery.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-recovery-export-v1")
+    )
+
+    m8_verify_recovery = subparsers.add_parser(
+        "m8-verify-recovery", help="verify M8.4 entirely from the recovery package"
+    )
+    m8_verify_recovery.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-recovery-export-v1"),
+    )
+
+    m8_account_campaign = subparsers.add_parser(
+        "m8-account-campaign",
+        help="account M5 invariants from the offline M8.4 recovery package",
+    )
+    m8_account_campaign.add_argument(
+        "--config", type=Path, default=Path("configs/campaign-accounting.yaml")
+    )
+    m8_account_campaign.add_argument(
+        "--output",
+        type=Path,
+        default=Path("artifacts/m8-campaign-invariant-accounting-v1"),
+    )
+
+    m8_verify_campaign_accounting = subparsers.add_parser(
+        "m8-verify-campaign-accounting",
+        help="recompute M8.5 accounting from the offline M8.4 package",
+    )
+    m8_verify_campaign_accounting.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-campaign-invariant-accounting-v1"),
+    )
+    m8_verify_campaign_accounting.add_argument(
+        "--recovery-workspace",
+        type=Path,
+        default=Path("artifacts/m8-recovery-export-v1"),
+    )
+
+    m8_verify_final_preservation = subparsers.add_parser(
+        "m8-verify-final-preservation",
+        help="offline-verify the complete M8.1 through M8.5 assurance chain",
+    )
+    m8_verify_final_preservation.add_argument(
+        "--recovery-workspace",
+        type=Path,
+        default=Path("artifacts/m8-recovery-export-v1"),
+    )
+    m8_verify_final_preservation.add_argument(
+        "--accounting-workspace",
+        type=Path,
+        default=Path("artifacts/m8-campaign-invariant-accounting-v1"),
+    )
 
     return parser
 
@@ -1639,6 +1781,91 @@ def main(argv: list[str] | None = None) -> int:
             explanation_config_path=arguments.explanation_config,
             attack_config_path=arguments.attack_config,
             config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-preserve":
+        result = create_preservation_manifest(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-preservation":
+        result = verify_preservation_manifest(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-build-merkle":
+        result = create_merkle_tree(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-merkle":
+        result = verify_merkle_tree(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-anchor-time":
+        result = create_timestamp_anchor(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-timestamp":
+        result = verify_timestamp_anchor(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-export-recovery":
+        result = create_recovery_export(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-recovery":
+        result = verify_recovery_export(workspace=arguments.workspace)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-account-campaign":
+        result = create_campaign_accounting(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-campaign-accounting":
+        result = verify_campaign_accounting(
+            workspace=arguments.workspace,
+            recovery_workspace=arguments.recovery_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-verify-final-preservation":
+        result = verify_final_preservation(
+            recovery_workspace=arguments.recovery_workspace,
+            accounting_workspace=arguments.accounting_workspace,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
