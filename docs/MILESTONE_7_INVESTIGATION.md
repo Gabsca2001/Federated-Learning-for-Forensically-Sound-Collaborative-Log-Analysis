@@ -43,9 +43,10 @@ The immutable output contains three files:
   digests, implementation/configuration digests, and a zero-violation
   reportability gate.
 
-The bundle is content-addressed but not yet externally anchored. Merkle root,
-trusted time proof, recovery export, and campaign-level invariant accounting
-belong to M8.
+The bundle is content-addressed. M8 now inventories this M7 chain, commits it
+under the campaign Merkle root, anchors that root with an RFC 3161 timestamp,
+and includes the report inputs in the offline recovery and invariant-accounting
+workflow.
 
 `m7-verify-predictions` independently verifies and reconstructs the M5
 checkpoint, M3 partitions, M2 artifacts and selected scaled rows. It reruns
@@ -189,7 +190,7 @@ The generated artifact digests are:
 The verifier returned `verified`, zero errors, `reportable=true`,
 `source_attack_verified=true`, and
 `verification_recomputed_report=true`. The complete repository test suite
-passes with 139 tests.
+passes with 214 tests after completion of M8.
 
 
 ## Evidentiary interpretation
@@ -200,10 +201,6 @@ raw Parquet rows. This establishes a resolvable, digest-valid derivation path
 within the implemented experiment. It does not retroactively attest the
 historical UWF capture or turn public dataset labels into independently
 observed facts.
-
-Prediction confidence is a model-derived measurement. The reference label is
-retained only for experimental evaluation and never enters the inference
-tensor.
 
 Prediction confidence is a model-derived measurement. The reference label is
 retained only in the Prediction Bundle for experimental evaluation and never

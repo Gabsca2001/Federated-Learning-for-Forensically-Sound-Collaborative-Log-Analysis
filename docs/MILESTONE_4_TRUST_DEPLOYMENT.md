@@ -91,7 +91,7 @@ but do not substitute for that runtime gate.
 
 ```powershell
 python -m pip install -e ".[m4,dev]"
-python -m unittest discover -s tests -v
+pytest -q
 
 fl-forensics m4-verify-deployment --compose compose.m4.yaml --clients configs\clients.yaml
 fl-forensics m4-init --workspace artifacts\m4-trust --project-root .

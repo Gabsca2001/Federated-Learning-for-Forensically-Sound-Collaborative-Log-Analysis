@@ -1,67 +1,120 @@
-# Incremental implementation plan
+# Implementation plan and acceptance gates
 
-Each milestone ends with an executable acceptance gate. A later milestone may add fields or artifact types, but it must not silently rewrite previously preserved objects.
+## Planning rule
 
-| Milestone | Deliverable | Acceptance gate | Thesis requirements |
-| --- | --- | --- | --- |
-| M0 — Contract | Repository, configs, artifact schemas, architecture map | Configuration and schemas load; status is explicit | SIC6, FOR5, ML2 |
-| M1 — Evidence vertical slice | Acquisition, hash chain, ECDSA, signed attestation result, admission, content-addressed vault, custody chain, deterministic snapshot | Tampering, wrong identity, expired attestation, chain conflict, and raw/snapshot separation are tested | SIC1–SIC5, FOR1–FOR5 |
-| M2 — Data and centralized baseline | UWF-ZeekData24 inventory, group/time split, frozen feature schema, scaler fitted on training only, MLP encoder+head | Repeated preprocessing yields the same digest; centralized metrics include macro-F1 and per-class recall | ML2–ML4, ML8 |
-| M3 — Federated baseline | 15 logical clients, IID/non-IID manifests, Flower ClientApp/ServerApp, FedAvg, round audit, model registry | No raw client mount at server; same frozen snapshots support local and FedAvg comparisons | ML1, ML3, ML4, FOR6 |
-| M4 — Trust deployment | 15 `swtpm` pairs, enrollment, AK/ESK separation, Quote verification, mTLS, physical TPM adapter | Nonce replay, altered measurement, revoked identity, and wrong pair are rejected and preserved | SIC1–SIC6, FOR1–FOR4 |
-| M5 — Secure round protocol | Signed round context and Update Bundles, replay/idempotency checks, structural validator, checkpoint manifests | Wrong round/base model/snapshot/tensor is rejected; every checkpoint lists actual inputs | SIC4, SIC7, FOR6, FOR8 |
-| M6 — Byzantine experiments | Label flip, Gaussian noise, sign flip, model replacement, backdoor, prototype poisoning, collusion; clipping and robust aggregators | Same frozen updates feed FedAvg, median, trimmed mean, MultiKrum, Bulyan; invalid `n,f` halts explicitly | ML5–ML8, T1–T4 |
-| M7 — Investigation | Inference bundles, Integrated Gradients, prototype distances, ATT&CK mapping, deterministic report | A prediction is reportable only with complete, digest-valid lineage to Zeek events | FOR6, FOR9, FOR10, ML9 |
-| M8 — Campaign and recovery | Experiment manifests, repeated seeds, contamination propagation, rollback branch, root anchoring, export | Invariants have zero violations; statistical results include dispersion and confidence intervals | SIC8, FOR2–FOR10 |
+The project is organized as a sequence of executable acceptance gates. A milestone is
+complete only when its generator, verifier, negative cases, and reference runtime evidence
+agree. Later milestones may add new artifact types, but they must not silently reinterpret or
+rewrite an earlier finalized workspace.
 
-The optional secure-aggregation profile is evaluated only after M6 because it conflicts with defenses that require inspection of individual updates. Optional DP-SGD is outside the core acceptance path and must not delay the thesis experiments.
+The M1–M8 reference implementation is complete. The table below is therefore both a roadmap
+and a map of the evidence currently present in the canonical campaign.
 
-## Completed M2 gate
+| Milestone | Delivered scope | Acceptance gate | State |
+|---|---|---|---|
+| M0 — Contract | Package, CLI, YAML contracts, schemas, architecture map | Configuration and schemas load; boundaries are explicit | Complete |
+| M1 — Evidence | Acquisition, chain, ECDSA, admission, vault, custody, snapshot | Tampering, wrong identity, expiry, conflicts, and raw/snapshot separation fail closed | Complete |
+| M2 — Data | Controlled Data24 ingestion, audit, lineage, windows, split, scaler, central MLP | Deterministic rebuild; no split overlap; training-only scaler; metrics bound by digest | Complete |
+| M3 — Federation | 15-client IID/non-IID snapshots, Flower path, auditable FedAvg, PROTEAN | Exact partition coverage; round aggregation reproduced; validation-only selection locked | Complete |
+| M4 — Trust | Enrollment, AK/ESK separation, mTLS, Quote appraisal, revocation, TPM adapter | 15/15 `swtpm` gate; nonce replay, wrong pair, altered PCR/log, and revocation rejected | Complete for software-TPM profile |
+| M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain | Single-round reconstruction plus 30-round/450-contribution campaign verification | Complete |
+| M6 — Byzantine analysis | Frozen attacks, robust aggregation, model/prototype sensitivity, reports | Every method receives the same inputs; invalid assumptions fail; reports regenerate | Complete |
+| M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete |
+| M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Complete |
 
-The M2 gate uses UWF-ZeekData24 exclusively. The official CSV bytes are verified against a controlled-ingestion manifest; the audit records the real schema and dataset risks; capture dates are split without group overlap; the final week is isolated as a temporal holdout; standardization is fitted on training only; and the centralized MLP emits macro metrics, per-class recall/support, confusion matrices, model weights, and digest-linked manifests. Two independent preparations of the real release produced the same dataset and scaler SHA-256 digests.
+## Dependency order
 
-## M3 implementation gate
+```text
+M1 artifact rules
+ └─> M2 canonical dataset
+      └─> M3 partitions and learning
+           ├─> M4 identity/attestation
+           │    └─> M5 secure campaign
+           │         ├─> M6 robustness experiments
+           │         └─> M7 investigation chain
+           └──────────────────────────┐
+                                      └─> M8 preserved closure
+```
 
-M3 freezes two 15-client partition profiles over the verified M2 snapshot. IID is
-stratified round-robin; non-IID is label-Dirichlet with `alpha = 0.3`. The
-partition verifier enforces exact one-client coverage of every training and
-validation window and prevents raw-event fields from entering client or server
-feature artifacts. The clean PyTorch/Flower runner preserves content-addressed
-local updates and global checkpoints, chains round records, performs full-client
-example-weighted FedAvg, and records a local-only comparison. Runtime execution
-and final metric validation remain the acceptance gate before M3 is marked
-complete.
+M8 intentionally preserves the canonical M2, M3, M4, M5, and M7 chain. M6 is a controlled
+comparative experiment built from M5 inputs and has its own verified artifacts, but it is not
+an upstream dependency of the selected M7 report.
 
-## M4 implementation gate
+## Completed gates
 
-M4 preserves new versioned Enrollment Request, Enrollment Record, Attestation
-Challenge, Quote Evidence, Revocation Record, and Attestation Result v2 objects.
-The Compose topology statically enforces 15 one-to-one client/swtpm socket pairs
-without client access to TPM state. The Verifier reconstructs PCR values from the
-approved ordered measurement log and supplies those independent expected values
-to `tpm2_checkquote`, while nonce consumption is recorded with idempotent replay
-semantics. TLS 1.3 client certificates are bound to the same enrolled client.
-The protocol, topology, adverse cases, and 15-swtpm Docker campaign are tested;
-the separate physical-node experiment remains a runtime acceptance gate.
+### M1 — forensic artifact semantics
 
-## Completed M5 implementation gate
+The vertical slice defines canonical manifests, SHA-256 commitments, ECDSA signatures,
+identity/attestation-aware admission, idempotency, custody chaining, a content-addressed
+vault, and deterministic snapshots. It also establishes the rule that normalized data and
+features never overwrite raw evidence.
 
-M5 first implements one attestation-gated FedAvg round with 15 isolated Docker
-client containers. A signed short-lived Round Context binds M4 attestation,
-enrollment, client snapshot, base model, training contract, and federation
-configuration for every participant. TPM ESK-signed Update Bundles pass a
-fail-closed structural and cryptographic validator before signed Contribution
-Decisions are preserved. Replay slots accept only byte-identical retries, and
-the signed checkpoint enumerates every admitted digest and weight. Unit,
-topology, and 15-swtpm runtime gates are complete. All 15 TPM-signed
-bundles were accepted without errors, and independent verification reproduced
-the stored FedAvg checkpoint exactly.
-The chained extension then executed 30 secure rounds with the same 15 clients.
-Round `r` is cryptographically bound to the accepted checkpoint from round
-`r - 1`; every checkpoint lists the exact admitted bundle digests and weights.
-The runtime accepted 450/450 TPM ESK-signed contributions with zero quarantines
-and no campaign-verification errors. Validation-only selection chose round 11
-(validation macro-F1 0.94833), after which the selected checkpoint obtained test
-macro-F1 0.92257. A digest-linked report preserves the local learning curves,
-update norms, global validation metrics, confusion matrices, and per-class
-results.
+### M2 — canonical dataset
+
+The completed reference path uses the UWF-ZeekData24 Parquet release. Source bytes are
+recorded in a controlled-download manifest; events are consolidated without discarding label
+lineage; capture dates remain indivisible across splits; the scaler is fitted on training
+only; and the central model's weights and metrics bind the exact dataset and scaler.
+
+The CSV workflow remains a supported earlier profile and must use distinct workspace and
+experiment identifiers.
+
+### M3 — clean federation and auditable adaptation
+
+IID and non-IID partition verifiers enforce complete one-client coverage of every training
+and validation window while excluding raw-event fields. Every FedAvg round preserves the
+actual local updates and can be independently reconstructed. The PROTEAN extension evaluates
+its lambda candidates without test access, locks two declared endpoints, and only then
+publishes their final test/holdout comparison.
+
+### M4 — trust deployment
+
+The protocol, topology, schemas, adverse cases, and 15-`swtpm` Docker campaign are complete.
+Each identity uses distinct AK and ESK roles; Quotes bind one-use nonces and independently
+replayed PCR expectations; TLS certificates bind the same enrollment. The physical TPM
+adapter and preflight exist, but the separate hardware runtime remains future validation.
+
+### M5 — secure round and campaign
+
+The single-round Docker gate admitted 15/15 TPM ESK-signed bundles and reproduced the stored
+FedAvg checkpoint. The chained extension completed 30 rounds, admitted 450/450 contributions,
+recorded zero quarantines, and passed independent campaign verification. Validation-only
+selection chose round 11 before test evaluation.
+
+### M6 — Byzantine-resilience experiments
+
+M6 freezes verified M5 updates before applying declared attacks. FedAvg, coordinate median,
+trimmed mean, Multi-Krum, Bulyan, clipping, and prototype defenses are evaluated under their
+explicit `n`/`f` assumptions. Machine-readable results, deterministic figures, and verifier
+receipts preserve both successful defenses and failure modes.
+
+### M7 — investigation reporting
+
+Six deterministic test cases were resolved through prediction, Integrated Gradients,
+prototype distance, ATT&CK mapping, and final JSON/Markdown reporting. The pipeline resolves
+69 events and 81 controlled source records with zero lineage invariant failures. Ambiguous
+multi-tactic mappings remain explicitly unresolved.
+
+### M8 — preservation closure
+
+M8 inventories 2,363 artifacts and seven external bindings, commits 2,370 leaves under one
+Merkle root, obtains a verified RFC 3161 token, writes a deterministic offline recovery TAR,
+and reconstructs the 30-round/450-contribution M5 campaign from that package. The final
+verifier reports five verified stages and zero errors.
+
+## Post-M8 work
+
+These tasks can strengthen the thesis or a later production design, but they are not part of
+the completed M1–M8 acceptance chain:
+
+- repeat selected learning/attack experiments across multiple seeds and report dispersion;
+- evaluate a genuinely external dataset such as UWF-ZeekData22;
+- execute the trust workflow with a physical TPM 2.0 node or fleet;
+- move evidence into WORM/object-lock storage with retention and access-control policy;
+- define production key custody, rotation, revocation distribution, and disaster recovery;
+- test multi-host networking, scale, failure recovery, and service isolation;
+- assess privacy mechanisms such as secure aggregation or DP-SGD as separate profiles;
+- perform independent security review and reproducibility review.
+
+These extensions must receive new experiment identifiers and must not overwrite the preserved
+reference workspaces.
