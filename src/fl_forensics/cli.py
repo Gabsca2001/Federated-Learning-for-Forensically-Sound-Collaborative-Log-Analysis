@@ -73,6 +73,10 @@ from .secure_round import (
     initialize_secure_round,
     verify_secure_round,
 )
+from .timestamp_anchor import (
+    create_timestamp_anchor,
+    verify_timestamp_anchor,
+)
 from .tpm_adapter import (
     create_tpm_quote_evidence,
     physical_tpm_preflight,
@@ -1141,6 +1145,28 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("artifacts/m8-merkle-tree-v1"),
     )
 
+    m8_timestamp = subparsers.add_parser(
+        "m8-anchor-time", help="obtain and verify an RFC 3161 timestamp for M8.2"
+    )
+    m8_timestamp.add_argument(
+        "--config", type=Path, default=Path("configs/timestamp.yaml")
+    )
+    m8_timestamp.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-timestamp-anchor-v1")
+    )
+
+    m8_verify_timestamp = subparsers.add_parser(
+        "m8-verify-timestamp", help="offline-verify the M8.3 RFC 3161 proof"
+    )
+    m8_verify_timestamp.add_argument(
+        "--config", type=Path, default=Path("configs/timestamp.yaml")
+    )
+    m8_verify_timestamp.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-timestamp-anchor-v1"),
+    )
+
 
     return parser
 
@@ -1718,6 +1744,22 @@ def main(argv: list[str] | None = None) -> int:
 
     if arguments.command == "m8-verify-merkle":
         result = verify_merkle_tree(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-anchor-time":
+        result = create_timestamp_anchor(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-timestamp":
+        result = verify_timestamp_anchor(
             workspace=arguments.workspace,
             config_path=arguments.config,
         )
