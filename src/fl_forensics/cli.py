@@ -28,6 +28,7 @@ from .demo import run_demo
 from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
+from .final_preservation import verify_final_preservation
 from .investigation_report import (
     create_investigation_report_bundle,
     verify_investigation_report_bundle,
@@ -1219,6 +1220,20 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("artifacts/m8-recovery-export-v1"),
     )
 
+    m8_verify_final_preservation = subparsers.add_parser(
+        "m8-verify-final-preservation",
+        help="offline-verify the complete M8.1 through M8.5 assurance chain",
+    )
+    m8_verify_final_preservation.add_argument(
+        "--recovery-workspace",
+        type=Path,
+        default=Path("artifacts/m8-recovery-export-v1"),
+    )
+    m8_verify_final_preservation.add_argument(
+        "--accounting-workspace",
+        type=Path,
+        default=Path("artifacts/m8-campaign-invariant-accounting-v1"),
+    )
 
     return parser
 
@@ -1843,6 +1858,14 @@ def main(argv: list[str] | None = None) -> int:
         result = verify_campaign_accounting(
             workspace=arguments.workspace,
             recovery_workspace=arguments.recovery_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-verify-final-preservation":
+        result = verify_final_preservation(
+            recovery_workspace=arguments.recovery_workspace,
+            accounting_workspace=arguments.accounting_workspace,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
