@@ -1,0 +1,37 @@
+schema_version: "1.0"
+preservation:
+  dataset_workspace: artifacts/m2-data24-parquet
+  partition_workspace: artifacts/m3-data24-parquet-iid
+  trust_workspace: artifacts/m4-trust
+  campaign_workspace: artifacts/m5-secure-multiround-v2
+  prediction_workspace: artifacts/m7-prediction-bundle-test-first6-v1
+  explanation_workspace: artifacts/m7-explanation-bundle-test-first6-v1
+  attack_workspace: artifacts/m7-attack-mapping-test-first6-v1
+  report_workspace: artifacts/m7-investigation-report-test-first6-v1
+  partition_manifest: artifacts/m3-data24-parquet-iid-multiround/manifest.json
+  server_evaluation: artifacts/m3-data24-parquet-iid/server/evaluation.json
+  prediction_config: configs/investigation.yaml
+  explanation_config: configs/investigation-explanations.yaml
+  attack_config: configs/investigation-attack.yaml
+  report_config: configs/investigation-report.yaml
+  expected_rounds: 30
+  selected_derivation_round: 11
+  required_m2_files:
+    - audit.json
+    - dataset.json
+    - feature_schema.json
+    - lineage.jsonl
+    - manifest.json
+    - normalized_events.jsonl
+    - scaler.json
+    - split_manifest.json
+    - training_sampling.json
+  excluded_patterns:
+    - "*.private.pem"
+    - "state/challenges.json"
+  trust_policy_context:
+    - manifest.json
+    - baseline/baseline.json
+    - baseline/measurement_log.json
+    - pki/ca.certificate.pem
+    - pki/verifier.certificate.pem

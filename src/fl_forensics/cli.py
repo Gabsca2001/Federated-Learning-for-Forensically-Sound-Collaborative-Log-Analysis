@@ -29,6 +29,10 @@ from .investigation_report import (
     verify_investigation_report_bundle,
 )
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
+from .preservation import (
+    create_preservation_manifest,
+    verify_preservation_manifest,
+)
 from .protean_finalization import (
     finalize_protean_endpoints,
     verify_protean_finalization,
@@ -1092,6 +1096,28 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("configs/investigation-report.yaml"),
     )
 
+    m8_preserve = subparsers.add_parser(
+        "m8-preserve", help="publish the deterministic M8.1 preservation inventory"
+    )
+    m8_preserve.add_argument(
+        "--config", type=Path, default=Path("configs/preservation.yaml")
+    )
+    m8_preserve.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-preservation-manifest-v1")
+    )
+
+    m8_verify = subparsers.add_parser(
+        "m8-verify-preservation", help="reconstruct and verify an M8.1 inventory"
+    )
+    m8_verify.add_argument(
+        "--config", type=Path, default=Path("configs/preservation.yaml")
+    )
+    m8_verify.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-preservation-manifest-v1"),
+    )
+
 
     return parser
 
@@ -1638,6 +1664,22 @@ def main(argv: list[str] | None = None) -> int:
             prediction_config_path=arguments.prediction_config,
             explanation_config_path=arguments.explanation_config,
             attack_config_path=arguments.attack_config,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-preserve":
+        result = create_preservation_manifest(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-preservation":
+        result = verify_preservation_manifest(
+            workspace=arguments.workspace,
             config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
