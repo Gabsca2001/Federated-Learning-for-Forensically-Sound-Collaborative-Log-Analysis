@@ -65,6 +65,7 @@ from .prototype_sensitivity_reporting import (
     generate_prototype_sensitivity_report,
     verify_prototype_sensitivity_report,
 )
+from .recovery import create_recovery_export, verify_recovery_export
 from .reporting import generate_m3_report
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
@@ -1167,6 +1168,25 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("artifacts/m8-timestamp-anchor-v1"),
     )
 
+    m8_recovery = subparsers.add_parser(
+        "m8-export-recovery", help="create the deterministic M8.4 offline recovery TAR"
+    )
+    m8_recovery.add_argument(
+        "--config", type=Path, default=Path("configs/recovery.yaml")
+    )
+    m8_recovery.add_argument(
+        "--output", type=Path, default=Path("artifacts/m8-recovery-export-v1")
+    )
+
+    m8_verify_recovery = subparsers.add_parser(
+        "m8-verify-recovery", help="verify M8.4 entirely from the recovery package"
+    )
+    m8_verify_recovery.add_argument(
+        "--workspace",
+        type=Path,
+        default=Path("artifacts/m8-recovery-export-v1"),
+    )
+
 
     return parser
 
@@ -1763,6 +1783,19 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             config_path=arguments.config,
         )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "m8-export-recovery":
+        result = create_recovery_export(
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "m8-verify-recovery":
+        result = verify_recovery_export(workspace=arguments.workspace)
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
 
