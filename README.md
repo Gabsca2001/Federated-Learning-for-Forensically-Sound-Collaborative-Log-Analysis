@@ -214,8 +214,11 @@ together with client-unweighted mean, dispersion, minimum, and maximum. The comp
 test remains the pooled common comparison.
 
 Repeat `m3-train` and `m3-verify` with the non-IID partition workspace for the heterogeneity
-baseline. `m3-report` generates immutable learning figures after validating the metrics and
-comparison inputs. The separate `m3-protean-*` workflow evaluates validation-only
+baseline. The final `m3-train` JSON prints the validation, test, and benign-only holdout
+confusion matrices after validation-only checkpoint selection. `m3-report` prints the same
+matrices, generates absolute and row-normalized global figures, and writes one comparative
+FedAvg/local-only local-test figure per client after validating all metric and comparison
+inputs. The separate `m3-protean-*` workflow evaluates validation-only
 prototype-alignment candidates, locks both endpoints before test access, and publishes a
 final auditable comparison.
 
@@ -228,32 +231,43 @@ M4 binds each logical client to one TPM identity, TLS certificate, and approved 
 baseline. The repository's completed runtime gate uses 15 independent `swtpm` states:
 
 ```bash
+# Use a new namespace and new write-once workspaces for every evidentiary run.
+export COMPOSE_PROJECT_NAME=flforensics_local_test_v1
+export M4_TRUST_WORKSPACE="$PWD/artifacts/m4-trust-local-test-v1"
+export M4_NODE_ROOT="$PWD/artifacts/m4-nodes-local-test-v1"
+
 fl-forensics m4-verify-deployment \
   --compose compose.m4.yaml \
   --clients configs/clients.yaml
 
-fl-forensics m4-init --workspace artifacts/m4-trust --project-root .
-python scripts/run_m4_swtpm.py provision
+fl-forensics m4-init --workspace "$M4_TRUST_WORKSPACE" --project-root .
+python scripts/run_m4_swtpm.py provision \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 
 fl-forensics m4-enroll \
-  --workspace artifacts/m4-trust \
-  --node-root artifacts/m4-nodes
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 
 fl-forensics m4-mtls-test \
-  --workspace artifacts/m4-trust \
-  --node-root artifacts/m4-nodes
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 
 fl-forensics m4-challenge \
-  --workspace artifacts/m4-trust \
-  --node-root artifacts/m4-nodes
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 
-python scripts/run_m4_swtpm.py quote
+python scripts/run_m4_swtpm.py quote \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 docker compose -f compose.m4.yaml --profile verify run --rm verifier
 ```
 
 The gate requires 15/15 valid attestations. `swtpm` validates the protocol and artifact
 semantics but is not equivalent to a hardware root of trust. A physical TPM 2.0 run remains
-a separate deployment-validation task.
+a separate deployment-validation task. Never reuse a Compose namespace with a different
+node workspace: TPM persistent state, enrolled keys, certificates, and attestation evidence
+form one experiment identity.
 
 See [M4 trust deployment](docs/MILESTONE_4_TRUST_DEPLOYMENT.md).
 
@@ -264,23 +278,31 @@ model shape, and digests agree. The single-round gate independently recomputes F
 reference campaign then chains 30 such rounds:
 
 ```bash
-export COMPOSE_PROJECT_NAME=flforensics_m5
-
 python scripts/run_m5_secure_round.py build \
-  --partition-workspace artifacts/m3-data24-parquet-iid
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1
 
 # Recreate or refresh M4 evidence immediately before the secure run.
 python scripts/run_m5_secure_multiround.py run \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-multiround-v2 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
   --rounds 30 \
   --workers 4 \
   --attestation-refresh-interval 5
 
 python scripts/run_m5_secure_multiround.py verify \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-multiround-v2 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
   --rounds 30
+
+python scripts/m5_campaign_report.py \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --output artifacts/m5-secure-multiround-local-test-v1-report
 ```
 
 The completed campaign contains 30 chained checkpoints and 450 admitted contributions. Its
@@ -288,6 +310,9 @@ validation-only selection chose round 11 before test evaluation. Partitions prod
 current M3 contract also keep local tests outside the files mounted by the M5 training
 containers; after selection, the coordinator evaluates the selected global checkpoint per
 client and binds those results into the signed final campaign evaluation.
+Campaign finalization and verification print the three global confusion matrices. The
+derived report adds absolute and normalized global figures plus one local-test confusion
+figure for every client, and records every nested figure digest in its report manifest.
 
 See [M5 secure round](docs/MILESTONE_5_SECURE_ROUND.md) and
 [M5 multi-round campaign](docs/MILESTONE_5_SECURE_MULTIROUND.md).

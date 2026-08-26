@@ -10,7 +10,6 @@ from unittest.mock import patch
 from fl_forensics.canonical import sha256_file
 from fl_forensics.preprocessing import derived_json_bytes
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
     "m5_campaign_report_script", ROOT / "scripts" / "m5_campaign_report.py"
@@ -48,11 +47,7 @@ class M5CampaignReportTests(unittest.TestCase):
                 "round_number": round_number,
                 "validation": self._evaluation(global_score),
             }
-            validation_path = (
-                workspace
-                / "evaluation"
-                / f"round-{round_number:03d}-validation.json"
-            )
+            validation_path = workspace / "evaluation" / f"round-{round_number:03d}-validation.json"
             validation_path.parent.mkdir(parents=True, exist_ok=True)
             validation_path.write_bytes(derived_json_bytes(validation))
             references.append(
@@ -83,11 +78,7 @@ class M5CampaignReportTests(unittest.TestCase):
                     "update_delta_l2": round_number * client_index * 0.1,
                 }
                 submission = (
-                    workspace
-                    / "rounds"
-                    / f"round-{round_number:03d}"
-                    / "submissions"
-                    / client_id
+                    workspace / "rounds" / f"round-{round_number:03d}" / "submissions" / client_id
                 )
                 submission.mkdir(parents=True, exist_ok=True)
                 metrics_path = submission / "metrics.json"
@@ -109,10 +100,17 @@ class M5CampaignReportTests(unittest.TestCase):
                     ("temporal_holdout", 0.90),
                 )
             },
+            "selected_global_client_test": [
+                {
+                    "client_id": f"client{client_index:02d}",
+                    "test": self._evaluation(0.70 + client_index / 100),
+                }
+                for client_index in range(1, 3)
+            ],
         }
-        (
-            workspace / "evaluation" / "selected-checkpoint-evaluation.json"
-        ).write_bytes(derived_json_bytes(final))
+        (workspace / "evaluation" / "selected-checkpoint-evaluation.json").write_bytes(
+            derived_json_bytes(final)
+        )
         manifest = {
             "core": {
                 "round_count": 2,
@@ -122,9 +120,7 @@ class M5CampaignReportTests(unittest.TestCase):
                 "rounds": references,
             }
         }
-        (workspace / "campaign-manifest.json").write_bytes(
-            derived_json_bytes(manifest)
-        )
+        (workspace / "campaign-manifest.json").write_bytes(derived_json_bytes(manifest))
         return workspace
 
     def test_verified_campaign_generates_learning_report(self) -> None:
@@ -151,10 +147,20 @@ class M5CampaignReportTests(unittest.TestCase):
                 )
             self.assertEqual(result["status"], "reported")
             self.assertEqual(result["selected_round"], 2)
-            self.assertEqual(result["figure_count"], 7)
+            self.assertEqual(result["figure_count"], 10)
+            self.assertEqual(result["client_confusion_matrix_figure_count"], 2)
+            self.assertEqual(result["confusion_matrices"]["test"]["values"], [[2, 0], [1, 1]])
             self.assertTrue((output / "global-validation-by-round.png").is_file())
+            self.assertTrue((output / "selected-validation-test-confusion-absolute.png").is_file())
+            self.assertTrue((output / "per-client-confusion" / "client01.png").is_file())
             summary = json.loads((output / "summary.json").read_text())
             self.assertEqual(summary["accepted_contribution_count"], 4)
+            self.assertEqual(
+                set(summary["confusion_matrices"]),
+                {"validation", "test", "temporal_holdout"},
+            )
+            report_manifest = json.loads((output / "manifest.json").read_text())
+            self.assertIn("per-client-confusion/client01.png", report_manifest["artifacts"])
             self.assertEqual(
                 summary["test_selection_policy"],
                 "validation-only selection; selected checkpoint test once",
@@ -164,21 +170,17 @@ class M5CampaignReportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             workspace = self._workspace(root)
-            path = (
-                workspace
-                / "rounds"
-                / "round-001"
-                / "submissions"
-                / "client01"
-                / "metrics.json"
-            )
+            path = workspace / "rounds" / "round-001" / "submissions" / "client01" / "metrics.json"
             with path.open("ab") as stream:
                 stream.write(b"\n")
-            with patch.object(
-                REPORT,
-                "verify_secure_campaign",
-                return_value={"status": "verified", "errors": []},
-            ), self.assertRaisesRegex(ValueError, "signed metrics mismatch"):
+            with (
+                patch.object(
+                    REPORT,
+                    "verify_secure_campaign",
+                    return_value={"status": "verified", "errors": []},
+                ),
+                self.assertRaisesRegex(ValueError, "signed metrics mismatch"),
+            ):
                 REPORT.generate_report(
                     workspace=workspace,
                     trust_workspace=root / "trust",

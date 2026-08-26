@@ -171,16 +171,26 @@ benign-only temporal holdout is kept separate and is not reported as a multiclas
 ## Evaluation report
 
 `m3-report` derives deterministic figures from preserved `metrics.json` and
-`comparison.json`; it does not repeat training or inference. It validates source digests before
-generating:
+`comparison.json`; it does not repeat training or inference. Both `m3-train` and `m3-report`
+print the post-selection global confusion matrices in their final JSON output. The report
+validates source digests before generating:
 
-- absolute and row-normalized test confusion matrices;
+- absolute and row-normalized validation, test, and benign-only temporal-holdout confusion
+  matrices;
 - per-class precision, recall, F1, and support;
 - validation macro-F1 and training-loss curves by round;
 - local-only, FedAvg, and optional M2-central comparison;
 - per-client selected-global and local-only test performance;
+- one per-client local-test confusion figure containing absolute and normalized selected
+  FedAvg matrices and, when available, the corresponding local-only matrices;
 - client-unweighted local-test dispersion and worst-client performance;
 - `summary.json` with input and figure SHA-256 values.
+
+Global figures are written as `confusion-matrix-<split>.png` and
+`confusion-matrix-<split>-normalized.png`. Client figures are written below
+`per-client-confusion/`. Rows always represent actual classes and columns predicted classes.
+The temporal holdout contains benign windows only and is labelled accordingly; its matrix is
+an operational false-alarm view, not a six-class generalization result.
 
 ```bash
 fl-forensics m3-report \

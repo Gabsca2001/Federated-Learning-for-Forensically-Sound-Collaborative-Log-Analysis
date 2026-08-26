@@ -268,6 +268,10 @@ class SecureCampaignTests(unittest.TestCase):
         return {
             "row_count": len(rows),
             "macro_f1_all_model_classes": score,
+            "confusion_matrix": {
+                "labels": ["benign", "attack"],
+                "values": [[len(rows), 0], [0, 0]],
+            },
         }
 
     def test_campaign_selects_validation_before_test_and_verifies(self) -> None:
@@ -307,7 +311,17 @@ class SecureCampaignTests(unittest.TestCase):
                 )
             self.assertEqual(result["selected_round"], 1)
             self.assertEqual(result["accepted_contribution_count"], 4)
+            self.assertEqual(result["client_confusion_matrix_count"], 2)
+            self.assertEqual(
+                set(result["confusion_matrices"]),
+                {"validation", "test", "temporal_holdout"},
+            )
             self.assertEqual(verification["status"], "verified")
+            self.assertEqual(verification["client_confusion_matrix_count"], 2)
+            self.assertEqual(
+                verification["confusion_matrices"]["test"]["labels"],
+                ["benign", "attack"],
+            )
             final = (campaign / "evaluation" / "selected-checkpoint-evaluation.json").read_text(
                 encoding="utf-8"
             )

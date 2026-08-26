@@ -177,17 +177,37 @@ class ReportingTests(unittest.TestCase):
             first_summary_digest = sha256_file(workspace / "reports" / "summary.json")
             second = generate_m3_report(workspace=workspace, central_workspace=central)
             self.assertEqual(first["status"], "reported")
-            self.assertEqual(first["figure_count"], 9)
+            self.assertEqual(first["figure_count"], 16)
             self.assertEqual(first["best_validation_round"], 2)
             self.assertEqual(first["selected_round"], 2)
+            self.assertEqual(first["client_confusion_matrix_figure_count"], 3)
+            self.assertEqual(
+                first["confusion_matrices"]["test"]["values"],
+                [[4, 1, 0], [1, 2, 1], [0, 1, 2]],
+            )
             self.assertEqual(first_summary_digest, second["summary_sha256"])
             summary = json.loads((workspace / "reports" / "summary.json").read_text())
-            self.assertEqual(len(summary["figures"]), 9)
+            self.assertEqual(len(summary["figures"]), 16)
             self.assertEqual(summary["metrics"]["selected_round"], 2)
             self.assertEqual(
                 summary["metrics"]["selected_global_client_unweighted_mean_test_macro_f1"],
                 0.67,
             )
+            self.assertEqual(
+                set(summary["confusion_matrices"]),
+                {"validation", "test", "temporal_holdout"},
+            )
+            self.assertEqual(len(summary["client_confusion_matrix_figures"]), 3)
+            for filename in (
+                "confusion-matrix-validation.png",
+                "confusion-matrix-validation-normalized.png",
+                "confusion-matrix-test.png",
+                "confusion-matrix-test-normalized.png",
+                "confusion-matrix-temporal-holdout.png",
+                "confusion-matrix-temporal-holdout-normalized.png",
+                "per-client-confusion/client01.png",
+            ):
+                self.assertTrue((workspace / "reports" / filename).is_file())
             for figure in summary["figures"]:
                 path = workspace / "reports" / figure["path"]
                 self.assertTrue(path.is_file())
@@ -229,7 +249,7 @@ class ReportingTests(unittest.TestCase):
 
             result = generate_m3_report(workspace=workspace)
 
-            self.assertEqual(result["figure_count"], 7)
+            self.assertEqual(result["figure_count"], 14)
             summary = json.loads((workspace / "reports" / "summary.json").read_text())
             self.assertIsNone(summary["metrics"]["local_only_mean_test_macro_f1"])
             self.assertTrue(

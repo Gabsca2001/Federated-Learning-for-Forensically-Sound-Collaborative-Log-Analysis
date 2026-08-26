@@ -152,21 +152,39 @@ def _matrix_figure(
     labels: list[str],
     values: list[list[float]],
     normalized: bool,
+    title: str,
 ) -> Any:
     if len(values) != len(labels) or any(len(row) != len(labels) for row in values):
         raise ValueError("confusion matrix dimensions do not match its labels")
     fig, ax = plt.subplots(figsize=(9.4, 7.8))
+    _draw_matrix_axis(
+        fig=fig,
+        ax=ax,
+        labels=labels,
+        values=values,
+        normalized=normalized,
+        title=title,
+    )
+    fig.tight_layout()
+    return fig
+
+
+def _draw_matrix_axis(
+    *,
+    fig: Any,
+    ax: Any,
+    labels: list[str],
+    values: list[list[float]],
+    normalized: bool,
+    title: str,
+) -> None:
     image = ax.imshow(values, cmap="Blues", vmin=0, vmax=1 if normalized else None)
     display_labels = [label.replace("_", " ") for label in labels]
     ax.set_xticks(range(len(labels)), display_labels, rotation=35, ha="right")
     ax.set_yticks(range(len(labels)), display_labels)
     ax.set_xlabel("Predicted class")
     ax.set_ylabel("Actual class")
-    ax.set_title(
-        "Test confusion matrix — row-normalized"
-        if normalized
-        else "Test confusion matrix — absolute counts"
-    )
+    ax.set_title(title)
     maximum = max((max(row) for row in values), default=0.0)
     threshold = (0.5 if normalized else maximum / 2.0) if maximum else 0.0
     for row_index, row in enumerate(values):
@@ -183,7 +201,63 @@ def _matrix_figure(
             )
     colorbar = fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
     colorbar.set_label("Share of actual class" if normalized else "Window count")
-    fig.tight_layout()
+
+
+def _matrix_data(
+    evaluation: dict[str, Any],
+) -> tuple[list[str], list[list[float]], list[list[float]]]:
+    matrix = evaluation.get("confusion_matrix")
+    if not isinstance(matrix, dict):
+        raise TypeError("evaluation contains no confusion matrix")
+    labels = [str(label) for label in matrix.get("labels", [])]
+    values = [[float(value) for value in row] for row in matrix.get("values", [])]
+    if not labels or len(values) != len(labels) or any(len(row) != len(labels) for row in values):
+        raise ValueError("confusion matrix dimensions do not match its labels")
+    normalized = [[value / sum(row) if sum(row) else 0.0 for value in row] for row in values]
+    return labels, values, normalized
+
+
+def _client_confusion_figure(
+    *,
+    plt: Any,
+    client_id: str,
+    selected_evaluation: dict[str, Any],
+    local_evaluation: dict[str, Any] | None,
+) -> Any:
+    evaluations = [("Selected FedAvg", selected_evaluation)]
+    if local_evaluation is not None:
+        evaluations.append(("Local-only", local_evaluation))
+    fig, axes = plt.subplots(
+        2,
+        len(evaluations),
+        figsize=(8.2 * len(evaluations), 12.2),
+        squeeze=False,
+    )
+    expected_labels: list[str] | None = None
+    for column, (model_name, evaluation) in enumerate(evaluations):
+        labels, absolute, normalized = _matrix_data(evaluation)
+        if expected_labels is None:
+            expected_labels = labels
+        elif labels != expected_labels:
+            raise ValueError(f"{client_id} model confusion-matrix labels do not match")
+        _draw_matrix_axis(
+            fig=fig,
+            ax=axes[0][column],
+            labels=labels,
+            values=absolute,
+            normalized=False,
+            title=f"{model_name} — absolute counts",
+        )
+        _draw_matrix_axis(
+            fig=fig,
+            ax=axes[1][column],
+            labels=labels,
+            values=normalized,
+            normalized=True,
+            title=f"{model_name} — row-normalized",
+        )
+    fig.suptitle(f"{client_id} local test confusion matrices", fontsize=16, fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
     return fig
 
 
@@ -444,56 +518,91 @@ def generate_m3_report(
     legacy_final_round_protocol = not isinstance(selected, dict)
     evaluated_checkpoint = metrics["final"] if legacy_final_round_protocol else selected
     selected_test = evaluated_checkpoint["test"]
-    matrix = selected_test["confusion_matrix"]
-    labels = [str(label) for label in matrix["labels"]]
-    absolute_values = [[float(value) for value in row] for row in matrix["values"]]
-    normalized_values = [
-        [value / sum(row) if sum(row) else 0.0 for value in row] for row in absolute_values
-    ]
+    labels, _test_absolute, _test_normalized = _matrix_data(selected_test)
     rounds = metrics.get("rounds", [])
-    figures = [
-        _write_figure(
-            output=report_output,
-            filename="confusion-matrix-test.png",
-            description="Absolute test confusion matrix; rows are actual classes.",
-            build=lambda: _matrix_figure(
-                plt=plt, labels=labels, values=absolute_values, normalized=False
+    figures: list[dict[str, Any]] = []
+    global_confusion_matrices: dict[str, dict[str, Any]] = {}
+    split_titles = {
+        "validation": "Validation",
+        "test": "Test",
+        "temporal_holdout": "Temporal holdout (benign-only)",
+    }
+    for split, display_name in split_titles.items():
+        evaluation = evaluated_checkpoint.get(split)
+        if not isinstance(evaluation, dict) or "confusion_matrix" not in evaluation:
+            continue
+        split_labels, absolute_values, normalized_values = _matrix_data(evaluation)
+        if split_labels != labels:
+            raise ValueError(f"selected checkpoint {split} class labels do not match test")
+        global_confusion_matrices[split] = evaluation["confusion_matrix"]
+        slug = split.replace("_", "-")
+        figures.extend(
+            [
+                _write_figure(
+                    output=report_output,
+                    filename=f"confusion-matrix-{slug}.png",
+                    description=(
+                        f"Absolute {display_name.lower()} confusion matrix; "
+                        "rows are actual classes."
+                    ),
+                    build=lambda labels=split_labels, values=absolute_values, name=display_name: (
+                        _matrix_figure(
+                            plt=plt,
+                            labels=labels,
+                            values=values,
+                            normalized=False,
+                            title=f"{name} confusion matrix — absolute counts",
+                        )
+                    ),
+                    plt=plt,
+                ),
+                _write_figure(
+                    output=report_output,
+                    filename=f"confusion-matrix-{slug}-normalized.png",
+                    description=(
+                        f"Row-normalized {display_name.lower()} confusion matrix; "
+                        "rows are actual classes."
+                    ),
+                    build=lambda labels=split_labels, values=normalized_values, name=display_name: (
+                        _matrix_figure(
+                            plt=plt,
+                            labels=labels,
+                            values=values,
+                            normalized=True,
+                            title=f"{name} confusion matrix — row-normalized",
+                        )
+                    ),
+                    plt=plt,
+                ),
+            ]
+        )
+    figures.extend(
+        [
+            _write_figure(
+                output=report_output,
+                filename="per-class-metrics-test.png",
+                description="Test precision, recall, F1, and support by class.",
+                build=lambda: _per_class_figure(
+                    plt=plt, labels=labels, per_class=selected_test["per_class"]
+                ),
+                plt=plt,
             ),
-            plt=plt,
-        ),
-        _write_figure(
-            output=report_output,
-            filename="confusion-matrix-test-normalized.png",
-            description="Row-normalized test confusion matrix, robust to class imbalance.",
-            build=lambda: _matrix_figure(
-                plt=plt, labels=labels, values=normalized_values, normalized=True
+            _write_figure(
+                output=report_output,
+                filename="validation-by-round.png",
+                description="Validation macro-F1 over federated rounds.",
+                build=lambda: _validation_figure(plt=plt, rounds=rounds),
+                plt=plt,
             ),
-            plt=plt,
-        ),
-        _write_figure(
-            output=report_output,
-            filename="per-class-metrics-test.png",
-            description="Test precision, recall, F1, and support by class.",
-            build=lambda: _per_class_figure(
-                plt=plt, labels=labels, per_class=selected_test["per_class"]
+            _write_figure(
+                output=report_output,
+                filename="training-loss-by-round.png",
+                description="Example-weighted local training loss over federated rounds.",
+                build=lambda: _training_loss_figure(plt=plt, rounds=rounds),
+                plt=plt,
             ),
-            plt=plt,
-        ),
-        _write_figure(
-            output=report_output,
-            filename="validation-by-round.png",
-            description="Validation macro-F1 over federated rounds.",
-            build=lambda: _validation_figure(plt=plt, rounds=rounds),
-            plt=plt,
-        ),
-        _write_figure(
-            output=report_output,
-            filename="training-loss-by-round.png",
-            description="Example-weighted local training loss over federated rounds.",
-            build=lambda: _training_loss_figure(plt=plt, rounds=rounds),
-            plt=plt,
-        ),
-    ]
+        ]
+    )
     if comparison.get("local_only_clients"):
         figures.extend(
             [
@@ -548,6 +657,42 @@ def generate_m3_report(
                 plt=plt,
             )
         )
+    selected_client_tests = {
+        str(item["client_id"]): item["test"]
+        for item in comparison.get("selected_global_client_test", [])
+        if isinstance(item.get("test", {}).get("confusion_matrix"), dict)
+    }
+    local_client_tests = {
+        str(item["client_id"]): item["local_test"]
+        for item in comparison.get("local_only_clients", [])
+        if isinstance(item.get("local_test", {}).get("confusion_matrix"), dict)
+    }
+    client_confusion_paths: list[str] = []
+    for client_id in sorted(selected_client_tests):
+        if not client_id or any(
+            character not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+            for character in client_id
+        ):
+            raise ValueError(f"unsafe client identifier in report: {client_id!r}")
+        filename = f"per-client-confusion/{client_id}.png"
+        figures.append(
+            _write_figure(
+                output=report_output,
+                filename=filename,
+                description=(
+                    f"{client_id} local-test confusion matrices for selected FedAvg"
+                    + (" and local-only models." if client_id in local_client_tests else ".")
+                ),
+                build=lambda identifier=client_id: _client_confusion_figure(
+                    plt=plt,
+                    client_id=identifier,
+                    selected_evaluation=selected_client_tests[identifier],
+                    local_evaluation=local_client_tests.get(identifier),
+                ),
+                plt=plt,
+            )
+        )
+        client_confusion_paths.append(filename)
     validation_values = [
         (int(item["round"]), float(item["validation"]["macro_f1_all_model_classes"]))
         for item in rounds
@@ -593,6 +738,11 @@ def generate_m3_report(
         },
         "operational_metrics": evaluated_checkpoint.get("operational_metrics"),
         "class_labels": labels,
+        "confusion_matrices": global_confusion_matrices,
+        "confusion_matrix_figures": [
+            item["path"] for item in figures if "confusion" in item["path"]
+        ],
+        "client_confusion_matrix_figures": client_confusion_paths,
         "figures": figures,
         "interpretation_constraints": [
             (
@@ -619,5 +769,10 @@ def generate_m3_report(
         "best_validation_macro_f1": best_validation_f1,
         "selected_round": int(evaluated_checkpoint["round"]),
         "selected_test_macro_f1": float(selected_test["macro_f1_all_model_classes"]),
+        "confusion_matrices": global_confusion_matrices,
+        "confusion_matrix_figures": [
+            item["path"] for item in figures if "confusion" in item["path"]
+        ],
+        "client_confusion_matrix_figure_count": len(client_confusion_paths),
         "summary_sha256": sha256_file(report_output / "summary.json"),
     }

@@ -748,6 +748,11 @@ def run_federated_baseline(
         "local_only_mean_test_macro_f1": comparison["local_only_summary"]["global_test_macro_f1"][
             "mean"
         ],
+        "confusion_matrices": {
+            split: selected_evaluations[split]["confusion_matrix"]
+            for split in ("validation", "test", "temporal_holdout")
+        },
+        "client_confusion_matrix_count": len(selected_global_client_test),
     }
 
 

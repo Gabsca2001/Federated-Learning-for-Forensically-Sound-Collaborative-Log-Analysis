@@ -60,36 +60,43 @@ and unit tests are final. Do not delete an older namespace if it is needed as
 preserved evidence.
 
 ```bash
-export COMPOSE_PROJECT_NAME=flforensics_m5_multiround
+export COMPOSE_PROJECT_NAME=flforensics_local_test_v1
+export M4_TRUST_WORKSPACE="$PWD/artifacts/m4-trust-local-test-v1"
+export M4_NODE_ROOT="$PWD/artifacts/m4-nodes-local-test-v1"
 
 python scripts/run_m5_secure_round.py build \
-  --partition-workspace artifacts/m3-data24-parquet-iid
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1
 
 fl-forensics m4-init \
-  --workspace artifacts/m4-trust \
+  --workspace "$M4_TRUST_WORKSPACE" \
   --project-root .
 
-python scripts/run_m4_swtpm.py provision
+python scripts/run_m4_swtpm.py provision \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 
 fl-forensics m4-enroll \
-  --workspace artifacts/m4-trust \
-  --node-root artifacts/m4-nodes
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 
 fl-forensics m4-mtls-test \
-  --workspace artifacts/m4-trust \
-  --node-root artifacts/m4-nodes
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 ```
 
 The multi-round runner issues fresh M4 challenges and Quote evidence before
-round 1 and then every five rounds by default. It never deletes volumes or
-starts a missing TPM service.
+round 1 and then every five rounds by default. Custom `--trust-workspace` and
+`--node-root` values are passed to both the Quote producer and verifier. The
+runner never deletes volumes or starts a missing TPM service.
 
 ## Run or resume
 
 ```bash
 python scripts/run_m5_secure_multiround.py run \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-multiround \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
   --rounds 30 \
   --workers 4 \
   --attestation-refresh-interval 5
@@ -104,8 +111,10 @@ Verify an already finalized campaign with:
 
 ```bash
 python scripts/run_m5_secure_multiround.py verify \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
-  --workspace artifacts/m5-secure-multiround \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
   --rounds 30
 ```
 
@@ -119,17 +128,20 @@ After campaign verification:
 
 ```bash
 python scripts/m5_campaign_report.py \
-  --workspace artifacts/m5-secure-multiround \
-  --trust-workspace artifacts/m4-trust \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
-  --output artifacts/m5-secure-multiround-report
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --output artifacts/m5-secure-multiround-local-test-v1-report
 ```
 
 The report contains global validation curves, client train/validation loss and
 macro-F1 across all local epochs, per-client validation and update-norm
-heatmaps, selected validation/test confusion matrices, a CSV export, and a
-SHA-256 report manifest. The report refuses to run unless the whole secure
-campaign verifies.
+heatmaps, absolute and normalized selected validation/test/benign-only-holdout
+confusion matrices, one selected-checkpoint local-test confusion figure per
+client, a CSV export, and a SHA-256 report manifest. Campaign finalization,
+campaign verification, and the report command also print the three global
+matrices in their JSON output. The report refuses to run unless the whole secure
+campaign verifies, and its manifest covers files in nested per-client folders.
 
 ## Completed runtime gate
 

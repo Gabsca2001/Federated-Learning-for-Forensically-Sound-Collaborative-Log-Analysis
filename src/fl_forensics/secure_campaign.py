@@ -499,6 +499,13 @@ def finalize_secure_campaign(
         "selected_test_macro_f1": inspected["final_evaluation"]["metrics"]["test"][
             SELECTION_METRIC
         ],
+        "confusion_matrices": {
+            split: inspected["final_evaluation"]["metrics"][split]["confusion_matrix"]
+            for split in ("validation", "test", "temporal_holdout")
+        },
+        "client_confusion_matrix_count": len(
+            inspected["final_evaluation"].get("selected_global_client_test", [])
+        ),
         "manifest_sha256": sha256_file(manifest_path),
         "workspace": str(workspace),
     }
@@ -514,6 +521,7 @@ def verify_secure_campaign(
     """Independently verify the round chain, selection, and final evaluation."""
 
     errors: list[str] = []
+    inspected: dict[str, Any] | None = None
     try:
         manifest_path = workspace / "campaign-manifest.json"
         manifest = SecureCampaignManifest.model_validate(load_json(manifest_path))
@@ -594,6 +602,19 @@ def verify_secure_campaign(
         "selected_round": manifest.core.selected_round if manifest is not None else None,
         "accepted_contribution_count": (
             manifest.core.total_accepted_contributions if manifest is not None else 0
+        ),
+        "confusion_matrices": (
+            {
+                split: inspected["final_evaluation"]["metrics"][split]["confusion_matrix"]
+                for split in ("validation", "test", "temporal_holdout")
+            }
+            if inspected is not None and not errors
+            else {}
+        ),
+        "client_confusion_matrix_count": (
+            len(inspected["final_evaluation"].get("selected_global_client_test", []))
+            if inspected is not None and not errors
+            else 0
         ),
         "error_count": len(errors),
         "errors": errors,
