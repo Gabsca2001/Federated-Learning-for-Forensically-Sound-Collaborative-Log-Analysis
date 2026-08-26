@@ -44,8 +44,6 @@ from .trust_models import (
 )
 
 SOURCE_PROFILE = "recovery-tar-offline-campaign-accounting-v1"
-CAMPAIGN_RELATIVE_PATH = "artifacts/m5-secure-multiround-v2"
-TRUST_RELATIVE_PATH = "artifacts/m4-trust"
 EXPECTED_ROUND_COUNT = 30
 ATTESTATION_REFRESH_ROUNDS = 5
 EXPECTED_OUTPUT_FILES = ["campaign-accounting.json", "manifest.json"]
@@ -92,8 +90,6 @@ def _settings(config_path: Path) -> tuple[Path, dict[str, Any], str]:
     if not isinstance(settings, dict):
         raise CampaignAccountingError("missing campaign-accounting configuration")
     expected = {
-        "campaign_relative_path": CAMPAIGN_RELATIVE_PATH,
-        "trust_relative_path": TRUST_RELATIVE_PATH,
         "expected_round_count": EXPECTED_ROUND_COUNT,
         "required_client_count": len(EXPECTED_CLIENTS),
         "attestation_refresh_interval_rounds": ATTESTATION_REFRESH_ROUNDS,
@@ -106,8 +102,17 @@ def _settings(config_path: Path) -> tuple[Path, dict[str, Any], str]:
             )
     if not isinstance(settings.get("recovery_workspace"), str):
         raise CampaignAccountingError("missing recovery workspace")
-    _safe_relative(str(settings["campaign_relative_path"]))
-    _safe_relative(str(settings["trust_relative_path"]))
+    for name in ("campaign_relative_path", "trust_relative_path"):
+        configured_path = settings.get(name)
+        if not isinstance(configured_path, str):
+            raise CampaignAccountingError(
+                f"missing campaign-accounting source path: {name}"
+            )
+        source_path = PurePosixPath(_safe_relative(configured_path))
+        if len(source_path.parts) < 2 or source_path.parts[0] != "artifacts":
+            raise CampaignAccountingError(
+                f"campaign-accounting source path must be below artifacts/: {name}"
+            )
     return config_path.resolve().parent.parent, settings, config_sha256
 
 
@@ -203,8 +208,8 @@ def _source_manifests(
 def _derive_core(
     *,
     recovery_workspace: Path,
-    campaign_relative_path: str = CAMPAIGN_RELATIVE_PATH,
-    trust_relative_path: str = TRUST_RELATIVE_PATH,
+    campaign_relative_path: str | None = None,
+    trust_relative_path: str | None = None,
     expected_round_count: int = EXPECTED_ROUND_COUNT,
     expected_clients: list[str] | None = None,
     attestation_refresh_rounds: int = ATTESTATION_REFRESH_ROUNDS,
@@ -219,8 +224,6 @@ def _derive_core(
         attestation_refresh_rounds == ATTESTATION_REFRESH_ROUNDS,
         "M8.5 requires the five-round attestation refresh interval",
     )
-    campaign_root = _safe_relative(campaign_relative_path)
-    trust_root = _safe_relative(trust_relative_path)
     package, recovery = _source_manifests(recovery_workspace)
     archive_path = recovery_workspace / recovery.core.archive_name
 
@@ -231,6 +234,39 @@ def _derive_core(
         _ensure(
             preservation.preservation_id == package.core.source_preservation_id,
             "recovery package preservation identity mismatch",
+        )
+        preserved_campaign_root = _preserved_workspace_root(
+            paths=[
+                item.relative_path
+                for item in preservation.core.campaign_assurance
+            ],
+            required_suffix=("campaign-manifest.json",),
+            label="campaign",
+        )
+        preserved_trust_root = _preserved_workspace_root(
+            paths=[
+                item.relative_path for item in preservation.core.trust_assurance
+            ],
+            required_suffix=("registry", "index.json"),
+            label="trust",
+        )
+        campaign_root = (
+            preserved_campaign_root
+            if campaign_relative_path is None
+            else _safe_relative(campaign_relative_path)
+        )
+        trust_root = (
+            preserved_trust_root
+            if trust_relative_path is None
+            else _safe_relative(trust_relative_path)
+        )
+        _ensure(
+            campaign_root == preserved_campaign_root,
+            "configured campaign workspace differs from preservation inventory",
+        )
+        _ensure(
+            trust_root == preserved_trust_root,
+            "configured trust workspace differs from preservation inventory",
         )
         campaign_manifest_path = f"{campaign_root}/campaign-manifest.json"
         campaign_manifest_sha256 = reader.digest(campaign_manifest_path)
@@ -878,3 +914,30 @@ def verify_campaign_accounting(
         "errors": errors,
         "workspace": str(workspace),
     }
+
+
+def _preserved_workspace_root(
+    *,
+    paths: list[str],
+    required_suffix: tuple[str, ...],
+    label: str,
+) -> str:
+    roots: set[str] = set()
+    for value in paths:
+        path = PurePosixPath(_safe_relative(value))
+        if (
+            len(path.parts) > len(required_suffix)
+            and path.parts[-len(required_suffix) :] == required_suffix
+        ):
+            root_parts = path.parts[: -len(required_suffix)]
+            roots.add(PurePosixPath(*root_parts).as_posix())
+    if len(roots) != 1:
+        raise CampaignAccountingError(
+            f"preservation inventory must identify exactly one {label} workspace"
+        )
+    root = next(iter(roots))
+    if PurePosixPath(root).parts[0] != "artifacts":
+        raise CampaignAccountingError(
+            f"preserved {label} workspace must be below artifacts/"
+        )
+    return root

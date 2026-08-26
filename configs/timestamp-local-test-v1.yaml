@@ -1,0 +1,8 @@
+schema_version: "1.0"
+timestamp:
+  merkle_workspace: artifacts/m8-merkle-tree-local-test-v1
+  merkle_config: configs/merkle-local-test-v1.yaml
+  tsa_url: http://timestamp.digicert.com
+  trust_store: /etc/ssl/certs/ca-certificates.crt
+  request_timeout_seconds: 30
+  hash_algorithm: sha256

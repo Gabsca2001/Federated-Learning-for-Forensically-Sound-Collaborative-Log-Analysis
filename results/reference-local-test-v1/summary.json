@@ -1,0 +1,70 @@
+{
+  "artifact_type": "public_reference_results_summary",
+  "disclosure_profile": {
+    "contains": [
+      "metrics",
+      "confusion_matrix_figures",
+      "training_figures",
+      "sanitized_investigation_report",
+      "digests_and_identifiers",
+      "final_verification_receipt"
+    ],
+    "excludes": [
+      "source_data",
+      "feature_rows",
+      "model_parameters",
+      "client_updates",
+      "private_keys",
+      "tpm_state",
+      "certificates",
+      "recovery_payload"
+    ]
+  },
+  "experiment": "reference-local-test-v1",
+  "m5": {
+    "accepted_contribution_count": 450,
+    "campaign_id": "campaign-aa22aafea800a7d59fe308fc",
+    "client_confusion_matrix_count": 15,
+    "client_local_test_macro_f1": {
+      "mean": 0.9284429268218769,
+      "minimum": 0.8763479758828595,
+      "population_standard_deviation": 0.03533358666804803
+    },
+    "error_count": 0,
+    "round_count": 30,
+    "selected_round": 11,
+    "test_accuracy": 0.9609074336641685,
+    "test_macro_f1": 0.9225672285470168,
+    "validation_macro_f1": 0.9483333731727267
+  },
+  "m7": {
+    "attack_mapping_bundle_id": "m7-attack-mapping-bundle-cc654792d53691eac8c020b7",
+    "candidate_tactic_case_count": 2,
+    "case_count": 6,
+    "explanation_bundle_id": "m7-explanation-bundle-80cb600d5126c0c545a5f299",
+    "investigation_report_bundle_id": "m7-investigation-report-bundle-fe23c60b9bbc04b932b5211a",
+    "prediction_bundle_id": "m7-prediction-bundle-ca13994a8fcd40f452e8d3c6",
+    "report_manifest_sha256": "d6859456ae5b35ec00882083c532acd980e6df19367287d830e6f91dbf7e44a5",
+    "source_event_count": 69,
+    "source_record_count": 81,
+    "status": "verified",
+    "unresolved_attack_case_count": 4
+  },
+  "m8": {
+    "accounting_id": "m8-campaign-accounting-754be120eb3082973ded38af",
+    "final_verification_id": "m8-final-verification-18a7463101b543b5f97df3f1",
+    "merkle_leaf_count": 2388,
+    "merkle_root_sha256": "fe42748433c74195479579d7fe1f133d703f87ca601610224f200f219c585453",
+    "offline_inputs_only": true,
+    "preservation_artifact_count": 2381,
+    "preservation_id": "m8-preservation-ef926a6449b257ad9602bb5a",
+    "recovery_archive_sha256": "d8c3e72733616c85d9c899f15f6f3e2947f24a6be2fb604e82ef8baf567ae9e2",
+    "recovery_id": "m8-recovery-export-76702dfab9ac61350f18b31c",
+    "status": "verified",
+    "timestamp_gen_time": "Aug 26 12:28:09 2026 GMT",
+    "timestamp_id": "m8-timestamp-anchor-88a57203d1340ff4892778e1",
+    "verification_receipt_sha256": "bd4b5561b88a59c91af5460897153311346b0426c5fd1bc5f94c0c3d53d0ed39",
+    "verified_stage_count": 5
+  },
+  "schema_version": "1.0"
+}

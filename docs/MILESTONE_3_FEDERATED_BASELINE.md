@@ -14,7 +14,7 @@ backend from scikit-learn to PyTorch.
 The canonical reference workspaces use the M2 Parquet profile:
 
 - `artifacts/m2-data24-parquet`;
-- `artifacts/m3-data24-parquet-iid`;
+- `artifacts/m3-data24-parquet-iid-local-test-v1`;
 - `artifacts/m3-data24-parquet-non-iid`.
 
 ## Partition profiles
@@ -61,11 +61,11 @@ or omitted window.
 ```bash
 fl-forensics m3-partition \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --output artifacts/m3-data24-parquet-iid \
+  --output artifacts/m3-data24-parquet-iid-local-test-v1 \
   --mode iid
 
 fl-forensics m3-verify-partitions \
-  --workspace artifacts/m3-data24-parquet-iid \
+  --workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --dataset-workspace artifacts/m2-data24-parquet
 
 fl-forensics m3-partition \
@@ -110,13 +110,13 @@ equation.
 
 ```bash
 fl-forensics m3-train \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --dataset-workspace artifacts/m2-data24-parquet \
   --output artifacts/m3-data24-parquet-iid-fedavg
 
 fl-forensics m3-verify \
   --workspace artifacts/m3-data24-parquet-iid-fedavg \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --dataset-workspace artifacts/m2-data24-parquet
 ```
 

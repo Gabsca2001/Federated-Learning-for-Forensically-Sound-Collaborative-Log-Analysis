@@ -16,18 +16,18 @@ M8 preserves the generated evidentiary state.
 
 ## Canonical inputs
 
-`configs/preservation.yaml` freezes the upstream chain:
+`configs/preservation-local-test-v1.yaml` freezes the upstream chain:
 
 | Stage | Canonical input |
 |---|---|
 | M2 | `artifacts/m2-data24-parquet` |
-| M3 | `artifacts/m3-data24-parquet-iid` plus the selected partition/server manifests |
-| M4 | `artifacts/m4-trust` and declared public trust-policy context |
-| M5 | `artifacts/m5-secure-multiround-v2` |
-| M7 prediction | `artifacts/m7-prediction-bundle-test-first6-v1` |
-| M7 explanation | `artifacts/m7-explanation-bundle-test-first6-v1` |
-| M7 ATT&CK mapping | `artifacts/m7-attack-mapping-test-first6-v1` |
-| M7 report | `artifacts/m7-investigation-report-test-first6-v1` |
+| M3 | `artifacts/m3-data24-parquet-iid-local-test-v1` plus the selected partition/server manifests |
+| M4 | `artifacts/m4-trust-local-test-v1` and declared public trust-policy context |
+| M5 | `artifacts/m5-secure-multiround-local-test-v1` |
+| M7 prediction | `artifacts/m7-prediction-bundle-test-first6-local-test-v1` |
+| M7 explanation | `artifacts/m7-explanation-bundle-test-first6-local-test-v1` |
+| M7 ATT&CK mapping | `artifacts/m7-attack-mapping-test-first6-local-test-v1` |
+| M7 report | `artifacts/m7-investigation-report-test-first6-local-test-v1` |
 
 The contract requires 30 M5 rounds and binds M7 to derivation round 11. A different campaign,
 selected round, report, or configuration requires a new preservation workspace.
@@ -43,12 +43,12 @@ archive (`include_external_evidence_files: false`).
 
 ```bash
 fl-forensics m8-preserve \
-  --config configs/preservation.yaml \
-  --output artifacts/m8-preservation-manifest-v1
+  --config configs/preservation-local-test-v1.yaml \
+  --output artifacts/m8-preservation-manifest-local-test-v1
 
 fl-forensics m8-verify-preservation \
-  --config configs/preservation.yaml \
-  --workspace artifacts/m8-preservation-manifest-v1
+  --config configs/preservation-local-test-v1.yaml \
+  --workspace artifacts/m8-preservation-manifest-local-test-v1
 ```
 
 The generator walks only declared roots and required files, applies the exclusions, records
@@ -66,11 +66,11 @@ Reference result:
 
 | Field | Value |
 |---|---|
-| Preservation ID | `m8-preservation-07101d8294c8798f9a0b8f15` |
-| Inventoried artifacts | 2,363 |
-| Inventoried payload bytes | 2,631,940,087 |
+| Preservation ID | `m8-preservation-ef926a6449b257ad9602bb5a` |
+| Inventoried artifacts | 2,381 |
+| Inventoried payload bytes | 2,642,172,551 |
 | External bindings | 7 |
-| Inventory SHA-256 | `b32c5a97e52b69105b7b9777eb7ce7d302f18c8c568558a2f86fb8a63b0afdde` |
+| Inventory SHA-256 | `65837ed9e7e962d8cdc38359539edb81a3e35ca6b2887013aa3943abccf07e78` |
 
 The verifier reconstructs the inventory from the live declared inputs and rejects a missing,
 extra, moved, resized, or modified required object.
@@ -79,24 +79,24 @@ extra, moved, resized, or modified required object.
 
 ```bash
 fl-forensics m8-build-merkle \
-  --config configs/merkle.yaml \
-  --output artifacts/m8-merkle-tree-v1
+  --config configs/merkle-local-test-v1.yaml \
+  --output artifacts/m8-merkle-tree-local-test-v1
 
 fl-forensics m8-verify-merkle \
-  --config configs/merkle.yaml \
-  --workspace artifacts/m8-merkle-tree-v1
+  --config configs/merkle-local-test-v1.yaml \
+  --workspace artifacts/m8-merkle-tree-local-test-v1
 ```
 
-The leaves cover 2,363 artifact entries plus seven external bindings. Sorting, leaf encoding,
+The leaves cover 2,381 artifact entries plus seven external bindings. Sorting, leaf encoding,
 node encoding, and the duplicate-last rule for an odd level are deterministic. The complete
 tree is stored so the verifier can recompute every level and the root.
 
 | Field | Value |
 |---|---|
-| Merkle tree ID | `m8-merkle-tree-bd598d3ac8ed86eacff47611` |
-| Leaves | 2,370 |
+| Merkle tree ID | `m8-merkle-tree-97e2d8a71d5b1ef11fb6c91c` |
+| Leaves | 2,388 |
 | Levels | 13 |
-| Root SHA-256 | `7009578ca603562350a1ed469ed434c932b114154afd5da75fb5e1b89b0a449e` |
+| Root SHA-256 | `fe42748433c74195479579d7fe1f133d703f87ca601610224f200f219c585453` |
 
 A matching root proves consistency with the committed leaf set. It does not independently
 establish that each source artifact was semantically correct.
@@ -105,12 +105,12 @@ establish that each source artifact was semantically correct.
 
 ```bash
 fl-forensics m8-anchor-time \
-  --config configs/timestamp.yaml \
-  --output artifacts/m8-timestamp-anchor-v1
+  --config configs/timestamp-local-test-v1.yaml \
+  --output artifacts/m8-timestamp-anchor-local-test-v1
 
 fl-forensics m8-verify-timestamp \
-  --config configs/timestamp.yaml \
-  --workspace artifacts/m8-timestamp-anchor-v1
+  --config configs/timestamp-local-test-v1.yaml \
+  --workspace artifacts/m8-timestamp-anchor-local-test-v1
 ```
 
 `m8-anchor-time` is the only M8 step that needs network access. It submits the SHA-256 Merkle
@@ -120,10 +120,10 @@ certificate material, and the trust store used for offline verification.
 
 | Field | Value |
 |---|---|
-| Timestamp ID | `m8-timestamp-anchor-7fe093ea54ecce8bf8e791db` |
-| Generation time | `Aug 25 10:54:41 2026 GMT` |
+| Timestamp ID | `m8-timestamp-anchor-88a57203d1340ff4892778e1` |
+| Generation time | `Aug 26 12:28:09 2026 GMT` |
 | Policy OID | `2.16.840.1.114412.7.1` |
-| Response SHA-256 | `f019fe4f088ff483f4d19f4af8ca2ada68d27b46e6da8370eee657c7f7613aa8` |
+| Response SHA-256 | `495763ccd6b1acd97cc08ac2daf6bd383e6d709c0b08343141a5fa349deeec5f` |
 
 Offline verification checks the signed response, certificate chain against the retained
 trust context, message imprint, policy, and subject binding. Long-term archival policy must
@@ -136,17 +136,17 @@ live M2–M8.3 source directories is provided by the M8.4 recovery verifier.
 
 ```bash
 fl-forensics m8-export-recovery \
-  --config configs/recovery.yaml \
-  --output artifacts/m8-recovery-export-v1
+  --config configs/recovery-local-test-v1.yaml \
+  --output artifacts/m8-recovery-export-local-test-v1
 
 fl-forensics m8-verify-recovery \
-  --workspace artifacts/m8-recovery-export-v1
+  --workspace artifacts/m8-recovery-export-local-test-v1
 ```
 
 This is the stage that actually copies the preserved payload into a self-contained archive.
 “Self-contained” here means sufficient for the implemented offline verification profile; the
 seven externally bound files still require separate retention. The deterministic USTAR
-package contains the 2,363 inventoried artifact files and 11 assurance
+package contains the 2,381 inventoried artifact files and 11 assurance
 entries needed to authenticate the inventory, Merkle tree, and timestamp. Paths, ordering,
 metadata, and archive serialization are normalized so an equivalent export has a stable
 identity.
@@ -160,12 +160,12 @@ The outer workspace contains:
 
 | Field | Value |
 |---|---|
-| Recovery ID | `m8-recovery-export-eec242458090f9a22b62d86a` |
-| Package ID | `m8-recovery-package-813e4ac3b68fcedda9aa9ec2` |
-| Payload entries | 2,363 |
+| Recovery ID | `m8-recovery-export-76702dfab9ac61350f18b31c` |
+| Package ID | `m8-recovery-package-de3039b335b122bd831e0d07` |
+| Payload entries | 2,381 |
 | Assurance entries | 11 |
-| Archive bytes | 2,637,803,520 |
-| Archive SHA-256 | `8f136f00ae8cdaa0b480e96bdfc81c193f46e070fee3ff3d43b7798322a0fc68` |
+| Archive bytes | 2,648,248,320 |
+| Archive SHA-256 | `d8c3e72733616c85d9c899f15f6f3e2947f24a6be2fb604e82ef8baf567ae9e2` |
 
 `m8-verify-recovery` deliberately verifies from the archive rather than trusting the live
 M2–M7 directories. It re-hashes the package, checks every member against the inventory,
@@ -175,23 +175,26 @@ recomputes the Merkle root, and validates the retained timestamp evidence.
 
 ```bash
 fl-forensics m8-account-campaign \
-  --config configs/campaign-accounting.yaml \
-  --output artifacts/m8-campaign-invariant-accounting-v1
+  --config configs/campaign-accounting-local-test-v1.yaml \
+  --output artifacts/m8-campaign-invariant-accounting-local-test-v1
 
 fl-forensics m8-verify-campaign-accounting \
-  --workspace artifacts/m8-campaign-invariant-accounting-v1 \
-  --recovery-workspace artifacts/m8-recovery-export-v1
+  --workspace artifacts/m8-campaign-invariant-accounting-local-test-v1 \
+  --recovery-workspace artifacts/m8-recovery-export-local-test-v1
 ```
 
 Accounting reads M5 and trust evidence through the recovery package. It does not consult the
 live campaign workspace. The checks cover campaign/round continuity, 15-client participation,
 attestation refresh intervals, identities, contexts, accepted decisions, contribution counts,
-example weighting, checkpoint linkage, selected round, and final M7 lineage.
+example weighting, checkpoint linkage, selected round, and final M7 lineage. Creation validates
+the versioned campaign and trust roots against the authenticated preservation inventory; the
+standalone verifier reconstructs those roots from the same inventory instead of relying on
+hard-coded workspace names.
 
 | Field | Value |
 |---|---|
-| Accounting ID | `m8-campaign-accounting-8145d39622bf25d39a135c38` |
-| Campaign ID | `campaign-0824bcc4005bacc3420d2c1b` |
+| Accounting ID | `m8-campaign-accounting-754be120eb3082973ded38af` |
+| Campaign ID | `campaign-aa22aafea800a7d59fe308fc` |
 | Rounds | 30 |
 | Clients | 15 |
 | Contributions | 450 |
@@ -203,8 +206,8 @@ example weighting, checkpoint linkage, selected round, and final M7 lineage.
 
 ```bash
 fl-forensics m8-verify-final-preservation \
-  --recovery-workspace artifacts/m8-recovery-export-v1 \
-  --accounting-workspace artifacts/m8-campaign-invariant-accounting-v1
+  --recovery-workspace artifacts/m8-recovery-export-local-test-v1 \
+  --accounting-workspace artifacts/m8-campaign-invariant-accounting-local-test-v1
 ```
 
 This command is read-only and creates no new workspace. It composes the offline recovery and
@@ -218,9 +221,9 @@ Reference result:
 | Verified stages | 5 |
 | Errors | 0 |
 | Offline inputs only | `true` |
-| Final verification ID | `m8-final-verification-2b1eb8e1ecba88dcaf234edc` |
-| Canonical core SHA-256 | `2b1eb8e1ecba88dcaf234edc8c323fb139aa33bb299ded66ecfeee68471835de` |
-| Receipt SHA-256 | `1a423720c396277ab77356670b8ba9b798a2e6be882b54b6a26ed0752ea40848` |
+| Final verification ID | `m8-final-verification-18a7463101b543b5f97df3f1` |
+| Canonical core SHA-256 | `18a7463101b543b5f97df3f18f556840f1eb8dd1de9f26593c4c70555e61f9fe` |
+| Receipt SHA-256 | `bd4b5561b88a59c91af5460897153311346b0426c5fd1bc5f94c0c3d53d0ed39` |
 
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.

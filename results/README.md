@@ -1,0 +1,21 @@
+# Published result snapshots
+
+This directory contains small, sanitized result snapshots intended for direct inspection on
+GitHub. It is distinct from `artifacts/`, which remains ignored because it contains generated
+evidence, models, private trust state, and large recovery packages.
+
+## Available snapshot
+
+- [Reference local-test v1](reference-local-test-v1/README.md): selected M5 learning metrics
+  and figures, the six-case M7 investigation report, and the final M8 verification receipt.
+
+A snapshot is evidence of a particular completed run. It is not an input to training and is
+not a substitute for the complete M8 recovery package. The source report manifests retain
+the SHA-256 bindings needed to check that the published report files were copied unchanged.
+
+The repository intentionally does not publish:
+
+- source datasets or reconstructed source records;
+- model checkpoints or client updates;
+- private keys, TPM state, or client certificates;
+- the 2.6 GB offline recovery archive.

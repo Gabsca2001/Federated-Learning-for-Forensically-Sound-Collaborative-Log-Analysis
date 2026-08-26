@@ -126,7 +126,7 @@ and unexpected bundle entries fail closed.
 The exercised six-case bundle contains two `candidate-tactic` mappings and
 four `unresolved-multi-tactic` mappings, with zero unmapped predictions. Its
 verified bundle identifier is
-`m7-attack-mapping-bundle-6e6be31f1e3592d5f47286af`.
+`m7-attack-mapping-bundle-cc654792d53691eac8c020b7`.
 
 ## Investigation Report Bundle v1
 
@@ -175,22 +175,22 @@ the ATT&CK result as `unresolved-multi-tactic`, demonstrating that prototype
 geometry cannot override the mapping policy.
 
 The verified report bundle identifier is
-`m7-investigation-report-bundle-83055e579b164b0b905bf119`. Its canonical core
+`m7-investigation-report-bundle-fe23c60b9bbc04b932b5211a`. Its canonical core
 SHA-256 is
-`83055e579b164b0b905bf11935b97c26f19d8e8c47dfe872c034cacb000ea223`.
+`fe23c60b9bbc04b932b5211adfe995758b723bac560df268f12289802ea045ca`.
 The generated artifact digests are:
 
 - `investigation-report.json`:
-  `7e8d4f20229bfb268197383829a91265a19fd8b94e3e4b6a72643270b33bb2a9`;
+  `debbe4ab48699b5fac7a8c151e074972f9936417dff36255af849ae5aa9b2025`;
 - `report.md`:
-  `aa9be255a6f7ac1149d849fd7a2947e0d63d6b09152a55b4327e0932d90f87f2`;
+  `a836f83cad31724a6ce4d5b70f13b0e83156ae61e0905f7a07e4e3e2665cf6cd`;
 - `manifest.json`:
-  `09b8892959471285dfe198ef58e421ea989952fe0fb9f533aa55ef9cdb118bfc`.
+  `d6859456ae5b35ec00882083c532acd980e6df19367287d830e6f91dbf7e44a5`.
 
 The verifier returned `verified`, zero errors, `reportable=true`,
 `source_attack_verified=true`, and
-`verification_recomputed_report=true`. The complete repository test suite
-passes with 214 tests after completion of M8.
+`verification_recomputed_report=true`. The complete local-test M7 chain is
+included in the verified M8 recovery package.
 
 
 ## Evidentiary interpretation

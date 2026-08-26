@@ -153,25 +153,27 @@ campaign verifies, and its manifest covers files in nested per-client folders.
 ## Completed runtime gate
 
 The 15-client Docker campaign completed on the verified IID Parquet snapshot
-with the following preserved result:
+with the current local-test reference result. Every client passed its `swtpm`
+appraisal before contributing. Training and validation completed before the
+validation-selected checkpoint opened the pooled test, benign-only temporal
+holdout, or isolated per-client test snapshots. This workspace and its M7
+derivatives are preserved by the current M8 recovery package. Historical
+reference workspaces remain immutable and separately verifiable.
 
-The values below belong to the preserved pre-local-test reference chain. They
-remain independently verifiable, but they do not contain the new per-client
-test view. Producing those additional metrics requires rebuilding the M3
-partition and running a new M3/M5 campaign workspace; preserved artifacts are
-never rewritten in place.
-
-- campaign ID: `campaign-0824bcc4005bacc3420d2c1b`;
+- campaign ID: `campaign-aa22aafea800a7d59fe308fc`;
 - 30 verified rounds and 450 accepted TPM ESK-signed contributions;
 - zero quarantined contributions and zero campaign-verification errors;
 - validation-selected checkpoint: round 11;
 - selected validation macro-F1: `0.9483333731727267`;
 - selected test macro-F1: `0.9225672285470168`;
 - benign-only temporal-holdout accuracy: `0.9958333333333333`;
+- client-local test macro-F1, unweighted mean: `0.9284429268218769`;
+- client-local test macro-F1, population standard deviation: `0.03533358666804803`;
+- worst client-local test macro-F1: `0.8763479758828595`;
 - campaign manifest SHA-256:
-  `a62417acaaafcf217176c63032291c604d0e0177667145c4fe8ad53c86d80f88`;
+  `6a372239c3877dd2abd18b5671b856f00b6c20b8376beeee258b1d8e39d4fb8f`;
 - report manifest SHA-256:
-  `34e0bcfbf4305de88562e0d30c801471b7d63cc5b450c4486aeeedf2da4605dd`.
+  `082baafe3008baa73da2e83e15df803fc3893feeae750fa9472720a249fcb8f4`.
 
 The selected secure checkpoint reproduces the validation and test metrics of
 the validation-selected clean M3 IID reference. This demonstrates that the M5
