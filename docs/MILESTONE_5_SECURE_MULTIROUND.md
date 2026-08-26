@@ -107,6 +107,13 @@ skipped. Byte-identical client submissions are idempotent. A context that has
 expired during an incomplete round must not be silently rewritten; preserve
 it for diagnosis and restart that round in a new campaign workspace.
 
+The round coordinator is not mounted with the server test, temporal holdout,
+or client-local test snapshots. After all round checkpoints have been written,
+the runner starts a separate network-disabled `finalizer` container. Only that
+container receives read-only mounts for the digest-bound evaluation snapshots,
+selects the checkpoint from stored validation metrics, and then evaluates the
+already-selected model on the isolated test material.
+
 Verify an already finalized campaign with:
 
 ```bash

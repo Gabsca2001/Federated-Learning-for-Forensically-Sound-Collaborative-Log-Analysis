@@ -101,6 +101,51 @@ class TrustDeploymentTests(unittest.TestCase):
         verify_command = run.call_args_list[2].args[0]
         self.assertIn("verifier", verify_command)
 
+    def test_multiround_verification_uses_post_selection_finalizer(self) -> None:
+        runner = load_script("run_m5_secure_multiround")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            compose = root / "compose.m5.yaml"
+            partition = root / "partition"
+            campaign = root / "campaign"
+            trust = root / "trust"
+            nodes = root / "nodes"
+            (partition / "server").mkdir(parents=True)
+            (trust / "registry").mkdir(parents=True)
+            (partition / "manifest.json").write_text("{}", encoding="utf-8")
+            (partition / "server" / "evaluation.json").write_text(
+                "{}", encoding="utf-8"
+            )
+            (trust / "registry" / "index.json").write_text("{}", encoding="utf-8")
+            for index in range(1, 16):
+                (nodes / f"client{index:02d}").mkdir(parents=True)
+            argv = [
+                "run_m5_secure_multiround.py",
+                "verify",
+                "--compose",
+                str(compose),
+                "--partition-workspace",
+                str(partition),
+                "--workspace",
+                str(campaign),
+                "--trust-workspace",
+                str(trust),
+                "--node-root",
+                str(nodes),
+            ]
+            with (
+                patch.object(sys, "argv", argv),
+                patch.object(runner, "run") as run,
+                patch.object(runner, "require_running_tpms"),
+            ):
+                self.assertEqual(runner.main(), 0)
+
+        verification_command = run.call_args_list[-1].args[0]
+        self.assertIn("finalize", verification_command)
+        self.assertIn("finalizer", verification_command)
+        self.assertNotIn("coordinator", verification_command)
+        self.assertIn("/partition/server/evaluation.json", verification_command)
+
     def test_foreign_tpm_socket_mount_is_rejected(self) -> None:
         compose = yaml.safe_load((ROOT / "compose.m4.yaml").read_text(encoding="utf-8"))
         compose["services"]["client01"]["volumes"].append("tpm02_socket:/foreign")
