@@ -34,6 +34,10 @@ from .investigation_report import (
     verify_investigation_report_bundle,
 )
 from .merkle import create_merkle_tree, verify_merkle_tree
+from .multiseed import (
+    create_multiseed_summary,
+    verify_multiseed_summary,
+)
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
 from .preservation import (
     create_preservation_manifest,
@@ -361,6 +365,30 @@ def build_parser() -> argparse.ArgumentParser:
         "--central-workspace",
         type=Path,
         help="optional verified M2 centralized baseline for the comparison chart",
+    )
+
+    m3_multiseed = subparsers.add_parser(
+        "m3-summarize-multiseed",
+        help="verify and summarize paired IID/non-IID FedAvg seed repetitions",
+    )
+    m3_multiseed.add_argument("--runs-workspace", type=Path, required=True)
+    m3_multiseed.add_argument("--dataset-workspace", type=Path, required=True)
+    m3_multiseed.add_argument("--output", type=Path, required=True)
+    m3_multiseed.add_argument(
+        "--config", type=Path, default=Path("configs/m3-multiseed.yaml")
+    )
+
+    m3_verify_multiseed = subparsers.add_parser(
+        "m3-verify-multiseed",
+        help="recompute the M3 multi-seed statistics from verified source runs",
+    )
+    m3_verify_multiseed.add_argument("--runs-workspace", type=Path, required=True)
+    m3_verify_multiseed.add_argument(
+        "--dataset-workspace", type=Path, required=True
+    )
+    m3_verify_multiseed.add_argument("--workspace", type=Path, required=True)
+    m3_verify_multiseed.add_argument(
+        "--config", type=Path, default=Path("configs/m3-multiseed.yaml")
     )
 
     m4_deployment = subparsers.add_parser(
@@ -1406,6 +1434,24 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             partition_workspace=arguments.partition_workspace,
             dataset_workspace=arguments.dataset_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m3-summarize-multiseed":
+        result = create_multiseed_summary(
+            runs_workspace=arguments.runs_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m3-verify-multiseed":
+        result = verify_multiseed_summary(
+            runs_workspace=arguments.runs_workspace,
+            dataset_workspace=arguments.dataset_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

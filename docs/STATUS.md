@@ -3,9 +3,10 @@
 ## Summary
 
 The deterministic M1–M8 implementation and the current local-test reference chain are
-complete and verified end to end. The principal remaining gaps are multi-seed statistical
-replication, external-dataset generalization, overhead benchmarking, physical-TPM execution,
-and production-grade evidence storage, key management, and multi-host operation.
+complete and verified end to end. Multi-seed orchestration and verified statistical
+aggregation are implemented; the configured runs still need to complete. Other principal
+gaps are external-dataset generalization, overhead benchmarking, physical-TPM execution, and
+production-grade evidence storage, key management, and multi-host operation.
 
 ## Current coverage
 
@@ -23,6 +24,7 @@ and production-grade evidence storage, key management, and multi-host operation.
 | 15-client IID/non-IID partitioning | Implemented and verified (M3) | Exact train/validation/local-test coverage; client and server test artifacts are isolated from training access |
 | Flower ClientApp/ServerApp | Implemented (M3) | Current Message API; 15-client full-participation FedAvg profile |
 | Auditable FedAvg runner | Implemented and verified (M3) | All training precedes test access; aggregation, local-only inference, and post-selection per-client tests are independently reconstructed |
+| Paired multi-seed FedAvg evaluation | Implemented; execution pending (M3) | Five frozen seeds, IID/non-IID pairing, resumable verified runs, sample dispersion, and 95% Student-t intervals |
 | PROTEAN adaptation | Implemented and verified (M3 extension) | Four validation-only lambda candidates; two endpoints locked before test access |
 | Enrollment, AK/ESK separation, challenge, revocation | Implemented (M4) | Signed one-to-one bindings and append-only revocation semantics |
 | Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; 15/15 `swtpm` gate passed |
@@ -66,13 +68,16 @@ The final assurance state is
 - The M8 recovery package preserves the selected reference chain; it is not a substitute for
   an organizational retention, access-control, backup, or legal-admissibility policy.
 - The temporal holdout is benign-only and cannot support a multiclass generalization claim.
-- The reported scores come from deterministic reference runs, not a multi-seed confidence
-  interval study.
+- The currently published scores come from deterministic reference runs. Multi-seed claims
+  remain pending until all configured M3 source runs and the recomputed summary verify.
+- Earlier M2 seed diagnostics used a separate partial-fit monitoring protocol. They are useful
+  sensitivity evidence but do not substitute for repetitions of the canonical M3 protocol.
 - Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
 
 ## Outstanding validation and engineering work
 
-1. Replicate selected M3/M6 results across seeds and report dispersion and uncertainty.
+1. Complete the five-seed paired M3 execution and then decide whether the selected M6 attack
+   scenarios require repeated frozen-update campaigns.
 2. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
 3. Benchmark attestation, signing, verification, round, report, and preservation overhead.
 4. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.

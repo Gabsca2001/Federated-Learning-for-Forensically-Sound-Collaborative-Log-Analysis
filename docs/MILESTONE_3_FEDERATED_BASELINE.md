@@ -168,6 +168,53 @@ Neither result is used for checkpoint or hyperparameter selection.
 These are deterministic reference runs, not confidence intervals across random seeds. The
 benign-only temporal holdout is kept separate and is not reported as a multiclass score.
 
+## Repeated-seed evaluation
+
+The versioned contract in `configs/m3-multiseed.yaml` defines five paired repetitions with
+seeds `341593–341597`. The M2 dataset workspace and its train/validation/test/temporal split
+remain fixed. For each seed, both the partitioning seed and training seed change; IID and
+non-IID outcomes are therefore paired by seed.
+
+```bash
+python scripts/run_m3_multiseed.py plan \
+  --config configs/m3-multiseed.yaml \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-v1
+
+python scripts/run_m3_multiseed.py run \
+  --config configs/m3-multiseed.yaml \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-v1
+```
+
+The execution layout is `seed-<seed>/<mode>/{partition,run,report}`. The runner:
+
+- derives and preserves one federation YAML file per seed;
+- invokes the normal M3 partition, training, and independent verification commands;
+- records wall-clock receipts for partitioning, training, and verification;
+- verifies and skips completed workspaces when restarted;
+- stops on partial workspaces instead of deleting or silently reusing them.
+
+After all ten runs verify, build and independently recompute the statistics:
+
+```bash
+fl-forensics m3-summarize-multiseed \
+  --config configs/m3-multiseed.yaml \
+  --runs-workspace artifacts/m3-multiseed-v1 \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --output artifacts/m3-multiseed-summary-v1
+
+fl-forensics m3-verify-multiseed \
+  --config configs/m3-multiseed.yaml \
+  --runs-workspace artifacts/m3-multiseed-v1 \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-summary-v1
+```
+
+The summary contains each run, mean, sample standard deviation, standard error, median,
+minimum, maximum, and a 95% Student-t interval. It also reports the paired per-seed
+non-IID-minus-IID test macro-F1 delta. No test metric participates in checkpoint selection.
+
 ## Evaluation report
 
 `m3-report` derives deterministic figures from preserved `metrics.json` and

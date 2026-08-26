@@ -225,6 +225,38 @@ inputs. The separate `m3-protean-*` workflow evaluates validation-only
 prototype-alignment candidates, locks both endpoints before test access, and publishes a
 final auditable comparison.
 
+The repeated-seed workflow keeps the verified M2 split fixed and pairs IID/non-IID runs for
+seeds `341593` through `341597`. It derives one immutable federation configuration per seed,
+verifies every partition and run, records stage wall time, and computes sample standard
+deviation plus a 95% Student-t interval:
+
+```bash
+python scripts/run_m3_multiseed.py plan \
+  --config configs/m3-multiseed.yaml \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-v1
+
+python scripts/run_m3_multiseed.py run \
+  --config configs/m3-multiseed.yaml \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-v1
+
+fl-forensics m3-summarize-multiseed \
+  --config configs/m3-multiseed.yaml \
+  --runs-workspace artifacts/m3-multiseed-v1 \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --output artifacts/m3-multiseed-summary-v1
+
+fl-forensics m3-verify-multiseed \
+  --config configs/m3-multiseed.yaml \
+  --runs-workspace artifacts/m3-multiseed-v1 \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-summary-v1
+```
+
+Completed workspaces are verified and skipped on a resumed run. A non-empty workspace without
+a final manifest is treated as partial and stops the orchestrator for investigation.
+
 See [M3 baseline](docs/MILESTONE_3_FEDERATED_BASELINE.md) and
 [M3 PROTEAN evaluation](docs/MILESTONE_3_PROTEAN.md).
 

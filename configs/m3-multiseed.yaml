@@ -1,0 +1,16 @@
+schema_version: "1.0"
+experiment_id: m3-fedavg-multiseed-v1
+base_federation_config: configs/federation.yaml
+
+seeds: [341593, 341594, 341595, 341596, 341597]
+modes: [iid, non-iid]
+
+execution:
+  device: cuda
+
+statistics:
+  primary_metric: macro_f1_all_model_classes
+  primary_split: test
+  standard_deviation: sample
+  confidence_interval: student-t-95-percent
+  pairing: by-seed
