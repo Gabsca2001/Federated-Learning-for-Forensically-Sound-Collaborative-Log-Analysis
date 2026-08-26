@@ -37,7 +37,7 @@ services:
     <<: *client-common
     depends_on: {tpm01: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client01", "--node-id", "node01", "--tpm-instance", "tpm01", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm01_socket:/run/swtpm, ./artifacts/m4-nodes/client01:/runtime]
+    volumes: [tpm01_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client01:/runtime"]
 
   tpm02:
     <<: *swtpm-common
@@ -46,7 +46,7 @@ services:
     <<: *client-common
     depends_on: {tpm02: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client02", "--node-id", "node02", "--tpm-instance", "tpm02", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm02_socket:/run/swtpm, ./artifacts/m4-nodes/client02:/runtime]
+    volumes: [tpm02_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client02:/runtime"]
 
   tpm03:
     <<: *swtpm-common
@@ -55,7 +55,7 @@ services:
     <<: *client-common
     depends_on: {tpm03: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client03", "--node-id", "node03", "--tpm-instance", "tpm03", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm03_socket:/run/swtpm, ./artifacts/m4-nodes/client03:/runtime]
+    volumes: [tpm03_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client03:/runtime"]
 
   tpm04:
     <<: *swtpm-common
@@ -64,7 +64,7 @@ services:
     <<: *client-common
     depends_on: {tpm04: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client04", "--node-id", "node04", "--tpm-instance", "tpm04", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm04_socket:/run/swtpm, ./artifacts/m4-nodes/client04:/runtime]
+    volumes: [tpm04_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client04:/runtime"]
 
   tpm05:
     <<: *swtpm-common
@@ -73,7 +73,7 @@ services:
     <<: *client-common
     depends_on: {tpm05: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client05", "--node-id", "node05", "--tpm-instance", "tpm05", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm05_socket:/run/swtpm, ./artifacts/m4-nodes/client05:/runtime]
+    volumes: [tpm05_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client05:/runtime"]
 
   tpm06:
     <<: *swtpm-common
@@ -82,7 +82,7 @@ services:
     <<: *client-common
     depends_on: {tpm06: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client06", "--node-id", "node06", "--tpm-instance", "tpm06", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm06_socket:/run/swtpm, ./artifacts/m4-nodes/client06:/runtime]
+    volumes: [tpm06_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client06:/runtime"]
 
   tpm07:
     <<: *swtpm-common
@@ -91,7 +91,7 @@ services:
     <<: *client-common
     depends_on: {tpm07: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client07", "--node-id", "node07", "--tpm-instance", "tpm07", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm07_socket:/run/swtpm, ./artifacts/m4-nodes/client07:/runtime]
+    volumes: [tpm07_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client07:/runtime"]
 
   tpm08:
     <<: *swtpm-common
@@ -100,7 +100,7 @@ services:
     <<: *client-common
     depends_on: {tpm08: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client08", "--node-id", "node08", "--tpm-instance", "tpm08", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm08_socket:/run/swtpm, ./artifacts/m4-nodes/client08:/runtime]
+    volumes: [tpm08_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client08:/runtime"]
 
   tpm09:
     <<: *swtpm-common
@@ -109,7 +109,7 @@ services:
     <<: *client-common
     depends_on: {tpm09: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client09", "--node-id", "node09", "--tpm-instance", "tpm09", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm09_socket:/run/swtpm, ./artifacts/m4-nodes/client09:/runtime]
+    volumes: [tpm09_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client09:/runtime"]
 
   tpm10:
     <<: *swtpm-common
@@ -118,7 +118,7 @@ services:
     <<: *client-common
     depends_on: {tpm10: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client10", "--node-id", "node10", "--tpm-instance", "tpm10", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm10_socket:/run/swtpm, ./artifacts/m4-nodes/client10:/runtime]
+    volumes: [tpm10_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client10:/runtime"]
 
   tpm11:
     <<: *swtpm-common
@@ -127,7 +127,7 @@ services:
     <<: *client-common
     depends_on: {tpm11: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client11", "--node-id", "node11", "--tpm-instance", "tpm11", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm11_socket:/run/swtpm, ./artifacts/m4-nodes/client11:/runtime]
+    volumes: [tpm11_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client11:/runtime"]
 
   tpm12:
     <<: *swtpm-common
@@ -136,7 +136,7 @@ services:
     <<: *client-common
     depends_on: {tpm12: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client12", "--node-id", "node12", "--tpm-instance", "tpm12", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm12_socket:/run/swtpm, ./artifacts/m4-nodes/client12:/runtime]
+    volumes: [tpm12_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client12:/runtime"]
 
   tpm13:
     <<: *swtpm-common
@@ -145,7 +145,7 @@ services:
     <<: *client-common
     depends_on: {tpm13: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client13", "--node-id", "node13", "--tpm-instance", "tpm13", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm13_socket:/run/swtpm, ./artifacts/m4-nodes/client13:/runtime]
+    volumes: [tpm13_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client13:/runtime"]
 
   tpm14:
     <<: *swtpm-common
@@ -154,7 +154,7 @@ services:
     <<: *client-common
     depends_on: {tpm14: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client14", "--node-id", "node14", "--tpm-instance", "tpm14", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm14_socket:/run/swtpm, ./artifacts/m4-nodes/client14:/runtime]
+    volumes: [tpm14_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client14:/runtime"]
 
   tpm15:
     <<: *swtpm-common
@@ -163,7 +163,7 @@ services:
     <<: *client-common
     depends_on: {tpm15: {condition: service_healthy}}
     command: ["m4-tpm-provision", "--workspace", "/runtime", "--project-root", "/app", "--config", "/app/configs/trust.yaml", "--client-id", "client15", "--node-id", "node15", "--tpm-instance", "tpm15", "--tcti", "swtpm:path=/run/swtpm/swtpm.sock", "--trust-level", "swtpm"]
-    volumes: [tpm15_socket:/run/swtpm, ./artifacts/m4-nodes/client15:/runtime]
+    volumes: [tpm15_socket:/run/swtpm, "${M4_NODE_ROOT:-./artifacts/m4-nodes}/client15:/runtime"]
 
   verifier:
     build:
@@ -176,8 +176,8 @@ services:
     security_opt: ["no-new-privileges:true"]
     command: ["m4-verify-attestations", "--workspace", "/trust", "--node-root", "/nodes"]
     volumes:
-      - ./artifacts/m4-trust:/trust
-      - ./artifacts/m4-nodes:/nodes:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}:/trust
+      - ${M4_NODE_ROOT:-./artifacts/m4-nodes}:/nodes:ro
     networks: [trust]
     tmpfs:
       - /tmp:size=32m,mode=1777

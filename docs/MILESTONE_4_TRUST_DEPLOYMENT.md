@@ -89,25 +89,40 @@ but do not substitute for that runtime gate.
 
 ## Execution
 
-```powershell
+The example below uses WSL/Linux. Choose a fresh Compose namespace and fresh
+write-once trust/node paths for every evidentiary run.
+
+```bash
 python -m pip install -e ".[m4,dev]"
 pytest -q
 
-fl-forensics m4-verify-deployment --compose compose.m4.yaml --clients configs\clients.yaml
-fl-forensics m4-init --workspace artifacts\m4-trust --project-root .
-python scripts\run_m4_swtpm.py provision
-fl-forensics m4-enroll --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
-fl-forensics m4-mtls-test --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
-fl-forensics m4-challenge --workspace artifacts\m4-trust --node-root artifacts\m4-nodes
-python scripts\run_m4_swtpm.py quote
+export COMPOSE_PROJECT_NAME=flforensics_local_test_v1
+export M4_TRUST_WORKSPACE="$PWD/artifacts/m4-trust-local-test-v1"
+export M4_NODE_ROOT="$PWD/artifacts/m4-nodes-local-test-v1"
+
+fl-forensics m4-verify-deployment --compose compose.m4.yaml --clients configs/clients.yaml
+fl-forensics m4-init --workspace "$M4_TRUST_WORKSPACE" --project-root .
+python scripts/run_m4_swtpm.py provision \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
+fl-forensics m4-enroll --workspace "$M4_TRUST_WORKSPACE" --node-root "$M4_NODE_ROOT"
+fl-forensics m4-mtls-test --workspace "$M4_TRUST_WORKSPACE" --node-root "$M4_NODE_ROOT"
+fl-forensics m4-challenge --workspace "$M4_TRUST_WORKSPACE" --node-root "$M4_NODE_ROOT"
+python scripts/run_m4_swtpm.py quote \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 docker compose -f compose.m4.yaml --profile verify run --rm verifier
 ```
 
 Stopping without deleting persistent state:
 
-```powershell
-python scripts\run_m4_swtpm.py stop
+```bash
+python scripts/run_m4_swtpm.py stop \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
 ```
 
 Do not append `--volumes` to `docker compose down`: TPM state is part of the
-experiment identity and its deletion requires a new enrollment.
+experiment identity and its deletion requires a new enrollment. A namespace,
+its TPM volumes, the node workspaces, and the trust workspace must be treated
+as a single inseparable experiment identity.

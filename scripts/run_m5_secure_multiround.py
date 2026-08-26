@@ -10,7 +10,6 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-
 CLIENT_IDS = [f"client{index:02d}" for index in range(1, 16)]
 TPM_IDS = [f"tpm{index:02d}" for index in range(1, 16)]
 
@@ -48,13 +47,6 @@ def refresh_attestations(
     node_root: Path,
     compose_m4: Path,
 ) -> None:
-    expected_trust = (root / "artifacts" / "m4-trust").resolve()
-    expected_nodes = (root / "artifacts" / "m4-nodes").resolve()
-    if trust_workspace != expected_trust or node_root != expected_nodes:
-        raise RuntimeError(
-            "automatic attestation refresh currently requires the default "
-            "artifacts/m4-trust and artifacts/m4-nodes paths"
-        )
     run(
         [
             "fl-forensics",
@@ -74,6 +66,10 @@ def refresh_attestations(
             "quote",
             "--compose",
             str(compose_m4),
+            "--trust-workspace",
+            str(trust_workspace),
+            "--node-root",
+            str(node_root),
         ],
         root=root,
         environment=environment,
