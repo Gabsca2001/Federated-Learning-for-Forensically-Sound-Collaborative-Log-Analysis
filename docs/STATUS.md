@@ -3,10 +3,11 @@
 ## Summary
 
 The deterministic M1–M8 implementation and the current local-test reference chain are
-complete and verified end to end. Multi-seed orchestration and verified statistical
-aggregation are implemented; the configured runs still need to complete. Other principal
-gaps are external-dataset generalization, overhead benchmarking, physical-TPM execution, and
-production-grade evidence storage, key management, and multi-host operation.
+complete and verified end to end. The paired five-seed M3 evaluation and the 13-stage M4–M8
+offline-overhead reference execution are complete, verified, and published as sanitized
+snapshots. Principal remaining gaps are external-dataset generalization, live/runtime and
+physical-TPM benchmarks, and production-grade evidence storage, key management, and
+multi-host operation.
 
 ## Current coverage
 
@@ -39,6 +40,7 @@ production-grade evidence storage, key management, and multi-host operation.
 | Offline recovery export | Implemented and verified (M8.4) | Deterministic TAR, 2,381 payload entries, 11 assurance entries |
 | Campaign invariant accounting | Implemented and verified (M8.5) | 30 rounds, 15 clients, 450 contributions reconstructed from recovery TAR |
 | Final preservation verification | Implemented and verified (M8.6) | Five assurance stages; offline inputs only; zero errors |
+| Offline verification-overhead benchmark | Implemented and verified | 13/13 stages, 45 measured samples, 13 source snapshots, zero errors; receipt `overhead-benchmark-242c9f91b96d5b8fad17acff`; no runtime/TPM claim |
 
 ## Canonical reference chain
 
@@ -55,6 +57,7 @@ production-grade evidence storage, key management, and multi-host operation.
 | M8 recovery | `m8-recovery-export-76702dfab9ac61350f18b31c` |
 | M8 accounting | `m8-campaign-accounting-754be120eb3082973ded38af` |
 | M8 final receipt | `m8-final-verification-18a7463101b543b5f97df3f1` |
+| Offline-overhead receipt | `overhead-benchmark-242c9f91b96d5b8fad17acff` |
 
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
@@ -68,18 +71,20 @@ The final assurance state is
 - The M8 recovery package preserves the selected reference chain; it is not a substitute for
   an organizational retention, access-control, backup, or legal-admissibility policy.
 - The temporal holdout is benign-only and cannot support a multiclass generalization claim.
-- The currently published scores come from deterministic reference runs. Multi-seed claims
-  remain pending until all configured M3 source runs and the recomputed summary verify.
+- The five-seed M3 summary verifies 10/10 source runs. Its intervals describe this fixed
+  dataset and protocol; they do not establish external-dataset generalization.
 - Earlier M2 seed diagnostics used a separate partial-fit monitoring protocol. They are useful
   sensitivity evidence but do not substitute for repetitions of the canonical M3 protocol.
 - Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
+- The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
+  M8 stages have one observation each, and no live `swtpm`, network, or physical-TPM latency
+  is claimed.
 
 ## Outstanding validation and engineering work
 
-1. Complete the five-seed paired M3 execution and then decide whether the selected M6 attack
-   scenarios require repeated frozen-update campaigns.
+1. Benchmark the live `swtpm`/mTLS/update path separately from offline verifier replay.
 2. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
-3. Benchmark attestation, signing, verification, round, report, and preservation overhead.
+3. Decide whether the selected M6 attack scenarios require repeated frozen-update campaigns.
 4. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
 5. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
 6. Validate service separation, multi-host performance, and failure recovery outside the research

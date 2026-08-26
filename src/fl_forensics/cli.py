@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from .attack_mapping import (
@@ -38,6 +39,7 @@ from .multiseed import (
     create_multiseed_summary,
     verify_multiseed_summary,
 )
+from .overhead import create_overhead_benchmark, verify_overhead_benchmark
 from .prediction_bundle import create_prediction_bundle, verify_prediction_bundle
 from .preservation import (
     create_preservation_manifest,
@@ -1263,6 +1265,28 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("artifacts/m8-campaign-invariant-accounting-v1"),
     )
 
+    overhead_run = subparsers.add_parser(
+        "overhead-run",
+        help="benchmark read-only M4--M8 verifiers against preserved artifacts",
+    )
+    overhead_run.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/overhead-local-test-v1.yaml"),
+    )
+    overhead_run.add_argument("--output", type=Path, required=True)
+
+    overhead_verify = subparsers.add_parser(
+        "overhead-verify",
+        help="verify M4--M8 timing receipts, statistics, and source bindings",
+    )
+    overhead_verify.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/overhead-local-test-v1.yaml"),
+    )
+    overhead_verify.add_argument("--workspace", type=Path, required=True)
+
     return parser
 
 
@@ -1912,6 +1936,23 @@ def main(argv: list[str] | None = None) -> int:
         result = verify_final_preservation(
             recovery_workspace=arguments.recovery_workspace,
             accounting_workspace=arguments.accounting_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "overhead-run":
+        result = create_overhead_benchmark(
+            output=arguments.output,
+            config_path=arguments.config,
+            progress=lambda message: print(message, file=sys.stderr, flush=True),
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "overhead-verify":
+        result = verify_overhead_benchmark(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

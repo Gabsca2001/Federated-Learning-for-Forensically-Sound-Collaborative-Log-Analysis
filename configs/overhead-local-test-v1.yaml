@@ -1,0 +1,126 @@
+schema_version: "1.0"
+benchmark_id: m4-m8-offline-overhead-local-test-v1
+profile: offline-verifier-latency-v1
+project_root: ..
+
+inputs:
+  dataset_workspace: artifacts/m2-data24-parquet
+  partition_workspace: artifacts/m3-data24-parquet-iid-local-test-v1
+  partition_manifest: artifacts/m3-data24-parquet-iid-local-test-v1/manifest.json
+  server_evaluation: artifacts/m3-data24-parquet-iid-local-test-v1/server/evaluation.json
+  trust_workspace: artifacts/m4-trust-local-test-v1
+  campaign_workspace: artifacts/m5-secure-multiround-local-test-v1
+  round_workspace: artifacts/m5-secure-multiround-local-test-v1/rounds/round-011
+  prediction_workspace: artifacts/m7-prediction-bundle-test-first6-local-test-v1
+  explanation_workspace: artifacts/m7-explanation-bundle-test-first6-local-test-v1
+  attack_workspace: artifacts/m7-attack-mapping-test-first6-local-test-v1
+  report_workspace: artifacts/m7-investigation-report-test-first6-local-test-v1
+  prediction_config: configs/investigation.yaml
+  explanation_config: configs/investigation-explanations.yaml
+  attack_config: configs/investigation-attack.yaml
+  report_config: configs/investigation-report.yaml
+  preservation_workspace: artifacts/m8-preservation-manifest-local-test-v1
+  preservation_config: configs/preservation-local-test-v1.yaml
+  merkle_workspace: artifacts/m8-merkle-tree-local-test-v1
+  merkle_config: configs/merkle-local-test-v1.yaml
+  timestamp_workspace: artifacts/m8-timestamp-anchor-local-test-v1
+  timestamp_config: configs/timestamp-local-test-v1.yaml
+  recovery_workspace: artifacts/m8-recovery-export-local-test-v1
+  accounting_workspace: artifacts/m8-campaign-invariant-accounting-local-test-v1
+
+stages:
+  - stage_id: m4-software-ecdsa-sign-verify
+    warmup_runs: 1
+    repetitions: 10
+    operations_per_sample: 1000
+    expected:
+      status: verified
+      operation_count: 1000
+  - stage_id: m4-attestation-receipt-verification
+    warmup_runs: 1
+    repetitions: 10
+    expected:
+      status: verified
+      client_count: 15
+      attestation_result_count: 105
+  - stage_id: m5-campaign-verification
+    warmup_runs: 1
+    repetitions: 3
+    expected:
+      status: verified
+      round_count: 30
+      accepted_contribution_count: 450
+      error_count: 0
+  - stage_id: m7-prediction-verification
+    warmup_runs: 1
+    repetitions: 5
+    expected:
+      status: verified
+      prediction_count: 6
+      error_count: 0
+  - stage_id: m7-explanation-verification
+    warmup_runs: 1
+    repetitions: 3
+    expected:
+      status: verified
+      prediction_count: 6
+      error_count: 0
+  - stage_id: m7-attack-verification
+    warmup_runs: 1
+    repetitions: 5
+    expected:
+      status: verified
+      mapping_count: 6
+      error_count: 0
+  - stage_id: m7-report-verification
+    warmup_runs: 1
+    repetitions: 3
+    expected:
+      status: verified
+      case_count: 6
+      error_count: 0
+  - stage_id: m8-preservation-verification
+    warmup_runs: 0
+    repetitions: 1
+    expected:
+      status: verified
+      artifact_count: 2381
+      error_count: 0
+  - stage_id: m8-merkle-verification
+    warmup_runs: 0
+    repetitions: 1
+    expected:
+      status: verified
+      leaf_count: 2388
+      error_count: 0
+  - stage_id: m8-timestamp-verification
+    warmup_runs: 0
+    repetitions: 1
+    expected:
+      status: verified
+      offline_signature_verified: true
+      error_count: 0
+  - stage_id: m8-recovery-verification
+    warmup_runs: 0
+    repetitions: 1
+    expected:
+      status: verified
+      payload_entry_count: 2381
+      error_count: 0
+  - stage_id: m8-accounting-verification
+    warmup_runs: 0
+    repetitions: 1
+    expected:
+      status: verified
+      round_count: 30
+      contribution_count: 450
+      error_count: 0
+  - stage_id: m8-final-preservation-verification
+    warmup_runs: 0
+    repetitions: 1
+    expected:
+      status: verified
+      verified_stage_count: 5
+      round_count: 30
+      contribution_count: 450
+      error_count: 0
