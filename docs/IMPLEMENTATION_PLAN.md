@@ -67,6 +67,10 @@ actual local updates and can be independently reconstructed. The PROTEAN extensi
 its lambda candidates without test access, locks two declared endpoints, and only then
 publishes their final test/holdout comparison.
 
+The paired post-M8 evaluation additionally completed five verified IID/non-IID seeds with
+disjoint partition retry streams. Its independently recomputed summary reports sample
+dispersion, Student-t intervals, pooled results, and client-local FedAvg/local-only comparisons.
+
 ### M4 — trust deployment
 
 The protocol, topology, schemas, adverse cases, and 15-`swtpm` Docker campaign are complete.
@@ -107,7 +111,8 @@ verifier reports five verified stages and zero errors.
 These tasks can strengthen the thesis or a later production design, but they are not part of
 the completed M1–M8 acceptance chain:
 
-- repeat selected learning/attack experiments across multiple seeds and report dispersion;
+- repeat only selected M6 attack scenarios whose stochastic choices require additional
+  sensitivity evidence, and report the rationale and dispersion;
 - evaluate a genuinely external dataset such as UWF-ZeekData22;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;

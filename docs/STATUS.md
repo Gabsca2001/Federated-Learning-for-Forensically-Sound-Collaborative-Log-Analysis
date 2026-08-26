@@ -3,9 +3,9 @@
 ## Summary
 
 The deterministic M1–M8 implementation and the current local-test reference chain are
-complete and verified end to end. Multi-seed orchestration and verified statistical
-aggregation are implemented; the configured runs still need to complete. Other principal
-gaps are external-dataset generalization, overhead benchmarking, physical-TPM execution, and
+complete and verified end to end. The paired M3 multi-seed execution and independently
+recomputed statistical summary are also complete and verified. The principal remaining gaps
+are external-dataset generalization, overhead benchmarking, physical-TPM execution, and
 production-grade evidence storage, key management, and multi-host operation.
 
 ## Current coverage
@@ -68,16 +68,16 @@ The final assurance state is
 - The M8 recovery package preserves the selected reference chain; it is not a substitute for
   an organizational retention, access-control, backup, or legal-admissibility policy.
 - The temporal holdout is benign-only and cannot support a multiclass generalization claim.
-- The currently published scores come from deterministic reference runs. Multi-seed claims
-  remain pending until all configured M3 source runs and the recomputed summary verify.
+- The M3 multi-seed claims use five predeclared paired seeds over one fixed M2 split. Their
+  Student-t intervals measure partition/training sensitivity, not cross-dataset generalization.
 - Earlier M2 seed diagnostics used a separate partial-fit monitoring protocol. They are useful
   sensitivity evidence but do not substitute for repetitions of the canonical M3 protocol.
 - Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
 
 ## Outstanding validation and engineering work
 
-1. Complete the five-seed paired M3 execution and then decide whether the selected M6 attack
-   scenarios require repeated frozen-update campaigns.
+1. Review the selected M6 attack scenarios and decide which, if any, require repeated
+   frozen-update campaigns; do not repeat every deterministic case without a stated rationale.
 2. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
 3. Benchmark attestation, signing, verification, round, report, and preservation overhead.
 4. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
