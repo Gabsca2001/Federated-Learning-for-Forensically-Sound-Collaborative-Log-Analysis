@@ -203,6 +203,16 @@ fl-forensics m3-verify \
   --dataset-workspace artifacts/m2-data24-parquet
 ```
 
+Each training snapshot exposes only local `train` and `validation` rows. A separate,
+digest-bound `evaluation/clients/<client_id>/test.json` is allocated from the M2 test split
+in proportion to that client's training-class profile. Server validation, test, and temporal
+holdout are also emitted as separately digest-bound split artifacts. Training opens only the
+validation artifact; test and holdout are opened after every FedAvg and local-only training
+operation has finished and validation has selected the checkpoint. `comparison.json` then
+reports the selected global model and the local-only baseline on each client's local test,
+together with client-unweighted mean, dispersion, minimum, and maximum. The complete server
+test remains the pooled common comparison.
+
 Repeat `m3-train` and `m3-verify` with the non-IID partition workspace for the heterogeneity
 baseline. `m3-report` generates immutable learning figures after validating the metrics and
 comparison inputs. The separate `m3-protean-*` workflow evaluates validation-only
@@ -274,7 +284,10 @@ python scripts/run_m5_secure_multiround.py verify \
 ```
 
 The completed campaign contains 30 chained checkpoints and 450 admitted contributions. Its
-validation-only selection chose round 11 before test evaluation.
+validation-only selection chose round 11 before test evaluation. Partitions produced by the
+current M3 contract also keep local tests outside the files mounted by the M5 training
+containers; after selection, the coordinator evaluates the selected global checkpoint per
+client and binds those results into the signed final campaign evaluation.
 
 See [M5 secure round](docs/MILESTONE_5_SECURE_ROUND.md) and
 [M5 multi-round campaign](docs/MILESTONE_5_SECURE_MULTIROUND.md).

@@ -3,7 +3,7 @@
 ## Summary
 
 The deterministic M1–M8 reference chain is implemented and merged. The complete local test
-suite contains 214 passing tests. The principal remaining gaps are physical-TPM execution,
+suite contains 223 passing tests. The principal remaining gaps are physical-TPM execution,
 production-grade evidence storage/key management, multi-seed statistical replication, and
 external-dataset generalization.
 
@@ -20,15 +20,15 @@ external-dataset generalization.
 | Deterministic normalization/windowing | Implemented (M1–M2) | Frozen 25-feature, 60-second contract; source/event/window lineage verified |
 | Group/time split and training-only scaling | Implemented (M2) | Capture-date groups are disjoint; final capture reserved; scaler provenance checked |
 | Central MLP baseline | Implemented and verified (M2) | Validation macro-F1 `0.945674`; test macro-F1 `0.923073` |
-| 15-client IID/non-IID partitioning | Implemented and verified (M3) | Exact train/validation coverage; client artifacts exclude raw-event data |
+| 15-client IID/non-IID partitioning | Implemented and verified (M3) | Exact train/validation/local-test coverage; client and server test artifacts are isolated from training access |
 | Flower ClientApp/ServerApp | Implemented (M3) | Current Message API; 15-client full-participation FedAvg profile |
-| Auditable FedAvg runner | Implemented and verified (M3) | All round inputs preserved; aggregation independently reconstructed |
+| Auditable FedAvg runner | Implemented and verified (M3) | All training precedes test access; aggregation, local-only inference, and post-selection per-client tests are independently reconstructed |
 | PROTEAN adaptation | Implemented and verified (M3 extension) | Four validation-only lambda candidates; two endpoints locked before test access |
 | Enrollment, AK/ESK separation, challenge, revocation | Implemented (M4) | Signed one-to-one bindings and append-only revocation semantics |
 | Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; 15/15 `swtpm` gate passed |
 | TLS 1.3 mutual authentication | Implemented (M4) | EKU, SAN, enrollment-fingerprint, and wrong-pair checks |
 | Physical TPM adapter | Implemented; runtime pending | Same `tpm2-tools` interface via `device:/dev/tpmrm0`; no hardware result claimed |
-| Secure FedAvg campaign | Implemented and verified (M5) | 30 chained rounds; 450/450 bundles admitted; zero quarantines; round 11 selected |
+| Secure FedAvg campaign | Implemented and verified (M5) | New campaigns bind post-selection client-local metrics; preserved reference has 30 rounds, 450/450 bundles, and selected round 11 |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model and prototype campaigns; deterministic reports |
 | Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
 | Preservation inventory | Implemented and verified (M8.1) | 2,363 artifacts, seven external bindings, 2,631,940,087 payload bytes |
@@ -73,11 +73,13 @@ The final assurance state is
 ## Outstanding validation and engineering work
 
 1. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-2. Replicate selected M3/M6 results across seeds and report dispersion and uncertainty.
-3. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
-4. Store retained packages in access-controlled WORM/object-lock storage.
-5. Define production certificate/key lifecycle, service separation, monitoring, and recovery.
-6. Validate multi-host performance and failure recovery outside the single-host research
+2. Rebuild the canonical M3/M5 workspaces under the local-test contract before publishing new
+   per-client scores; do not replace the preserved reference chain in place.
+3. Replicate selected M3/M6 results across seeds and report dispersion and uncertainty.
+4. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
+5. Store retained packages in access-controlled WORM/object-lock storage.
+6. Define production certificate/key lifecycle, service separation, monitoring, and recovery.
+7. Validate multi-host performance and failure recovery outside the single-host research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and

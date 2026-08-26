@@ -26,9 +26,22 @@ base model, metrics, and tensor update.
 
 Every global checkpoint is evaluated on the server validation snapshot. The
 highest validation macro-F1 is selected, with the earliest round used to break
-ties. Test and temporal-holdout rows are evaluated only after this selection.
-Independent verification repeats inference to validate the preserved result;
-test data is never used to choose a round or change hyperparameters.
+ties. Test, temporal-holdout, and client-local test rows are evaluated only
+after this selection. The round containers receive only each client's
+`clients/<client_id>/dataset.json`, which contains train and validation; the
+separate `evaluation/clients/<client_id>/test.json` is not mounted for training.
+The coordinator likewise reads `server/splits/validation.json` while examining
+rounds and does not open the isolated server test or temporal-holdout artifacts
+until selection is complete. Independent verification repeats inference to
+validate the preserved result. No test data can choose a round, update a model,
+or change hyperparameters.
+
+When the M3 partition includes the local-test contract, the selected global
+checkpoint is evaluated on every client-local domain. The per-client metrics and
+client-unweighted mean, population standard deviation, minimum, and maximum are
+included in the final evaluation committed by the coordinator signature.
+The coordinator also verifies that their disjoint union exactly reconstructs
+the server test split and rejects paths that escape the evaluation boundary.
 
 The final coordinator-signed campaign manifest commits to:
 
@@ -36,7 +49,8 @@ The final coordinator-signed campaign manifest commits to:
 - 450 accepted contributions (`30 × 15`);
 - every per-round validation artifact;
 - the selected checkpoint and global model;
-- the selected-checkpoint validation, test, and temporal-holdout evaluation.
+- the selected-checkpoint validation, pooled test, temporal-holdout, and, when
+  available, per-client local-test evaluation.
 
 ## Fresh M4 state
 
@@ -121,6 +135,12 @@ campaign verifies.
 
 The 15-client Docker campaign completed on the verified IID Parquet snapshot
 with the following preserved result:
+
+The values below belong to the preserved pre-local-test reference chain. They
+remain independently verifiable, but they do not contain the new per-client
+test view. Producing those additional metrics requires rebuilding the M3
+partition and running a new M3/M5 campaign workspace; preserved artifacts are
+never rewritten in place.
 
 - campaign ID: `campaign-0824bcc4005bacc3420d2c1b`;
 - 30 verified rounds and 450 accepted TPM ESK-signed contributions;

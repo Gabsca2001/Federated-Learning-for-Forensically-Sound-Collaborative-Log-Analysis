@@ -6,8 +6,9 @@ import io
 import json
 import os
 import tempfile
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from . import __version__
 from .canonical import sha256_file
@@ -44,7 +45,7 @@ def _load_json(path: Path, description: str) -> dict[str, Any]:
     except (OSError, json.JSONDecodeError) as exc:
         raise ValueError(f"invalid {description}: {path}") from exc
     if not isinstance(value, dict):
-        raise ValueError(f"{description} must contain a JSON object: {path}")
+        raise TypeError(f"{description} must contain a JSON object: {path}")
     return value
 
 
@@ -99,6 +100,10 @@ def _metric_percent(value: Any) -> float:
     if value is None:
         raise ValueError("required report metric is null")
     return float(value) * 100.0
+
+
+def _optional_float(value: Any) -> float | None:
+    return None if value is None else float(value)
 
 
 def _style_axes(ax: Any, *, grid_axis: str = "y") -> None:
@@ -201,8 +206,7 @@ def _per_class_figure(*, plt: Any, labels: list[str], per_class: dict[str, Any])
             label=display,
         )
     tick_labels = [
-        f"{label.replace('_', ' ')}\n(n={int(per_class[label]['support'])})"
-        for label in labels
+        f"{label.replace('_', ' ')}\n(n={int(per_class[label]['support'])})" for label in labels
     ]
     ax.set_xticks(positions, tick_labels, rotation=25, ha="right")
     ax.set_ylim(0, 100)
@@ -217,8 +221,7 @@ def _per_class_figure(*, plt: Any, labels: list[str], per_class: dict[str, Any])
 def _validation_figure(*, plt: Any, rounds: list[dict[str, Any]]) -> Any:
     x_values = [int(item["round"]) for item in rounds]
     y_values = [
-        _metric_percent(item["validation"]["macro_f1_all_model_classes"])
-        for item in rounds
+        _metric_percent(item["validation"]["macro_f1_all_model_classes"]) for item in rounds
     ]
     if not x_values:
         raise ValueError("M3 metrics contain no rounds")
@@ -263,11 +266,9 @@ def _comparison_figure(
     central_test_f1: float | None,
 ) -> Any:
     local_summary = comparison["local_only_summary"]["global_test_macro_f1"]
-    fedavg_checkpoint = comparison.get(
-        "fedavg_selected", comparison.get("fedavg_final")
-    )
+    fedavg_checkpoint = comparison.get("fedavg_selected", comparison.get("fedavg_final"))
     if not isinstance(fedavg_checkpoint, dict):
-        raise ValueError("comparison artifact contains no FedAvg checkpoint")
+        raise TypeError("comparison artifact contains no FedAvg checkpoint")
     categories = ["Local-only mean", "FedAvg"]
     values = [
         _metric_percent(local_summary["mean"]),
@@ -298,24 +299,17 @@ def _comparison_figure(
 
 
 def _per_client_figure(*, plt: Any, comparison: dict[str, Any]) -> Any:
-    clients = sorted(
-        comparison.get("local_only_clients", []), key=lambda item: item["client_id"]
-    )
+    clients = sorted(comparison.get("local_only_clients", []), key=lambda item: item["client_id"])
     if not clients:
         raise ValueError("comparison artifact contains no local-only client results")
     identifiers = [str(item["client_id"]) for item in clients]
     values = [
-        _metric_percent(item["global_test"]["macro_f1_all_model_classes"])
-        for item in clients
+        _metric_percent(item["global_test"]["macro_f1_all_model_classes"]) for item in clients
     ]
-    fedavg_checkpoint = comparison.get(
-        "fedavg_selected", comparison.get("fedavg_final")
-    )
+    fedavg_checkpoint = comparison.get("fedavg_selected", comparison.get("fedavg_final"))
     if not isinstance(fedavg_checkpoint, dict):
-        raise ValueError("comparison artifact contains no FedAvg checkpoint")
-    fedavg = _metric_percent(
-        fedavg_checkpoint["test"]["macro_f1_all_model_classes"]
-    )
+        raise TypeError("comparison artifact contains no FedAvg checkpoint")
+    fedavg = _metric_percent(fedavg_checkpoint["test"]["macro_f1_all_model_classes"])
     fig, ax = plt.subplots(figsize=(10.8, 6.5))
     bars = ax.barh(identifiers, values)
     ax.bar_label(bars, labels=[f"{value:.2f}%" for value in values], padding=4)
@@ -330,22 +324,15 @@ def _per_client_figure(*, plt: Any, comparison: dict[str, Any]) -> Any:
     return fig
 
 
-def _selected_global_client_validation_figure(
-    *, plt: Any, comparison: dict[str, Any]
-) -> Any:
+def _selected_global_client_validation_figure(*, plt: Any, comparison: dict[str, Any]) -> Any:
     clients = sorted(
         comparison.get("selected_global_client_validation", []),
         key=lambda item: item["client_id"],
     )
     if not clients:
-        raise ValueError(
-            "comparison artifact contains no selected-model client validation results"
-        )
+        raise ValueError("comparison artifact contains no selected-model client validation results")
     identifiers = [str(item["client_id"]) for item in clients]
-    values = [
-        _metric_percent(item["validation"]["macro_f1_all_model_classes"])
-        for item in clients
-    ]
+    values = [_metric_percent(item["validation"]["macro_f1_all_model_classes"]) for item in clients]
     mean_value = sum(values) / len(values)
     fig, ax = plt.subplots(figsize=(10.8, 6.5))
     bars = ax.barh(identifiers, values)
@@ -366,6 +353,67 @@ def _selected_global_client_validation_figure(
     return fig
 
 
+def _client_local_test_figure(*, plt: Any, comparison: dict[str, Any]) -> Any:
+    global_items = {
+        str(item["client_id"]): item["test"]
+        for item in comparison.get("selected_global_client_test", [])
+        if item.get("test", {}).get("macro_f1_all_model_classes") is not None
+    }
+    local_items = {
+        str(item["client_id"]): item["local_test"]
+        for item in comparison.get("local_only_clients", [])
+        if "local_test" in item
+    }
+    identifiers = sorted(global_items)
+    if not identifiers:
+        raise ValueError("comparison artifact contains no client-local test results")
+    positions = list(range(len(identifiers)))
+    selected_values = [
+        _metric_percent(global_items[client_id]["macro_f1_all_model_classes"])
+        for client_id in identifiers
+    ]
+    has_local_comparison = all(
+        client_id in local_items
+        and local_items[client_id].get("macro_f1_all_model_classes") is not None
+        for client_id in identifiers
+    )
+    height = 0.38
+    fig, ax = plt.subplots(figsize=(11.2, 7.0))
+    selected_positions = (
+        [position - height / 2 for position in positions] if has_local_comparison else positions
+    )
+    ax.barh(
+        selected_positions,
+        selected_values,
+        height=height if has_local_comparison else 0.65,
+        label="Selected FedAvg",
+    )
+    if has_local_comparison:
+        local_values = [
+            _metric_percent(local_items[client_id]["macro_f1_all_model_classes"])
+            for client_id in identifiers
+        ]
+        ax.barh(
+            [position + height / 2 for position in positions],
+            local_values,
+            height=height,
+            label="Local-only",
+        )
+    ax.set_yticks(positions, identifiers)
+    ax.set_xlim(0, 100)
+    ax.set_xlabel("Client-local test macro-F1 (%)")
+    ax.set_ylabel("Evaluation-only client test")
+    ax.set_title(
+        "Selected global vs local-only model on each client domain"
+        if has_local_comparison
+        else "Selected global model on each client domain"
+    )
+    ax.legend(frameon=False, loc="lower right")
+    _style_axes(ax, grid_axis="x")
+    fig.tight_layout()
+    return fig
+
+
 def generate_m3_report(
     *,
     workspace: Path,
@@ -379,9 +427,7 @@ def generate_m3_report(
     if central_workspace is not None:
         central_metrics, central_digests = _validated_central_source(central_workspace)
         source_digests.update(central_digests)
-        central_test_f1 = float(
-            central_metrics["metrics"]["test"]["macro_f1_all_model_classes"]
-        )
+        central_test_f1 = float(central_metrics["metrics"]["test"]["macro_f1_all_model_classes"])
     matplotlib, plt = _plotting_dependencies()
     plt.rcParams.update(
         {
@@ -402,8 +448,7 @@ def generate_m3_report(
     labels = [str(label) for label in matrix["labels"]]
     absolute_values = [[float(value) for value in row] for row in matrix["values"]]
     normalized_values = [
-        [value / sum(row) if sum(row) else 0.0 for value in row]
-        for row in absolute_values
+        [value / sum(row) if sum(row) else 0.0 for value in row] for row in absolute_values
     ]
     rounds = metrics.get("rounds", [])
     figures = [
@@ -448,25 +493,32 @@ def generate_m3_report(
             build=lambda: _training_loss_figure(plt=plt, rounds=rounds),
             plt=plt,
         ),
-        _write_figure(
-            output=report_output,
-            filename="local-vs-fedavg.png",
-            description="Local-only mean, FedAvg, and optional centralized test macro-F1.",
-            build=lambda: _comparison_figure(
-                plt=plt,
-                comparison=comparison,
-                central_test_f1=central_test_f1,
-            ),
-            plt=plt,
-        ),
-        _write_figure(
-            output=report_output,
-            filename="per-client-test-macro-f1.png",
-            description="Global test macro-F1 of each local-only client model.",
-            build=lambda: _per_client_figure(plt=plt, comparison=comparison),
-            plt=plt,
-        ),
     ]
+    if comparison.get("local_only_clients"):
+        figures.extend(
+            [
+                _write_figure(
+                    output=report_output,
+                    filename="local-vs-fedavg.png",
+                    description=(
+                        "Local-only mean, FedAvg, and optional centralized test macro-F1."
+                    ),
+                    build=lambda: _comparison_figure(
+                        plt=plt,
+                        comparison=comparison,
+                        central_test_f1=central_test_f1,
+                    ),
+                    plt=plt,
+                ),
+                _write_figure(
+                    output=report_output,
+                    filename="per-client-test-macro-f1.png",
+                    description="Global test macro-F1 of each local-only client model.",
+                    build=lambda: _per_client_figure(plt=plt, comparison=comparison),
+                    plt=plt,
+                ),
+            ]
+        )
     if comparison.get("selected_global_client_validation"):
         figures.append(
             _write_figure(
@@ -481,15 +533,28 @@ def generate_m3_report(
                 plt=plt,
             )
         )
+    if any(
+        item.get("test", {}).get("macro_f1_all_model_classes") is not None
+        for item in comparison.get("selected_global_client_test", [])
+    ):
+        figures.append(
+            _write_figure(
+                output=report_output,
+                filename="selected-global-vs-local-only-client-test.png",
+                description=(
+                    "Selected FedAvg and local-only macro-F1 on each separate client test."
+                ),
+                build=lambda: _client_local_test_figure(plt=plt, comparison=comparison),
+                plt=plt,
+            )
+        )
     validation_values = [
         (int(item["round"]), float(item["validation"]["macro_f1_all_model_classes"]))
         for item in rounds
     ]
     if not validation_values:
         raise ValueError("M3 metrics contain no validation history")
-    best_validation_round, best_validation_f1 = max(
-        validation_values, key=lambda item: item[1]
-    )
+    best_validation_round, best_validation_f1 = max(validation_values, key=lambda item: item[1])
     summary = {
         "schema_version": "2.0",
         "artifact_type": "m3_evaluation_report",
@@ -510,13 +575,19 @@ def generate_m3_report(
             "selected_validation_macro_f1": float(
                 evaluated_checkpoint["validation"]["macro_f1_all_model_classes"]
             ),
-            "selected_test_macro_f1": float(
-                selected_test["macro_f1_all_model_classes"]
-            ),
+            "selected_test_macro_f1": float(selected_test["macro_f1_all_model_classes"]),
             "best_validation_round": best_validation_round,
             "best_validation_macro_f1": best_validation_f1,
-            "local_only_mean_test_macro_f1": float(
-                comparison["local_only_summary"]["global_test_macro_f1"]["mean"]
+            "local_only_mean_test_macro_f1": _optional_float(
+                comparison.get("local_only_summary", {}).get("global_test_macro_f1", {}).get("mean")
+            ),
+            "selected_global_client_unweighted_mean_test_macro_f1": (
+                comparison.get("selected_global_client_test_summary", {})
+                .get("macro_f1_all_model_classes", {})
+                .get("mean")
+            ),
+            "local_only_client_unweighted_mean_local_test_macro_f1": (
+                comparison.get("local_only_summary", {}).get("local_test_macro_f1", {}).get("mean")
             ),
             "centralized_test_macro_f1": central_test_f1,
         },
@@ -547,8 +618,6 @@ def generate_m3_report(
         "best_validation_round": best_validation_round,
         "best_validation_macro_f1": best_validation_f1,
         "selected_round": int(evaluated_checkpoint["round"]),
-        "selected_test_macro_f1": float(
-            selected_test["macro_f1_all_model_classes"]
-        ),
+        "selected_test_macro_f1": float(selected_test["macro_f1_all_model_classes"]),
         "summary_sha256": sha256_file(report_output / "summary.json"),
     }
