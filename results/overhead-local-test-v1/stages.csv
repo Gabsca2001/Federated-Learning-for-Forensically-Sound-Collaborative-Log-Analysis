@@ -1,0 +1,14 @@
+stage_id,scope,warmup_runs,repetitions,operations_per_sample,median_wall_time_ms,mean_wall_time_ms,p95_wall_time_ms,minimum_wall_time_ms,maximum_wall_time_ms,sample_standard_deviation_ms,median_cpu_time_ms,mean_wall_time_microseconds_per_operation
+m4-software-ecdsa-sign-verify,Ephemeral software ECDSA P-256 sign-and-verify pairs; not TPM latency.,1,10,1000,108.963925,114.0157647,158.105192,101.101195,158.105192,16.41293947151203,107.96455,114.0157647
+m4-attestation-receipt-verification,Read-only verification of preserved M4 enrollments and attestation receipts.,1,10,1,30.935525,35.1528867,55.966401,26.742085,55.966401,10.11174918911058,30.91625,35152.8867
+m5-campaign-verification,Independent verification of the 30-round secure FedAvg campaign.,1,3,1,13342.360811,13427.695259333334,13663.49184,13277.233127,13663.49184,206.78593858473513,17909.8071,13427695.259333335
+m7-prediction-verification,Prediction and source-lineage recomputation for the six selected cases.,1,5,1,20716.492794,20942.6856254,21725.627223,20575.176795,21725.627223,462.8824679370563,20361.9041,20942685.625400003
+m7-explanation-verification,Integrated-Gradients and prototype-distance recomputation.,1,3,1,33773.376887,34024.765525,34632.38436,33668.535328,34632.38436,528.8179503462941,34090.2182,34024765.525
+m7-attack-verification,Versioned ATT&CK hypothesis recomputation.,1,5,1,33298.250966,33328.065023200004,33546.309031,33140.489571,33546.309031,169.9464322889477,33189.9452,33328065.0232
+m7-report-verification,Deterministic investigation-report and source-record recomputation.,1,3,1,33555.798973,33583.715458,33817.973561,33377.37384,33817.973561,221.62248563127767,33305.5003,33583715.458
+m8-preservation-verification,Reconstruction of the M8 preservation inventory.,0,1,1,60227.807442,60227.807442,60227.807442,60227.807442,60227.807442,,62913.8803,60227807.442
+m8-merkle-verification,Reconstruction of the M8 Merkle commitment.,0,1,1,59240.646597,59240.646597,59240.646597,59240.646597,59240.646597,,62678.8858,59240646.597
+m8-timestamp-verification,Offline RFC 3161 proof verification.,0,1,1,59582.813723,59582.813723,59582.813723,59582.813723,59582.813723,,63886.9305,59582813.723
+m8-recovery-verification,"Offline payload, Merkle, and timestamp verification of the recovery TAR.",0,1,1,38907.259916,38907.259916,38907.259916,38907.259916,38907.259916,,24410.959,38907259.916
+m8-accounting-verification,Recomputation of campaign invariants from the offline recovery package.,0,1,1,13204.288049,13204.288049,13204.288049,13204.288049,13204.288049,,12814.8023,13204288.049
+m8-final-preservation-verification,Fail-closed verification of the complete M8 assurance chain.,0,1,1,26110.467247,26110.467247,26110.467247,26110.467247,26110.467247,,25581.7835,26110467.247

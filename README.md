@@ -477,6 +477,35 @@ contributions from the offline package.
 
 See [M8 preservation and recovery](docs/MILESTONE_8_PRESERVATION.md).
 
+### Post-M8 — overhead benchmarking
+
+The overhead profile replays the existing M4--M8 verifiers without retraining the model or
+changing the preserved reference workspaces. It measures sequential warm-process wall and CPU
+time, records every verifier result and source-manifest fingerprint, and writes a new
+write-once receipt:
+
+```bash
+fl-forensics overhead-run \
+  --config configs/overhead-local-test-v1.yaml \
+  --output artifacts/overhead-local-test-v1
+
+fl-forensics overhead-verify \
+  --config configs/overhead-local-test-v1.yaml \
+  --workspace artifacts/overhead-local-test-v1
+```
+
+The profile includes a clearly labelled software-ECDSA microbenchmark, read-only validation
+of all preserved M4 appraisal receipts, complete M5 campaign verification, the four M7
+verifiers, and the M8 preservation verifiers. I/O-heavy M8 checks run once; shorter checks
+use warmups and repeated samples. This is an offline replay benchmark,
+not a claim about live `swtpm`, network, container, training-round, or physical-TPM latency.
+
+See [Overhead benchmarking](docs/OVERHEAD_BENCHMARKING.md).
+
+The verified local-test execution produced 45 measured samples across 13 stages with receipt
+`overhead-benchmark-242c9f91b96d5b8fad17acff`. The compact public view is available under
+[`results/overhead-local-test-v1`](results/overhead-local-test-v1/README.md).
+
 ## Verified reference results
 
 | Stage | Reference result |
@@ -489,6 +518,7 @@ See [M8 preservation and recovery](docs/MILESTONE_8_PRESERVATION.md).
 | M5 | 30 rounds; 450/450 admitted contributions; zero quarantines |
 | M7 | six report cases bound to 69 events and 81 source records |
 | M8 | 2,381 artifacts preserved; 2,388 Merkle leaves; all five assurance stages verified |
+| Post-M8 overhead | 13/13 offline verifier stages; 45 measured samples; receipt verified |
 
 These figures describe one deterministic reference campaign, not population-level confidence
 intervals or a claim of universal generalization. See the milestone documents for the

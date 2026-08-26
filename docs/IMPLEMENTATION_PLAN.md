@@ -107,7 +107,10 @@ verifier reports five verified stages and zero errors.
 These tasks can strengthen the thesis or a later production design, but they are not part of
 the completed M1–M8 acceptance chain:
 
-- repeat selected learning/attack experiments across multiple seeds and report dispersion;
+- retain the completed paired five-seed M3 evaluation as the statistical reference;
+- retain the verified 13-stage offline M4–M8 overhead receipt as the reference replay result;
+- measure live `swtpm`, mTLS, signed-update, network, and round latency in a separate runtime
+  profile so it is not conflated with offline replay;
 - evaluate a genuinely external dataset such as UWF-ZeekData22;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;
