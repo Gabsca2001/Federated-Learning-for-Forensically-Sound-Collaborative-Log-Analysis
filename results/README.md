@@ -6,6 +6,8 @@ evidence, models, private trust state, and large recovery packages.
 
 ## Available snapshot
 
+- [M3 paired multi-seed v2](m3-multiseed-v2/README.md): five verified paired IID/non-IID
+  FedAvg repetitions, confidence intervals, client-local comparisons, and a compact figure.
 - [Reference local-test v1](reference-local-test-v1/README.md): selected M5 learning metrics
   and figures, the six-case M7 investigation report, and the final M8 verification receipt.
 

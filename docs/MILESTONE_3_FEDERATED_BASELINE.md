@@ -168,6 +168,84 @@ Neither result is used for checkpoint or hyperparameter selection.
 These are deterministic reference runs, not confidence intervals across random seeds. The
 benign-only temporal holdout is kept separate and is not reported as a multiclass score.
 
+## Repeated-seed evaluation
+
+The versioned contract in `configs/m3-multiseed.yaml` defines five paired repetitions with
+seeds `341593`, `342593`, `343593`, `344593`, and `345593`. The M2 dataset workspace and
+its train/validation/test/temporal split remain fixed. For each seed, both the partitioning
+seed and training seed change; IID and non-IID outcomes are therefore paired by seed. Seeds
+must differ by at least 512 because the deterministic non-IID allocator can try
+`seed + attempt` for at most 512 attempts while enforcing the minimum client size. This keeps
+the retry streams disjoint. The earlier `m3-multiseed-v1` pilot with adjacent seeds is
+retained only as a superseded diagnostic: requested seeds `341593` and `341594` converged on
+the same effective partition stream and therefore were not independent repetitions.
+
+```bash
+python scripts/run_m3_multiseed.py plan \
+  --config configs/m3-multiseed.yaml \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-v2
+
+python scripts/run_m3_multiseed.py run \
+  --config configs/m3-multiseed.yaml \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-v2
+```
+
+The execution layout is `seed-<seed>/<mode>/{partition,run,report}`. The runner:
+
+- derives and preserves one federation YAML file per seed;
+- invokes the normal M3 partition, training, and independent verification commands;
+- records wall-clock receipts for partitioning, training, and verification;
+- verifies and skips completed workspaces when restarted;
+- stops on partial workspaces instead of deleting or silently reusing them.
+
+After all ten runs verify, build and independently recompute the statistics:
+
+```bash
+fl-forensics m3-summarize-multiseed \
+  --config configs/m3-multiseed.yaml \
+  --runs-workspace artifacts/m3-multiseed-v2 \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --output artifacts/m3-multiseed-summary-v2
+
+fl-forensics m3-verify-multiseed \
+  --config configs/m3-multiseed.yaml \
+  --runs-workspace artifacts/m3-multiseed-v2 \
+  --dataset-workspace artifacts/m2-data24-parquet \
+  --workspace artifacts/m3-multiseed-summary-v2
+```
+
+The summary contains each run, mean, sample standard deviation, standard error, median,
+minimum, maximum, and a 95% Student-t interval. Besides the pooled common test, it aggregates
+the selected FedAvg model and local-only baselines across the 15 isolated client-local tests,
+including their within-run population dispersion. It reports paired per-seed non-IID-minus-IID
+deltas for both pooled and client-local test macro-F1. Client-local macro-F1 uses all six model
+classes; zero-support classes contribute zero, so it complements rather than replaces the pooled
+test. No test metric participates in checkpoint selection.
+
+### Verified five-seed result
+
+| Metric | IID mean | IID 95% CI | Non-IID mean | Non-IID 95% CI |
+|---|---:|---:|---:|---:|
+| Pooled test macro-F1 | `0.9387` | `[0.9155, 0.9619]` | `0.9414` | `[0.9327, 0.9501]` |
+| Pooled test accuracy | `0.9705` | `[0.9607, 0.9802]` | `0.9549` | `[0.9500, 0.9597]` |
+| Temporal benign false-alarm rate | `0.0036` | `[0.0029, 0.0042]` | `0.0115` | `[0.0052, 0.0178]` |
+| FedAvg client-local all-class macro-F1 mean | `0.9430` | `[0.9219, 0.9640]` | `0.7093` | `[0.6680, 0.7506]` |
+| Local-only client-local all-class macro-F1 mean | `0.9094` | `[0.9023, 0.9164]` | `0.6523` | `[0.6279, 0.6767]` |
+
+The paired non-IID-minus-IID pooled macro-F1 difference is `+0.0027`, with a 95% interval of
+`[-0.0287, +0.0341]`; the interval includes zero. The corresponding client-local all-class
+difference is `-0.2337`, with interval `[-0.2794, -0.1880]`. The latter is coverage-aware:
+non-IID local tests contain only 3–6 of the six model classes, and every zero-support class
+contributes zero. It must not be read as a pure model-performance loss. It demonstrates that a
+strong pooled result can coexist with heterogeneous site-level coverage and dispersion.
+
+FedAvg exceeds the local-only client-local mean by `+0.0336` IID and `+0.0570` non-IID; both
+95% intervals exclude zero. The non-IID runs also show a higher benign false-alarm rate and
+lower mean reconnaissance and multi-tactic F1. The complete sanitized result is published in
+`results/m3-multiseed-v2/`.
+
 ## Evaluation report
 
 `m3-report` derives deterministic figures from preserved `metrics.json` and
