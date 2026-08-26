@@ -8,6 +8,7 @@ import io
 import json
 import math
 import statistics
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -57,6 +58,9 @@ _T_CRITICAL_95 = {
 }
 
 
+_PARTITION_RETRY_WINDOW = 512
+
+
 def load_multiseed_contract(config_path: Path) -> tuple[dict[str, Any], str]:
     config, digest = load_yaml(config_path)
     if config.get("schema_version") != "1.0":
@@ -70,6 +74,16 @@ def load_multiseed_contract(config_path: Path) -> tuple[dict[str, Any], str]:
         raise MultiSeedError("seeds must be integers")
     if seeds != sorted(set(seeds)):
         raise MultiSeedError("seeds must be unique and sorted")
+    overlapping_pairs = [
+        (left, right)
+        for left, right in pairwise(seeds)
+        if right - left < _PARTITION_RETRY_WINDOW
+    ]
+    if overlapping_pairs:
+        raise MultiSeedError(
+            "adjacent seeds must differ by at least 512 to keep deterministic "
+            f"non-IID partition retry streams disjoint: {overlapping_pairs}"
+        )
     modes = config.get("modes")
     if modes != ["iid", "non-iid"]:
         raise MultiSeedError("modes must be exactly [iid, non-iid]")

@@ -1,8 +1,10 @@
 schema_version: "1.0"
-experiment_id: m3-fedavg-multiseed-v1
+experiment_id: m3-fedavg-multiseed-v2
 base_federation_config: configs/federation.yaml
 
-seeds: [341593, 341594, 341595, 341596, 341597]
+# The non-IID partitioner may try seed + attempt for up to 512 attempts.
+# A spacing of 1000 keeps those deterministic retry streams disjoint.
+seeds: [341593, 342593, 343593, 344593, 345593]
 modes: [iid, non-iid]
 
 execution:

@@ -226,32 +226,35 @@ prototype-alignment candidates, locks both endpoints before test access, and pub
 final auditable comparison.
 
 The repeated-seed workflow keeps the verified M2 split fixed and pairs IID/non-IID runs for
-seeds `341593` through `341597`. It derives one immutable federation configuration per seed,
-verifies every partition and run, records stage wall time, and computes sample standard
+seeds `341593`, `342593`, `343593`, `344593`, and `345593`. The spacing keeps the
+non-IID partitioner's bounded `seed + retry` random streams disjoint; the contract rejects
+closer seeds. The superseded `m3-multiseed-v1` pilot used adjacent seeds and is not a final
+statistical result because two retry streams collided. The corrected workflow derives one
+immutable federation configuration per seed, verifies every partition and run, records stage wall time, and computes sample standard
 deviation plus a 95% Student-t interval:
 
 ```bash
 python scripts/run_m3_multiseed.py plan \
   --config configs/m3-multiseed.yaml \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --workspace artifacts/m3-multiseed-v1
+  --workspace artifacts/m3-multiseed-v2
 
 python scripts/run_m3_multiseed.py run \
   --config configs/m3-multiseed.yaml \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --workspace artifacts/m3-multiseed-v1
+  --workspace artifacts/m3-multiseed-v2
 
 fl-forensics m3-summarize-multiseed \
   --config configs/m3-multiseed.yaml \
-  --runs-workspace artifacts/m3-multiseed-v1 \
+  --runs-workspace artifacts/m3-multiseed-v2 \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --output artifacts/m3-multiseed-summary-v1
+  --output artifacts/m3-multiseed-summary-v2
 
 fl-forensics m3-verify-multiseed \
   --config configs/m3-multiseed.yaml \
-  --runs-workspace artifacts/m3-multiseed-v1 \
+  --runs-workspace artifacts/m3-multiseed-v2 \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --workspace artifacts/m3-multiseed-summary-v1
+  --workspace artifacts/m3-multiseed-summary-v2
 ```
 
 Completed workspaces are verified and skipped on a resumed run. A non-empty workspace without

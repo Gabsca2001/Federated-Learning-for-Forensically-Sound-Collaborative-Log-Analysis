@@ -28,7 +28,7 @@ class MultiSeedTests(unittest.TestCase):
                     "schema_version": "1.0",
                     "experiment_id": "test-multiseed",
                     "base_federation_config": "configs/federation.yaml",
-                    "seeds": [11, 12],
+                    "seeds": [11, 523],
                     "modes": ["iid", "non-iid"],
                     "execution": {"device": "cpu"},
                     "statistics": {
@@ -51,7 +51,7 @@ class MultiSeedTests(unittest.TestCase):
         dataset.mkdir()
         (dataset / "manifest.json").write_text("{}", encoding="utf-8")
         class_names = ["benign", "attack"]
-        for seed in (11, 12):
+        for seed_index, seed in enumerate((11, 523)):
             config = {
                 "partitioning": {"seed": seed},
                 "training": {"seed": seed},
@@ -74,7 +74,7 @@ class MultiSeedTests(unittest.TestCase):
                 (partition / "manifest.json").write_bytes(
                     derived_json_bytes(partition_manifest)
                 )
-                offset = (seed - 11) * 0.01 + mode_index * 0.02
+                offset = seed_index * 0.01 + mode_index * 0.02
                 split = lambda value: {
                     "accuracy": value + 0.01,
                     "balanced_accuracy_observed_classes": value + 0.005,
@@ -134,9 +134,19 @@ class MultiSeedTests(unittest.TestCase):
             root = Path(temporary)
             path = self._contract(root)
             value = yaml.safe_load(path.read_text())
-            value["seeds"] = [12, 11, 12]
+            value["seeds"] = [523, 11, 523]
             path.write_text(yaml.safe_dump(value), encoding="utf-8")
             with self.assertRaisesRegex(MultiSeedError, "unique and sorted"):
+                load_multiseed_contract(path)
+
+    def test_contract_rejects_overlapping_partition_retry_streams(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            path = self._contract(root)
+            value = yaml.safe_load(path.read_text())
+            value["seeds"] = [11, 522]
+            path.write_text(yaml.safe_dump(value), encoding="utf-8")
+            with self.assertRaisesRegex(MultiSeedError, "at least 512"):
                 load_multiseed_contract(path)
 
     def test_summary_is_recomputed_from_verified_paired_runs(self) -> None:

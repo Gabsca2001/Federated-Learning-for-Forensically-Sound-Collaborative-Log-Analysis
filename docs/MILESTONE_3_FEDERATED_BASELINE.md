@@ -171,20 +171,25 @@ benign-only temporal holdout is kept separate and is not reported as a multiclas
 ## Repeated-seed evaluation
 
 The versioned contract in `configs/m3-multiseed.yaml` defines five paired repetitions with
-seeds `341593–341597`. The M2 dataset workspace and its train/validation/test/temporal split
-remain fixed. For each seed, both the partitioning seed and training seed change; IID and
-non-IID outcomes are therefore paired by seed.
+seeds `341593`, `342593`, `343593`, `344593`, and `345593`. The M2 dataset workspace and
+its train/validation/test/temporal split remain fixed. For each seed, both the partitioning
+seed and training seed change; IID and non-IID outcomes are therefore paired by seed. Seeds
+must differ by at least 512 because the deterministic non-IID allocator can try
+`seed + attempt` for at most 512 attempts while enforcing the minimum client size. This keeps
+the retry streams disjoint. The earlier `m3-multiseed-v1` pilot with adjacent seeds is
+retained only as a superseded diagnostic: requested seeds `341593` and `341594` converged on
+the same effective partition stream and therefore were not independent repetitions.
 
 ```bash
 python scripts/run_m3_multiseed.py plan \
   --config configs/m3-multiseed.yaml \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --workspace artifacts/m3-multiseed-v1
+  --workspace artifacts/m3-multiseed-v2
 
 python scripts/run_m3_multiseed.py run \
   --config configs/m3-multiseed.yaml \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --workspace artifacts/m3-multiseed-v1
+  --workspace artifacts/m3-multiseed-v2
 ```
 
 The execution layout is `seed-<seed>/<mode>/{partition,run,report}`. The runner:
@@ -200,15 +205,15 @@ After all ten runs verify, build and independently recompute the statistics:
 ```bash
 fl-forensics m3-summarize-multiseed \
   --config configs/m3-multiseed.yaml \
-  --runs-workspace artifacts/m3-multiseed-v1 \
+  --runs-workspace artifacts/m3-multiseed-v2 \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --output artifacts/m3-multiseed-summary-v1
+  --output artifacts/m3-multiseed-summary-v2
 
 fl-forensics m3-verify-multiseed \
   --config configs/m3-multiseed.yaml \
-  --runs-workspace artifacts/m3-multiseed-v1 \
+  --runs-workspace artifacts/m3-multiseed-v2 \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --workspace artifacts/m3-multiseed-summary-v1
+  --workspace artifacts/m3-multiseed-summary-v2
 ```
 
 The summary contains each run, mean, sample standard deviation, standard error, median,

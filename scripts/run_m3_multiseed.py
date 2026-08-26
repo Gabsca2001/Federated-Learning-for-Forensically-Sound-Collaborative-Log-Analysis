@@ -103,7 +103,7 @@ def main() -> int:
         default=Path("artifacts/m2-data24-parquet"),
     )
     parser.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m3-multiseed-v1")
+        "--workspace", type=Path, default=Path("artifacts/m3-multiseed-v2")
     )
     parser.add_argument("--seed", action="append", type=int)
     parser.add_argument("--mode", action="append", choices=("iid", "non-iid"))
