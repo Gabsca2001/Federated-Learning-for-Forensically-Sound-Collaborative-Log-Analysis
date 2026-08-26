@@ -97,7 +97,7 @@ multi-tactic mappings remain explicitly unresolved.
 
 ### M8 — preservation closure
 
-M8 inventories 2,363 artifacts and seven external bindings, commits 2,370 leaves under one
+M8 inventories 2,381 artifacts and seven external bindings, commits 2,388 leaves under one
 Merkle root, obtains a verified RFC 3161 token, writes a deterministic offline recovery TAR,
 and reconstructs the 30-round/450-contribution M5 campaign from that package. The final
 verifier reports five verified stages and zero errors.

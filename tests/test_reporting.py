@@ -9,7 +9,6 @@ from fl_forensics.canonical import sha256_file
 from fl_forensics.preprocessing import derived_json_bytes
 from fl_forensics.reporting import generate_m3_report
 
-
 CLASSES = ["benign", "discovery", "multi_tactic"]
 
 
@@ -77,6 +76,10 @@ def _build_workspace(root: Path) -> tuple[Path, Path]:
                 **_evaluation(0.8 + number / 100),
                 "macro_f1_all_model_classes": 0.60 + number / 100,
             },
+            "local_test": {
+                **_evaluation(0.8 + number / 100),
+                "macro_f1_all_model_classes": 0.55 + number / 100,
+            },
         }
         for number in range(1, 4)
     ]
@@ -94,15 +97,41 @@ def _build_workspace(root: Path) -> tuple[Path, Path]:
             }
             for number in range(1, 4)
         ],
+        "selected_global_client_test": [
+            {
+                "client_id": f"client{number:02d}",
+                "test": {
+                    **_evaluation(0.8 + number / 100),
+                    "macro_f1_all_model_classes": 0.65 + number / 100,
+                },
+            }
+            for number in range(1, 4)
+        ],
+        "selected_global_client_test_summary": {
+            "macro_f1_all_model_classes": {
+                "client_count": 3,
+                "mean": 0.67,
+                "population_stddev": 0.01,
+                "minimum": 0.66,
+                "maximum": 0.68,
+            }
+        },
         "local_only_clients": clients,
         "local_only_summary": {
+            "local_test_macro_f1": {
+                "client_count": 3,
+                "mean": 0.57,
+                "population_stddev": 0.01,
+                "minimum": 0.56,
+                "maximum": 0.58,
+            },
             "global_test_macro_f1": {
                 "client_count": 3,
                 "mean": 0.62,
                 "population_stddev": 0.01,
                 "minimum": 0.61,
                 "maximum": 0.63,
-            }
+            },
         },
     }
     _write(workspace / "metrics.json", metrics)
@@ -144,21 +173,41 @@ class ReportingTests(unittest.TestCase):
     def test_report_is_complete_and_repeatable(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             workspace, central = _build_workspace(Path(temporary))
-            first = generate_m3_report(
-                workspace=workspace, central_workspace=central
-            )
+            first = generate_m3_report(workspace=workspace, central_workspace=central)
             first_summary_digest = sha256_file(workspace / "reports" / "summary.json")
-            second = generate_m3_report(
-                workspace=workspace, central_workspace=central
-            )
+            second = generate_m3_report(workspace=workspace, central_workspace=central)
             self.assertEqual(first["status"], "reported")
-            self.assertEqual(first["figure_count"], 8)
+            self.assertEqual(first["figure_count"], 16)
             self.assertEqual(first["best_validation_round"], 2)
             self.assertEqual(first["selected_round"], 2)
+            self.assertEqual(first["client_confusion_matrix_figure_count"], 3)
+            self.assertEqual(
+                first["confusion_matrices"]["test"]["values"],
+                [[4, 1, 0], [1, 2, 1], [0, 1, 2]],
+            )
             self.assertEqual(first_summary_digest, second["summary_sha256"])
             summary = json.loads((workspace / "reports" / "summary.json").read_text())
-            self.assertEqual(len(summary["figures"]), 8)
+            self.assertEqual(len(summary["figures"]), 16)
             self.assertEqual(summary["metrics"]["selected_round"], 2)
+            self.assertEqual(
+                summary["metrics"]["selected_global_client_unweighted_mean_test_macro_f1"],
+                0.67,
+            )
+            self.assertEqual(
+                set(summary["confusion_matrices"]),
+                {"validation", "test", "temporal_holdout"},
+            )
+            self.assertEqual(len(summary["client_confusion_matrix_figures"]), 3)
+            for filename in (
+                "confusion-matrix-validation.png",
+                "confusion-matrix-validation-normalized.png",
+                "confusion-matrix-test.png",
+                "confusion-matrix-test-normalized.png",
+                "confusion-matrix-temporal-holdout.png",
+                "confusion-matrix-temporal-holdout-normalized.png",
+                "per-client-confusion/client01.png",
+            ):
+                self.assertTrue((workspace / "reports" / filename).is_file())
             for figure in summary["figures"]:
                 path = workspace / "reports" / figure["path"]
                 self.assertTrue(path.is_file())
@@ -171,6 +220,44 @@ class ReportingTests(unittest.TestCase):
                 stream.write(b" ")
             with self.assertRaisesRegex(ValueError, "metrics digest"):
                 generate_m3_report(workspace=workspace)
+
+    def test_report_supports_selected_global_without_local_baselines(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            workspace, _central = _build_workspace(Path(temporary))
+            comparison_path = workspace / "comparison.json"
+            comparison = json.loads(comparison_path.read_text())
+            comparison["local_only_clients"] = []
+            comparison["local_only_summary"] = {
+                name: {
+                    "client_count": 0,
+                    "mean": None,
+                    "population_stddev": 0.0,
+                    "minimum": None,
+                    "maximum": None,
+                }
+                for name in (
+                    "global_validation_macro_f1",
+                    "local_test_macro_f1",
+                    "global_test_macro_f1",
+                )
+            }
+            _write(comparison_path, comparison)
+            manifest_path = workspace / "manifest.json"
+            manifest = json.loads(manifest_path.read_text())
+            manifest["comparison_sha256"] = sha256_file(comparison_path)
+            _write(manifest_path, manifest)
+
+            result = generate_m3_report(workspace=workspace)
+
+            self.assertEqual(result["figure_count"], 14)
+            summary = json.loads((workspace / "reports" / "summary.json").read_text())
+            self.assertIsNone(summary["metrics"]["local_only_mean_test_macro_f1"])
+            self.assertTrue(
+                any(
+                    item["path"] == "selected-global-vs-local-only-client-test.png"
+                    for item in summary["figures"]
+                )
+            )
 
 
 if __name__ == "__main__":

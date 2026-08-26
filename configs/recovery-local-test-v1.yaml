@@ -1,0 +1,8 @@
+schema_version: "1.0"
+recovery:
+  preservation_workspace: artifacts/m8-preservation-manifest-local-test-v1
+  merkle_workspace: artifacts/m8-merkle-tree-local-test-v1
+  timestamp_workspace: artifacts/m8-timestamp-anchor-local-test-v1
+  timestamp_config: configs/timestamp-local-test-v1.yaml
+  archive_format: deterministic-ustar-v1
+  include_external_evidence_files: false

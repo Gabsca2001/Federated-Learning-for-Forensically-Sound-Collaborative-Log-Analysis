@@ -272,8 +272,28 @@ services:
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/enrollment-authority.public.pem:/trust/authority/enrollment-authority.public.pem:ro
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/attestation-verifier.public.pem:/trust/authority/attestation-verifier.public.pem:ro
       - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/manifest.json:/partition/manifest.json:ro
-      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/server/evaluation.json:/partition/server-evaluation.json:ro
       - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions:/submissions:ro
+
+  finalizer:
+    image: "${M5_RUNTIME_IMAGE:-flforensics-m5-runtime:latest}"
+    profiles: ["finalize"]
+    user: "${M5_UID:-1000}:${M5_GID:-1000}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    network_mode: "none"
+    tmpfs: ["/tmp:size=64m,mode=1777"]
+    command: ["m5-verify-campaign", "--workspace", "/coordinator", "--trust-workspace", "/trust", "--partition-manifest", "/partition/manifest.json", "--server-evaluation", "/partition/server/evaluation.json"]
+    volumes:
+      - ${M5_COORDINATOR_WORKSPACE:-./artifacts/m5-secure-campaign}:/coordinator
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/registry:/trust/registry:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/results:/trust/results:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/enrollment-authority.public.pem:/trust/authority/enrollment-authority.public.pem:ro
+      - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/attestation-verifier.public.pem:/trust/authority/attestation-verifier.public.pem:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/manifest.json:/partition/manifest.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/server/evaluation.json:/partition/server/evaluation.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/server/splits:/partition/server/splits:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/evaluation/clients:/partition/evaluation/clients:ro
 
 volumes:
   tpm01_state: {}

@@ -436,6 +436,7 @@ class SecureRoundDeploymentTests(unittest.TestCase):
             expected = f"tpm{index:02d}_socket:/run/swtpm"
             self.assertIn(expected, volumes)
             self.assertIn(f"/clients/{client}/dataset.json:/client/dataset.json:ro", volumes)
+            self.assertNotIn("/evaluation/clients/", volumes)
             for other in clients:
                 if other != client:
                     self.assertNotIn(f"/clients/{other}/dataset.json", volumes)
@@ -446,7 +447,20 @@ class SecureRoundDeploymentTests(unittest.TestCase):
         self.assertIn("enrollment-authority.public.pem", coordinator_volumes)
         self.assertIn("attestation-verifier.public.pem", coordinator_volumes)
         self.assertIn("/coordinator", coordinator_volumes)
-        self.assertIn("/partition/server-evaluation.json:ro", coordinator_volumes)
+        self.assertNotIn("/server/evaluation.json", coordinator_volumes)
+        self.assertNotIn("/server/splits", coordinator_volumes)
+        self.assertNotIn("/evaluation/clients", coordinator_volumes)
+
+        finalizer = services["finalizer"]
+        self.assertEqual(finalizer["image"], runtime_image)
+        self.assertEqual(finalizer["profiles"], ["finalize"])
+        self.assertEqual(finalizer["network_mode"], "none")
+        finalizer_volumes = "\n".join(finalizer["volumes"])
+        self.assertIn("/partition/server/evaluation.json:ro", finalizer_volumes)
+        self.assertIn("/partition/server/splits:ro", finalizer_volumes)
+        self.assertIn("/partition/evaluation/clients:ro", finalizer_volumes)
+        self.assertNotIn("/clients/client01/dataset.json", finalizer_volumes)
+        self.assertNotIn("private.pem", finalizer_volumes)
 
 
 if __name__ == "__main__":

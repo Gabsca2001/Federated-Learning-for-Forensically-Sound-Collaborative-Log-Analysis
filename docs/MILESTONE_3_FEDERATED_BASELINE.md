@@ -14,7 +14,7 @@ backend from scikit-learn to PyTorch.
 The canonical reference workspaces use the M2 Parquet profile:
 
 - `artifacts/m2-data24-parquet`;
-- `artifacts/m3-data24-parquet-iid`;
+- `artifacts/m3-data24-parquet-iid-local-test-v1`;
 - `artifacts/m3-data24-parquet-non-iid`.
 
 ## Partition profiles
@@ -32,24 +32,40 @@ windows and records the final distribution. Canonical client sizes range from 52
 training windows.
 
 Validation windows use the same stratified IID policy in both profiles so local validation is
-comparable. Every training and validation window appears in exactly one client snapshot.
+comparable. Test windows are partitioned separately in proportion to each client's
+training-class profile. This produces an approximately IID local test for IID clients and a
+domain-matched local test for non-IID clients. Every train, validation, and local-test window
+appears in exactly one client allocation for its split.
 
-Client snapshots contain scaled feature vectors, labels, window IDs, and capture IDs. They do
-not contain raw source rows, normalized Zeek events, source-line digests, or event-level
-lineage. The server artifact contains the complete scaled validation, development-test, and
-temporal-holdout sets, but training and selection commands expose only the split appropriate
-to their declared role.
+The training artifact `clients/<client_id>/dataset.json` contains only scaled train and
+validation feature windows. The evaluation-only artifact
+`evaluation/clients/<client_id>/test.json` has its own SHA-256 binding and is never mounted as
+a training snapshot. Neither artifact contains raw source rows, normalized Zeek events,
+source-line digests, or event-level lineage. The server artifact retains the complete scaled
+validation, development-test, and temporal-holdout sets for compatibility, while separately
+digest-bound `server/splits/*.json` artifacts enforce split-specific runtime access.
+
+The separation enforces three roles:
+
+1. local train updates model parameters;
+2. validation measures rounds, evaluates local-only models, and chooses the checkpoint;
+3. all model training finishes;
+4. global and client-local tests are opened only afterward and never change a model.
+
+The local-test partition is an evaluation view of the existing M2 test split, not additional
+data. The union of all client-local tests is exactly the complete server test, with no overlap
+or omitted window.
 
 ## Create and verify partitions
 
 ```bash
 fl-forensics m3-partition \
   --dataset-workspace artifacts/m2-data24-parquet \
-  --output artifacts/m3-data24-parquet-iid \
+  --output artifacts/m3-data24-parquet-iid-local-test-v1 \
   --mode iid
 
 fl-forensics m3-verify-partitions \
-  --workspace artifacts/m3-data24-parquet-iid \
+  --workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --dataset-workspace artifacts/m2-data24-parquet
 
 fl-forensics m3-partition \
@@ -63,7 +79,9 @@ fl-forensics m3-verify-partitions \
 ```
 
 The partition verifier reconstructs coverage from the M2 manifest, rejects overlap or missing
-windows, checks all direct digests, and enforces the raw-data boundary.
+windows separately for train, validation, and local test, checks all direct digests, rejects a
+test split embedded in any training snapshot, verifies the three isolated server splits, and
+rejects artifact paths that escape their declared evaluation directories.
 
 ## Two execution paths
 
@@ -76,15 +94,29 @@ training primitives and example-weighted FedAvg aggregation, but executes client
 stable order so every accepted input, local update, checkpoint, metric, and round relation can
 be published before the next round.
 
+For round `t`, every participating client receives the same global parameters `w_t`, performs
+two local epochs, and returns parameters `w_(t+1,k)` plus its local training count `n_k`. The
+server computes the standard example-weighted FedAvg update:
+
+```text
+w_(t+1) = sum_k (n_k / sum_j n_j) * w_(t+1,k)
+```
+
+All 15 clients participate in every reference round. Full participation is a valid synchronous
+cross-silo FedAvg profile; partial client sampling is common in cross-device deployments but
+is not required by the algorithm. Validation and test row counts are never aggregation
+weights. The verifier reloads the preserved local updates and independently recomputes this
+equation.
+
 ```bash
 fl-forensics m3-train \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --dataset-workspace artifacts/m2-data24-parquet \
   --output artifacts/m3-data24-parquet-iid-fedavg
 
 fl-forensics m3-verify \
   --workspace artifacts/m3-data24-parquet-iid-fedavg \
-  --partition-workspace artifacts/m3-data24-parquet-iid \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --dataset-workspace artifacts/m2-data24-parquet
 ```
 
@@ -108,12 +140,25 @@ previous round digest. Model/update payloads are content-addressed by SHA-256.
 The verifier checks M2 and partition lineage, direct artifact hashes, update structures,
 round order, and hash-chain continuity. It then reloads all 15 local updates for every round,
 recomputes example-weighted FedAvg, and requires equality with the preserved global
-checkpoint.
+checkpoint. It also reloads every retained local-only model, repeats its validation and test
+inference, and reconstructs the client summary statistics.
 
 ## Selection and evaluation
 
 The selected checkpoint maximizes validation macro-F1 across all model classes; ties choose
-the earliest round. Test and temporal-holdout metrics are released only after selection.
+the earliest round. All separately trained local-only baselines are also completed using only
+train and validation. Only after every training operation finishes does the runner load the
+test, temporal-holdout, and client-local test artifacts. It evaluates:
+
+- the selected FedAvg checkpoint on the complete pooled test;
+- the selected FedAvg checkpoint on every client-local test;
+- each separately trained local-only model on its own local test;
+- each local-only model on the complete pooled test as a common-distribution comparison.
+
+`comparison.json` reports client-unweighted mean, population standard deviation, minimum, and
+maximum macro-F1. The pooled global-test metric answers population-level performance; the
+client-unweighted distribution exposes cross-client dispersion and the worst observed client.
+Neither result is used for checkpoint or hyperparameter selection.
 
 | Profile | Selected round | Validation macro-F1 | Test macro-F1 |
 |---|---:|---:|---:|
@@ -126,15 +171,26 @@ benign-only temporal holdout is kept separate and is not reported as a multiclas
 ## Evaluation report
 
 `m3-report` derives deterministic figures from preserved `metrics.json` and
-`comparison.json`; it does not repeat training or inference. It validates source digests before
-generating:
+`comparison.json`; it does not repeat training or inference. Both `m3-train` and `m3-report`
+print the post-selection global confusion matrices in their final JSON output. The report
+validates source digests before generating:
 
-- absolute and row-normalized test confusion matrices;
+- absolute and row-normalized validation, test, and benign-only temporal-holdout confusion
+  matrices;
 - per-class precision, recall, F1, and support;
 - validation macro-F1 and training-loss curves by round;
 - local-only, FedAvg, and optional M2-central comparison;
-- per-client local-only performance;
+- per-client selected-global and local-only test performance;
+- one per-client local-test confusion figure containing absolute and normalized selected
+  FedAvg matrices and, when available, the corresponding local-only matrices;
+- client-unweighted local-test dispersion and worst-client performance;
 - `summary.json` with input and figure SHA-256 values.
+
+Global figures are written as `confusion-matrix-<split>.png` and
+`confusion-matrix-<split>-normalized.png`. Client figures are written below
+`per-client-confusion/`. Rows always represent actual classes and columns predicted classes.
+The temporal holdout contains benign windows only and is labelled accordingly; its matrix is
+an operational false-alarm view, not a six-class generalization result.
 
 ```bash
 fl-forensics m3-report \

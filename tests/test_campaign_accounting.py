@@ -27,6 +27,25 @@ def _sha(value: str) -> str:
     return value * 64
 
 
+def _accounting_config_value(
+    *,
+    campaign_path: str = "artifacts/m5-secure-multiround-local-test-v1",
+    trust_path: str = "artifacts/m4-trust-local-test-v1",
+) -> dict[str, object]:
+    return {
+        "schema_version": "1.0",
+        "campaign_accounting": {
+            "recovery_workspace": "artifacts/m8-recovery-export-local-test-v1",
+            "campaign_relative_path": campaign_path,
+            "trust_relative_path": trust_path,
+            "expected_round_count": 30,
+            "required_client_count": 15,
+            "attestation_refresh_interval_rounds": 5,
+            "source_profile": accounting.SOURCE_PROFILE,
+        },
+    }
+
+
 def _contribution() -> CampaignContributionAccount:
     return CampaignContributionAccount(
         round_number=1,
@@ -265,3 +284,47 @@ def test_verifier_rejects_unexpected_workspace_file(tmp_path: Path) -> None:
     )
     assert result["status"] == "failed"
     assert "unexpected or non-regular" in result["errors"][0]
+
+
+def test_settings_accepts_versioned_source_workspaces(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    value = _accounting_config_value()
+    monkeypatch.setattr(accounting, "load_yaml", lambda _path: (value, _sha("a")))
+    _, settings, _ = accounting._settings(tmp_path / "accounting.yaml")
+    assert settings["campaign_relative_path"].endswith("local-test-v1")
+    assert settings["trust_relative_path"].endswith("local-test-v1")
+
+
+@pytest.mark.parametrize(
+    ("campaign_path", "trust_path"),
+    [
+        ("m5-local-test-v1", "artifacts/m4-trust-local-test-v1"),
+        ("artifacts/m5-local-test-v1", "m4-trust-local-test-v1"),
+    ],
+)
+def test_settings_rejects_source_workspace_outside_artifacts(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    campaign_path: str,
+    trust_path: str,
+) -> None:
+    value = _accounting_config_value(
+        campaign_path=campaign_path, trust_path=trust_path
+    )
+    monkeypatch.setattr(accounting, "load_yaml", lambda _path: (value, _sha("a")))
+    with pytest.raises(
+        accounting.CampaignAccountingError, match="must be below artifacts"
+    ):
+        accounting._settings(tmp_path / "accounting.yaml")
+
+
+def test_preserved_workspace_root_resolves_versioned_path() -> None:
+    root = accounting._preserved_workspace_root(
+        paths=[
+            "artifacts/m5-secure-multiround-local-test-v1/campaign-manifest.json"
+        ],
+        required_suffix=("campaign-manifest.json",),
+        label="campaign",
+    )
+    assert root == "artifacts/m5-secure-multiround-local-test-v1"

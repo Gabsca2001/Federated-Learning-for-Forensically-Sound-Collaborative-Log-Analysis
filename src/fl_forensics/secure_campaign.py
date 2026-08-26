@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import statistics
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -34,7 +35,6 @@ from .secure_round_models import (
     SecureRoundContext,
 )
 from .storage import load_json, write_json_once, write_once
-
 
 SELECTION_METRIC = "macro_f1_all_model_classes"
 
@@ -98,6 +98,84 @@ def _evaluate_export(
     )
 
 
+def _load_client_local_tests(
+    *, partition_manifest_path: Path, partition: dict[str, Any]
+) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    """Load digest-bound local tests only when the partition supports them."""
+
+    if not partition.get("local_test_strategy"):
+        return []
+    snapshots = []
+    partition_workspace = partition_manifest_path.parent
+    for record in partition.get("clients", []):
+        relative = str(record.get("local_test_path", ""))
+        relative_path = Path(relative)
+        expected_prefix = f"evaluation/clients/{record['client_id']}/"
+        if (
+            relative_path.is_absolute()
+            or ".." in relative_path.parts
+            or not relative_path.as_posix().startswith(expected_prefix)
+        ):
+            raise SecureRoundError(
+                f"local test is outside evaluation boundary: {record['client_id']}"
+            )
+        path = partition_workspace / relative_path
+        if not path.is_file() or sha256_file(path) != record.get("local_test_sha256"):
+            raise SecureRoundError(f"local test digest mismatch: {record['client_id']}")
+        snapshot = load_json(path)
+        if snapshot.get("client_id") != record["client_id"] or set(snapshot.get("rows", {})) != {
+            "test"
+        }:
+            raise SecureRoundError(f"local test identity or split mismatch: {record['client_id']}")
+        if snapshot.get("class_names") != partition.get("class_names"):
+            raise SecureRoundError(f"local test class order mismatch: {record['client_id']}")
+        if len(snapshot["rows"]["test"]) != int(record.get("local_test_row_count", -1)):
+            raise SecureRoundError(f"local test row count mismatch: {record['client_id']}")
+        snapshots.append((record, snapshot))
+    return snapshots
+
+
+def _load_isolated_server_split(
+    *, partition_manifest_path: Path, partition: dict[str, Any], split: str
+) -> list[dict[str, Any]]:
+    records = partition.get("server_evaluation_splits")
+    if not isinstance(records, dict) or split not in records:
+        raise SecureRoundError(f"missing isolated server split: {split}")
+    record = records[split]
+    relative = Path(str(record.get("path", "")))
+    if (
+        relative.is_absolute()
+        or ".." in relative.parts
+        or not relative.as_posix().startswith("server/splits/")
+    ):
+        raise SecureRoundError(f"server {split} path escapes split boundary")
+    path = partition_manifest_path.parent / relative
+    if not path.is_file() or sha256_file(path) != record.get("sha256"):
+        raise SecureRoundError(f"server {split} isolated digest mismatch")
+    snapshot = load_json(path)
+    if (
+        snapshot.get("split") != split
+        or set(snapshot.get("rows", {})) != {split}
+        or snapshot.get("class_names") != partition.get("class_names")
+    ):
+        raise SecureRoundError(f"server {split} isolated identity mismatch")
+    rows = list(snapshot["rows"][split])
+    if not rows or len(rows) != int(record.get("row_count", -1)):
+        raise SecureRoundError(f"server {split} isolated row count mismatch")
+    return rows
+
+
+def _metric_summary(items: list[dict[str, Any]], key: str) -> dict[str, Any]:
+    values = [float(item[key]) for item in items if item.get(key) is not None]
+    return {
+        "client_count": len(values),
+        "mean": statistics.fmean(values) if values else None,
+        "population_stddev": statistics.pstdev(values) if len(values) > 1 else 0.0,
+        "minimum": min(values) if values else None,
+        "maximum": max(values) if values else None,
+    }
+
+
 def _inspect_campaign(
     *,
     workspace: Path,
@@ -111,19 +189,28 @@ def _inspect_campaign(
     partition = load_json(partition_manifest_path)
     if (
         int(partition.get("client_count", 0)) != len(EXPECTED_CLIENTS)
-        or [item.get("client_id") for item in partition.get("clients", [])]
-        != EXPECTED_CLIENTS
+        or [item.get("client_id") for item in partition.get("clients", [])] != EXPECTED_CLIENTS
     ):
         raise SecureRoundError("campaign partition does not contain the ordered 15 clients")
     if sha256_file(server_evaluation_path) != partition.get("server_evaluation_sha256"):
         raise SecureRoundError("server evaluation digest does not match partition manifest")
-    server_evaluation = load_json(server_evaluation_path)
     class_names = [str(item) for item in partition["class_names"]]
-    if server_evaluation.get("class_names") != class_names:
-        raise SecureRoundError("server evaluation class order differs from partition")
-    for split in ("validation", "test", "temporal_holdout"):
-        if not server_evaluation.get("rows", {}).get(split):
-            raise SecureRoundError(f"server evaluation split is empty: {split}")
+    isolated_server_splits = bool(partition.get("server_evaluation_splits"))
+    server_evaluation = None
+    if isolated_server_splits:
+        validation_rows = _load_isolated_server_split(
+            partition_manifest_path=partition_manifest_path,
+            partition=partition,
+            split="validation",
+        )
+    else:
+        server_evaluation = load_json(server_evaluation_path)
+        if server_evaluation.get("class_names") != class_names:
+            raise SecureRoundError("server evaluation class order differs from partition")
+        for split in ("validation", "test", "temporal_holdout"):
+            if not server_evaluation.get("rows", {}).get(split):
+                raise SecureRoundError(f"server evaluation split is empty: {split}")
+        validation_rows = server_evaluation["rows"]["validation"]
 
     coordinator_key = _coordinator_public_key(workspace)
     dependency_values = dependencies()
@@ -166,8 +253,7 @@ def _inspect_campaign(
             and checkpoint.core.round_number == round_number
             and checkpoint.core.context_digest == context.core_digest
             and context.core.previous_checkpoint_sha256 == previous_checkpoint_sha256
-            and checkpoint.core.previous_checkpoint_sha256
-            == previous_checkpoint_sha256
+            and checkpoint.core.previous_checkpoint_sha256 == previous_checkpoint_sha256
             and context.core.partition_manifest_sha256 == partition_sha256
             and context.core.federation_config_sha256 == federation_config_sha256
             and checkpoint.core.base_model_sha256 == context.core.base_model_sha256
@@ -187,7 +273,7 @@ def _inspect_campaign(
             raise SecureRoundError(f"round {round_number} changed model class order")
         validation = _evaluate_export(
             model_export=model_export,
-            rows=server_evaluation["rows"]["validation"],
+            rows=validation_rows,
             class_names=class_names,
             batch_size=context.core.batch_size,
             dependency_values=dependency_values,
@@ -231,15 +317,56 @@ def _inspect_campaign(
     selected_round = int(selected_validation["round_number"])
     selected_reference = references[selected_round - 1]
     selected_context = SecureRoundContext.model_validate(
-        load_json(
-            _round_workspace(workspace, selected_round)
-            / "public"
-            / "round-context.json"
-        )
+        load_json(_round_workspace(workspace, selected_round) / "public" / "round-context.json")
     )
     selected_model = load_json(
         _round_workspace(workspace, selected_round) / "checkpoint" / "global-model.json"
     )
+    if isolated_server_splits:
+        test_rows = _load_isolated_server_split(
+            partition_manifest_path=partition_manifest_path,
+            partition=partition,
+            split="test",
+        )
+        temporal_holdout_rows = _load_isolated_server_split(
+            partition_manifest_path=partition_manifest_path,
+            partition=partition,
+            split="temporal_holdout",
+        )
+    else:
+        assert server_evaluation is not None
+        test_rows = server_evaluation["rows"]["test"]
+        temporal_holdout_rows = server_evaluation["rows"]["temporal_holdout"]
+    client_local_tests = _load_client_local_tests(
+        partition_manifest_path=partition_manifest_path, partition=partition
+    )
+    if client_local_tests:
+        observed_local_test_ids = [
+            str(row.get("window_id"))
+            for _record, snapshot in client_local_tests
+            for row in snapshot["rows"]["test"]
+        ]
+        expected_test_ids = [str(row.get("window_id")) for row in test_rows]
+        if len(observed_local_test_ids) != len(set(observed_local_test_ids)) or set(
+            observed_local_test_ids
+        ) != set(expected_test_ids):
+            raise SecureRoundError(
+                "client-local tests do not exactly reconstruct the server test split"
+            )
+    selected_client_test = [
+        {
+            "client_id": record["client_id"],
+            "local_test_snapshot_sha256": record["local_test_sha256"],
+            "test": _evaluate_export(
+                model_export=selected_model,
+                rows=snapshot["rows"]["test"],
+                class_names=class_names,
+                batch_size=selected_context.core.batch_size,
+                dependency_values=dependency_values,
+            ),
+        }
+        for record, snapshot in client_local_tests
+    ]
     final_evaluation = {
         "schema_version": "1.0",
         "artifact_type": "secure_campaign_selected_checkpoint_evaluation",
@@ -261,7 +388,11 @@ def _inspect_campaign(
         "metrics": {
             split: _evaluate_export(
                 model_export=selected_model,
-                rows=server_evaluation["rows"][split],
+                rows={
+                    "validation": validation_rows,
+                    "test": test_rows,
+                    "temporal_holdout": temporal_holdout_rows,
+                }[split],
                 class_names=class_names,
                 batch_size=selected_context.core.batch_size,
                 dependency_values=dependency_values,
@@ -269,6 +400,19 @@ def _inspect_campaign(
             for split in ("validation", "test", "temporal_holdout")
         },
     }
+    if selected_client_test:
+        final_evaluation["evaluation_order"].append(
+            "evaluate the already-selected checkpoint on separate client-local test snapshots"
+        )
+        final_evaluation["client_local_test_strategy"] = partition["local_test_strategy"]
+        final_evaluation["selected_global_client_test"] = selected_client_test
+        final_evaluation["selected_global_client_test_summary"] = {
+            SELECTION_METRIC: _metric_summary(
+                [item["test"] for item in selected_client_test], SELECTION_METRIC
+            )
+        }
+    if isolated_server_splits:
+        final_evaluation["test_access_mode"] = "isolated-split-artifacts-after-selection"
     assert campaign_id is not None
     assert federation_config_sha256 is not None
     return {
@@ -337,9 +481,7 @@ def finalize_secure_campaign(
         created_at=_utc(now or datetime.now(UTC)),
     )
     digest = digest_object(core.model_dump(mode="json"))
-    signer = _coordinator_signer(
-        workspace, create=False, coordinator_workspace=workspace
-    )
+    signer = _coordinator_signer(workspace, create=False, coordinator_workspace=workspace)
     manifest = SecureCampaignManifest(
         manifest_id=f"secure-campaign-{digest[:24]}",
         core=core,
@@ -353,12 +495,17 @@ def finalize_secure_campaign(
         "round_count": core.round_count,
         "accepted_contribution_count": core.total_accepted_contributions,
         "selected_round": core.selected_round,
-        "selected_validation_macro_f1": float(
-            core.selected_validation_macro_f1_decimal
-        ),
+        "selected_validation_macro_f1": float(core.selected_validation_macro_f1_decimal),
         "selected_test_macro_f1": inspected["final_evaluation"]["metrics"]["test"][
             SELECTION_METRIC
         ],
+        "confusion_matrices": {
+            split: inspected["final_evaluation"]["metrics"][split]["confusion_matrix"]
+            for split in ("validation", "test", "temporal_holdout")
+        },
+        "client_confusion_matrix_count": len(
+            inspected["final_evaluation"].get("selected_global_client_test", [])
+        ),
         "manifest_sha256": sha256_file(manifest_path),
         "workspace": str(workspace),
     }
@@ -374,6 +521,7 @@ def verify_secure_campaign(
     """Independently verify the round chain, selection, and final evaluation."""
 
     errors: list[str] = []
+    inspected: dict[str, Any] | None = None
     try:
         manifest_path = workspace / "campaign-manifest.json"
         manifest = SecureCampaignManifest.model_validate(load_json(manifest_path))
@@ -386,12 +534,8 @@ def verify_secure_campaign(
             server_evaluation_path=server_evaluation_path,
             expected_rounds=manifest.core.round_count,
         )
-        expected_references = [
-            item.model_dump(mode="json") for item in inspected["references"]
-        ]
-        if [item.model_dump(mode="json") for item in manifest.core.rounds] != (
-            expected_references
-        ):
+        expected_references = [item.model_dump(mode="json") for item in inspected["references"]]
+        if [item.model_dump(mode="json") for item in manifest.core.rounds] != (expected_references):
             errors.append("campaign round references differ from verified round artifacts")
         selected_reference = inspected["selected_reference"]
         expected_core_values = {
@@ -425,11 +569,7 @@ def verify_secure_campaign(
             if observed != expected:
                 errors.append(f"campaign {name} mismatch")
         expected_f1 = str(
-            Decimal(
-                str(
-                    inspected["selected_validation"]["validation"][SELECTION_METRIC]
-                )
-            )
+            Decimal(str(inspected["selected_validation"]["validation"][SELECTION_METRIC]))
         )
         if manifest.core.selected_validation_macro_f1_decimal != expected_f1:
             errors.append("selected validation metric mismatch")
@@ -462,6 +602,19 @@ def verify_secure_campaign(
         "selected_round": manifest.core.selected_round if manifest is not None else None,
         "accepted_contribution_count": (
             manifest.core.total_accepted_contributions if manifest is not None else 0
+        ),
+        "confusion_matrices": (
+            {
+                split: inspected["final_evaluation"]["metrics"][split]["confusion_matrix"]
+                for split in ("validation", "test", "temporal_holdout")
+            }
+            if inspected is not None and not errors
+            else {}
+        ),
+        "client_confusion_matrix_count": (
+            len(inspected["final_evaluation"].get("selected_global_client_test", []))
+            if inspected is not None and not errors
+            else 0
         ),
         "error_count": len(errors),
         "errors": errors,

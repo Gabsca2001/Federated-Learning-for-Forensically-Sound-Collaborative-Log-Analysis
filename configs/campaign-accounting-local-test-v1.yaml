@@ -1,0 +1,10 @@
+schema_version: "1.0"
+
+campaign_accounting:
+  recovery_workspace: artifacts/m8-recovery-export-local-test-v1
+  campaign_relative_path: artifacts/m5-secure-multiround-local-test-v1
+  trust_relative_path: artifacts/m4-trust-local-test-v1
+  expected_round_count: 30
+  required_client_count: 15
+  attestation_refresh_interval_rounds: 5
+  source_profile: recovery-tar-offline-campaign-accounting-v1

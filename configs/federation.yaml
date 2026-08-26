@@ -9,6 +9,7 @@ partitioning:
   dirichlet_alpha: 0.3
   minimum_train_rows_per_client: 32
   validation_strategy: stratified-round-robin
+  local_test_strategy: train-profile-proportional
 
 model:
   hidden_layers: [128, 64]

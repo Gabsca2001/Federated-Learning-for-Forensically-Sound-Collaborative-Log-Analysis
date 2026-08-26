@@ -44,21 +44,15 @@ def _write_figure(*, figure: Any, path: Path, plt: Any) -> None:
 
 
 def _load_campaign(workspace: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    manifest = json.loads(
-        (workspace / "campaign-manifest.json").read_text(encoding="utf-8")
-    )
+    manifest = json.loads((workspace / "campaign-manifest.json").read_text(encoding="utf-8"))
     rows: list[dict[str, Any]] = []
     for reference in manifest["core"]["rounds"]:
         round_number = int(reference["round_number"])
         round_root = workspace / "rounds" / f"round-{round_number:03d}"
-        validation_path = (
-            workspace / "evaluation" / f"round-{round_number:03d}-validation.json"
-        )
+        validation_path = workspace / "evaluation" / f"round-{round_number:03d}-validation.json"
         if sha256_file(validation_path) != reference["validation_metrics_sha256"]:
             raise ValueError(f"round {round_number} validation digest mismatch")
-        global_validation = json.loads(validation_path.read_text(encoding="utf-8"))[
-            "validation"
-        ]
+        global_validation = json.loads(validation_path.read_text(encoding="utf-8"))["validation"]
         for client_index in range(1, int(manifest["core"]["required_client_count"]) + 1):
             client_id = f"client{client_index:02d}"
             submission = round_root / "submissions" / client_id
@@ -67,13 +61,9 @@ def _load_campaign(workspace: Path) -> tuple[dict[str, Any], list[dict[str, Any]
             metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
             bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
             if sha256_file(metrics_path) != bundle["core"]["metrics_sha256"]:
-                raise ValueError(
-                    f"round {round_number} signed metrics mismatch: {client_id}"
-                )
+                raise ValueError(f"round {round_number} signed metrics mismatch: {client_id}")
             if metrics.get("schema_version") != "2.0":
-                raise ValueError(
-                    f"round {round_number} lacks local epoch history: {client_id}"
-                )
+                raise ValueError(f"round {round_number} lacks local epoch history: {client_id}")
             for epoch_record in metrics["history"]:
                 rows.append(
                     {
@@ -81,8 +71,7 @@ def _load_campaign(workspace: Path) -> tuple[dict[str, Any], list[dict[str, Any]
                         "client_id": client_id,
                         "local_epoch": int(epoch_record["epoch"]),
                         "global_local_epoch": (
-                            (round_number - 1) * int(metrics["epochs"])
-                            + int(epoch_record["epoch"])
+                            (round_number - 1) * int(metrics["epochs"]) + int(epoch_record["epoch"])
                         ),
                         "train_loss": float(epoch_record["train"]["loss"]),
                         "validation_loss": float(epoch_record["validation"]["loss"]),
@@ -90,13 +79,9 @@ def _load_campaign(workspace: Path) -> tuple[dict[str, Any], list[dict[str, Any]
                             epoch_record["train"]["macro_f1_all_model_classes"]
                         ),
                         "validation_macro_f1": float(
-                            epoch_record["validation"][
-                                "macro_f1_all_model_classes"
-                            ]
+                            epoch_record["validation"]["macro_f1_all_model_classes"]
                         ),
-                        "optimizer_train_loss": float(
-                            epoch_record["optimizer_train_loss"]
-                        ),
+                        "optimizer_train_loss": float(epoch_record["optimizer_train_loss"]),
                         "update_delta_l2": float(metrics["update_delta_l2"]),
                         "global_validation_loss": float(global_validation["loss"]),
                         "global_validation_macro_f1": float(
@@ -220,34 +205,109 @@ def _heatmap_figure(
 
 
 def _selected_confusion_figure(
-    *, final_evaluation: dict[str, Any], plt: Any, np: Any
+    *,
+    final_evaluation: dict[str, Any],
+    normalized: bool,
+    plt: Any,
+    np: Any,
 ) -> Any:
-    figure, axes = plt.subplots(1, 2, figsize=(14, 5.8))
-    image = None
-    for axis, split in zip(axes, ("validation", "test"), strict=True):
+    splits = ("validation", "test", "temporal_holdout")
+    figure, axes = plt.subplots(1, len(splits), figsize=(20, 6.2), squeeze=False)
+    for axis, split in zip(axes[0], splits, strict=True):
         matrix = final_evaluation["metrics"][split]["confusion_matrix"]
         values = np.asarray(matrix["values"], dtype=float)
-        totals = values.sum(axis=1, keepdims=True)
-        normalized = np.divide(values, totals, out=np.zeros_like(values), where=totals > 0)
-        image = axis.imshow(normalized, vmin=0.0, vmax=1.0, cmap="Blues")
-        labels = [str(item).replace("_", " ") for item in matrix["labels"]]
-        axis.set_xticks(range(len(labels)), labels, rotation=40, ha="right")
-        axis.set_yticks(range(len(labels)), labels)
-        axis.set_xlabel("Predicted")
-        axis.set_ylabel("Actual")
-        axis.set_title(split.title())
-    if image is not None:
-        figure.colorbar(image, ax=axes.ravel().tolist(), label="Row fraction")
+        if normalized:
+            totals = values.sum(axis=1, keepdims=True)
+            display_values = np.divide(values, totals, out=np.zeros_like(values), where=totals > 0)
+        else:
+            display_values = values
+        _draw_confusion_axis(
+            figure=figure,
+            axis=axis,
+            labels=[str(item) for item in matrix["labels"]],
+            values=display_values,
+            normalized=normalized,
+            title=(
+                "Temporal holdout\n(benign-only)" if split == "temporal_holdout" else split.title()
+            ),
+        )
     figure.suptitle(
-        f"Selected secure checkpoint — round {final_evaluation['selected_round']}"
+        f"Selected secure checkpoint — round {final_evaluation['selected_round']} — "
+        + ("row-normalized" if normalized else "absolute counts")
     )
-    figure.subplots_adjust(wspace=0.3, top=0.86)
+    figure.tight_layout(rect=(0, 0, 1, 0.92))
     return figure
 
 
-def _selected_per_class_figure(
-    *, final_evaluation: dict[str, Any], plt: Any, np: Any
+def _draw_confusion_axis(
+    *,
+    figure: Any,
+    axis: Any,
+    labels: list[str],
+    values: Any,
+    normalized: bool,
+    title: str,
+) -> None:
+    image = axis.imshow(values, vmin=0.0, vmax=1.0 if normalized else None, cmap="Blues")
+    display_labels = [label.replace("_", " ") for label in labels]
+    axis.set_xticks(range(len(labels)), display_labels, rotation=40, ha="right")
+    axis.set_yticks(range(len(labels)), display_labels)
+    axis.set_xlabel("Predicted")
+    axis.set_ylabel("Actual")
+    axis.set_title(title)
+    maximum = float(values.max()) if values.size else 0.0
+    threshold = (0.5 if normalized else maximum / 2.0) if maximum else 0.0
+    for row_index, row in enumerate(values):
+        for column_index, value in enumerate(row):
+            axis.text(
+                column_index,
+                row_index,
+                f"{float(value) * 100:.1f}%" if normalized else str(int(value)),
+                ha="center",
+                va="center",
+                fontsize=7.5,
+                color="white" if float(value) > threshold else "#17202a",
+            )
+    figure.colorbar(
+        image,
+        ax=axis,
+        fraction=0.046,
+        pad=0.04,
+        label="Row fraction" if normalized else "Window count",
+    )
+
+
+def _client_confusion_figure(
+    *, client_id: str, evaluation: dict[str, Any], plt: Any, np: Any
 ) -> Any:
+    matrix = evaluation["confusion_matrix"]
+    labels = [str(item) for item in matrix["labels"]]
+    absolute = np.asarray(matrix["values"], dtype=float)
+    totals = absolute.sum(axis=1, keepdims=True)
+    normalized = np.divide(absolute, totals, out=np.zeros_like(absolute), where=totals > 0)
+    figure, axes = plt.subplots(1, 2, figsize=(14, 6.2), squeeze=False)
+    _draw_confusion_axis(
+        figure=figure,
+        axis=axes[0][0],
+        labels=labels,
+        values=absolute,
+        normalized=False,
+        title="Absolute counts",
+    )
+    _draw_confusion_axis(
+        figure=figure,
+        axis=axes[0][1],
+        labels=labels,
+        values=normalized,
+        normalized=True,
+        title="Row-normalized",
+    )
+    figure.suptitle(f"{client_id} — selected secure checkpoint local test")
+    figure.tight_layout(rect=(0, 0, 1, 0.94))
+    return figure
+
+
+def _selected_per_class_figure(*, final_evaluation: dict[str, Any], plt: Any, np: Any) -> Any:
     validation = final_evaluation["metrics"]["validation"]["per_class"]
     test = final_evaluation["metrics"]["test"]["per_class"]
     class_names = list(validation)
@@ -276,9 +336,7 @@ def _selected_per_class_figure(
     )
     axis.set_ylim(0.0, 1.0)
     axis.set_ylabel("F1")
-    axis.set_title(
-        f"Selected checkpoint per-class F1 — round {final_evaluation['selected_round']}"
-    )
+    axis.set_title(f"Selected checkpoint per-class F1 — round {final_evaluation['selected_round']}")
     axis.grid(axis="y", alpha=0.25)
     axis.legend()
     return figure
@@ -306,9 +364,9 @@ def generate_report(
     plt, np = _dependencies()
     manifest, rows = _load_campaign(workspace)
     final_evaluation = json.loads(
-        (
-            workspace / "evaluation" / "selected-checkpoint-evaluation.json"
-        ).read_text(encoding="utf-8")
+        (workspace / "evaluation" / "selected-checkpoint-evaluation.json").read_text(
+            encoding="utf-8"
+        )
     )
     figures = {
         "global-validation-by-round.png": _global_validation_figure(rows=rows, plt=plt),
@@ -357,12 +415,35 @@ def generate_report(
             np=np,
         ),
         "selected-validation-test-confusion.png": _selected_confusion_figure(
-            final_evaluation=final_evaluation, plt=plt, np=np
+            final_evaluation=final_evaluation, normalized=True, plt=plt, np=np
+        ),
+        "selected-validation-test-confusion-absolute.png": _selected_confusion_figure(
+            final_evaluation=final_evaluation, normalized=False, plt=plt, np=np
         ),
         "selected-validation-test-per-class-f1.png": _selected_per_class_figure(
             final_evaluation=final_evaluation, plt=plt, np=np
         ),
     }
+    client_confusion_paths: list[str] = []
+    selected_client_tests = sorted(
+        final_evaluation.get("selected_global_client_test", []),
+        key=lambda item: str(item["client_id"]),
+    )
+    for item in selected_client_tests:
+        client_id = str(item["client_id"])
+        if not client_id or any(
+            character not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+            for character in client_id
+        ):
+            raise ValueError(f"unsafe client identifier in report: {client_id!r}")
+        filename = f"per-client-confusion/{client_id}.png"
+        figures[filename] = _client_confusion_figure(
+            client_id=client_id,
+            evaluation=item["test"],
+            plt=plt,
+            np=np,
+        )
+        client_confusion_paths.append(filename)
     for filename, figure in figures.items():
         _write_figure(figure=figure, path=output / filename, plt=plt)
     _write_csv(output / "round-client-epoch-metrics.csv", rows)
@@ -370,29 +451,29 @@ def generate_report(
         "schema_version": "1.0",
         "artifact_type": "m5_secure_campaign_report_summary",
         "source_workspace": str(workspace),
-        "source_campaign_manifest_sha256": sha256_file(
-            workspace / "campaign-manifest.json"
-        ),
+        "source_campaign_manifest_sha256": sha256_file(workspace / "campaign-manifest.json"),
         "campaign_verification": verification,
         "round_count": int(manifest["core"]["round_count"]),
         "client_count": int(manifest["core"]["required_client_count"]),
-        "accepted_contribution_count": int(
-            manifest["core"]["total_accepted_contributions"]
-        ),
+        "accepted_contribution_count": int(manifest["core"]["total_accepted_contributions"]),
         "selected_round": int(manifest["core"]["selected_round"]),
         "selected_metrics": final_evaluation["metrics"],
+        "confusion_matrices": {
+            split: final_evaluation["metrics"][split]["confusion_matrix"]
+            for split in ("validation", "test", "temporal_holdout")
+        },
+        "confusion_matrix_figures": sorted(name for name in figures if "confusion" in name),
+        "client_confusion_matrix_figures": client_confusion_paths,
         "test_selection_policy": "validation-only selection; selected checkpoint test once",
     }
     write_once(output / "summary.json", derived_json_bytes(summary))
-    artifact_names = sorted(path.name for path in output.iterdir() if path.is_file())
+    artifact_paths = sorted(path for path in output.rglob("*") if path.is_file())
     report_manifest = {
         "schema_version": "1.0",
         "artifact_type": "m5_secure_campaign_report_manifest",
-        "source_campaign_manifest_sha256": summary[
-            "source_campaign_manifest_sha256"
-        ],
+        "source_campaign_manifest_sha256": summary["source_campaign_manifest_sha256"],
         "artifacts": {
-            name: sha256_file(output / name) for name in artifact_names
+            path.relative_to(output).as_posix(): sha256_file(path) for path in artifact_paths
         },
     }
     write_once(output / "manifest.json", derived_json_bytes(report_manifest))
@@ -403,9 +484,10 @@ def generate_report(
         "round_count": summary["round_count"],
         "client_count": summary["client_count"],
         "selected_round": summary["selected_round"],
-        "selected_test_macro_f1": final_evaluation["metrics"]["test"][
-            "macro_f1_all_model_classes"
-        ],
+        "selected_test_macro_f1": final_evaluation["metrics"]["test"]["macro_f1_all_model_classes"],
+        "confusion_matrices": summary["confusion_matrices"],
+        "confusion_matrix_figures": summary["confusion_matrix_figures"],
+        "client_confusion_matrix_figure_count": len(client_confusion_paths),
         "figure_count": len(figures),
         "manifest_sha256": sha256_file(output / "manifest.json"),
     }
@@ -413,12 +495,8 @@ def generate_report(
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m5-secure-multiround")
-    )
-    parser.add_argument(
-        "--trust-workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
+    parser.add_argument("--workspace", type=Path, default=Path("artifacts/m5-secure-multiround"))
+    parser.add_argument("--trust-workspace", type=Path, default=Path("artifacts/m4-trust"))
     parser.add_argument(
         "--partition-workspace",
         type=Path,
@@ -432,9 +510,7 @@ def main() -> int:
         workspace=arguments.workspace,
         trust_workspace=arguments.trust_workspace,
         partition_manifest_path=arguments.partition_workspace / "manifest.json",
-        server_evaluation_path=(
-            arguments.partition_workspace / "server" / "evaluation.json"
-        ),
+        server_evaluation_path=(arguments.partition_workspace / "server" / "evaluation.json"),
         output=arguments.output,
     )
     print(json.dumps(result, indent=2, sort_keys=True))

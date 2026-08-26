@@ -14,10 +14,11 @@ from fl_forensics.crypto import SoftwareECDSASigner
 from fl_forensics.models import SignatureBlock
 from fl_forensics.preprocessing import derived_json_bytes
 from fl_forensics.secure_campaign import (
+    _load_client_local_tests,
     finalize_secure_campaign,
     verify_secure_campaign,
 )
-from fl_forensics.secure_round import initialize_secure_round
+from fl_forensics.secure_round import SecureRoundError, initialize_secure_round
 from fl_forensics.secure_round_models import (
     CheckpointInput,
     RoundClientContract,
@@ -27,7 +28,6 @@ from fl_forensics.secure_round_models import (
     SecureRoundContextCore,
 )
 from fl_forensics.storage import write_json_once, write_once
-
 
 CLIENTS = ["client01", "client02"]
 
@@ -135,7 +135,7 @@ class SecureCampaignTests(unittest.TestCase):
             },
         )
 
-    def _workspace(self, root: Path) -> tuple[Path, Path, Path]:
+    def _workspace(self, root: Path, *, isolated_splits: bool = True) -> tuple[Path, Path, Path]:
         campaign = root / "campaign"
         partition_path = root / "partition" / "manifest.json"
         evaluation_path = root / "partition" / "server" / "evaluation.json"
@@ -151,18 +151,65 @@ class SecureCampaignTests(unittest.TestCase):
         server = {
             "class_names": ["benign", "attack"],
             "rows": {
-                "validation": [{"label": "validation"}],
-                "test": [{"label": "test"}],
-                "temporal_holdout": [{"label": "temporal_holdout"}],
+                "validation": [{"label": "validation", "window_id": "validation-1"}],
+                "test": [
+                    {"label": "test", "window_id": f"test-{client_id}"} for client_id in CLIENTS
+                ],
+                "temporal_holdout": [{"label": "temporal_holdout", "window_id": "holdout-1"}],
             },
         }
         write_once(evaluation_path, derived_json_bytes(server))
+        clients = []
+        for index, client_id in enumerate(CLIENTS, start=1):
+            relative = Path("evaluation") / "clients" / client_id / "test.json"
+            local_test = {
+                "client_id": client_id,
+                "class_names": server["class_names"],
+                "rows": {
+                    "test": [
+                        {
+                            "label": f"test-{client_id}",
+                            "window_id": f"test-{client_id}",
+                        }
+                    ]
+                },
+            }
+            local_bytes = derived_json_bytes(local_test)
+            write_once(partition_path.parent / relative, local_bytes)
+            clients.append(
+                {
+                    "client_id": client_id,
+                    "partition_id": index - 1,
+                    "local_test_path": relative.as_posix(),
+                    "local_test_sha256": sha256_bytes(local_bytes),
+                    "local_test_row_count": 1,
+                }
+            )
+        server_splits = {}
+        if isolated_splits:
+            for split in ("validation", "test", "temporal_holdout"):
+                relative = Path("server") / "splits" / f"{split}.json"
+                snapshot = {
+                    "class_names": server["class_names"],
+                    "split": split,
+                    "rows": {split: server["rows"][split]},
+                }
+                split_bytes = derived_json_bytes(snapshot)
+                write_once(partition_path.parent / relative, split_bytes)
+                server_splits[split] = {
+                    "path": relative.as_posix(),
+                    "sha256": sha256_bytes(split_bytes),
+                    "row_count": len(server["rows"][split]),
+                }
         partition = {
             "client_count": len(CLIENTS),
-            "clients": [{"client_id": client_id} for client_id in CLIENTS],
+            "clients": clients,
             "class_names": server["class_names"],
+            "local_test_strategy": "train-profile-proportional",
             "server_evaluation_sha256": sha256_file(evaluation_path),
         }
+        if isolated_splits:
+            partition["server_evaluation_splits"] = server_splits
         write_once(partition_path, derived_json_bytes(partition))
         partition_sha256 = sha256_file(partition_path)
         previous_checkpoint_sha256 = "0" * 64
@@ -208,9 +255,7 @@ class SecureCampaignTests(unittest.TestCase):
                 round_workspace / "checkpoint" / "manifest.json",
                 checkpoint.model_dump(mode="json"),
             )
-            write_once(
-                round_workspace / "checkpoint" / "global-model.json", model_bytes
-            )
+            write_once(round_workspace / "checkpoint" / "global-model.json", model_bytes)
             previous_checkpoint_sha256 = sha256_file(
                 round_workspace / "checkpoint" / "manifest.json"
             )
@@ -223,6 +268,10 @@ class SecureCampaignTests(unittest.TestCase):
         return {
             "row_count": len(rows),
             "macro_f1_all_model_classes": score,
+            "confusion_matrix": {
+                "labels": ["benign", "attack"],
+                "values": [[len(rows), 0], [0, 0]],
+            },
         }
 
     def test_campaign_selects_validation_before_test_and_verifies(self) -> None:
@@ -235,16 +284,17 @@ class SecureCampaignTests(unittest.TestCase):
                 "matches_reference_checkpoint": True,
                 "errors": [],
             }
-            with patch(
-                "fl_forensics.secure_campaign.EXPECTED_CLIENTS", CLIENTS
-            ), patch(
-                "fl_forensics.secure_campaign.verify_secure_round",
-                return_value=verified_round,
-            ), patch(
-                "fl_forensics.secure_campaign.dependencies", return_value=()
-            ), patch(
-                "fl_forensics.secure_campaign._evaluate_export",
-                side_effect=self._evaluation,
+            with (
+                patch("fl_forensics.secure_campaign.EXPECTED_CLIENTS", CLIENTS),
+                patch(
+                    "fl_forensics.secure_campaign.verify_secure_round",
+                    return_value=verified_round,
+                ),
+                patch("fl_forensics.secure_campaign.dependencies", return_value=()),
+                patch(
+                    "fl_forensics.secure_campaign._evaluate_export",
+                    side_effect=self._evaluation,
+                ),
             ):
                 result = finalize_secure_campaign(
                     workspace=campaign,
@@ -261,26 +311,88 @@ class SecureCampaignTests(unittest.TestCase):
                 )
             self.assertEqual(result["selected_round"], 1)
             self.assertEqual(result["accepted_contribution_count"], 4)
+            self.assertEqual(result["client_confusion_matrix_count"], 2)
+            self.assertEqual(
+                set(result["confusion_matrices"]),
+                {"validation", "test", "temporal_holdout"},
+            )
             self.assertEqual(verification["status"], "verified")
-            final = (
-                campaign / "evaluation" / "selected-checkpoint-evaluation.json"
-            ).read_text(encoding="utf-8")
+            self.assertEqual(verification["client_confusion_matrix_count"], 2)
+            self.assertEqual(
+                verification["confusion_matrices"]["test"]["labels"],
+                ["benign", "attack"],
+            )
+            final = (campaign / "evaluation" / "selected-checkpoint-evaluation.json").read_text(
+                encoding="utf-8"
+            )
             self.assertIn('"selected_round":1', final)
+            self.assertIn('"selected_global_client_test"', final)
+            self.assertIn('"client_count":2', final)
+            self.assertIn('"test_access_mode"', final)
+
+    def test_legacy_combined_server_evaluation_remains_supported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            campaign, partition, evaluation = self._workspace(root, isolated_splits=False)
+            with (
+                patch("fl_forensics.secure_campaign.EXPECTED_CLIENTS", CLIENTS),
+                patch(
+                    "fl_forensics.secure_campaign.verify_secure_round",
+                    return_value={"status": "verified", "errors": []},
+                ),
+                patch("fl_forensics.secure_campaign.dependencies", return_value=()),
+                patch(
+                    "fl_forensics.secure_campaign._evaluate_export",
+                    side_effect=self._evaluation,
+                ),
+            ):
+                result = finalize_secure_campaign(
+                    workspace=campaign,
+                    trust_workspace=root / "trust",
+                    partition_manifest_path=partition,
+                    server_evaluation_path=evaluation,
+                    expected_rounds=2,
+                )
+
+            self.assertEqual(result["selected_round"], 1)
+            final = (campaign / "evaluation" / "selected-checkpoint-evaluation.json").read_text(
+                encoding="utf-8"
+            )
+            self.assertNotIn('"test_access_mode"', final)
+
+    def test_local_test_path_traversal_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            partition_path = root / "manifest.json"
+            partition = {
+                "local_test_strategy": "train-profile-proportional",
+                "class_names": ["benign", "attack"],
+                "clients": [
+                    {
+                        "client_id": "client01",
+                        "local_test_path": ("evaluation/clients/client01/../client02/test.json"),
+                        "local_test_sha256": "0" * 64,
+                        "local_test_row_count": 1,
+                    }
+                ],
+            }
+
+            with self.assertRaisesRegex(SecureRoundError, "outside evaluation boundary"):
+                _load_client_local_tests(
+                    partition_manifest_path=partition_path,
+                    partition=partition,
+                )
 
     def test_broken_checkpoint_chain_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             campaign, partition, evaluation = self._workspace(root)
-            context_path = (
-                campaign / "rounds" / "round-002" / "public" / "round-context.json"
-            )
+            context_path = campaign / "rounds" / "round-002" / "public" / "round-context.json"
             context = SecureRoundContext.model_validate_json(context_path.read_text())
             signer = SoftwareECDSASigner.load(
                 campaign / "authority" / "round-coordinator.private.pem"
             )
-            changed_core = context.core.model_copy(
-                update={"previous_checkpoint_sha256": "f" * 64}
-            )
+            changed_core = context.core.model_copy(update={"previous_checkpoint_sha256": "f" * 64})
             digest = digest_object(changed_core.model_dump(mode="json"))
             changed = context.model_copy(
                 update={
@@ -296,17 +408,19 @@ class SecureCampaignTests(unittest.TestCase):
             )
             context_path.chmod(0o600)
             context_path.write_bytes(derived_json_bytes(changed.model_dump(mode="json")))
-            with patch(
-                "fl_forensics.secure_campaign.EXPECTED_CLIENTS", CLIENTS
-            ), patch(
-                "fl_forensics.secure_campaign.verify_secure_round",
-                return_value={"status": "verified", "errors": []},
-            ), patch(
-                "fl_forensics.secure_campaign.dependencies", return_value=()
-            ), patch(
-                "fl_forensics.secure_campaign._evaluate_export",
-                side_effect=self._evaluation,
-            ), self.assertRaisesRegex(ValueError, "breaks the campaign chain"):
+            with (
+                patch("fl_forensics.secure_campaign.EXPECTED_CLIENTS", CLIENTS),
+                patch(
+                    "fl_forensics.secure_campaign.verify_secure_round",
+                    return_value={"status": "verified", "errors": []},
+                ),
+                patch("fl_forensics.secure_campaign.dependencies", return_value=()),
+                patch(
+                    "fl_forensics.secure_campaign._evaluate_export",
+                    side_effect=self._evaluation,
+                ),
+                self.assertRaisesRegex(ValueError, "breaks the campaign chain"),
+            ):
                 finalize_secure_campaign(
                     workspace=campaign,
                     trust_workspace=root / "trust",
@@ -486,9 +600,7 @@ class SecureCampaignTests(unittest.TestCase):
                 secure_config_path=secure_config_path,
                 now=now,
             )
-            self.assertEqual(
-                (round2 / "public" / "base-model.json").read_bytes(), learned_bytes
-            )
+            self.assertEqual((round2 / "public" / "base-model.json").read_bytes(), learned_bytes)
             self.assertEqual(second["base_model_sha256"], learned_sha256)
             self.assertEqual(
                 second["previous_checkpoint_sha256"],
