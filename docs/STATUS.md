@@ -24,7 +24,7 @@ production-grade evidence storage, key management, and multi-host operation.
 | 15-client IID/non-IID partitioning | Implemented and verified (M3) | Exact train/validation/local-test coverage; client and server test artifacts are isolated from training access |
 | Flower ClientApp/ServerApp | Implemented (M3) | Current Message API; 15-client full-participation FedAvg profile |
 | Auditable FedAvg runner | Implemented and verified (M3) | All training precedes test access; aggregation, local-only inference, and post-selection per-client tests are independently reconstructed |
-| Paired multi-seed FedAvg evaluation | Implemented; corrected execution pending (M3) | Five seeds spaced by 1000, IID/non-IID pairing, retry-stream collision guard, resumable verified runs, sample dispersion, and 95% Student-t intervals; adjacent-seed v1 pilot superseded |
+| Paired multi-seed FedAvg evaluation | Implemented and verified (M3) | Five seeds spaced by 1000; 10/10 sources verified; pooled test macro-F1 `0.9387` IID and `0.9414` non-IID; paired delta interval includes zero; client-local and local-only distributions published |
 | PROTEAN adaptation | Implemented and verified (M3 extension) | Four validation-only lambda candidates; two endpoints locked before test access |
 | Enrollment, AK/ESK separation, challenge, revocation | Implemented (M4) | Signed one-to-one bindings and append-only revocation semantics |
 | Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; 15/15 `swtpm` gate passed |

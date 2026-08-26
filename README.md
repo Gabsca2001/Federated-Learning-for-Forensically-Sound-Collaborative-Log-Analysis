@@ -258,6 +258,14 @@ fl-forensics m3-verify-multiseed \
   --workspace artifacts/m3-multiseed-summary-v2
 ```
 
+The verified five-seed result has pooled test macro-F1 `0.9387` IID and `0.9414` non-IID.
+The paired non-IID-minus-IID difference is `+0.0027` with 95% interval
+`[-0.0287, +0.0341]`, so no pooled macro-F1 advantage is established. FedAvg remains better
+than the local-only baseline on the isolated client tests in both modes. The client-local
+all-class score falls under non-IID because it captures both prediction quality and missing
+class coverage at heterogeneous clients. See the
+[sanitized M3 multi-seed snapshot](results/m3-multiseed-v2/README.md).
+
 Completed workspaces are verified and skipped on a resumed run. A non-empty workspace without
 a final manifest is treated as partial and stops the orchestrator for investigation.
 

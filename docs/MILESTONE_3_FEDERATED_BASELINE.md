@@ -224,6 +224,28 @@ deltas for both pooled and client-local test macro-F1. Client-local macro-F1 use
 classes; zero-support classes contribute zero, so it complements rather than replaces the pooled
 test. No test metric participates in checkpoint selection.
 
+### Verified five-seed result
+
+| Metric | IID mean | IID 95% CI | Non-IID mean | Non-IID 95% CI |
+|---|---:|---:|---:|---:|
+| Pooled test macro-F1 | `0.9387` | `[0.9155, 0.9619]` | `0.9414` | `[0.9327, 0.9501]` |
+| Pooled test accuracy | `0.9705` | `[0.9607, 0.9802]` | `0.9549` | `[0.9500, 0.9597]` |
+| Temporal benign false-alarm rate | `0.0036` | `[0.0029, 0.0042]` | `0.0115` | `[0.0052, 0.0178]` |
+| FedAvg client-local all-class macro-F1 mean | `0.9430` | `[0.9219, 0.9640]` | `0.7093` | `[0.6680, 0.7506]` |
+| Local-only client-local all-class macro-F1 mean | `0.9094` | `[0.9023, 0.9164]` | `0.6523` | `[0.6279, 0.6767]` |
+
+The paired non-IID-minus-IID pooled macro-F1 difference is `+0.0027`, with a 95% interval of
+`[-0.0287, +0.0341]`; the interval includes zero. The corresponding client-local all-class
+difference is `-0.2337`, with interval `[-0.2794, -0.1880]`. The latter is coverage-aware:
+non-IID local tests contain only 3–6 of the six model classes, and every zero-support class
+contributes zero. It must not be read as a pure model-performance loss. It demonstrates that a
+strong pooled result can coexist with heterogeneous site-level coverage and dispersion.
+
+FedAvg exceeds the local-only client-local mean by `+0.0336` IID and `+0.0570` non-IID; both
+95% intervals exclude zero. The non-IID runs also show a higher benign false-alarm rate and
+lower mean reconnaissance and multi-tactic F1. The complete sanitized result is published in
+`results/m3-multiseed-v2/`.
+
 ## Evaluation report
 
 `m3-report` derives deterministic figures from preserved `metrics.json` and
