@@ -230,8 +230,9 @@ seeds `341593`, `342593`, `343593`, `344593`, and `345593`. The spacing keeps th
 non-IID partitioner's bounded `seed + retry` random streams disjoint; the contract rejects
 closer seeds. The superseded `m3-multiseed-v1` pilot used adjacent seeds and is not a final
 statistical result because two retry streams collided. The corrected workflow derives one
-immutable federation configuration per seed, verifies every partition and run, records stage wall time, and computes sample standard
-deviation plus a 95% Student-t interval:
+immutable federation configuration per seed, verifies every partition, run, metrics file,
+and client-local comparison, records stage wall time, and computes sample standard deviation
+plus a 95% Student-t interval for pooled and client-local results:
 
 ```bash
 python scripts/run_m3_multiseed.py plan \

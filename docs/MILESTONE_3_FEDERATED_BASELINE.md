@@ -217,8 +217,12 @@ fl-forensics m3-verify-multiseed \
 ```
 
 The summary contains each run, mean, sample standard deviation, standard error, median,
-minimum, maximum, and a 95% Student-t interval. It also reports the paired per-seed
-non-IID-minus-IID test macro-F1 delta. No test metric participates in checkpoint selection.
+minimum, maximum, and a 95% Student-t interval. Besides the pooled common test, it aggregates
+the selected FedAvg model and local-only baselines across the 15 isolated client-local tests,
+including their within-run population dispersion. It reports paired per-seed non-IID-minus-IID
+deltas for both pooled and client-local test macro-F1. Client-local macro-F1 uses all six model
+classes; zero-support classes contribute zero, so it complements rather than replaces the pooled
+test. No test metric participates in checkpoint selection.
 
 ## Evaluation report
 

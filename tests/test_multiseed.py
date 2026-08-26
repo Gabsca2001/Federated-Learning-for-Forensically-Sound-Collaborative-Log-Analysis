@@ -69,6 +69,7 @@ class MultiSeedTests(unittest.TestCase):
                 run.mkdir(parents=True)
                 partition_manifest = {
                     "class_names": class_names,
+                    "client_count": 15,
                     "partition_mode": mode,
                 }
                 (partition / "manifest.json").write_bytes(
@@ -101,6 +102,29 @@ class MultiSeedTests(unittest.TestCase):
                     },
                 }
                 (run / "metrics.json").write_bytes(derived_json_bytes(metrics))
+                fedavg_client_mean = 0.70 + offset
+                local_only_client_mean = 0.60 + offset
+                distribution = lambda mean: {
+                    "client_count": 15,
+                    "maximum": mean + 0.10,
+                    "mean": mean,
+                    "minimum": mean - 0.10,
+                    "population_stddev": 0.05,
+                }
+                comparison = {
+                    "artifact_type": "m3_local_fedavg_comparison",
+                    "selected_global_client_test_summary": {
+                        "macro_f1_all_model_classes": distribution(
+                            fedavg_client_mean
+                        )
+                    },
+                    "local_only_summary": {
+                        "local_test_macro_f1": distribution(local_only_client_mean)
+                    },
+                }
+                (run / "comparison.json").write_bytes(
+                    derived_json_bytes(comparison)
+                )
                 manifest = {
                     "partition_mode": mode,
                     "training": {"seed": seed},
@@ -109,6 +133,7 @@ class MultiSeedTests(unittest.TestCase):
                         partition / "manifest.json"
                     ),
                     "metrics_sha256": sha256_file(run / "metrics.json"),
+                    "comparison_sha256": sha256_file(run / "comparison.json"),
                     "selected_round": 2 + mode_index,
                     "selection_policy": {
                         "metric": "macro_f1_all_model_classes",
@@ -181,6 +206,18 @@ class MultiSeedTests(unittest.TestCase):
                     ]["mean"],
                     0.02,
                 )
+                self.assertAlmostEqual(
+                    summary["mode_summaries"]["iid"][
+                        "fedavg_client_local_test_macro_f1_mean"
+                    ]["mean"],
+                    0.705,
+                )
+                self.assertAlmostEqual(
+                    summary["mode_summaries"]["non-iid"][
+                        "fedavg_minus_local_only_client_local_test_macro_f1_mean"
+                    ]["mean"],
+                    0.10,
+                )
                 verification = verify_multiseed_summary(
                     runs_workspace=runs,
                     dataset_workspace=dataset,
@@ -199,6 +236,38 @@ class MultiSeedTests(unittest.TestCase):
                 )
                 self.assertEqual(tampered["status"], "failed")
                 self.assertIn("metrics digest mismatch", tampered["errors"][0])
+
+    def test_summary_rejects_comparison_tampering(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config = self._contract(root)
+            runs, dataset = self._fake_runs(root)
+            output = root / "summary"
+            verified = {"status": "verified", "errors": []}
+            with patch(
+                "fl_forensics.multiseed.verify_partitions", return_value=verified
+            ), patch(
+                "fl_forensics.multiseed.verify_federated_baseline",
+                return_value=verified,
+            ):
+                create_multiseed_summary(
+                    runs_workspace=runs,
+                    dataset_workspace=dataset,
+                    output=output,
+                    config_path=config,
+                )
+                comparison = (
+                    runs / "seed-11" / "iid" / "run" / "comparison.json"
+                )
+                comparison.write_bytes(comparison.read_bytes() + b" ")
+                tampered = verify_multiseed_summary(
+                    runs_workspace=runs,
+                    dataset_workspace=dataset,
+                    workspace=output,
+                    config_path=config,
+                )
+                self.assertEqual(tampered["status"], "failed")
+                self.assertIn("comparison digest mismatch", tampered["errors"][0])
 
 
 if __name__ == "__main__":

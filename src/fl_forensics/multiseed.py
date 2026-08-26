@@ -182,6 +182,7 @@ def _collect_run(
     partition_manifest = _load_json(partition_workspace / "manifest.json")
     run_manifest = _load_json(run_workspace / "manifest.json")
     metrics = _load_json(run_workspace / "metrics.json")
+    comparison = _load_json(run_workspace / "comparison.json")
 
     if int(generated_config.get("partitioning", {}).get("seed", -1)) != seed:
         raise MultiSeedError(f"partition seed mismatch: seed={seed}, mode={mode}")
@@ -199,6 +200,12 @@ def _collect_run(
         raise MultiSeedError(f"partition binding mismatch: seed={seed}, mode={mode}")
     if run_manifest.get("metrics_sha256") != sha256_file(run_workspace / "metrics.json"):
         raise MultiSeedError(f"metrics digest mismatch: seed={seed}, mode={mode}")
+    if run_manifest.get("comparison_sha256") != sha256_file(
+        run_workspace / "comparison.json"
+    ):
+        raise MultiSeedError(f"comparison digest mismatch: seed={seed}, mode={mode}")
+    if comparison.get("artifact_type") != "m3_local_fedavg_comparison":
+        raise MultiSeedError(f"comparison artifact mismatch: seed={seed}, mode={mode}")
 
     selected = metrics.get("selected")
     if not isinstance(selected, dict):
@@ -229,6 +236,52 @@ def _collect_run(
     if set(per_class) != set(class_names):
         raise MultiSeedError(f"test per-class metrics are incomplete: seed={seed}, mode={mode}")
 
+    fedavg_client_test = comparison.get(
+        "selected_global_client_test_summary", {}
+    ).get("macro_f1_all_model_classes", {})
+    local_only_client_test = comparison.get("local_only_summary", {}).get(
+        "local_test_macro_f1", {}
+    )
+    expected_client_count = int(partition_manifest.get("client_count", -1))
+    if expected_client_count <= 0:
+        raise MultiSeedError(f"partition client count is invalid: seed={seed}, mode={mode}")
+    distribution_keys = {
+        "client_count",
+        "maximum",
+        "mean",
+        "minimum",
+        "population_stddev",
+    }
+    for name, distribution in (
+        ("FedAvg client-local test", fedavg_client_test),
+        ("local-only client-local test", local_only_client_test),
+    ):
+        if not isinstance(distribution, dict) or not distribution_keys.issubset(
+            distribution
+        ):
+            raise MultiSeedError(
+                f"{name} distribution is incomplete: seed={seed}, mode={mode}"
+            )
+        if int(distribution["client_count"]) != expected_client_count:
+            raise MultiSeedError(
+                f"{name} client count mismatch: seed={seed}, mode={mode}"
+            )
+        values = [
+            float(distribution[key])
+            for key in ("minimum", "mean", "maximum", "population_stddev")
+        ]
+        if not all(math.isfinite(value) for value in values):
+            raise MultiSeedError(
+                f"{name} distribution contains non-finite values: seed={seed}, mode={mode}"
+            )
+        if not values[0] <= values[1] <= values[2] or values[3] < 0.0:
+            raise MultiSeedError(
+                f"{name} distribution is invalid: seed={seed}, mode={mode}"
+            )
+
+    fedavg_client_mean = float(fedavg_client_test["mean"])
+    local_only_client_mean = float(local_only_client_test["mean"])
+
     return {
         "seed": seed,
         "mode": mode,
@@ -240,6 +293,29 @@ def _collect_run(
         "temporal_holdout_accuracy": float(temporal["accuracy"]),
         "temporal_holdout_false_alarm_rate": float(
             temporal_false_alarms["false_alarm_rate"]
+        ),
+        "fedavg_client_local_test_macro_f1_mean": fedavg_client_mean,
+        "fedavg_client_local_test_macro_f1_population_stddev": float(
+            fedavg_client_test["population_stddev"]
+        ),
+        "fedavg_client_local_test_macro_f1_minimum": float(
+            fedavg_client_test["minimum"]
+        ),
+        "fedavg_client_local_test_macro_f1_maximum": float(
+            fedavg_client_test["maximum"]
+        ),
+        "local_only_client_local_test_macro_f1_mean": local_only_client_mean,
+        "local_only_client_local_test_macro_f1_population_stddev": float(
+            local_only_client_test["population_stddev"]
+        ),
+        "local_only_client_local_test_macro_f1_minimum": float(
+            local_only_client_test["minimum"]
+        ),
+        "local_only_client_local_test_macro_f1_maximum": float(
+            local_only_client_test["maximum"]
+        ),
+        "fedavg_minus_local_only_client_local_test_macro_f1_mean": (
+            fedavg_client_mean - local_only_client_mean
         ),
         "test_per_class_f1": {
             label: float(per_class[label]["f1"]) for label in class_names
@@ -256,6 +332,7 @@ def _collect_run(
             "run_workspace": run_workspace.relative_to(runs_workspace).as_posix(),
             "run_manifest_sha256": sha256_file(run_workspace / "manifest.json"),
             "metrics_sha256": sha256_file(run_workspace / "metrics.json"),
+            "comparison_sha256": sha256_file(run_workspace / "comparison.json"),
         },
     }
 
@@ -279,6 +356,24 @@ def _mode_summary(runs: list[dict[str, Any]]) -> dict[str, Any]:
         "temporal_holdout_false_alarm_rate": describe(
             [run["temporal_holdout_false_alarm_rate"] for run in runs]
         ),
+        "fedavg_client_local_test_macro_f1_mean": describe(
+            [run["fedavg_client_local_test_macro_f1_mean"] for run in runs]
+        ),
+        "fedavg_client_local_test_macro_f1_population_stddev": describe(
+            [
+                run["fedavg_client_local_test_macro_f1_population_stddev"]
+                for run in runs
+            ]
+        ),
+        "local_only_client_local_test_macro_f1_mean": describe(
+            [run["local_only_client_local_test_macro_f1_mean"] for run in runs]
+        ),
+        "fedavg_minus_local_only_client_local_test_macro_f1_mean": describe(
+            [
+                run["fedavg_minus_local_only_client_local_test_macro_f1_mean"]
+                for run in runs
+            ]
+        ),
         "test_per_class_f1": {
             label: describe([run["test_per_class_f1"][label] for run in runs])
             for label in class_names
@@ -298,6 +393,15 @@ def _runs_csv(runs: list[dict[str, Any]]) -> bytes:
         "test_balanced_accuracy",
         "temporal_holdout_accuracy",
         "temporal_holdout_false_alarm_rate",
+        "fedavg_client_local_test_macro_f1_mean",
+        "fedavg_client_local_test_macro_f1_population_stddev",
+        "fedavg_client_local_test_macro_f1_minimum",
+        "fedavg_client_local_test_macro_f1_maximum",
+        "local_only_client_local_test_macro_f1_mean",
+        "local_only_client_local_test_macro_f1_population_stddev",
+        "local_only_client_local_test_macro_f1_minimum",
+        "local_only_client_local_test_macro_f1_maximum",
+        "fedavg_minus_local_only_client_local_test_macro_f1_mean",
     ]
     writer = csv.DictWriter(stream, fieldnames=fieldnames, lineterminator="\n")
     writer.writeheader()
@@ -341,6 +445,12 @@ def _build_outputs(
                     by_mode["non-iid"]["test_macro_f1"]
                     - by_mode["iid"]["test_macro_f1"]
                 ),
+                "fedavg_client_local_test_macro_f1_mean_non_iid_minus_iid": (
+                    by_mode["non-iid"][
+                        "fedavg_client_local_test_macro_f1_mean"
+                    ]
+                    - by_mode["iid"]["fedavg_client_local_test_macro_f1_mean"]
+                ),
             }
         )
     summary = {
@@ -360,6 +470,14 @@ def _build_outputs(
             "test_macro_f1_non_iid_minus_iid": describe(
                 [item["test_macro_f1_non_iid_minus_iid"] for item in paired_deltas]
             ),
+            "fedavg_client_local_test_macro_f1_mean_non_iid_minus_iid": describe(
+                [
+                    item[
+                        "fedavg_client_local_test_macro_f1_mean_non_iid_minus_iid"
+                    ]
+                    for item in paired_deltas
+                ]
+            ),
         },
         "runs": runs,
         "interpretation_constraints": [
@@ -369,6 +487,11 @@ def _build_outputs(
             "Checkpoint selection uses validation macro-F1 only.",
             "Test and benign-only temporal holdout are opened only after selection.",
             "The temporal holdout is not a multiclass attack-detection test.",
+            (
+                "Client-local macro-F1 averages all model classes; a class absent from a "
+                "client test has zero support and contributes zero, so the client-local "
+                "distribution complements rather than replaces the pooled global test."
+            ),
         ],
     }
     summary_bytes = derived_json_bytes(summary)
@@ -432,6 +555,12 @@ def create_multiseed_summary(
         "non_iid_test_macro_f1_mean": summary["mode_summaries"]["non-iid"][
             "test_macro_f1"
         ]["mean"],
+        "iid_fedavg_client_local_test_macro_f1_mean": summary["mode_summaries"][
+            "iid"
+        ]["fedavg_client_local_test_macro_f1_mean"]["mean"],
+        "non_iid_fedavg_client_local_test_macro_f1_mean": summary[
+            "mode_summaries"
+        ]["non-iid"]["fedavg_client_local_test_macro_f1_mean"]["mean"],
         "manifest_sha256": sha256_file(output / "manifest.json"),
     }
 
