@@ -113,7 +113,8 @@ the completed M1–M8 acceptance chain:
   its sanitized result snapshot as the local runtime reference;
 - add a separate multi-host contribution-API experiment before making network-latency or
   failure-recovery claims;
-- evaluate a genuinely external dataset such as UWF-ZeekData22;
+- retain the completed, byte-recomputed UWF-ZeekData22 post-selection evaluation, its separate
+  Discovery alignment stress, and their sanitized result snapshot as the external reference;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;
 - define production key custody, rotation, revocation distribution, and disaster recovery;

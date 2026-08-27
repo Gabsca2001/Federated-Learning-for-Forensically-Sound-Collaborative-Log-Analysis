@@ -15,6 +15,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M4–M5 containerized runtime overhead v1](runtime-overhead-local-test-v1/README.md): three
   fresh 15-`swtpm` trials, mTLS/Quote/ESK and secure-round timings, compact CSVs, receipt, and
   runtime latency figure.
+- [M5 external Data22 generalization v1](m5-external-generalization-local-test-v1/README.md):
+  verified binary/shared-label transfer metrics, confusion matrices, feature-shift evidence,
+  and a two-burst Discovery window-alignment stress test.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

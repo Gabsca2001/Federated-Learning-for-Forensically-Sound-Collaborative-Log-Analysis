@@ -1,0 +1,22 @@
+schema_version: "1.0"
+
+discovery_stress:
+  target_label: discovery
+  window_seconds: 60
+  episode_gap_seconds: 60
+  alignment_offsets_seconds:
+    - 0
+    - 5
+    - 10
+    - 15
+    - 20
+    - 25
+    - 30
+    - 35
+    - 40
+    - 45
+    - 50
+    - 55
+  batch_size: 1024
+  independence_unit: temporal-burst
+  task: binary-attack-detection-only

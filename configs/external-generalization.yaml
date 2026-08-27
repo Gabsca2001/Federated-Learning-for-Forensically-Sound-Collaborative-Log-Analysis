@@ -1,0 +1,17 @@
+schema_version: "1.0"
+
+external_dataset:
+  dataset: UWF-ZeekData22
+  training_dataset: UWF-ZeekData24
+  source_subset: official-five-file-csv-subset
+  window_seconds: 60
+  benign_labels: [none, benign, normal, "-"]
+  identity_policy: ordered-non-label-fields-sha256-and-label-union
+  scaler_policy: frozen-uwf-zeekdata24-training-only
+
+evaluation:
+  batch_size: 1024
+  benign_label: benign
+  shared_labels: [benign, reconnaissance]
+  all_external_task: binary-benign-vs-attack
+  discovery_policy: binary-only-outside-fixed-model-label-space

@@ -6,8 +6,9 @@ The deterministic M1–M8 implementation and the current local-test reference ch
 complete and verified end to end. The paired five-seed M3 evaluation and the 13-stage M4–M8
 offline-overhead reference execution are complete, verified, and published as sanitized
 snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
-verified, and published. Principal remaining gaps are external-dataset generalization,
-physical-TPM and multi-host/API benchmarks, and production-grade evidence storage and key
+verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
+alignment stress are complete, independently recomputed, and published. Other principal gaps
+are physical-TPM and multi-host/API benchmarks, and production-grade evidence storage and key
 management.
 
 ## Current coverage
@@ -27,6 +28,8 @@ management.
 | Flower ClientApp/ServerApp | Implemented (M3) | Current Message API; 15-client full-participation FedAvg profile |
 | Auditable FedAvg runner | Implemented and verified (M3) | All training precedes test access; aggregation, local-only inference, and post-selection per-client tests are independently reconstructed |
 | Paired multi-seed FedAvg evaluation | Implemented and verified (M3) | Five seeds spaced by 1000; 10/10 sources verified; pooled test macro-F1 `0.9387` IID and `0.9414` non-IID; paired delta interval includes zero; client-local and local-only distributions published |
+| External UWF-ZeekData22 evaluation | Implemented and verified (M5 extension) | 10,128 windows; binary attack F1 `0.0863`; shared-label macro-F1 `0.4968`; reconnaissance recall `0`; strong frozen-scaler feature shift; predictions and metrics byte-recomputed |
+| Data22 Discovery alignment stress | Implemented and verified (M5 extension) | 2 independent bursts, 2,086 events, 12 correlated offsets; at least one segment detected in 24/24 burst-offset trials; every segment in 19/24; zero offset reproduces the primary result |
 | PROTEAN adaptation | Implemented and verified (M3 extension) | Four validation-only lambda candidates; two endpoints locked before test access |
 | Enrollment, AK/ESK separation, challenge, revocation | Implemented (M4) | Signed one-to-one bindings and append-only revocation semantics |
 | Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; 15/15 `swtpm` gate passed |
@@ -61,6 +64,8 @@ management.
 | M8 final receipt | `m8-final-verification-18a7463101b543b5f97df3f1` |
 | Offline-overhead receipt | `overhead-benchmark-242c9f91b96d5b8fad17acff` |
 | Runtime-overhead receipt | `runtime-overhead-adb5811cce9ded407e4b1e0d` |
+| Data22 external evaluation | `m5-external-generalization-8ba28d267facbc1f91af7948` |
+| Discovery alignment stress | `m5-discovery-stress-d4a3898efbb5682c01d4ffa2` |
 
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
@@ -76,6 +81,12 @@ The final assurance state is
 - The temporal holdout is benign-only and cannot support a multiclass generalization claim.
 - The five-seed M3 summary verifies 10/10 source runs. Its intervals describe this fixed
   dataset and protocol; they do not establish external-dataset generalization.
+- The completed Data22 run is evidence of poor cross-dataset transfer for one frozen checkpoint,
+  not universal performance. Its official CSV subset has narrower tactic coverage than the full
+  Parquet release, and nearly every row exceeds an absolute scaled feature value of five.
+- The Discovery alignment result has only two independent temporal bursts. Its 24 burst-offset
+  trials reuse events and support binary burst-detection sensitivity only, not an independent
+  sample estimate, open-set Discovery classification, or confidence interval.
 - Earlier M2 seed diagnostics used a separate partial-fit monitoring protocol. They are useful
   sensitivity evidence but do not substitute for repetitions of the canonical M3 protocol.
 - Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
@@ -89,11 +100,10 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
-2. Decide whether the selected M6 attack scenarios require repeated frozen-update campaigns.
-3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-5. Validate service separation, multi-host performance, and failure recovery outside the research
+1. Decide whether the selected M6 attack scenarios require repeated frozen-update campaigns.
+2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+4. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and
