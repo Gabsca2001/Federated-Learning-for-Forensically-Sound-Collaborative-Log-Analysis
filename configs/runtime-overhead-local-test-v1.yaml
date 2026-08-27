@@ -1,0 +1,96 @@
+schema_version: "1.0"
+benchmark_id: m4-m5-containerized-runtime-overhead-local-test-v1
+profile: containerized-secure-round-runtime-v1
+project_root: ..
+
+# Every trial gets an independent suffix (for example, _001). Docker volumes
+# are stopped but deliberately not deleted after the measurement.
+project_namespace: flforensics_runtime_overhead_v1
+repetitions: 3
+workers: 4
+
+compose_m4: compose.m4.yaml
+compose_m5: compose.m5.yaml
+partition_workspace: artifacts/m3-data24-parquet-iid-local-test-v1
+work_root: artifacts/runtime-overhead-work-local-test-v1
+trust_config: configs/trust.yaml
+clients_config: configs/clients.yaml
+federation_config: configs/federation.yaml
+secure_round_config: configs/secure-round.yaml
+
+tpm_sign_probe:
+  warmup_runs: 2
+  repetitions: 20
+
+# These files define the implementation and experiment contract. Verification
+# recomputes every digest; changing code/configuration invalidates the receipt.
+source_markers:
+  - Dockerfile.m4
+  - Dockerfile.m5
+  - compose.m4.yaml
+  - compose.m5.yaml
+  - configs/trust.yaml
+  - configs/clients.yaml
+  - configs/federation.yaml
+  - configs/secure-round.yaml
+  - artifacts/m3-data24-parquet-iid-local-test-v1/manifest.json
+  - scripts/run_m4_swtpm.py
+  - scripts/run_runtime_overhead.py
+  - src/fl_forensics/cli.py
+  - src/fl_forensics/mtls.py
+  - src/fl_forensics/trust.py
+  - src/fl_forensics/tpm_adapter.py
+  - src/fl_forensics/secure_round.py
+  - src/fl_forensics/secure_round_models.py
+  - src/fl_forensics/runtime_overhead.py
+
+expected:
+  m4-trust-initialization:
+    status: initialized
+    client_count: 15
+  m4-swtpm-provisioning-15-clients:
+    status: provisioned
+    client_count: 15
+  m4-enrollment-15-clients:
+    status: enrolled
+    enrolled_count: 15
+  m4-mtls-15-handshakes:
+    status: verified
+    client_count: 15
+    passed_count: 15
+  m4-swtpm-esk-sign-probe:
+    status: verified
+    backend: swtpm-via-tpm2-tools
+    measured_sample_count: 20
+  m4-challenge-issuance-15-clients:
+    status: issued
+    challenge_count: 15
+  m4-swtpm-quote-generation-15-clients:
+    status: quoted
+    client_count: 15
+  m4-quote-appraisal-15-clients:
+    status: verified
+    client_count: 15
+    passed_count: 15
+    failed_count: 0
+  m5-round-context-initialization:
+    status: prepared
+    client_count: 15
+    attested_count: 15
+    round_number: 1
+  m5-client-train-validate-sign-15-clients:
+    status: submitted
+    client_count: 15
+    submitted_count: 15
+    tpm_signed_bundle_count: 15
+    workers: 4
+  m5-admission-fedavg:
+    status: aggregated
+    accepted_count: 15
+    quarantined_count: 0
+    idempotent: false
+  m5-independent-round-verification:
+    status: verified
+    accepted_count: 15
+    matches_reference_checkpoint: true
+    error_count: 0

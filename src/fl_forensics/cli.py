@@ -78,6 +78,10 @@ from .prototype_sensitivity_reporting import (
 )
 from .recovery import create_recovery_export, verify_recovery_export
 from .reporting import generate_m3_report
+from .runtime_overhead import (
+    benchmark_tpm_esk_sign,
+    verify_runtime_overhead_receipt,
+)
 from .secure_campaign import finalize_secure_campaign, verify_secure_campaign
 from .secure_round import (
     admit_and_aggregate,
@@ -1287,6 +1291,26 @@ def build_parser() -> argparse.ArgumentParser:
     )
     overhead_verify.add_argument("--workspace", type=Path, required=True)
 
+    runtime_tpm_sign = subparsers.add_parser(
+        "runtime-tpm-sign-probe",
+        help="measure and verify ESK signatures through a live TPM2-tools adapter",
+    )
+    runtime_tpm_sign.add_argument("--node-workspace", type=Path, required=True)
+    runtime_tpm_sign.add_argument("--tcti", required=True)
+    runtime_tpm_sign.add_argument("--warmup-runs", type=int, default=2)
+    runtime_tpm_sign.add_argument("--repetitions", type=int, default=20)
+
+    runtime_overhead_verify = subparsers.add_parser(
+        "runtime-overhead-verify",
+        help="verify M4/M5 runtime timings and their live-evidence bindings",
+    )
+    runtime_overhead_verify.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/runtime-overhead-local-test-v1.yaml"),
+    )
+    runtime_overhead_verify.add_argument("--workspace", type=Path, required=True)
+
     return parser
 
 
@@ -1951,6 +1975,24 @@ def main(argv: list[str] | None = None) -> int:
 
     if arguments.command == "overhead-verify":
         result = verify_overhead_benchmark(
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+
+    if arguments.command == "runtime-tpm-sign-probe":
+        result = benchmark_tpm_esk_sign(
+            node_workspace=arguments.node_workspace,
+            tcti=arguments.tcti,
+            warmup_runs=arguments.warmup_runs,
+            repetitions=arguments.repetitions,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+
+    if arguments.command == "runtime-overhead-verify":
+        result = verify_runtime_overhead_receipt(
             workspace=arguments.workspace,
             config_path=arguments.config,
         )

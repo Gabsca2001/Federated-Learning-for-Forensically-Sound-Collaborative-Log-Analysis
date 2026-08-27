@@ -94,6 +94,9 @@ for the complete table, CSV, receipt, and logarithmic figure.
 - A hash-bound receipt provides internal integrity but cannot prove that the host clock was
   honest. Preserve or externally anchor the finalized receipt when it becomes thesis evidence.
 
-Live runtime overhead requires a separate experiment that measures challenge/Quote, mTLS,
-TPM-backed update signing, API transfer, admission, aggregation, and failure recovery under a
-declared deployment topology. Those values must not be combined with this offline profile.
+The separate [containerized runtime profile](RUNTIME_OVERHEAD_BENCHMARKING.md) now implements
+fresh challenge/Quote, mTLS, direct `swtpm` ESK signing, client train/validation/signing,
+admission, FedAvg, and round-verification measurements. Its reference execution remains
+separate from this offline receipt and is independently verified under receipt
+`runtime-overhead-adb5811cce9ded407e4b1e0d`. The current runtime uses bind-mounted submissions and
+therefore still does not claim API-transfer, WAN, failure-recovery, or physical-TPM latency.
