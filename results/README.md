@@ -12,6 +12,9 @@ evidence, models, private trust state, and large recovery packages.
   and figures, the six-case M7 investigation report, and the final M8 verification receipt.
 - [M4–M8 offline overhead v1](overhead-local-test-v1/README.md): 13 verified warm-process
   stages, raw summary statistics, compact CSV, receipt, and logarithmic latency figure.
+- [M4–M5 containerized runtime overhead v1](runtime-overhead-local-test-v1/README.md): three
+  fresh 15-`swtpm` trials, mTLS/Quote/ESK and secure-round timings, compact CSVs, receipt, and
+  runtime latency figure.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

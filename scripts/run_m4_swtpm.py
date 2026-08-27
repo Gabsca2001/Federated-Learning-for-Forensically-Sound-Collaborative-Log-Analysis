@@ -24,6 +24,11 @@ def main() -> int:
         "--trust-workspace", type=Path, default=Path("artifacts/m4-trust")
     )
     parser.add_argument("--node-root", type=Path, default=Path("artifacts/m4-nodes"))
+    parser.add_argument(
+        "--skip-build",
+        action="store_true",
+        help="reuse prebuilt Compose images (used by runtime latency experiments)",
+    )
     arguments = parser.parse_args()
     root = arguments.compose.resolve().parent
     trust_workspace = arguments.trust_workspace.resolve()
@@ -48,8 +53,9 @@ def main() -> int:
     trust_workspace.mkdir(parents=True, exist_ok=True)
     # run([*compose, "up", "-d", "--build", *TPM_IDS], root=root)
     if arguments.action == "provision":
+        build_flag = [] if arguments.skip_build else ["--build"]
         run(
-            [*compose, "up", "-d", "--build", *TPM_IDS],
+            [*compose, "up", "-d", *build_flag, *TPM_IDS],
             root=root,
             environment=environment,
         )
@@ -58,13 +64,14 @@ def main() -> int:
 
     for index, client_id in enumerate(CLIENT_IDS, start=1):
         if arguments.action == "provision":
+            build_flag = [] if arguments.skip_build else ["--build"]
             run(
                 [
                     *compose,
                     "--profile",
                     "provision",
                     "run",
-                    "--build",
+                    *build_flag,
                     "--rm",
                     client_id,
                 ],

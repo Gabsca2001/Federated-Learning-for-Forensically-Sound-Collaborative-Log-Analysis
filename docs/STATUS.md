@@ -5,9 +5,10 @@
 The deterministic M1–M8 implementation and the current local-test reference chain are
 complete and verified end to end. The paired five-seed M3 evaluation and the 13-stage M4–M8
 offline-overhead reference execution are complete, verified, and published as sanitized
-snapshots. Principal remaining gaps are external-dataset generalization, live/runtime and
-physical-TPM benchmarks, and production-grade evidence storage, key management, and
-multi-host operation.
+snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
+verified, and published. Principal remaining gaps are external-dataset generalization,
+physical-TPM and multi-host/API benchmarks, and production-grade evidence storage and key
+management.
 
 ## Current coverage
 
@@ -41,6 +42,7 @@ multi-host operation.
 | Campaign invariant accounting | Implemented and verified (M8.5) | 30 rounds, 15 clients, 450 contributions reconstructed from recovery TAR |
 | Final preservation verification | Implemented and verified (M8.6) | Five assurance stages; offline inputs only; zero errors |
 | Offline verification-overhead benchmark | Implemented and verified | 13/13 stages, 45 measured samples, 13 source snapshots, zero errors; receipt `overhead-benchmark-242c9f91b96d5b8fad17acff`; no runtime/TPM claim |
+| Containerized runtime-overhead benchmark | Implemented and verified | Three fresh M4/M5 trials; 36/36 stages; median secure-round span `105.980 s`; direct ESK signature `13.854 ms`; receipt `runtime-overhead-adb5811cce9ded407e4b1e0d` |
 
 ## Canonical reference chain
 
@@ -58,6 +60,7 @@ multi-host operation.
 | M8 accounting | `m8-campaign-accounting-754be120eb3082973ded38af` |
 | M8 final receipt | `m8-final-verification-18a7463101b543b5f97df3f1` |
 | Offline-overhead receipt | `overhead-benchmark-242c9f91b96d5b8fad17acff` |
+| Runtime-overhead receipt | `runtime-overhead-adb5811cce9ded407e4b1e0d` |
 
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
@@ -79,15 +82,18 @@ The final assurance state is
 - The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
   M8 stages have one observation each, and no live `swtpm`, network, or physical-TPM latency
   is claimed.
+- The runtime profile measures the current local Docker/`swtpm` prototype. Its M5 client stage
+  includes container scheduling, training, validation, serialization, ESK signing, and writes
+  through bind-mounted submission directories; it cannot establish WAN/API or physical-TPM
+  latency.
 
 ## Outstanding validation and engineering work
 
-1. Benchmark the live `swtpm`/mTLS/update path separately from offline verifier replay.
-2. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
-3. Decide whether the selected M6 attack scenarios require repeated frozen-update campaigns.
-4. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-5. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-6. Validate service separation, multi-host performance, and failure recovery outside the research
+1. Evaluate external generalization without mixing UWF-ZeekData22 into model selection.
+2. Decide whether the selected M6 attack scenarios require repeated frozen-update campaigns.
+3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+5. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and

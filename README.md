@@ -506,6 +506,41 @@ The verified local-test execution produced 45 measured samples across 13 stages 
 `overhead-benchmark-242c9f91b96d5b8fad17acff`. The compact public view is available under
 [`results/overhead-local-test-v1`](results/overhead-local-test-v1/README.md).
 
+### Post-M8 — containerized runtime benchmarking
+
+The separate runtime profile creates fresh M4 trust state and an independent single-round M5
+workspace for every repetition. It measures 15-client `swtpm` provisioning, enrollment,
+real loopback TLS 1.3 mutual authentication, challenge/Quote/appraisal, direct ESK signing,
+round-context creation, client train/validation plus TPM-signed bundles, admission/FedAvg,
+and independent checkpoint verification:
+
+```bash
+python scripts/run_runtime_overhead.py plan \
+  --config configs/runtime-overhead-local-test-v1.yaml
+
+python scripts/run_runtime_overhead.py run \
+  --config configs/runtime-overhead-local-test-v1.yaml \
+  --output artifacts/runtime-overhead-local-test-v1
+
+fl-forensics runtime-overhead-verify \
+  --config configs/runtime-overhead-local-test-v1.yaml \
+  --workspace artifacts/runtime-overhead-local-test-v1
+```
+
+The default contract uses three fresh trials and excludes Docker image construction from the
+timed lifecycle. It does not touch the canonical `local-test-v1` evidence. The current M5
+prototype transfers signed bundles through isolated bind-mounted submission directories, not
+a network contribution API, so the result must not be described as WAN/API latency or as a
+physical-TPM benchmark.
+
+The verified reference completed all three fresh trials and all 36 stage executions. Median
+wall time was `131.897 s` for bootstrap, `104.403 s` for the trust-related group (including
+the diagnostic ESK probe), `105.980 s` for the secure round, and `345.315 s` for all measured
+stages. Direct ESK signing measured `13.854 ms` across 60 signatures. See the
+[sanitized runtime snapshot](results/runtime-overhead-local-test-v1/README.md).
+
+See [Runtime overhead benchmarking](docs/RUNTIME_OVERHEAD_BENCHMARKING.md).
+
 ## Verified reference results
 
 | Stage | Reference result |
@@ -519,6 +554,7 @@ The verified local-test execution produced 45 measured samples across 13 stages 
 | M7 | six report cases bound to 69 events and 81 source records |
 | M8 | 2,381 artifacts preserved; 2,388 Merkle leaves; all five assurance stages verified |
 | Post-M8 overhead | 13/13 offline verifier stages; 45 measured samples; receipt verified |
+| Post-M8 runtime | Three fresh trials; 36/36 stages; median secure round `105.980 s`; receipt verified |
 
 These figures describe one deterministic reference campaign, not population-level confidence
 intervals or a claim of universal generalization. See the milestone documents for the

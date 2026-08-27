@@ -109,8 +109,10 @@ the completed M1–M8 acceptance chain:
 
 - retain the completed paired five-seed M3 evaluation as the statistical reference;
 - retain the verified 13-stage offline M4–M8 overhead receipt as the reference replay result;
-- measure live `swtpm`, mTLS, signed-update, network, and round latency in a separate runtime
-  profile so it is not conflated with offline replay;
+- retain the verified three-trial containerized `swtpm`/mTLS/secure-round runtime receipt and
+  its sanitized result snapshot as the local runtime reference;
+- add a separate multi-host contribution-API experiment before making network-latency or
+  failure-recovery claims;
 - evaluate a genuinely external dataset such as UWF-ZeekData22;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;
