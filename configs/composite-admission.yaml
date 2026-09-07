@@ -1,0 +1,51 @@
+schema_version: "1.0"
+experiment:
+  id: m6-joint-trust-statistical-admission-v1
+  pilot_round: 11
+  clean_reference: verified-clean-same-round
+
+trust:
+  admissible_statuses:
+    - passed
+    - passed_with_warning
+  passed_with_warning_risk: 0.25
+  failed_attestation_is_hard_veto: true
+
+statistics:
+  normalizer: clean-reference-median-mad
+  robust_z_cap: 3.0
+  indicators:
+    relative_norm:
+      direction: higher
+      weight: 0.20
+    cosine_to_median:
+      direction: lower
+      weight: 0.20
+    coordinate_median_distance:
+      direction: higher
+      weight: 0.20
+    mad_score:
+      direction: higher
+      weight: 0.20
+    validation_impact:
+      direction: higher
+      weight: 0.20
+
+policies:
+  ablation_baselines:
+    - tpm_only
+    - statistics_only
+  integrated_candidates:
+    - sequential
+    - gated_composite
+  composite_trust_weight: 0.50
+  calibration:
+    source: clean-reference-only
+    statistical_max_margin: 0.05
+    composite_max_margin: 0.025
+    composite_downweight_quantile: 0.90
+
+disagreement_matrix:
+  normal_client_id: client01
+  anomalous_client_id: client02
+  controlled_failed_check: fresh_attestation

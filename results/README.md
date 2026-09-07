@@ -18,6 +18,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M5 external Data22 generalization v1](m5-external-generalization-local-test-v1/README.md):
   verified binary/shared-label transfer metrics, confusion matrices, feature-shift evidence,
   and a two-burst Discovery window-alignment stress test.
+- [M6 joint TPM/statistical admission v1](m6-composite-admission-local-test-v1/README.md):
+  clean-calibrated policy comparison, per-client risk/status table, and controlled 2x2
+  trust/statistics disagreement matrix.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

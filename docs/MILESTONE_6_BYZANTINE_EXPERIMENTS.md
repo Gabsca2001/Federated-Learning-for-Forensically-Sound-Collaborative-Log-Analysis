@@ -133,6 +133,106 @@ the separate prototype artifact family under their declared `f=3` and
 sensitivity contracts. Additional fault bounds and repeated random seeds would
 strengthen external/statistical validity, but they are not part of this gate.
 
+## Joint TPM/statistical admission pilot
+
+The original architecture deliberately kept two questions separate:
+
+1. M4/M5 asks whether the client identity, TPM-backed signature, attestation,
+   freshness, and round binding are valid;
+2. M6 asks whether the numeric update is anomalous relative to a clean client
+   population.
+
+That separation remains visible in the new artifact, but the decisions are now
+evaluated jointly on the same candidate set. Four policies are compared:
+
+- `tpm_only`: an ablation that accepts every trust-valid contribution;
+- `statistics_only`: an ablation that ignores identity and attestation;
+- `sequential`: hard trust gate followed by the statistical gate;
+- `gated_composite`: a documented weighted risk, with failed trust retained as
+  a non-compensable veto and an intermediate downweight outcome.
+
+The statistical signal combines relative norm, cosine to the clean median,
+coordinate-median distance, MAD score, and validation impact. Each component is
+converted to a one-sided robust z-score using medians and MADs from a separate
+clean `f=0` freeze of the same verified round. Indicator weights are normalized
+and recorded. The quarantine thresholds and downweight quantile are calibrated
+from that clean population only; candidate attack labels never enter scoring or
+threshold selection.
+
+The verified model-replacement pilot uses round 11 and three controlled
+attackers (`client02`, `client05`, `client14`). All 15 observed M4/M5 trust
+signals are admissible. The three attacked updates obtain statistical risk
+`1.0`; the largest benign candidate risk is about `0.645`. Clean calibration
+sets the statistical threshold to `0.818309` and the composite quarantine
+threshold to `0.409155`.
+
+| Observed candidate policy | TP | FP | TN | FN |
+| --- | ---: | ---: | ---: | ---: |
+| TPM only | 0 | 0 | 12 | 3 |
+| Statistics only | 3 | 0 | 12 | 0 |
+| Sequential | 3 | 0 | 12 | 0 |
+| Gated composite | 3 | 0 | 12 | 0 |
+
+This observed population exercises the important “trusted but anomalous”
+disagreement: a valid TPM-backed identity does not prove semantic benignity.
+To exercise the opposite direction without pretending that M5 admitted an
+invalid client, the artifact also contains a policy-evaluation-only 2x2 matrix.
+It reuses one verified normal update and one verified attacked update under the
+observed passed trust signal and under an explicit counterfactual
+`fresh_attestation` failure. The source attestation bytes remain unchanged.
+
+| Controlled matrix policy | Unsafe caught | Safe retained | Unsafe missed |
+| --- | ---: | ---: | ---: |
+| TPM only | 2/3 | 1/1 | 1/3 |
+| Statistics only | 2/3 | 1/1 | 1/3 |
+| Sequential | 3/3 | 1/1 | 0/3 |
+| Gated composite | 3/3 | 1/1 | 0/3 |
+
+The matrix demonstrates why the one-signal policies remain controls rather
+than deployment recommendations. TPM-only misses a trust-valid malicious
+update; statistics-only accepts a trust-invalid normal-looking update. Both
+integrated policies cover these cells in this pilot. It does not yet establish
+population-level detection rates or superiority across attack families.
+
+The clean and attacked M6 workspaces, comparisons, source M5 round, M4 trust
+workspace, partition manifest, configurations, and implementation file are all
+bound by SHA-256 in `admission.json`. Verification reruns every upstream
+verifier and recomputes the complete canonical artifact:
+
+```bash
+fl-forensics m6-joint-admission \
+  --round-workspace artifacts/m5-secure-multiround-local-test-v1/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust-local-test-v1 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --clean-frozen-workspace artifacts/m6-clean-round11-local-test-v1 \
+  --clean-comparison-workspace artifacts/m6-clean-round11-local-test-v1-comparison \
+  --candidate-frozen-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1 \
+  --candidate-comparison-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1-comparison \
+  --config configs/composite-admission.yaml \
+  --byzantine-config configs/byzantine-malicious-model-replacement.yaml \
+  --output artifacts/m6-joint-admission-model-replacement-matrix-local-test-v1
+
+fl-forensics m6-verify-joint-admission \
+  --round-workspace artifacts/m5-secure-multiround-local-test-v1/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust-local-test-v1 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --clean-frozen-workspace artifacts/m6-clean-round11-local-test-v1 \
+  --clean-comparison-workspace artifacts/m6-clean-round11-local-test-v1-comparison \
+  --candidate-frozen-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1 \
+  --candidate-comparison-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1-comparison \
+  --config configs/composite-admission.yaml \
+  --byzantine-config configs/byzantine-malicious-model-replacement.yaml \
+  --workspace artifacts/m6-joint-admission-model-replacement-matrix-local-test-v1
+```
+
+Two limitations are explicit. First, attacked candidate bytes are controlled
+M6 derivations and are not covered by the original M5 bundle signatures; the
+pilot validates policy scoring and lineage, not a newly signed malicious runtime
+submission. Second, the failed-trust matrix cells are counterfactual controls,
+not falsely labelled observed M5 admissions. A later runtime experiment should
+generate a dedicated failed Quote/attestation fixture and a compromised client
+should sign its attacked bundle before admission.
+
 ## Freezing and comparing one real M5 round
 
 The first runtime integration derives a controlled attack scenario from a

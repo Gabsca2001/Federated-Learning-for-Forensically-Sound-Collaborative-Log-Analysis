@@ -1,0 +1,16 @@
+client_id,evaluation_label,candidate_update_binding,trust_admissible,statistical_risk,tpm_only,statistics_only,sequential,gated_composite
+client01,normal,source-bundle-signed,true,0.000000000,accepted,accepted,accepted,accepted
+client02,anomalous,controlled-derived-not-resigned,true,1.000000000,accepted,statistically_quarantined,statistically_quarantined,statistically_quarantined
+client03,normal,source-bundle-signed,true,0.229628951,accepted,accepted,accepted,accepted
+client04,normal,source-bundle-signed,true,0.375783912,accepted,accepted,accepted,accepted
+client05,anomalous,controlled-derived-not-resigned,true,1.000000000,accepted,statistically_quarantined,statistically_quarantined,statistically_quarantined
+client06,normal,source-bundle-signed,true,0.644966051,accepted,accepted,accepted,accepted_downweighted
+client07,normal,source-bundle-signed,true,0.036075091,accepted,accepted,accepted,accepted
+client08,normal,source-bundle-signed,true,0.038708021,accepted,accepted,accepted,accepted
+client09,normal,source-bundle-signed,true,0.117559985,accepted,accepted,accepted,accepted
+client10,normal,source-bundle-signed,true,0.000000000,accepted,accepted,accepted,accepted
+client11,normal,source-bundle-signed,true,0.244703926,accepted,accepted,accepted,accepted
+client12,normal,source-bundle-signed,true,0.119695497,accepted,accepted,accepted,accepted
+client13,normal,source-bundle-signed,true,0.516056156,accepted,accepted,accepted,accepted
+client14,anomalous,controlled-derived-not-resigned,true,1.000000000,accepted,statistically_quarantined,statistically_quarantined,statistically_quarantined
+client15,normal,source-bundle-signed,true,0.215835124,accepted,accepted,accepted,accepted
