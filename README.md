@@ -541,6 +541,22 @@ stages. Direct ESK signing measured `13.854 ms` across 60 signatures. See the
 
 See [Runtime overhead benchmarking](docs/RUNTIME_OVERHEAD_BENCHMARKING.md).
 
+### Post-selection external generalization
+
+The Data22 workflow imports the official five-file UWF-ZeekData22 CSV subset into a separate,
+digest-bound feature snapshot and evaluates only the already selected secure M5 checkpoint.
+It reuses the scaler fitted exclusively on the Data24 training split; Data22 cannot affect
+training, validation, checkpoint selection, hyperparameters, or thresholds. Because
+`discovery` is absent from the fixed six-class model, the workflow reports all-window binary
+benign/attack performance separately from the strict shared-label `benign`/`reconnaissance`
+view and publishes the evaluated coverage explicitly. The real controlled run and independent
+recomputation are complete. Binary attack F1 is `0.0863`, shared-label macro-F1 is `0.4968`,
+and `reconnaissance` recall is zero, exposing substantial verified domain shift rather than
+hiding it behind the benign-dominated accuracy.
+
+See [External UWF-ZeekData22 generalization](docs/EXTERNAL_GENERALIZATION.md) and the
+[sanitized verified result](results/m5-external-generalization-local-test-v1/README.md).
+
 ## Verified reference results
 
 | Stage | Reference result |
@@ -551,6 +567,7 @@ See [Runtime overhead benchmarking](docs/RUNTIME_OVERHEAD_BENCHMARKING.md).
 | M3 non-IID FedAvg | selected round 28; test macro-F1 `0.943849` |
 | M4 | 15/15 software-TPM Quotes appraised successfully |
 | M5 | 30 rounds; 450/450 admitted contributions; zero quarantines |
+| M5 external Data22 | 10,128 windows; binary attack F1 `0.0863`; shared-label macro-F1 `0.4968`; verification passed |
 | M7 | six report cases bound to 69 events and 81 source records |
 | M8 | 2,381 artifacts preserved; 2,388 Merkle leaves; all five assurance stages verified |
 | Post-M8 overhead | 13/13 offline verifier stages; 45 measured samples; receipt verified |
@@ -613,6 +630,7 @@ namespaces, persistent volumes, and substantially more runtime than unit tests.
 - [M4 trust deployment](docs/MILESTONE_4_TRUST_DEPLOYMENT.md)
 - [M5 secure round](docs/MILESTONE_5_SECURE_ROUND.md)
 - [M5 secure multi-round campaign](docs/MILESTONE_5_SECURE_MULTIROUND.md)
+- [M5 external UWF-ZeekData22 generalization](docs/EXTERNAL_GENERALIZATION.md)
 - [M6 Byzantine experiments](docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md)
 - [M7 investigation workflow](docs/MILESTONE_7_INVESTIGATION.md)
 - [M8 preservation and recovery](docs/MILESTONE_8_PRESERVATION.md)
@@ -622,7 +640,8 @@ namespaces, persistent volumes, and substantially more runtime than unit tests.
 - Versioned YAML files are experiment contracts; changing one creates a new experiment.
 - UWF-ZeekData24 provenance starts at this project's controlled download and ingestion, not
   at the historical capture performed by the dataset publisher.
-- UWF-ZeekData22 is not part of the completed reference campaign.
+- UWF-ZeekData22 is isolated from the completed reference campaign and may be opened only by
+  the separate post-selection external-evaluation workflow.
 - Raw evidence, normalized events, feature snapshots, and model outputs are distinct layers.
 - The 15 `swtpm` instances validate integration semantics, not hardware-backed assurance.
 - FedAvg is the clean baseline; robust methods are comparative defenses under declared

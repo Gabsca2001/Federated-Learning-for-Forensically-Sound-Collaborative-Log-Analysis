@@ -26,7 +26,14 @@ from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
+from .discovery_stress import create_discovery_stress, verify_discovery_stress
 from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
+from .external_generalization import (
+    evaluate_external_generalization,
+    prepare_external_dataset,
+    verify_external_dataset,
+    verify_external_generalization,
+)
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
 from .final_preservation import verify_final_preservation
@@ -395,6 +402,109 @@ def build_parser() -> argparse.ArgumentParser:
     m3_verify_multiseed.add_argument("--workspace", type=Path, required=True)
     m3_verify_multiseed.add_argument(
         "--config", type=Path, default=Path("configs/m3-multiseed.yaml")
+    )
+
+    m5_prepare_external = subparsers.add_parser(
+        "m5-prepare-external-data",
+        help="build an isolated UWF-ZeekData22 post-selection feature snapshot",
+    )
+    m5_prepare_external.add_argument("--input", type=Path, required=True)
+    m5_prepare_external.add_argument("--output", type=Path, required=True)
+    m5_prepare_external.add_argument(
+        "--config", type=Path, default=Path("configs/external-generalization.yaml")
+    )
+
+    m5_verify_external_data = subparsers.add_parser(
+        "m5-verify-external-data",
+        help="recompute the external Data22 snapshot from controlled source files",
+    )
+    m5_verify_external_data.add_argument("--workspace", type=Path, required=True)
+    m5_verify_external_data.add_argument("--input", type=Path, required=True)
+    m5_verify_external_data.add_argument(
+        "--config", type=Path, default=Path("configs/external-generalization.yaml")
+    )
+
+    m5_evaluate_external = subparsers.add_parser(
+        "m5-evaluate-external",
+        help="evaluate the selected secure checkpoint on isolated UWF-ZeekData22",
+    )
+    m5_evaluate_external.add_argument("--external-workspace", type=Path, required=True)
+    m5_evaluate_external.add_argument("--campaign-workspace", type=Path, required=True)
+    m5_evaluate_external.add_argument("--trust-workspace", type=Path, required=True)
+    m5_evaluate_external.add_argument("--partition-workspace", type=Path, required=True)
+    m5_evaluate_external.add_argument("--dataset-workspace", type=Path, required=True)
+    m5_evaluate_external.add_argument("--output", type=Path, required=True)
+    m5_evaluate_external.add_argument(
+        "--config", type=Path, default=Path("configs/external-generalization.yaml")
+    )
+
+    m5_verify_external = subparsers.add_parser(
+        "m5-verify-external",
+        help="recompute Data22 preparation, secure selection, predictions, and metrics",
+    )
+    m5_verify_external.add_argument("--workspace", type=Path, required=True)
+    m5_verify_external.add_argument("--external-workspace", type=Path, required=True)
+    m5_verify_external.add_argument("--input", type=Path, required=True)
+    m5_verify_external.add_argument("--campaign-workspace", type=Path, required=True)
+    m5_verify_external.add_argument("--trust-workspace", type=Path, required=True)
+    m5_verify_external.add_argument("--partition-workspace", type=Path, required=True)
+    m5_verify_external.add_argument("--dataset-workspace", type=Path, required=True)
+    m5_verify_external.add_argument(
+        "--config", type=Path, default=Path("configs/external-generalization.yaml")
+    )
+
+    m5_stress_discovery = subparsers.add_parser(
+        "m5-stress-discovery",
+        help="measure Discovery detection sensitivity to 60-second window alignment",
+    )
+    m5_stress_discovery.add_argument("--primary-workspace", type=Path, required=True)
+    m5_stress_discovery.add_argument("--external-workspace", type=Path, required=True)
+    m5_stress_discovery.add_argument("--input", type=Path, required=True)
+    m5_stress_discovery.add_argument("--campaign-workspace", type=Path, required=True)
+    m5_stress_discovery.add_argument("--trust-workspace", type=Path, required=True)
+    m5_stress_discovery.add_argument("--partition-workspace", type=Path, required=True)
+    m5_stress_discovery.add_argument("--dataset-workspace", type=Path, required=True)
+    m5_stress_discovery.add_argument("--output", type=Path, required=True)
+    m5_stress_discovery.add_argument(
+        "--primary-config",
+        type=Path,
+        default=Path("configs/external-generalization.yaml"),
+    )
+    m5_stress_discovery.add_argument(
+        "--config", type=Path, default=Path("configs/discovery-stress.yaml")
+    )
+
+    m5_verify_discovery_stress = subparsers.add_parser(
+        "m5-verify-discovery-stress",
+        help="recompute the Discovery window-alignment sensitivity experiment",
+    )
+    m5_verify_discovery_stress.add_argument("--workspace", type=Path, required=True)
+    m5_verify_discovery_stress.add_argument(
+        "--primary-workspace", type=Path, required=True
+    )
+    m5_verify_discovery_stress.add_argument(
+        "--external-workspace", type=Path, required=True
+    )
+    m5_verify_discovery_stress.add_argument("--input", type=Path, required=True)
+    m5_verify_discovery_stress.add_argument(
+        "--campaign-workspace", type=Path, required=True
+    )
+    m5_verify_discovery_stress.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m5_verify_discovery_stress.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m5_verify_discovery_stress.add_argument(
+        "--dataset-workspace", type=Path, required=True
+    )
+    m5_verify_discovery_stress.add_argument(
+        "--primary-config",
+        type=Path,
+        default=Path("configs/external-generalization.yaml"),
+    )
+    m5_verify_discovery_stress.add_argument(
+        "--config", type=Path, default=Path("configs/discovery-stress.yaml")
     )
 
     m4_deployment = subparsers.add_parser(
@@ -1499,6 +1609,77 @@ def main(argv: list[str] | None = None) -> int:
             runs_workspace=arguments.runs_workspace,
             dataset_workspace=arguments.dataset_workspace,
             workspace=arguments.workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m5-prepare-external-data":
+        result = prepare_external_dataset(
+            source_root=arguments.input,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-verify-external-data":
+        result = verify_external_dataset(
+            workspace=arguments.workspace,
+            source_root=arguments.input,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m5-evaluate-external":
+        result = evaluate_external_generalization(
+            external_workspace=arguments.external_workspace,
+            campaign_workspace=arguments.campaign_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            training_dataset_workspace=arguments.dataset_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-verify-external":
+        result = verify_external_generalization(
+            workspace=arguments.workspace,
+            external_workspace=arguments.external_workspace,
+            source_root=arguments.input,
+            campaign_workspace=arguments.campaign_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            training_dataset_workspace=arguments.dataset_workspace,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m5-stress-discovery":
+        result = create_discovery_stress(
+            primary_workspace=arguments.primary_workspace,
+            external_workspace=arguments.external_workspace,
+            source_root=arguments.input,
+            campaign_workspace=arguments.campaign_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            training_dataset_workspace=arguments.dataset_workspace,
+            primary_config_path=arguments.primary_config,
+            config_path=arguments.config,
+            output=arguments.output,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-verify-discovery-stress":
+        result = verify_discovery_stress(
+            workspace=arguments.workspace,
+            primary_workspace=arguments.primary_workspace,
+            external_workspace=arguments.external_workspace,
+            source_root=arguments.input,
+            campaign_workspace=arguments.campaign_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            training_dataset_workspace=arguments.dataset_workspace,
+            primary_config_path=arguments.primary_config,
             config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))

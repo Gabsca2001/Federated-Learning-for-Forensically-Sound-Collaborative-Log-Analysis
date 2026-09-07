@@ -181,3 +181,34 @@ signature, admission, replay, attestation, and checkpoint-chain controls did
 not change the deterministic FedAvg learning result. The temporal holdout is
 benign-only, so its multiclass macro-F1 is not interpreted as a six-class
 generalization score.
+
+## External post-selection evaluation
+
+The `m5-prepare-external-data`, `m5-verify-external-data`,
+`m5-evaluate-external`, and `m5-verify-external` commands extend the verified secure campaign
+with a separate UWF-ZeekData22 evaluation. The evaluated checkpoint can exist only after the
+M4 client trust gate, 30 admitted M5 rounds, and validation-only selection have all verified.
+Data22 remains outside client training, validation, selection, tuning, and threshold choice,
+and the evaluator applies the scaler already fitted on the Data24 training split.
+
+Data22 `discovery` has no output in the frozen six-class Data24 model. The experiment therefore
+keeps two scopes separate: binary benign/attack metrics use every external window, while the
+strict tactic view uses actual `benign` and `reconnaissance` windows and retains all six model
+predictions in a rectangular confusion matrix. Coverage and out-of-model labels are explicit;
+Discovery is never silently mapped to another tactic.
+
+The controlled run produced 10,128 windows. Its binary attack F1 is `0.0863309353`, balanced
+accuracy is `0.5261247936`, shared-label macro-F1 is `0.4968434657`, and `reconnaissance`
+recall is zero. The verifier independently reconstructed the source snapshot, campaign and
+selection, frozen-scaler predictions, metrics, and implementation binding with zero errors.
+This is a verified negative cross-domain result rather than a failure of execution.
+
+The separate `m5-stress-discovery` and `m5-verify-discovery-stress` commands test the two real
+Discovery temporal bursts under 12 alignments of the unchanged 60-second window. At least one
+segment is detected as attack for both bursts at every offset; all segments are detected in
+19/24 correlated burst-offset trials. Offset zero reproduces the three primary Discovery
+predictions exactly. Only the two bursts are independent, and Discovery remains outside the
+six-class head, so this cannot be reported as 24 independent samples or open-set tactic recall.
+
+See [External UWF-ZeekData22 generalization](EXTERNAL_GENERALIZATION.md) for acquisition,
+commands, artifacts, verified results, and the claim boundary.
