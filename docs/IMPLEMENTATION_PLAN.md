@@ -94,6 +94,12 @@ Clean-only calibration fixes the statistical and composite thresholds before can
 are evaluated. A controlled 2x2 matrix measures both signal-disagreement directions while
 retaining the M5 rule that failed trust is a hard veto.
 
+The contribution-explanation bundle then treats each policy outcome and robust-aggregation
+treatment as a forensic event. It reports exact threshold margins, ranked indicator
+contributions, named tensor deviations, clip scales, coordinate-retention fractions, Krum
+ranks, and client selections. Its verifier recreates all 15 explanations and all six traces
+from the frozen inputs; attack labels are excluded from explanation generation.
+
 ### M7 — investigation reporting
 
 Six deterministic test cases were resolved through prediction, Integrated Gradients,
@@ -123,8 +129,8 @@ the completed M1–M8 acceptance chain:
   Discovery alignment stress, and their sanitized result snapshot as the external reference;
 - repeat the joint-admission comparison across selected attack families/seeds and replace the
   controlled trust-failure cell with a dedicated signed failed-attestation runtime fixture;
-- add contribution-decision explanations over update vectors and policy evidence, reusing the
-  existing provenance and verification contracts without conflating them with M7 event XAI;
+- retain the completed contribution-decision explanations as the round-11 mechanism reference
+  and extend them only when repeated joint-admission experiments add new source scenarios;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;
 - define production key custody, rotation, revocation distribution, and disaster recovery;

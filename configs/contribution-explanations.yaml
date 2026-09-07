@@ -1,0 +1,17 @@
+schema_version: "1.0"
+experiment:
+  id: m6-contribution-decision-explanations-v1
+
+contribution_explanations:
+  primary_policy: gated_composite
+  top_tensor_drivers: 5
+  aggregation_profiles:
+    - fedavg
+    - coordinate_median
+    - trimmed_mean
+    - multikrum
+    - bulyan
+  interpretation:
+    attack_labels_used: false
+    primary_evidence: false
+    hard_trust_veto_is_explainable_not_compensable: true

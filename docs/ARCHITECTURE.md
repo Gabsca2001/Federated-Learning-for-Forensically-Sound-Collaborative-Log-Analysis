@@ -134,6 +134,14 @@ sequentially or calculate a documented composite risk behind a non-compensable t
 A failed trust prerequisite therefore never reaches live aggregation, even if its update
 looks statistically ordinary.
 
+Contribution-decision explanations are derived from those preserved signals and the frozen
+update vectors. They expose policy margins and indicator contributions, rank named model
+tensors by their share of update deviation, and reconstruct aggregator-specific treatment.
+MultiKrum selection, Bulyan candidate/coordinate retention, trimmed-mean coordinate retention,
+FedAvg weights, and clipping scales remain different evidence types rather than being reduced
+to a misleading universal “accepted/rejected” flag. These explanations are derived
+interpretations, not primary log evidence or proof of malicious intent.
+
 Prototype poisoning is evaluated independently from model-parameter poisoning because model
 parameters and class prototypes have different structure and support semantics.
 
