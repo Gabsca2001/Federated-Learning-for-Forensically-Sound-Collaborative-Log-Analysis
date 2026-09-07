@@ -22,6 +22,10 @@ from .campaign_accounting import (
     verify_campaign_accounting,
 )
 from .central_baseline import train_central_baseline, verify_central_baseline
+from .composite_admission_artifact import (
+    create_composite_admission_artifact,
+    verify_composite_admission_artifact,
+)
 from .config import load_yaml
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
@@ -745,6 +749,72 @@ def build_parser() -> argparse.ArgumentParser:
     m6_verify.add_argument("--workspace", type=Path, required=True)
     m6_verify.add_argument(
         "--config", type=Path, default=Path("configs/byzantine.yaml")
+    )
+
+    m6_joint_admission = subparsers.add_parser(
+        "m6-joint-admission",
+        help="compare TPM/statistical admission policies on one verified M6 scenario",
+    )
+    m6_joint_admission.add_argument("--round-workspace", type=Path, required=True)
+    m6_joint_admission.add_argument("--trust-workspace", type=Path, required=True)
+    m6_joint_admission.add_argument("--partition-workspace", type=Path, required=True)
+    m6_joint_admission.add_argument(
+        "--clean-frozen-workspace", type=Path, required=True
+    )
+    m6_joint_admission.add_argument(
+        "--clean-comparison-workspace", type=Path, required=True
+    )
+    m6_joint_admission.add_argument(
+        "--candidate-frozen-workspace", type=Path, required=True
+    )
+    m6_joint_admission.add_argument(
+        "--candidate-comparison-workspace", type=Path, required=True
+    )
+    m6_joint_admission.add_argument("--output", type=Path, required=True)
+    m6_joint_admission.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/composite-admission.yaml"),
+    )
+    m6_joint_admission.add_argument(
+        "--byzantine-config",
+        type=Path,
+        default=Path("configs/byzantine-malicious-model-replacement.yaml"),
+    )
+
+    m6_verify_joint_admission = subparsers.add_parser(
+        "m6-verify-joint-admission",
+        help="recompute a joint TPM/statistical admission artifact",
+    )
+    m6_verify_joint_admission.add_argument(
+        "--round-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument(
+        "--partition-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument(
+        "--clean-frozen-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument(
+        "--clean-comparison-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument(
+        "--candidate-frozen-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument(
+        "--candidate-comparison-workspace", type=Path, required=True
+    )
+    m6_verify_joint_admission.add_argument("--workspace", type=Path, required=True)
+    m6_verify_joint_admission.add_argument(
+        "--config", type=Path, default=Path("configs/composite-admission.yaml")
+    )
+    m6_verify_joint_admission.add_argument(
+        "--byzantine-config",
+        type=Path,
+        default=Path("configs/byzantine-malicious-model-replacement.yaml"),
     )
 
     m6_prototype_freeze = subparsers.add_parser(
@@ -1851,6 +1921,36 @@ def main(argv: list[str] | None = None) -> int:
             partition_workspace=arguments.partition_workspace,
             workspace=arguments.workspace,
             config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-joint-admission":
+        result = create_composite_admission_artifact(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            clean_frozen_workspace=arguments.clean_frozen_workspace,
+            clean_comparison_workspace=arguments.clean_comparison_workspace,
+            candidate_frozen_workspace=arguments.candidate_frozen_workspace,
+            candidate_comparison_workspace=arguments.candidate_comparison_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+            byzantine_config_path=arguments.byzantine_config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify-joint-admission":
+        result = verify_composite_admission_artifact(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            clean_frozen_workspace=arguments.clean_frozen_workspace,
+            clean_comparison_workspace=arguments.clean_comparison_workspace,
+            candidate_frozen_workspace=arguments.candidate_frozen_workspace,
+            candidate_comparison_workspace=arguments.candidate_comparison_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+            byzantine_config_path=arguments.byzantine_config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

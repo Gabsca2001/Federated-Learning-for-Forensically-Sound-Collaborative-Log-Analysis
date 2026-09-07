@@ -23,7 +23,7 @@ needed to reconstruct the derivation.
 | Learning | Central MLP, Flower client/server, deterministic FedAvg, PROTEAN | Updates, round records, checkpoints, metrics, selection locks |
 | Trust | Registry, CA, enrollment, mTLS, TPM adapter, Quote verifier, revocation | Enrollment, challenge, Quote evidence, Attestation Result v2 |
 | Secure campaign | Round coordinator, update validator, aggregation, campaign finalizer | Round context, update bundle, decision, checkpoint, campaign manifest |
-| Robustness | Attack freezer, Byzantine aggregators, sensitivity runner | Frozen input set, comparison, verification receipt, report |
+| Robustness | Attack freezer, Byzantine aggregators, joint admission, sensitivity runner | Frozen input set, policy decision, comparison, verification receipt, report |
 | Investigation | Inference, lineage resolver, explanation, ATT&CK mapper, report generator | Prediction, explanation, mapping, JSON/Markdown report |
 | Preservation | Inventory, Merkle builder, timestamp client, recovery exporter, accountant | Preservation manifest, Merkle root, RFC 3161 proof, TAR, final receipt |
 
@@ -125,6 +125,14 @@ attacked update set and binds the attacker identities, fault bound `f`, attack p
 and source round. FedAvg and the robust aggregators consume the same frozen bytes. This
 separates the effect of aggregation from changes in client sampling, training, or attack
 generation.
+
+The joint-admission layer does not collapse trust and update behavior into one opaque signal.
+M4/M5 first provides identity, integrity, freshness, and attestation evidence; M6 derives
+server-visible geometry and validation-impact indicators. TPM-only and statistics-only are
+retained as ablation controls. The integrated policies either apply the two gates
+sequentially or calculate a documented composite risk behind a non-compensable trust veto.
+A failed trust prerequisite therefore never reaches live aggregation, even if its update
+looks statistically ordinary.
 
 Prototype poisoning is evaluated independently from model-parameter poisoning because model
 parameters and class prototypes have different structure and support semantics.

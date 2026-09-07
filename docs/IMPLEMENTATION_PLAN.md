@@ -18,7 +18,7 @@ and a map of the evidence currently present in the canonical campaign.
 | M3 — Federation | 15-client IID/non-IID snapshots, Flower path, auditable FedAvg, PROTEAN | Exact partition coverage; round aggregation reproduced; validation-only selection locked | Complete |
 | M4 — Trust | Enrollment, AK/ESK separation, mTLS, Quote appraisal, revocation, TPM adapter | 15/15 `swtpm` gate; nonce replay, wrong pair, altered PCR/log, and revocation rejected | Complete for software-TPM profile |
 | M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain | Single-round reconstruction plus 30-round/450-contribution campaign verification | Complete |
-| M6 — Byzantine analysis | Frozen attacks, robust aggregation, model/prototype sensitivity, reports | Every method receives the same inputs; invalid assumptions fail; reports regenerate | Complete |
+| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, model/prototype sensitivity, reports | Every method receives the same inputs; joint decisions recompute; invalid assumptions fail; reports regenerate | Complete plus verified joint-admission pilot |
 | M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete |
 | M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Complete |
 
@@ -88,6 +88,12 @@ trimmed mean, Multi-Krum, Bulyan, clipping, and prototype defenses are evaluated
 explicit `n`/`f` assumptions. Machine-readable results, deterministic figures, and verifier
 receipts preserve both successful defenses and failure modes.
 
+The joint-admission pilot compares two ablations (`tpm_only`, `statistics_only`) and two
+integrated policies (`sequential`, `gated_composite`) on the same round-11 update population.
+Clean-only calibration fixes the statistical and composite thresholds before candidate labels
+are evaluated. A controlled 2x2 matrix measures both signal-disagreement directions while
+retaining the M5 rule that failed trust is a hard veto.
+
 ### M7 — investigation reporting
 
 Six deterministic test cases were resolved through prediction, Integrated Gradients,
@@ -115,6 +121,10 @@ the completed M1–M8 acceptance chain:
   failure-recovery claims;
 - retain the completed, byte-recomputed UWF-ZeekData22 post-selection evaluation, its separate
   Discovery alignment stress, and their sanitized result snapshot as the external reference;
+- repeat the joint-admission comparison across selected attack families/seeds and replace the
+  controlled trust-failure cell with a dedicated signed failed-attestation runtime fixture;
+- add contribution-decision explanations over update vectors and policy evidence, reusing the
+  existing provenance and verification contracts without conflating them with M7 event XAI;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;
 - define production key custody, rotation, revocation distribution, and disaster recovery;

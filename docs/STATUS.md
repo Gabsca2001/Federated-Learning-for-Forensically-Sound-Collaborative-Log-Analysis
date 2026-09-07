@@ -3,7 +3,9 @@
 ## Summary
 
 The deterministic M1–M8 implementation and the current local-test reference chain are
-complete and verified end to end. The paired five-seed M3 evaluation and the 13-stage M4–M8
+complete and verified end to end. A joint M4/M6 admission pilot now compares four policies
+and both trust/statistics disagreement directions on verified round-11 inputs. The paired
+five-seed M3 evaluation and the 13-stage M4–M8
 offline-overhead reference execution are complete, verified, and published as sanitized
 snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
 verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
@@ -36,7 +38,7 @@ management.
 | TLS 1.3 mutual authentication | Implemented (M4) | EKU, SAN, enrollment-fingerprint, and wrong-pair checks |
 | Physical TPM adapter | Implemented; runtime pending | Same `tpm2-tools` interface via `device:/dev/tpmrm0`; no hardware result claimed |
 | Secure FedAvg campaign | Implemented and verified (M5) | New campaigns bind post-selection client-local metrics; preserved reference has 30 rounds, 450/450 bundles, and selected round 11 |
-| Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model and prototype campaigns; deterministic reports |
+| Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; clean-calibrated joint TPM/statistical admission; controlled 2x2 disagreement matrix |
 | Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
 | Preservation inventory | Implemented and verified (M8.1) | 2,381 artifacts, seven external bindings, 2,642,172,551 payload bytes |
 | Merkle commitment | Implemented and verified (M8.2) | 2,388 leaves, 13 levels, deterministic duplicate-last rule |
@@ -90,6 +92,9 @@ The final assurance state is
 - Earlier M2 seed diagnostics used a separate partial-fit monitoring protocol. They are useful
   sensitivity evidence but do not substitute for repetitions of the canonical M3 protocol.
 - Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
+- The joint-admission pilot uses real verified update statistics, but its attacked M6 bytes
+  are controlled derivations not re-signed as new M5 bundles. Its failed-trust 2x2 cells are
+  explicit counterfactual policy controls, not observed M5 admissions.
 - The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
   M8 stages have one observation each, and no live `swtpm`, network, or physical-TPM latency
   is claimed.
@@ -100,7 +105,8 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Decide whether the selected M6 attack scenarios require repeated frozen-update campaigns.
+1. Repeat joint admission across selected attacks/seeds, add a signed runtime trust-failure
+   fixture, and explain contribution admission/quarantine decisions over update evidence.
 2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
 3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
 4. Validate service separation, multi-host performance, and failure recovery outside the research

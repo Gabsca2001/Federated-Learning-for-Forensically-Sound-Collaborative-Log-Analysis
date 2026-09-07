@@ -30,7 +30,7 @@ M4  one-client/one-TPM trust deployment, enrollment, mTLS, Quote appraisal
  ↓
 M5  attestation-gated secure round and chained 30-round campaign
  ↓
-M6  frozen Byzantine scenarios and reproducible aggregation comparisons
+M6  Byzantine comparisons plus joint TPM/statistical contribution admission
  ↓
 M7  predictions → explanations → ATT&CK mapping → human-readable report
  ↓
@@ -386,6 +386,14 @@ fl-forensics m6-verify-frozen --workspace artifacts/m6-model-replacement-f3
 The remaining `m6-*` commands compare FedAvg and robust strategies, verify every output,
 run prototype-poisoning sensitivity studies, and build machine-readable and human-readable
 reports. Use `fl-forensics --help` for the exact variant required by an experiment.
+
+The joint-admission extension keeps M4/M5 trust evidence and M6 update statistics separately
+inspectable, then evaluates the same candidates under TPM-only, statistics-only, sequential,
+and hard-gated composite policies. Thresholds are calibrated from the clean reference set
+only; attack labels are used afterwards only to evaluate policy outcomes. A controlled 2x2
+matrix exposes both disagreement directions without allowing a failed trust prerequisite to
+be compensated by a statistically normal update. The public sanitized result is available in
+[`results/m6-composite-admission-local-test-v1/`](results/m6-composite-admission-local-test-v1/README.md).
 
 See [M6 Byzantine experiments](docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md).
 
