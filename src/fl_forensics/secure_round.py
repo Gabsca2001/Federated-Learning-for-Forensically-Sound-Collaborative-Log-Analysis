@@ -243,6 +243,7 @@ def initialize_secure_round(
     campaign_id: str | None = None,
     round_number: int = 1,
     previous_round_workspace: Path | None = None,
+    in_round_admission_config_path: Path | None = None,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """Create a signed round context after validating all 15 M4 attestations."""
@@ -355,13 +356,40 @@ def initialize_secure_round(
         previous_model_path = (
             previous_round_workspace / "checkpoint" / "global-model.json"
         )
-        previous_checkpoint = SecureCheckpoint.model_validate(
-            load_json(previous_checkpoint_path)
+        previous_checkpoint_value = load_json(previous_checkpoint_path)
+        composite_previous = (
+            previous_checkpoint_value.get("artifact_type")
+            == "in_round_secure_global_checkpoint"
         )
+        if composite_previous:
+            from .in_round_admission import verify_in_round_signature
+            from .in_round_admission_models import InRoundSecureCheckpoint
+
+            previous_checkpoint = InRoundSecureCheckpoint.model_validate(
+                previous_checkpoint_value
+            )
+            previous_count_valid = (
+                previous_checkpoint.core.accepted_count
+                >= previous_checkpoint.core.minimum_contributors
+            )
+            previous_signature_valid = verify_in_round_signature(
+                previous_checkpoint, signer.private_key.public_key()
+            )
+        else:
+            previous_checkpoint = SecureCheckpoint.model_validate(
+                previous_checkpoint_value
+            )
+            previous_count_valid = (
+                previous_checkpoint.core.accepted_count == required_client_count
+                and previous_checkpoint.core.quarantined_count == 0
+            )
+            previous_signature_valid = _verify_signed(
+                previous_checkpoint, signer.private_key.public_key()
+            )
         coordinator_key = signer.private_key.public_key()
         previous_valid = (
             _verify_signed(previous_context, coordinator_key)
-            and _verify_signed(previous_checkpoint, coordinator_key)
+            and previous_signature_valid
             and previous_context.core.campaign_id == campaign_id
             and previous_checkpoint.core.campaign_id == campaign_id
             and previous_context.core.round_number == round_number - 1
@@ -369,8 +397,9 @@ def initialize_secure_round(
             and previous_checkpoint.core.context_digest == previous_context.core_digest
             and previous_checkpoint.core.required_client_count
             == required_client_count
-            and previous_checkpoint.core.accepted_count == required_client_count
-            and previous_checkpoint.core.quarantined_count == 0
+            and composite_previous
+            == (in_round_admission_config_path is not None)
+            and previous_count_valid
             and previous_model_path.is_file()
             and sha256_file(previous_model_path)
             == previous_checkpoint.core.global_model_sha256
@@ -422,6 +451,16 @@ def initialize_secure_round(
         "class_weighting": str(training["class_weighting"]),
         "clients": public_clients,
     }
+    in_round_contract = None
+    if in_round_admission_config_path is not None:
+        from .in_round_admission import install_in_round_contract
+
+        in_round_contract, in_round_binding = install_in_round_contract(
+            public_workspace=public,
+            config_path=in_round_admission_config_path,
+            partition_manifest=manifest,
+        )
+        training_contract["in_round_admission"] = in_round_binding
     contract_bytes = derived_json_bytes(training_contract)
     contract_digest = sha256_bytes(contract_bytes)
     write_once(public / "training-contract.json", contract_bytes)
@@ -469,6 +508,9 @@ def initialize_secure_round(
         "client_count": required_client_count,
         "attested_count": required_client_count,
         "base_model_sha256": base_digest,
+        "in_round_admission_contract_id": (
+            in_round_contract.contract_id if in_round_contract is not None else None
+        ),
         "expires_at": context.core.expires_at,
         "workspace": str(workspace),
     }

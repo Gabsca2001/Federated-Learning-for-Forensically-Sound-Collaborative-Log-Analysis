@@ -49,6 +49,10 @@ from .investigation_report import (
     create_investigation_report_bundle,
     verify_investigation_report_bundle,
 )
+from .in_round_admission import (
+    admit_and_aggregate_in_round,
+    verify_in_round_secure_round,
+)
 from .merkle import create_merkle_tree, verify_merkle_tree
 from .multiseed import (
     create_multiseed_summary,
@@ -674,6 +678,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="verified previous round used to chain the next base model",
     )
+    m5_init.add_argument(
+        "--in-round-admission-config",
+        type=Path,
+        help="bind a gated-composite policy before clients start local training",
+    )
 
     m5_client = subparsers.add_parser(
         "m5-client-update", help="train one isolated client and TPM-sign its Update Bundle"
@@ -704,6 +713,31 @@ def build_parser() -> argparse.ArgumentParser:
     m5_verify.add_argument("--workspace", type=Path, required=True)
     m5_verify.add_argument("--trust-workspace", type=Path, required=True)
     m5_verify.add_argument("--submissions", type=Path, required=True)
+
+    m5_composite_aggregate = subparsers.add_parser(
+        "m5-admit-composite-aggregate",
+        help="apply M4/M5 trust and M6 statistics before creating the round checkpoint",
+    )
+    m5_composite_aggregate.add_argument("--workspace", type=Path, required=True)
+    m5_composite_aggregate.add_argument("--trust-workspace", type=Path, required=True)
+    m5_composite_aggregate.add_argument("--submissions", type=Path, required=True)
+    m5_composite_aggregate.add_argument(
+        "--validation-split", type=Path, required=True
+    )
+    m5_composite_aggregate.add_argument(
+        "--coordinator-workspace",
+        type=Path,
+        help="shared campaign workspace containing the coordinator authority",
+    )
+
+    m5_composite_verify = subparsers.add_parser(
+        "m5-verify-composite-round",
+        help="recompute in-round trust, statistics, decisions, and weighted FedAvg",
+    )
+    m5_composite_verify.add_argument("--workspace", type=Path, required=True)
+    m5_composite_verify.add_argument("--trust-workspace", type=Path, required=True)
+    m5_composite_verify.add_argument("--submissions", type=Path, required=True)
+    m5_composite_verify.add_argument("--validation-split", type=Path, required=True)
 
     m5_finalize = subparsers.add_parser(
         "m5-finalize-campaign",
@@ -1884,6 +1918,7 @@ def main(argv: list[str] | None = None) -> int:
             campaign_id=arguments.campaign_id,
             round_number=arguments.round_number,
             previous_round_workspace=arguments.previous_round_workspace,
+            in_round_admission_config_path=arguments.in_round_admission_config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -1913,6 +1948,25 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             trust_workspace=arguments.trust_workspace,
             submissions_root=arguments.submissions,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m5-admit-composite-aggregate":
+        result = admit_and_aggregate_in_round(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            submissions_root=arguments.submissions,
+            validation_split_path=arguments.validation_split,
+            coordinator_workspace=arguments.coordinator_workspace,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "aggregated" else 1
+    if arguments.command == "m5-verify-composite-round":
+        result = verify_in_round_secure_round(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            submissions_root=arguments.submissions,
+            validation_split_path=arguments.validation_split,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

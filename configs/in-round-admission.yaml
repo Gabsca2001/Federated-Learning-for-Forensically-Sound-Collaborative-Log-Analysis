@@ -1,0 +1,52 @@
+schema_version: "1.0"
+
+runtime_admission:
+  policy_id: m5-in-round-gated-composite-v1
+  primary_policy: gated_composite
+  minimum_contributors: 10
+  accepted_downweight_factor: 0.50
+  passed_with_warning_risk: 0.25
+  robust_z_cap: 3.0
+  validation_metric: macro_f1_all_model_classes
+
+  calibration:
+    semantics: verified-clean-development-reference
+    source_admission_sha256: 3faa180da370926cd27e9f08503942af376e2ac9769c147edf4251035cf018d1
+    indicator_references:
+      relative_norm:
+        direction: higher
+        median: 1.0
+        mad: 0.049476582026987126
+        sample_count: 15
+      cosine_to_median:
+        direction: lower
+        median: 0.9052124271868548
+        mad: 0.012512773884693185
+        sample_count: 15
+      coordinate_median_distance:
+        direction: higher
+        median: 0.1992808705265749
+        mad: 0.017272910563596505
+        sample_count: 15
+      mad_score:
+        direction: higher
+        median: 0.9352730793410061
+        mad: 0.06472692065899388
+        sample_count: 15
+      validation_impact:
+        direction: higher
+        median: -0.00800771837757952
+        mad: 0.013822945886774463
+        sample_count: 15
+    indicator_weights:
+      relative_norm: 0.20
+      cosine_to_median: 0.20
+      coordinate_median_distance: 0.20
+      mad_score: 0.20
+      validation_impact: 0.20
+    thresholds:
+      clean_sample_count: 15
+      statistical_threshold: 0.8183094063145846
+      composite_downweight_threshold: 0.2748970485340289
+      composite_threshold: 0.4091547031572923
+      trust_weight: 0.50

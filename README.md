@@ -28,7 +28,7 @@ M3  15-client IID/non-IID FedAvg baseline and auditable PROTEAN adaptation
  ↓
 M4  one-client/one-TPM trust deployment, enrollment, mTLS, Quote appraisal
  ↓
-M5  attestation-gated secure round and chained 30-round campaign
+M5  attestation-gated round, optional in-round statistical gate, chained campaign
  ↓
 M6  Byzantine comparisons plus joint TPM/statistical contribution admission
  ↓
@@ -351,6 +351,46 @@ python scripts/m5_campaign_report.py \
   --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
   --output artifacts/m5-secure-multiround-local-test-v1-report
 ```
+
+An opt-in execution profile now moves the M6 gated-composite decision into each real M5
+training round. The admission configuration is copied and digest-bound before clients train.
+After every client has trained and TPM-signed its Update Bundle, the coordinator rechecks the
+M4/M5 trust chain, derives update-geometry and validation-impact indicators, signs one
+contribution decision per client, and only then performs weighted FedAvg. A trust failure is
+a hard veto; a statistically suspicious update can be downweighted or quarantined. The
+coordinator can see only the isolated validation split at this point, never test data.
+
+This profile requires M4 baseline `1.1`, which measures the Byzantine-statistics and composite
+admission implementation as well as its policy. Provision a fresh Compose namespace and fresh
+trust/node workspaces after the code is final; restarting TPMs enrolled against an older
+measurement log is not sufficient.
+
+Use a separate workspace for the first one-round runtime smoke test:
+
+```bash
+python scripts/run_m5_secure_multiround.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-in-round-composite-smoke-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --in-round-admission-config configs/in-round-admission.yaml \
+  --rounds 1 \
+  --workers 4 \
+  --attestation-refresh-interval 1
+
+python scripts/run_m5_secure_multiround.py verify \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-in-round-composite-smoke-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --in-round-admission-config configs/in-round-admission.yaml \
+  --rounds 1
+```
+
+The fresh-baseline Docker/`swtpm` smoke run passed with 15/15 accepted contributions and
+independent recomputation of trust, statistics, decisions, and aggregation. It is integration
+evidence, not a predictive-performance result; the separate 30-round in-round campaign remains
+pending. The existing 30-round reference below remains unchanged.
 
 The completed campaign contains 30 chained checkpoints and 450 admitted contributions. Its
 validation-only selection chose round 11 before test evaluation. Partitions produced by the

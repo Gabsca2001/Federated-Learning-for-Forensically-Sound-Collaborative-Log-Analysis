@@ -3,10 +3,11 @@
 ## Scope
 
 This extension turns the independently verified M5 round into a complete
-30-round learning campaign. It does not replace the single-round acceptance
-gate. Each round retains the same 15-client attestation, ESK signature,
-admission, replay, tensor-validation, checkpoint-input, and independent FedAvg
-checks.
+30-round learning campaign. The preserved reference uses the original
+all-or-nothing gate: each round retains the same 15-client attestation, ESK
+signature, admission, replay, tensor-validation, checkpoint-input, and
+independent FedAvg checks. A second opt-in profile now enforces joint
+TPM/statistical admission on newly produced updates before each aggregation.
 
 Round 1 starts from the deterministic random model defined by
 `configs/federation.yaml`. Round `r > 1` can start only when the previous
@@ -14,8 +15,12 @@ checkpoint:
 
 - is signed by the same campaign coordinator;
 - belongs to the same campaign and round `r - 1`;
-- contains all 15 accepted inputs and no quarantined input;
+- contains all 15 accepted inputs in the original profile, or at least the
+  policy minimum in the in-round composite profile;
 - commits to the exact global-model bytes used as round `r` base model.
+
+All rounds in one campaign must use the same admission profile and, in the
+composite case, the same bound policy contract.
 
 The new signed context contains the SHA-256 digest of the previous checkpoint.
 Consequently, every accepted bundle is transitively linked to all earlier
@@ -35,6 +40,12 @@ rounds and does not open the isolated server test or temporal-holdout artifacts
 until selection is complete. Independent verification repeats inference to
 validate the preserved result. No test data can choose a round, update a model,
 or change hyperparameters.
+
+In the composite profile, candidate-update validation impact is also computed
+from that same isolated validation snapshot before aggregation. This is an
+admission signal, not test evaluation. The coordinator container mounts the
+validation snapshot read-only; test, temporal-holdout, and local-test snapshots
+remain unavailable until finalization.
 
 When the M3 partition includes the local-test contract, the selected global
 checkpoint is evaluated on every client-local domain. The per-client metrics and
@@ -59,10 +70,15 @@ workspace and provision a new Compose namespace only after the implementation
 and unit tests are final. Do not delete an older namespace if it is needed as
 preserved evidence.
 
+Trust baseline `1.1` explicitly measures the Byzantine-statistics modules,
+composite and in-round admission modules and schemas, and the in-round policy.
+Restarting an `swtpm` enrolled against an older measurement log resets its PCRs
+but does not create a valid baseline for the new code.
+
 ```bash
-export COMPOSE_PROJECT_NAME=flforensics_local_test_v1
-export M4_TRUST_WORKSPACE="$PWD/artifacts/m4-trust-local-test-v1"
-export M4_NODE_ROOT="$PWD/artifacts/m4-nodes-local-test-v1"
+export COMPOSE_PROJECT_NAME=flforensics_inround_smoke_v1
+export M4_TRUST_WORKSPACE="$PWD/artifacts/m4-trust-in-round-smoke-v1"
+export M4_NODE_ROOT="$PWD/artifacts/m4-nodes-in-round-smoke-v1"
 
 python scripts/run_m5_secure_round.py build \
   --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1
@@ -107,6 +123,50 @@ skipped. Byte-identical client submissions are idempotent. A context that has
 expired during an incomplete round must not be silently rewritten; preserve
 it for diagnosis and restart that round in a new campaign workspace.
 
+## In-round composite admission
+
+Pass `--in-round-admission-config configs/in-round-admission.yaml` to both
+`run` and `verify`. The per-round sequence becomes:
+
+1. refresh and appraise the M4 Quote when scheduled;
+2. sign the Round Context and the digest-bound admission contract;
+3. train each isolated client and TPM-sign its Update Bundle;
+4. revalidate identity, freshness, signature, digests, replay slot, and tensor schema;
+5. compute current update geometry and validation impact;
+6. sign an accept, downweight, or quarantine decision;
+7. run weighted FedAvg only on admitted inputs and verify it independently.
+
+For a disposable one-round smoke test, use:
+
+```bash
+python scripts/run_m5_secure_multiround.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-in-round-composite-smoke-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --in-round-admission-config configs/in-round-admission.yaml \
+  --rounds 1 \
+  --workers 4 \
+  --attestation-refresh-interval 1
+
+python scripts/run_m5_secure_multiround.py verify \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-in-round-composite-smoke-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --in-round-admission-config configs/in-round-admission.yaml \
+  --rounds 1
+```
+
+The policy requires at least 10 of 15 non-zero-weight contributions. Falling
+below that number fails the round without creating a checkpoint. The current
+thresholds are copied from and identify the verified clean M6 calibration
+artifact; candidate labels are never used during runtime admission. A fresh
+baseline-`1.1` Docker/`swtpm` smoke run verified one complete round: 15/15
+contributions were accepted and trust, statistics, decisions, and aggregation
+were independently recomputed with zero errors. This is integration evidence;
+the 30-round in-round performance campaign remains separate and pending.
+
 The round coordinator is not mounted with the server test, temporal holdout,
 or client-local test snapshots. After all round checkpoints have been written,
 the runner starts a separate network-disabled `finalizer` container. Only that
@@ -150,7 +210,7 @@ campaign verification, and the report command also print the three global
 matrices in their JSON output. The report refuses to run unless the whole secure
 campaign verifies, and its manifest covers files in nested per-client folders.
 
-## Completed runtime gate
+## Completed original runtime gate
 
 The 15-client Docker campaign completed on the verified IID Parquet snapshot
 with the current local-test reference result. Every client passed its `swtpm`

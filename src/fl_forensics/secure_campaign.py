@@ -16,6 +16,11 @@ from .federated_model import (
     evaluate_rows,
     load_ndarrays,
 )
+from .in_round_admission import (
+    verify_in_round_secure_round,
+    verify_in_round_signature,
+)
+from .in_round_admission_models import InRoundSecureCheckpoint
 from .preprocessing import derived_json_bytes
 from .secure_round import (
     EXPECTED_CLIENTS,
@@ -197,7 +202,11 @@ def _inspect_campaign(
     class_names = [str(item) for item in partition["class_names"]]
     isolated_server_splits = bool(partition.get("server_evaluation_splits"))
     server_evaluation = None
+    validation_split_path: Path | None = None
     if isolated_server_splits:
+        validation_split_path = partition_manifest_path.parent / Path(
+            str(partition["server_evaluation_splits"]["validation"]["path"])
+        )
         validation_rows = _load_isolated_server_split(
             partition_manifest_path=partition_manifest_path,
             partition=partition,
@@ -221,27 +230,82 @@ def _inspect_campaign(
     federation_config_sha256: str | None = None
     references: list[SecureCampaignRoundReference] = []
     validation_artifacts: list[dict[str, Any]] = []
+    total_quarantined = 0
+    total_downweighted = 0
+    in_round_contract_sha256: str | None = None
+    campaign_in_round_mode: bool | None = None
 
     for round_number in range(1, expected_rounds + 1):
         round_workspace = _round_workspace(workspace, round_number)
-        verification = verify_secure_round(
-            workspace=round_workspace,
-            trust_workspace=trust_workspace,
-            submissions_root=round_workspace / "submissions",
+        checkpoint_path = round_workspace / "checkpoint" / "manifest.json"
+        checkpoint_value = load_json(checkpoint_path)
+        in_round = (
+            checkpoint_value.get("artifact_type")
+            == "in_round_secure_global_checkpoint"
         )
+        if campaign_in_round_mode is None:
+            campaign_in_round_mode = in_round
+        elif in_round != campaign_in_round_mode:
+            raise SecureRoundError(
+                "campaign mixes standard and in-round admission checkpoints"
+            )
+        if in_round:
+            if validation_split_path is None:
+                raise SecureRoundError(
+                    "in-round campaign requires an isolated validation split"
+                )
+            verification = verify_in_round_secure_round(
+                workspace=round_workspace,
+                trust_workspace=trust_workspace,
+                submissions_root=round_workspace / "submissions",
+                validation_split_path=validation_split_path,
+            )
+            checkpoint = InRoundSecureCheckpoint.model_validate(checkpoint_value)
+            if in_round_contract_sha256 is None:
+                in_round_contract_sha256 = checkpoint.core.admission_contract_sha256
+            elif (
+                checkpoint.core.admission_contract_sha256
+                != in_round_contract_sha256
+            ):
+                raise SecureRoundError(
+                    "in-round admission contract changed during the campaign"
+                )
+            contribution_count_valid = (
+                checkpoint.core.accepted_count
+                >= checkpoint.core.minimum_contributors
+                and checkpoint.core.evaluated_count
+                + len(checkpoint.core.missing_client_ids)
+                == len(EXPECTED_CLIENTS)
+            )
+            total_quarantined += checkpoint.core.quarantined_count
+            total_downweighted += checkpoint.core.downweighted_count
+        else:
+            verification = verify_secure_round(
+                workspace=round_workspace,
+                trust_workspace=trust_workspace,
+                submissions_root=round_workspace / "submissions",
+            )
+            checkpoint = SecureCheckpoint.model_validate(checkpoint_value)
+            contribution_count_valid = (
+                checkpoint.core.accepted_count == len(EXPECTED_CLIENTS)
+                and checkpoint.core.quarantined_count == 0
+            )
         if verification["status"] != "verified":
             raise SecureRoundError(
                 f"secure round {round_number} failed independent verification: "
                 f"{verification['errors']}"
             )
         context_path = round_workspace / "public" / "round-context.json"
-        checkpoint_path = round_workspace / "checkpoint" / "manifest.json"
         model_path = round_workspace / "checkpoint" / "global-model.json"
         context = SecureRoundContext.model_validate(load_json(context_path))
-        checkpoint = SecureCheckpoint.model_validate(load_json(checkpoint_path))
         if not _verify_signed(context, coordinator_key):
             raise SecureRoundError(f"round {round_number} context uses another coordinator")
-        if not _verify_signed(checkpoint, coordinator_key):
+        checkpoint_signature_valid = (
+            verify_in_round_signature(checkpoint, coordinator_key)
+            if in_round
+            else _verify_signed(checkpoint, coordinator_key)
+        )
+        if not checkpoint_signature_valid:
             raise SecureRoundError(f"round {round_number} checkpoint uses another coordinator")
         if campaign_id is None:
             campaign_id = context.core.campaign_id
@@ -261,8 +325,7 @@ def _inspect_campaign(
                 previous_model_sha256 is None
                 or context.core.base_model_sha256 == previous_model_sha256
             )
-            and checkpoint.core.accepted_count == len(EXPECTED_CLIENTS)
-            and checkpoint.core.quarantined_count == 0
+            and contribution_count_valid
             and sha256_file(model_path) == checkpoint.core.global_model_sha256
         )
         if not binding_valid:
@@ -425,6 +488,12 @@ def _inspect_campaign(
         "selected_validation": selected_validation,
         "selected_reference": selected_reference,
         "final_evaluation": final_evaluation,
+        "total_accepted_contributions": sum(
+            item.accepted_count for item in references
+        ),
+        "total_quarantined_contributions": total_quarantined,
+        "total_downweighted_contributions": total_downweighted,
+        "in_round_admission_contract_sha256": in_round_contract_sha256,
     }
 
 
@@ -466,7 +535,7 @@ def finalize_secure_campaign(
         campaign_id=inspected["campaign_id"],
         round_count=expected_rounds,
         required_client_count=len(EXPECTED_CLIENTS),
-        total_accepted_contributions=expected_rounds * len(EXPECTED_CLIENTS),
+        total_accepted_contributions=inspected["total_accepted_contributions"],
         partition_manifest_sha256=inspected["partition_manifest_sha256"],
         server_evaluation_sha256=inspected["server_evaluation_sha256"],
         federation_config_sha256=inspected["federation_config_sha256"],
@@ -494,6 +563,15 @@ def finalize_secure_campaign(
         "campaign_id": core.campaign_id,
         "round_count": core.round_count,
         "accepted_contribution_count": core.total_accepted_contributions,
+        "quarantined_contribution_count": inspected[
+            "total_quarantined_contributions"
+        ],
+        "downweighted_contribution_count": inspected[
+            "total_downweighted_contributions"
+        ],
+        "in_round_admission_contract_sha256": inspected[
+            "in_round_admission_contract_sha256"
+        ],
         "selected_round": core.selected_round,
         "selected_validation_macro_f1": float(core.selected_validation_macro_f1_decimal),
         "selected_test_macro_f1": inspected["final_evaluation"]["metrics"]["test"][
@@ -585,7 +663,7 @@ def verify_secure_campaign(
             errors.append("selected checkpoint evaluation mismatch")
         elif sha256_file(final_path) != manifest.core.final_evaluation_sha256:
             errors.append("selected checkpoint evaluation digest mismatch")
-        expected_total = manifest.core.round_count * len(EXPECTED_CLIENTS)
+        expected_total = inspected["total_accepted_contributions"]
         if (
             manifest.core.required_client_count != len(EXPECTED_CLIENTS)
             or manifest.core.total_accepted_contributions != expected_total
@@ -602,6 +680,16 @@ def verify_secure_campaign(
         "selected_round": manifest.core.selected_round if manifest is not None else None,
         "accepted_contribution_count": (
             manifest.core.total_accepted_contributions if manifest is not None else 0
+        ),
+        "quarantined_contribution_count": (
+            inspected["total_quarantined_contributions"]
+            if inspected is not None and not errors
+            else 0
+        ),
+        "downweighted_contribution_count": (
+            inspected["total_downweighted_contributions"]
+            if inspected is not None and not errors
+            else 0
         ),
         "confusion_matrices": (
             {

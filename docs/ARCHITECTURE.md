@@ -106,6 +106,11 @@ checks the expected PCR values, certificate binding, enrollment, revocation stat
 then signs Attestation Result v2. The Admission Controller consumes this result; it cannot
 approve its own attestation.
 
+Baseline `1.1` extends the measured code surface to the Byzantine-update statistics,
+composite-admission engine and schemas, in-round controller and schemas, and the in-round
+policy. A client therefore cannot retain a passed hardware identity while silently changing
+the code that calculates or enforces contribution admission.
+
 ### M5 — secure campaign
 
 The coordinator requires active enrollments and fresh passed attestations before issuing a
@@ -117,6 +122,15 @@ signs its Update Bundle with the enrolled TPM ESK. Admission rechecks the comple
 round and client replay slot, model shape, finite tensors, digests, and policy. The checkpoint
 lists every admitted bundle, decision, update, and example weight. Round `r` starts from the
 accepted checkpoint of round `r - 1`.
+
+The optional in-round composite profile adds a semantic gate without weakening those trust
+preconditions. Before training, the signed training contract commits to a clean-calibrated
+policy and the isolated validation snapshot. After local training and TPM signing, but before
+aggregation, the coordinator computes the M6 update indicators and validation impact for the
+current candidates. It emits a signed accept/downweight/quarantine decision and constructs
+the actual next checkpoint only from contributions with non-zero effective weight. An
+independent verifier reconstructs the trust checks, statistics, decisions, weights, and exact
+FedAvg output. Standard and composite checkpoints cannot be mixed within one campaign.
 
 ### M6 — controlled Byzantine comparison
 
@@ -133,6 +147,10 @@ retained as ablation controls. The integrated policies either apply the two gate
 sequentially or calculate a documented composite risk behind a non-compensable trust veto.
 A failed trust prerequisite therefore never reaches live aggregation, even if its update
 looks statistically ordinary.
+
+The same signals now have two uses with distinct claim boundaries: the existing M6 workspaces
+compare policies retrospectively on frozen inputs, while the opt-in M5 execution profile
+enforces `gated_composite` on newly produced, TPM-signed updates before every aggregation.
 
 Contribution-decision explanations are derived from those preserved signals and the frozen
 update vectors. They expose policy margins and indicator contributions, rank named model

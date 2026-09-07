@@ -11,6 +11,11 @@ import yaml
 
 from fl_forensics.canonical import digest_object, sha256_bytes, sha256_file
 from fl_forensics.crypto import SoftwareECDSASigner, load_public_key
+from fl_forensics.in_round_admission import (
+    admit_and_aggregate_in_round,
+    install_in_round_contract,
+    verify_in_round_secure_round,
+)
 from fl_forensics.preprocessing import derived_json_bytes
 from fl_forensics.secure_round import (
     _admission_checks,
@@ -287,6 +292,11 @@ class SecureRoundAdmissionTests(unittest.TestCase):
         )
         return workspace
 
+    @staticmethod
+    def _replace(path: Path, content: bytes) -> None:
+        path.chmod(path.stat().st_mode | stat.S_IWUSR)
+        path.write_bytes(content)
+
     def test_nominal_bundle_passes_every_admission_check(self) -> None:
         self.assertTrue(_verify_signed(self.context, self.coordinator.private_key.public_key()))
         checks = self._checks()
@@ -420,6 +430,233 @@ class SecureRoundAdmissionTests(unittest.TestCase):
         decision = load_json(quarantine[0])
         self.assertEqual(decision["core"]["checks"][0]["name"], "replay_slot")
 
+    def test_in_round_policy_controls_and_verifies_the_actual_checkpoint(self) -> None:
+        import numpy as np
+
+        workspace = self._aggregation_workspace()
+        validation = {
+            "schema_version": "1.0",
+            "artifact_type": "federated_server_evaluation_split",
+            "dataset": "test",
+            "split": "validation",
+            "class_names": ["benign"],
+            "rows": {
+                "validation": [
+                    {
+                        "window_id": "validation-1",
+                        "features": [0.0],
+                        "label": "benign",
+                    }
+                ]
+            },
+        }
+        validation_bytes = derived_json_bytes(validation)
+        validation_path = Path(self.temporary.name) / "validation.json"
+        write_once(validation_path, validation_bytes)
+        partition = {
+            "client_count": 1,
+            "class_names": ["benign"],
+            "server_evaluation_splits": {
+                "validation": {
+                    "path": "server/splits/validation.json",
+                    "sha256": sha256_bytes(validation_bytes),
+                    "row_count": 1,
+                }
+            },
+        }
+        partition_bytes = derived_json_bytes(partition)
+        self._replace(workspace / "public" / "partition-manifest.json", partition_bytes)
+        config_path = Path(self.temporary.name) / "in-round.yaml"
+        config_path.write_text(
+            yaml.safe_dump(
+                {
+                    "schema_version": "1.0",
+                    "runtime_admission": {
+                        "policy_id": "test-in-round",
+                        "primary_policy": "gated_composite",
+                        "minimum_contributors": 1,
+                        "accepted_downweight_factor": 0.5,
+                        "passed_with_warning_risk": 0.25,
+                        "robust_z_cap": 3.0,
+                        "validation_metric": "macro_f1_all_model_classes",
+                        "calibration": {
+                            "semantics": "verified-clean-development-reference",
+                            "source_admission_sha256": "a" * 64,
+                            "indicator_references": {
+                                "relative_norm": {
+                                    "direction": "higher",
+                                    "median": 1.0,
+                                    "mad": 1.0,
+                                    "sample_count": 1,
+                                },
+                                "cosine_to_median": {
+                                    "direction": "lower",
+                                    "median": 1.0,
+                                    "mad": 1.0,
+                                    "sample_count": 1,
+                                },
+                                "coordinate_median_distance": {
+                                    "direction": "higher",
+                                    "median": 0.0,
+                                    "mad": 1.0,
+                                    "sample_count": 1,
+                                },
+                                "mad_score": {
+                                    "direction": "higher",
+                                    "median": 0.0,
+                                    "mad": 1.0,
+                                    "sample_count": 1,
+                                },
+                                "validation_impact": {
+                                    "direction": "higher",
+                                    "median": 0.0,
+                                    "mad": 1.0,
+                                    "sample_count": 1,
+                                },
+                            },
+                            "indicator_weights": {
+                                "relative_norm": 0.2,
+                                "cosine_to_median": 0.2,
+                                "coordinate_median_distance": 0.2,
+                                "mad_score": 0.2,
+                                "validation_impact": 0.2,
+                            },
+                            "thresholds": {
+                                "clean_sample_count": 1,
+                                "statistical_threshold": 0.5,
+                                "composite_downweight_threshold": 0.01,
+                                "composite_threshold": 0.5,
+                                "trust_weight": 0.5,
+                            },
+                        },
+                    },
+                },
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
+        _contract, binding = install_in_round_contract(
+            public_workspace=workspace / "public",
+            config_path=config_path,
+            partition_manifest=partition,
+        )
+        training_contract_bytes = derived_json_bytes(
+            {"test_contract": True, "in_round_admission": binding}
+        )
+        self._replace(
+            workspace / "public" / "training-contract.json",
+            training_contract_bytes,
+        )
+        core = self.context.core.model_copy(
+            update={
+                "training_contract_sha256": sha256_bytes(training_contract_bytes),
+                "partition_manifest_sha256": sha256_bytes(partition_bytes),
+            }
+        )
+        context_digest = digest_object(core.model_dump(mode="json"))
+        self.context = SecureRoundContext(
+            context_id=f"round-context-{context_digest[:24]}",
+            core=core,
+            core_digest=context_digest,
+            signature={
+                "key_id": self.coordinator.key_id,
+                "value_b64": self.coordinator.sign_digest(context_digest),
+                "trust_level": "software-development",
+            },
+        )
+        self._replace(
+            workspace / "public" / "round-context.json",
+            derived_json_bytes(self.context.model_dump(mode="json")),
+        )
+        atomic_json(
+            workspace / "state.json",
+            {
+                "schema_version": "1.0",
+                "campaign_id": self.context.core.campaign_id,
+                "context_id": self.context.context_id,
+                "slots": {},
+            },
+        )
+        bundle_core = self.bundle.core.model_copy(
+            update={
+                "context_id": self.context.context_id,
+                "context_digest": self.context.core_digest,
+            }
+        )
+        self.bundle = self._signed_bundle(bundle_core)
+        self._replace(
+            self.submission / "bundle.json",
+            derived_json_bytes(self.bundle.model_dump(mode="json")),
+        )
+
+        def aggregate(updates):
+            total = sum(weight for _arrays, weight in updates)
+            return [
+                sum(arrays[index] * weight for arrays, weight in updates) / total
+                for index in range(len(updates[0][0]))
+            ]
+
+        dependency_values = (np, None, None, None, aggregate, None, None, None)
+
+        def validation_f1(*, model_export, rows, batch_size):
+            del rows, batch_size
+            value = float(model_export["parameters"][0]["values"][0])
+            return 1.0 if value == 0.0 else 0.0
+
+        with (
+            patch(
+                "fl_forensics.in_round_admission.dependencies",
+                return_value=dependency_values,
+            ),
+            patch(
+                "fl_forensics.in_round_admission._validation_f1",
+                side_effect=validation_f1,
+            ),
+            patch("fl_forensics.secure_round.EXPECTED_CLIENTS", ["client01"]),
+        ):
+            result = admit_and_aggregate_in_round(
+                workspace=workspace,
+                trust_workspace=self.trust,
+                submissions_root=self.submissions_root,
+                validation_split_path=validation_path,
+                coordinator_workspace=workspace,
+                now=self.now,
+            )
+            verification = verify_in_round_secure_round(
+                workspace=workspace,
+                trust_workspace=self.trust,
+                submissions_root=self.submissions_root,
+                validation_split_path=validation_path,
+            )
+            retry = admit_and_aggregate_in_round(
+                workspace=workspace,
+                trust_workspace=self.trust,
+                submissions_root=self.submissions_root,
+                validation_split_path=validation_path,
+                coordinator_workspace=workspace,
+                now=self.now,
+            )
+            self._replace(
+                self.submission / "update.json", derived_json_bytes(self.base)
+            )
+            tampered = verify_in_round_secure_round(
+                workspace=workspace,
+                trust_workspace=self.trust,
+                submissions_root=self.submissions_root,
+                validation_split_path=validation_path,
+            )
+        self.assertEqual(result["status"], "aggregated")
+        self.assertEqual(result["accepted_count"], 1)
+        self.assertEqual(result["downweighted_count"], 1)
+        self.assertEqual(result["quarantined_count"], 0)
+        self.assertEqual(verification["status"], "verified", verification)
+        self.assertTrue(verification["trust_recomputed"])
+        self.assertTrue(verification["statistics_recomputed"])
+        self.assertTrue(verification["aggregate_recomputed"])
+        self.assertTrue(retry["idempotent"])
+        self.assertEqual(tampered["status"], "failed")
+        self.assertGreater(tampered["error_count"], 0)
+
 
 class SecureRoundDeploymentTests(unittest.TestCase):
     def test_compose_isolates_fifteen_client_tpm_snapshot_pairs(self) -> None:
@@ -448,7 +685,12 @@ class SecureRoundDeploymentTests(unittest.TestCase):
         self.assertIn("attestation-verifier.public.pem", coordinator_volumes)
         self.assertIn("/coordinator", coordinator_volumes)
         self.assertNotIn("/server/evaluation.json", coordinator_volumes)
-        self.assertNotIn("/server/splits", coordinator_volumes)
+        self.assertIn(
+            "/server/splits/validation.json:/partition/server/splits/validation.json:ro",
+            coordinator_volumes,
+        )
+        self.assertNotIn("/server/splits/test.json", coordinator_volumes)
+        self.assertNotIn("/server/splits/temporal_holdout.json", coordinator_volumes)
         self.assertNotIn("/evaluation/clients", coordinator_volumes)
 
         finalizer = services["finalizer"]
