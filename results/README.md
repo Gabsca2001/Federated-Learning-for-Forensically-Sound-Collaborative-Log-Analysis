@@ -21,6 +21,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M6 joint TPM/statistical admission v1](m6-composite-admission-local-test-v1/README.md):
   clean-calibrated policy comparison, per-client risk/status table, and controlled 2x2
   trust/statistics disagreement matrix.
+- [M6 contribution-decision explanations v1](m6-contribution-explanations-local-test-v1/README.md):
+  per-client policy/tensor drivers plus clipping, trimmed-mean, MultiKrum, and Bulyan treatment
+  traces reconstructed from the same frozen updates.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

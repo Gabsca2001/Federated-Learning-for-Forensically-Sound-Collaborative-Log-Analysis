@@ -27,6 +27,10 @@ from .composite_admission_artifact import (
     verify_composite_admission_artifact,
 )
 from .config import load_yaml
+from .contribution_explanation import (
+    create_contribution_explanation_bundle,
+    verify_contribution_explanation_bundle,
+)
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
@@ -120,6 +124,32 @@ from .trust import (
 )
 from .trust_deployment import verify_m4_deployment
 from .verification import verify_workspace
+
+
+def _add_contribution_explanation_sources(command: argparse.ArgumentParser) -> None:
+    command.add_argument("--round-workspace", type=Path, required=True)
+    command.add_argument("--trust-workspace", type=Path, required=True)
+    command.add_argument("--partition-workspace", type=Path, required=True)
+    command.add_argument("--clean-frozen-workspace", type=Path, required=True)
+    command.add_argument("--clean-comparison-workspace", type=Path, required=True)
+    command.add_argument("--candidate-frozen-workspace", type=Path, required=True)
+    command.add_argument("--candidate-comparison-workspace", type=Path, required=True)
+    command.add_argument("--admission-workspace", type=Path, required=True)
+    command.add_argument(
+        "--admission-config",
+        type=Path,
+        default=Path("configs/composite-admission.yaml"),
+    )
+    command.add_argument(
+        "--byzantine-config",
+        type=Path,
+        default=Path("configs/byzantine-malicious-model-replacement.yaml"),
+    )
+    command.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/contribution-explanations.yaml"),
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -815,6 +845,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--byzantine-config",
         type=Path,
         default=Path("configs/byzantine-malicious-model-replacement.yaml"),
+    )
+
+    m6_explain_contributions = subparsers.add_parser(
+        "m6-explain-contributions",
+        help="explain joint-admission and robust-aggregation treatment of M6 updates",
+    )
+    _add_contribution_explanation_sources(m6_explain_contributions)
+    m6_explain_contributions.add_argument("--output", type=Path, required=True)
+
+    m6_verify_contribution_explanations = subparsers.add_parser(
+        "m6-verify-contribution-explanations",
+        help="recompute M6 contribution explanations and aggregation traces",
+    )
+    _add_contribution_explanation_sources(m6_verify_contribution_explanations)
+    m6_verify_contribution_explanations.add_argument(
+        "--workspace", type=Path, required=True
     )
 
     m6_prototype_freeze = subparsers.add_parser(
@@ -1950,6 +1996,40 @@ def main(argv: list[str] | None = None) -> int:
             candidate_comparison_workspace=arguments.candidate_comparison_workspace,
             workspace=arguments.workspace,
             config_path=arguments.config,
+            byzantine_config_path=arguments.byzantine_config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-explain-contributions":
+        result = create_contribution_explanation_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            clean_frozen_workspace=arguments.clean_frozen_workspace,
+            clean_comparison_workspace=arguments.clean_comparison_workspace,
+            candidate_frozen_workspace=arguments.candidate_frozen_workspace,
+            candidate_comparison_workspace=arguments.candidate_comparison_workspace,
+            admission_workspace=arguments.admission_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+            composite_config_path=arguments.admission_config,
+            byzantine_config_path=arguments.byzantine_config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify-contribution-explanations":
+        result = verify_contribution_explanation_bundle(
+            round_workspace=arguments.round_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            clean_frozen_workspace=arguments.clean_frozen_workspace,
+            clean_comparison_workspace=arguments.clean_comparison_workspace,
+            candidate_frozen_workspace=arguments.candidate_frozen_workspace,
+            candidate_comparison_workspace=arguments.candidate_comparison_workspace,
+            admission_workspace=arguments.admission_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
+            composite_config_path=arguments.admission_config,
             byzantine_config_path=arguments.byzantine_config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))

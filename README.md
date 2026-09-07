@@ -395,6 +395,13 @@ matrix exposes both disagreement directions without allowing a failed trust prer
 be compensated by a statistically normal update. The public sanitized result is available in
 [`results/m6-composite-admission-local-test-v1/`](results/m6-composite-admission-local-test-v1/README.md).
 
+The contribution-explanation extension treats the training decision itself as an
+investigable event. For every update it preserves the threshold margin, ranked statistical
+drivers, named parameter-tensor deviations, and the exact treatment performed by clipping,
+FedAvg, coordinate median, trimmed mean, MultiKrum, and Bulyan. This is separate from M7
+prediction XAI. See the
+[`M6 contribution-explanation snapshot`](results/m6-contribution-explanations-local-test-v1/README.md).
+
 See [M6 Byzantine experiments](docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md).
 
 ### M7 — investigation bundles and reports

@@ -210,7 +210,7 @@ fl-forensics m6-joint-admission \
   --candidate-comparison-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1-comparison \
   --config configs/composite-admission.yaml \
   --byzantine-config configs/byzantine-malicious-model-replacement.yaml \
-  --output artifacts/m6-joint-admission-model-replacement-matrix-local-test-v1
+  --output artifacts/m6-joint-admission-model-replacement-matrix-local-test-v2
 
 fl-forensics m6-verify-joint-admission \
   --round-workspace artifacts/m5-secure-multiround-local-test-v1/rounds/round-011 \
@@ -222,7 +222,7 @@ fl-forensics m6-verify-joint-admission \
   --candidate-comparison-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1-comparison \
   --config configs/composite-admission.yaml \
   --byzantine-config configs/byzantine-malicious-model-replacement.yaml \
-  --workspace artifacts/m6-joint-admission-model-replacement-matrix-local-test-v1
+  --workspace artifacts/m6-joint-admission-model-replacement-matrix-local-test-v2
 ```
 
 Two limitations are explicit. First, attacked candidate bytes are controlled
@@ -232,6 +232,75 @@ submission. Second, the failed-trust matrix cells are counterfactual controls,
 not falsely labelled observed M5 admissions. A later runtime experiment should
 generate a dedicated failed Quote/attestation fixture and a compromised client
 should sign its attacked bundle before admission.
+
+## Forensic explanation of contribution decisions
+
+M7 Integrated Gradients explains why the selected model produced a prediction
+for a log window. That method cannot be copied directly onto a client update:
+the object being explained here is a model-delta vector plus trust and policy
+evidence, not a 25-feature input row. The M6 contribution-explanation bundle
+therefore adapts the same provenance and independent-verification principles to
+three explanation layers:
+
+1. **policy layer** — the decision status, exact score, quarantine/downweight
+   thresholds, signed margins, hard-veto state, and preserved reasons;
+2. **statistical/tensor layer** — the contribution of every configured anomaly
+   indicator and the named parameter tensors responsible for the largest share
+   of squared distance from the candidate coordinate median;
+3. **aggregation layer** — the actual mechanism-specific treatment of every
+   frozen update.
+
+The aggregation layer deliberately avoids a single generic “selected” label.
+FedAvg includes every admitted client with its example-count weight. Clipping
+rescales an entire update. Coordinate median selects a value per coordinate and
+has no client-level selection set. Trimmed mean removes the `f` lowest and `f`
+highest values separately for every coordinate. MultiKrum has a client-level
+Krum rank and selected subset. The implemented Bulyan profile first selects
+`n-2f` Krum-ranked candidates and then retains `n-4f` closest values per
+coordinate.
+
+For every strategy, the explanation code reconstructs the aggregate and checks
+it against the existing M6 implementation. The verifier also re-verifies the
+joint-admission source, reloads every frozen update by its digest, recomputes
+all tensor rankings and traces, and compares the canonical payload bytes.
+
+```bash
+fl-forensics m6-explain-contributions \
+  --round-workspace artifacts/m5-secure-multiround-local-test-v1/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust-local-test-v1 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --clean-frozen-workspace artifacts/m6-clean-round11-local-test-v1 \
+  --clean-comparison-workspace artifacts/m6-clean-round11-local-test-v1-comparison \
+  --candidate-frozen-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1 \
+  --candidate-comparison-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1-comparison \
+  --admission-workspace artifacts/m6-joint-admission-model-replacement-matrix-local-test-v2 \
+  --admission-config configs/composite-admission.yaml \
+  --byzantine-config configs/byzantine-malicious-model-replacement.yaml \
+  --config configs/contribution-explanations.yaml \
+  --output artifacts/m6-contribution-explanations-model-replacement-local-test-v1
+
+fl-forensics m6-verify-contribution-explanations \
+  --round-workspace artifacts/m5-secure-multiround-local-test-v1/rounds/round-011 \
+  --trust-workspace artifacts/m4-trust-local-test-v1 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --clean-frozen-workspace artifacts/m6-clean-round11-local-test-v1 \
+  --clean-comparison-workspace artifacts/m6-clean-round11-local-test-v1-comparison \
+  --candidate-frozen-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1 \
+  --candidate-comparison-workspace artifacts/m6-malicious-model-replacement-f3-local-test-v1-comparison \
+  --admission-workspace artifacts/m6-joint-admission-model-replacement-matrix-local-test-v2 \
+  --admission-config configs/composite-admission.yaml \
+  --byzantine-config configs/byzantine-malicious-model-replacement.yaml \
+  --config configs/contribution-explanations.yaml \
+  --workspace artifacts/m6-contribution-explanations-model-replacement-local-test-v1
+```
+
+The verified reference contains 15 complete contribution explanations and six
+mechanism traces (`l2_clipping` plus the five aggregators). Its manifest is
+`9784eb76ce021e653c2b456992ba2d8a00a5bfd832bad95656f1b8596a530243`.
+All source, implementation, tensor-attribution, and aggregation-trace checks
+pass. The interpretation boundary remains explicit: these explanations show
+why the configured mechanisms acted as they did; they do not establish
+malicious intent.
 
 ## Freezing and comparing one real M5 round
 

@@ -45,7 +45,7 @@ retain the single safe cell in this controlled matrix.
 
 ## Provenance and limitations
 
-- source `admission.json` SHA-256: `0d7a8048e2b93feaca626efd97dae678bee3ed33361d04f404ca951bbac0d33e`;
+- source `admission.json` SHA-256: `3faa180da370926cd27e9f08503942af376e2ac9769c147edf4251035cf018d1`;
 - source campaign: `campaign-aa22aafea800a7d59fe308fc`, round `11`;
 - attack: `model_replacement`;
 - evaluation labels used for scoring: `false`;
