@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+from fl_forensics.canonical import sha256_file
 from fl_forensics.federated_model import architecture_record, build_model, export_state
 from fl_forensics.investigation_models import (
     PredictionSelection,
@@ -17,6 +18,7 @@ from fl_forensics.prediction_bundle import (
     _ml_dependencies,
     _selected_rows,
     _validate_config,
+    _verify_round_checkpoint,
     create_prediction_bundle,
     verify_prediction_bundle,
 )
@@ -103,6 +105,103 @@ class PredictionBundleTests(unittest.TestCase):
         investigation = _validate_config(config)
         self.assertEqual(investigation["maximum_windows_per_bundle"], 16)
         self.assertEqual(investigation["inference"]["device"], "cpu")
+
+    def test_checkpoint_verification_dispatches_standard_round(self) -> None:
+        round_workspace = self.root / "standard-round"
+        write_once(
+            round_workspace / "checkpoint" / "manifest.json",
+            derived_json_bytes({"artifact_type": "secure_global_checkpoint"}),
+        )
+        expected = {"status": "verified", "errors": []}
+        with patch(
+            "fl_forensics.prediction_bundle.verify_secure_round",
+            return_value=expected,
+        ) as verifier:
+            result = _verify_round_checkpoint(
+                round_workspace=round_workspace,
+                trust_workspace=self.root / "trust",
+                partition_workspace=self.root / "partition",
+            )
+        self.assertEqual(result, expected)
+        verifier.assert_called_once_with(
+            workspace=round_workspace,
+            trust_workspace=self.root / "trust",
+            submissions_root=round_workspace / "submissions",
+        )
+
+    def test_checkpoint_verification_dispatches_in_round_checkpoint(self) -> None:
+        round_workspace = self.root / "in-round"
+        partition_workspace = self.root / "partition"
+        validation_path = partition_workspace / "server" / "splits" / "validation.json"
+        write_once(
+            validation_path,
+            derived_json_bytes(
+                {
+                    "split": "validation",
+                    "rows": {"validation": [{"window_id": "window-validation"}]},
+                }
+            ),
+        )
+        write_once(
+            round_workspace / "checkpoint" / "manifest.json",
+            derived_json_bytes(
+                {"artifact_type": "in_round_secure_global_checkpoint"}
+            ),
+        )
+        write_once(
+            round_workspace / "public" / "partition-manifest.json",
+            derived_json_bytes(
+                {
+                    "artifact_type": "partition_manifest",
+                    "server_evaluation_splits": {
+                        "validation": {
+                            "path": "server/splits/validation.json",
+                            "sha256": sha256_file(validation_path),
+                        }
+                    },
+                }
+            ),
+        )
+        expected = {"status": "verified", "errors": []}
+        with (
+            patch(
+                "fl_forensics.prediction_bundle._verify_partition_snapshot_files",
+                return_value=validation_path,
+            ) as partition_verifier,
+            patch(
+                "fl_forensics.prediction_bundle.verify_in_round_secure_round",
+                return_value=expected,
+            ) as round_verifier,
+        ):
+            result = _verify_round_checkpoint(
+                round_workspace=round_workspace,
+                trust_workspace=self.root / "trust",
+                partition_workspace=partition_workspace,
+            )
+        self.assertEqual(result, expected)
+        partition_verifier.assert_called_once()
+        round_verifier.assert_called_once_with(
+            workspace=round_workspace,
+            trust_workspace=self.root / "trust",
+            submissions_root=round_workspace / "submissions",
+            validation_split_path=validation_path,
+        )
+
+    def test_checkpoint_verification_rejects_unknown_artifact_type(self) -> None:
+        round_workspace = self.root / "unknown-round"
+        write_once(
+            round_workspace / "checkpoint" / "manifest.json",
+            derived_json_bytes({"artifact_type": "unexpected_checkpoint"}),
+        )
+        with self.assertRaisesRegex(
+            PredictionBundleError,
+            "unsupported secure checkpoint artifact type",
+        ):
+            _verify_round_checkpoint(
+                round_workspace=round_workspace,
+                trust_workspace=self.root / "trust",
+                partition_workspace=self.root / "partition",
+            )
 
     def _inputs(self, *, reference_label: str) -> dict[str, object]:
         np, torch = _ml_dependencies()

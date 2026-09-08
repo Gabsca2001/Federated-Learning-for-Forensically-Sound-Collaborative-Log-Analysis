@@ -521,9 +521,12 @@ See [M6 Byzantine experiments](docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md).
 
 ### M7 — investigation bundles and reports
 
-M7 starts from the selected M5 checkpoint and a frozen split. It publishes four separately
-verifiable workspaces: predictions, explanations, ATT&CK mappings, and the final report.
-The prediction command makes the source selection explicit:
+M7 starts from a selected, verified secure-training checkpoint and a frozen split. The
+prediction verifier dispatches on the signed checkpoint schema: it accepts either the standard
+M5 checkpoint or the in-round gated checkpoint used by the M6 live-disagreement campaign, and
+fails closed on unknown checkpoint types. It publishes four separately verifiable workspaces:
+predictions, explanations, ATT&CK mappings, and the final report. The original reference command
+makes the source selection explicit:
 
 ```bash
 fl-forensics m7-predict \
@@ -546,6 +549,25 @@ fl-forensics m7-verify-predictions \
 Continue with `m7-explain`, `m7-map-attack`, and `m7-report`, and run the matching verifier
 after each stage. Configurations in `configs/investigation*.yaml` bind the exact upstream
 workspaces and presentation policy.
+
+The extended thesis experiment applies the same complete M7 chain to selected round 11 of the
+live M6 trust/statistical-disagreement campaign. Its label-independent first-16 test selection
+resolved 811 source events and 826 controlled source records. All four verifiers returned zero
+errors; Integrated Gradients met a maximum absolute completeness error of `0.000792027`, and the
+ATT&CK layer retained five candidate tactics, four not-applicable benign cases, and seven
+unresolved multi-tactic cases. The Git-safe snapshot is available under
+[`results/m7-m6-disagreement-investigation-local-test-v1`](results/m7-m6-disagreement-investigation-local-test-v1/README.md).
+
+Regenerate that sanitized snapshot only after all four source bundles verify:
+
+```bash
+python scripts/render_m7_m6_investigation_summary.py \
+  --prediction-workspace artifacts/m7-prediction-bundle-m6-disagreement-test-first16-local-test-v1 \
+  --explanation-workspace artifacts/m7-explanation-bundle-m6-disagreement-test-first16-local-test-v1 \
+  --attack-workspace artifacts/m7-attack-mapping-m6-disagreement-test-first16-local-test-v1 \
+  --report-workspace artifacts/m7-investigation-report-m6-disagreement-test-first16-local-test-v1 \
+  --output results/m7-m6-disagreement-investigation-local-test-v1
+```
 
 See [M7 investigation workflow](docs/MILESTONE_7_INVESTIGATION.md).
 
@@ -699,6 +721,7 @@ See [External UWF-ZeekData22 generalization](docs/EXTERNAL_GENERALIZATION.md) an
 | M5 | 30 rounds; 450/450 admitted contributions; zero quarantines |
 | M5 external Data22 | 10,128 windows; binary attack F1 `0.0863`; shared-label macro-F1 `0.4968`; verification passed |
 | M7 | six report cases bound to 69 events and 81 source records |
+| M6-linked M7 | 16 report cases bound to 811 events and 826 source records; four-stage verification passed |
 | M8 | 2,381 artifacts preserved; 2,388 Merkle leaves; all five assurance stages verified |
 | Post-M8 overhead | 13/13 offline verifier stages; 45 measured samples; receipt verified |
 | Post-M8 runtime | Three fresh trials; 36/36 stages; median secure round `105.980 s`; receipt verified |

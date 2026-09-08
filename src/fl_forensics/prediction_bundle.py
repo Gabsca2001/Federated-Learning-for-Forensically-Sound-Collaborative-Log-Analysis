@@ -13,6 +13,7 @@ from .canonical import canonical_json_bytes, sha256_bytes, sha256_file
 from .config import load_yaml
 from .federated_model import arrays_from_export, build_model, load_ndarrays
 from .federated_partitioning import verify_partitions
+from .in_round_admission import verify_in_round_secure_round
 from .investigation_models import (
     PredictionBundleCore,
     PredictionBundleManifest,
@@ -27,6 +28,68 @@ from .storage import load_json, write_once
 
 class PredictionBundleError(RuntimeError):
     """Raised when inference or its evidentiary lineage cannot be completed."""
+
+
+def _verify_round_checkpoint(
+    *,
+    round_workspace: Path,
+    trust_workspace: Path,
+    partition_workspace: Path,
+) -> dict[str, Any]:
+    """Dispatch fail-closed verification by the checkpoint's signed schema."""
+
+    checkpoint_path = round_workspace / "checkpoint" / "manifest.json"
+    checkpoint = load_json(checkpoint_path)
+    artifact_type = checkpoint.get("artifact_type")
+    if artifact_type == "secure_global_checkpoint":
+        return verify_secure_round(
+            workspace=round_workspace,
+            trust_workspace=trust_workspace,
+            submissions_root=round_workspace / "submissions",
+        )
+    if artifact_type == "in_round_secure_global_checkpoint":
+        try:
+            partition_manifest = load_json(
+                round_workspace / "public" / "partition-manifest.json"
+            )
+            _verify_partition_snapshot_files(
+                partition_workspace=partition_workspace,
+                partition_manifest=partition_manifest,
+            )
+            validation_record = partition_manifest["server_evaluation_splits"][
+                "validation"
+            ]
+            relative = Path(str(validation_record.get("path", "")))
+            if (
+                relative.is_absolute()
+                or ".." in relative.parts
+                or not relative.as_posix().startswith("server/splits/")
+            ):
+                raise PredictionBundleError(
+                    "in-round validation split escapes the partition boundary"
+                )
+            validation_split_path = partition_workspace / relative
+            if (
+                not validation_split_path.is_file()
+                or sha256_file(validation_split_path)
+                != validation_record.get("sha256")
+            ):
+                raise PredictionBundleError(
+                    "in-round validation split digest mismatch"
+                )
+        except (KeyError, OSError, TypeError, ValueError, RuntimeError) as exc:
+            if isinstance(exc, PredictionBundleError):
+                raise
+            raise PredictionBundleError(str(exc)) from exc
+        return verify_in_round_secure_round(
+            workspace=round_workspace,
+            trust_workspace=trust_workspace,
+            submissions_root=round_workspace / "submissions",
+            validation_split_path=validation_split_path,
+        )
+    raise PredictionBundleError(
+        f"unsupported secure checkpoint artifact type: {artifact_type!r}"
+    )
 
 
 def _ml_dependencies() -> tuple[Any, Any]:
@@ -243,15 +306,6 @@ def _validated_inputs(
     if split not in investigation["allowed_splits"]:
         raise PredictionBundleError("selected split is disabled by configuration")
 
-    round_verification = verify_secure_round(
-        workspace=round_workspace,
-        trust_workspace=trust_workspace,
-        submissions_root=round_workspace / "submissions",
-    )
-    if round_verification.get("status") != "verified":
-        raise PredictionBundleError(
-            f"M5 checkpoint verification failed: {round_verification.get('errors', [])}"
-        )
     partition_verification = verify_partitions(
         workspace=partition_workspace,
         dataset_workspace=dataset_workspace,
@@ -259,6 +313,16 @@ def _validated_inputs(
     if partition_verification.get("status") != "verified":
         raise PredictionBundleError(
             f"M3/M2 verification failed: {partition_verification.get('errors', [])}"
+        )
+    round_verification = _verify_round_checkpoint(
+        round_workspace=round_workspace,
+        trust_workspace=trust_workspace,
+        partition_workspace=partition_workspace,
+    )
+    if round_verification.get("status") != "verified":
+        raise PredictionBundleError(
+            "secure checkpoint verification failed: "
+            f"{round_verification.get('errors', [])}"
         )
 
     context_path = round_workspace / "public" / "round-context.json"
@@ -612,7 +676,7 @@ def _resolve_lineage(
         "artifact_type": "m7_prediction_lineage",
         "resolution_path": [
             "prediction",
-            "signed_m5_checkpoint",
+            "signed_secure_training_checkpoint",
             "m3_scaled_feature_window",
             "m2_window",
             "normalized_zeek_event",

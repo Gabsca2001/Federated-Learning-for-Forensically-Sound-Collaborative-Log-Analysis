@@ -19,8 +19,8 @@ and a map of the evidence currently present in the canonical campaign.
 | M4 — Trust | Enrollment, AK/ESK separation, mTLS, Quote appraisal, revocation, TPM adapter | 15/15 `swtpm` gate; nonce replay, wrong pair, altered PCR/log, and revocation rejected | Complete for software-TPM profile |
 | M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain, optional in-round composite gate | Original and composite 30-round campaigns verify; all 450 in-round trust/statistical decisions and weighted checkpoints independently recompute | Complete for the local Docker/`swtpm` profile; clean-policy calibration analysis published |
 | M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, live disagreement training, model/prototype sensitivity, reports | Every method receives the same inputs; all 450 live decisions and weighted checkpoints recompute; invalid assumptions fail; reports regenerate | Complete for the controlled local Docker/`swtpm` profiles |
-| M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete |
-| M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Complete |
+| M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete for both the original M5 reference and the M6 live-disagreement checkpoint |
+| M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Original reference complete; fresh M6-linked closure pending |
 
 ## Dependency order
 
@@ -30,15 +30,18 @@ M1 artifact rules
       └─> M3 partitions and learning
            ├─> M4 identity/attestation
            │    └─> M5 secure campaign
-           │         ├─> M6 robustness experiments
-           │         └─> M7 investigation chain
+           │         ├─> original M7 investigation chain
+           │         └─> M6 robustness experiments
+           │              └─> extended M7 investigation chain
            └──────────────────────────┐
                                       └─> M8 preserved closure
 ```
 
-M8 intentionally preserves the canonical M2, M3, M4, M5, and M7 chain. M6 is a controlled
-comparative experiment built from M5 inputs and has its own verified artifacts, but it is not
-an upstream dependency of the selected M7 report.
+The completed original M8 package preserves the canonical M2, M3, M4, M5, and six-case M7
+chain. The extended thesis experiment now has a verified M6-to-M7 lineage: the M7 verifier
+accepts the signed in-round checkpoint, re-verifies its isolated validation binding, and traces
+16 cases to controlled source records. A new M8 package must close this extended chain without
+overwriting the original reference.
 
 ## Completed gates
 
@@ -122,10 +125,13 @@ contributions were statistically quarantined and 24 were retained at reduced wei
 
 ### M7 — investigation reporting
 
-Six deterministic test cases were resolved through prediction, Integrated Gradients,
-prototype distance, ATT&CK mapping, and final JSON/Markdown reporting. The pipeline resolves
-69 events and 81 controlled source records with zero lineage invariant failures. Ambiguous
-multi-tactic mappings remain explicitly unresolved.
+The original six-case M5 reference resolves 69 events and 81 controlled source records. The
+extended thesis run starts from the selected in-round M6 checkpoint and resolves 16
+label-independent test cases through prediction, Integrated Gradients, prototype distance,
+ATT&CK mapping, and final JSON/Markdown reporting. It binds 811 events and 826 controlled source
+records with zero lineage or verification errors. Five mappings are candidate tactics, four are
+not applicable, and seven ambiguous multi-tactic cases remain explicitly unresolved. Its public
+snapshot is descriptive and deliberately not presented as a performance estimate.
 
 ### M8 — preservation closure
 
@@ -139,6 +145,7 @@ verifier reports five verified stages and zero errors.
 These tasks can strengthen the thesis or a later production design, but they are not part of
 the completed M1–M8 acceptance chain:
 
+- complete a fresh M8 preservation and offline-recovery closure over the M6-linked M7 chain;
 - retain the completed paired five-seed M3 evaluation as the statistical reference;
 - retain the verified 13-stage offline M4–M8 overhead receipt as the reference replay result;
 - retain the verified three-trial containerized `swtpm`/mTLS/secure-round runtime receipt and

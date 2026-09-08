@@ -13,9 +13,12 @@ and separate 30-round/450-contribution clean campaign all verify. The full run s
 analysis. The live M6 disagreement profile has also completed its fresh-baseline smoke and
 30-round campaign: 450/450 decisions and all weighted checkpoints independently recompute,
 the combined policies detect 90/90 controlled unsafe contributions, and the deployed model
-reaches isolated test macro-F1 `0.924554`. The paired five-seed M3 evaluation and the 13-stage M4–M8
-offline-overhead reference execution are complete, verified, and published as sanitized
-snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
+reaches isolated test macro-F1 `0.924554`. That selected checkpoint has now completed a fresh
+16-case M7 prediction-to-report chain, resolving 811 events and 826 controlled source records
+with all four verifiers passing. Its fresh M8 closure remains pending. The paired five-seed M3
+evaluation and the 13-stage M4–M8 offline-overhead reference execution are complete, verified,
+and published as sanitized snapshots. The separate three-trial M4/M5 containerized-runtime
+benchmark is also complete,
 verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
 alignment stress are complete, independently recomputed, and published. Other principal gaps
 are physical-TPM and multi-host/API benchmarks, and production-grade evidence storage and key
@@ -54,7 +57,7 @@ appraisals pass; the failed-trust cells remain explicitly labelled counterfactua
 | In-round composite admission | Implemented, runtime-integrated, and verified | Fresh 30-round campaign; 450/450 decisions recomputed; 369 accepted, 75 downweighted, six quarantined; selected round 25; isolated test macro-F1 `0.935467` |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
 | Live TPM/statistical disagreement experiment | Implemented and verified (M6) | Fresh 30-round campaign; 450/450 decisions recomputed; combined policies detect 90/90 controlled unsafe contributions; two safe quarantines; selected round 11; isolated test macro-F1 `0.924554` |
-| Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
+| Investigation chain | Implemented and verified (M7) | Original M5 reference: six cases/69 events/81 records; M6-linked extension: 16 cases/811 events/826 records; both prediction-to-report lineages complete |
 | Preservation inventory | Implemented and verified (M8.1) | 2,381 artifacts, seven external bindings, 2,642,172,551 payload bytes |
 | Merkle commitment | Implemented and verified (M8.2) | 2,388 leaves, 13 levels, deterministic duplicate-last rule |
 | Trusted timestamp | Implemented and verified (M8.3) | RFC 3161 token over the M8 Merkle root; offline verification succeeds |
@@ -65,6 +68,9 @@ appraisals pass; the failed-trust cells remain explicitly labelled counterfactua
 | Containerized runtime-overhead benchmark | Implemented and verified | Three fresh M4/M5 trials; 36/36 stages; median secure-round span `105.980 s`; direct ESK signature `13.854 ms`; receipt `runtime-overhead-adb5811cce9ded407e4b1e0d` |
 
 ## Canonical reference chain
+
+The original M5-based reference remains preserved by the completed M8 package. The M6-linked
+thesis extension is listed separately until its new M8 closure is complete.
 
 | Stage | Workspace or identifier |
 |---|---|
@@ -83,6 +89,12 @@ appraisals pass; the failed-trust cells remain explicitly labelled counterfactua
 | Runtime-overhead receipt | `runtime-overhead-adb5811cce9ded407e4b1e0d` |
 | Data22 external evaluation | `m5-external-generalization-8ba28d267facbc1f91af7948` |
 | Discovery alignment stress | `m5-discovery-stress-d4a3898efbb5682c01d4ffa2` |
+
+| Extended thesis stage | Workspace or identifier |
+|---|---|
+| M6 live disagreement campaign | `artifacts/m6-trust-statistical-disagreement-local-test-v1` |
+| M6-linked M7 report | `artifacts/m7-investigation-report-m6-disagreement-test-first16-local-test-v1` |
+| M6-linked M8 closure | Pending; create new workspaces and identifiers |
 
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
@@ -132,11 +144,13 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Retain the verified live-disagreement campaign and add the adaptive attack as a separate
+1. Complete and verify a fresh M8 closure over the M6-linked M7 experiment without overwriting
+   the original reference package.
+2. Retain the verified live-disagreement campaign and add the adaptive attack as a separate
    scenario without overwriting the clean or disagreement references.
-2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-4. Validate service separation, multi-host performance, and failure recovery outside the research
+3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+5. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and
