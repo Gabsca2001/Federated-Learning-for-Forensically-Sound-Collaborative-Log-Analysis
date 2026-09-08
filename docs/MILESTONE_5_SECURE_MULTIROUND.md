@@ -165,7 +165,40 @@ artifact; candidate labels are never used during runtime admission. A fresh
 baseline-`1.1` Docker/`swtpm` smoke run verified one complete round: 15/15
 contributions were accepted and trust, statistics, decisions, and aggregation
 were independently recomputed with zero errors. This is integration evidence;
-the 30-round in-round performance campaign remains separate and pending.
+it is not a predictive-performance result.
+
+A separate fresh-baseline 30-round campaign was subsequently completed and
+independently verified. It contains 450 newly trained and TPM-signed
+contributions, selected round 25 using validation only, and produced isolated
+test macro-F1 `0.935467`. All trust signals passed. The composite policy fully
+accepted 369 contributions, retained 75 at half weight, and quarantined six.
+Because no Byzantine update was injected, the latter 81 actions are clean-run
+interventions rather than detected attacks. Five quarantines concern
+`client06`, one concerns `client11`, and the first intervention appears at
+round 10. The dominant statistical drivers are cosine-to-median and
+coordinate-median distance, indicating that the fixed clean reference is not
+invariant to the update geometry later in training.
+
+After the complete verifier reports zero errors, publish the compact result:
+
+```bash
+python scripts/render_in_round_campaign_summary.py \
+  --workspace artifacts/m5-in-round-composite-local-test-v1 \
+  --output results/m5-in-round-composite-local-test-v1 \
+  --condition clean-no-injected-attack
+```
+
+The generated summary binds the signed decision set and selected evaluation
+by SHA-256. It includes per-round and per-client CSVs, all 450 sanitized
+decision explanations, the validation/admission trajectory, client treatment,
+and selected-checkpoint confusion matrices. Each explanation contains exact
+threshold headroom, policy disagreement, ranked scalar drivers, top named
+tensor drivers, client/peer context, retained weight, aggregate influence, and
+score-level counterfactuals. A separate Markdown report narrates all 81 clean
+interventions. These are deterministic rule traces and update-vector
+attributions, not attack-label inference. This run measures clean-policy
+compatibility and false interventions; attack detection still requires a
+paired attacked execution.
 
 The round coordinator is not mounted with the server test, temporal holdout,
 or client-local test snapshots. After all round checkpoints have been written,

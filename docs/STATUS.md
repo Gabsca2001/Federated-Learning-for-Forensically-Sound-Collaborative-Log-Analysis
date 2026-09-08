@@ -7,9 +7,10 @@ complete and verified end to end. A joint M4/M6 admission pilot now compares fou
 and both trust/statistics disagreement directions on verified round-11 inputs. A separately
 verified bundle explains all 15 contribution decisions and six aggregation mechanisms without
 using attack labels. The same gated-composite policy is now implemented as an opt-in M5
-in-round gate over newly trained, TPM-signed updates; its unit/tamper verification and a fresh
-one-round 15-client Docker/`swtpm` smoke run are complete, while the 30-round in-round campaign
-remains pending. The paired five-seed M3 evaluation and the 13-stage M4–M8
+in-round gate over newly trained, TPM-signed updates. Its unit/tamper checks, one-round smoke,
+and separate 30-round/450-contribution clean campaign all verify. The full run selected round
+25 and exposed 75 clean downweights plus six clean quarantines, now published for calibration
+analysis. The paired five-seed M3 evaluation and the 13-stage M4–M8
 offline-overhead reference execution are complete, verified, and published as sanitized
 snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
 verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
@@ -42,7 +43,7 @@ management.
 | TLS 1.3 mutual authentication | Implemented (M4) | EKU, SAN, enrollment-fingerprint, and wrong-pair checks |
 | Physical TPM adapter | Implemented; runtime pending | Same `tpm2-tools` interface via `device:/dev/tpmrm0`; no hardware result claimed |
 | Secure FedAvg campaign | Implemented and verified (M5) | New campaigns bind post-selection client-local metrics; preserved reference has 30 rounds, 450/450 bundles, and selected round 11 |
-| In-round composite admission | One-round runtime smoke verified; full campaign pending | Fresh 15-client baseline; 15/15 clean contributions accepted; trust, statistics, decisions, and exact FedAvg independently recomputed with zero errors |
+| In-round composite admission | Implemented, runtime-integrated, and verified | Fresh 30-round campaign; 450/450 decisions recomputed; 369 accepted, 75 downweighted, six quarantined; selected round 25; isolated test macro-F1 `0.935467` |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
 | Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
 | Preservation inventory | Implemented and verified (M8.1) | 2,381 artifacts, seven external bindings, 2,642,172,551 payload bytes |
@@ -101,10 +102,12 @@ The final assurance state is
   are controlled derivations not re-signed as new M5 bundles. Its failed-trust 2x2 cells are
   explicit counterfactual policy controls, not observed M5 admissions.
 - The in-round implementation removes the retrospective-only limitation. Its clean one-round
-  Docker smoke verifies runtime integration but is not a performance estimate and exercises no
-  Byzantine rejection. The 30-round clean campaign and signed anomalous/trust-failure fixtures
-  remain pending. Each evidentiary run requires a fresh M4 baseline `1.1`; restarting historical
-  TPM state cannot establish the new measured-code identity.
+  smoke verifies integration, while the separate 30-round campaign measures the actual training
+  trajectory. Because that full campaign has no injected attack, its 75 downweights and six
+  quarantines are compatibility costs/false interventions, not evidence of Byzantine detection.
+  Signed anomalous/trust-failure fixtures remain pending. Each evidentiary run requires a fresh
+  M4 baseline `1.1`; restarting historical TPM state cannot establish the new measured-code
+  identity.
 - Contribution-decision explanations reconstruct configured policy and aggregator mechanics;
   they are derived interpretations, not primary Zeek evidence or proof of malicious intent.
 - The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
@@ -117,7 +120,8 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Execute and preserve the 30-round in-round composite Docker campaign and publish its metrics.
+1. Calibrate and compare the in-round policy with paired clean/attacked runs while preserving
+   the completed clean campaign unchanged.
 2. Repeat joint admission and its explanations across selected attacks/seeds, and add a signed
    runtime trust-failure fixture.
 3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.

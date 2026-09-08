@@ -389,8 +389,32 @@ python scripts/run_m5_secure_multiround.py verify \
 
 The fresh-baseline Docker/`swtpm` smoke run passed with 15/15 accepted contributions and
 independent recomputation of trust, statistics, decisions, and aggregation. It is integration
-evidence, not a predictive-performance result; the separate 30-round in-round campaign remains
-pending. The existing 30-round reference below remains unchanged.
+evidence, not a predictive-performance result. A separate fresh-baseline 30-round execution
+then verified all 450 newly trained and TPM-signed contributions. Validation-only selection
+chose round 25; the isolated test macro-F1 is `0.935467`. Of 450 clean contributions, 369 were
+fully accepted, 75 retained at half weight, and six were quarantined. These interventions begin
+at round 10 and expose a calibration-drift question that must be measured before an attack-
+detection claim is made. See the
+[`M5 in-round campaign snapshot`](results/m5-in-round-composite-local-test-v1/README.md).
+
+Regenerate the sanitized snapshot only after the complete campaign verifier reports zero
+errors:
+
+```bash
+python scripts/render_in_round_campaign_summary.py \
+  --workspace artifacts/m5-in-round-composite-local-test-v1 \
+  --output results/m5-in-round-composite-local-test-v1 \
+  --condition clean-no-injected-attack
+```
+
+The existing original 30-round reference below remains unchanged.
+
+The snapshot's contribution explanations go beyond the stored threshold reason. For every
+signed update they rank scalar risk components and named tensor deviations, show all four
+policy outcomes, retain the signed threshold headroom, reconstruct the effective FedAvg weight
+and aggregate influence, and provide score-level counterfactuals. The 81 interventions also
+receive deterministic human-readable case narratives. These traces explain policy mechanics;
+they do not infer malicious intent.
 
 The completed campaign contains 30 chained checkpoints and 450 admitted contributions. Its
 validation-only selection chose round 11 before test evaluation. Partitions produced by the
