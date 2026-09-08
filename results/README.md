@@ -31,6 +31,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M6 live TPM/statistical disagreement v1](m6-trust-statistical-disagreement-local-test-v1/README.md):
   verified 30-round training-time 2x2 disagreement experiment, paired policy outcomes, safe
   intervention costs, selected-model utility, and sanitized source bindings.
+- [M7 investigation of the M6 disagreement checkpoint](m7-m6-disagreement-investigation-local-test-v1/README.md):
+  16 label-independent cases with verified prediction, Integrated Gradients, prototype geometry,
+  ATT&CK outcomes, four compact figures, and sanitized bindings to the selected M6 checkpoint.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

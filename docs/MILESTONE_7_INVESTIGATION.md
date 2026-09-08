@@ -17,8 +17,8 @@ reference is missing or digest-invalid.
 
 ## Prediction Bundle v1
 
-`m7-predict` consumes a verified M5 secure round, the exact M3 partition
-workspace copied into that round, and its verified M2 Data24 snapshot. It
+`m7-predict` consumes a verified secure-training round, the exact M3 partition
+workspace bound into that round, and its verified M2 Data24 snapshot. It
 forces CPU inference with the frozen classification head. The command accepts
 either explicit window identifiers or the first `N` lexicographically ordered
 identifiers from one declared evaluation split. The latter selection is
@@ -38,18 +38,22 @@ The immutable output contains three files:
   explicitly marked as not used for inference;
 - `lineage.json`: normalized prediction-to-window-to-event-to-source-record
   resolution with all intervening artifact digests;
-- `manifest.json`: an integer-only canonical core binding the verified M5
+- `manifest.json`: an integer-only canonical core binding the verified secure
   checkpoint, M3/M2 snapshots, selection policy, prediction and lineage
   digests, implementation/configuration digests, and a zero-violation
   reportability gate.
 
-The bundle is content-addressed. M8 now inventories this M7 chain, commits it
-under the campaign Merkle root, anchors that root with an RFC 3161 timestamp,
-and includes the report inputs in the offline recovery and invariant-accounting
-workflow.
+The bundle is content-addressed. The original six-case M7 chain is included in
+the completed M8 reference package. The extended M6-linked chain requires a new
+M8 inventory, commitment, timestamp, recovery export, and accounting receipt;
+it must not reuse or overwrite the older closure.
 
-`m7-verify-predictions` independently verifies and reconstructs the M5
-checkpoint, M3 partitions, M2 artifacts and selected scaled rows. It reruns
+`m7-verify-predictions` dispatches on the signed checkpoint artifact type. A
+standard M5 checkpoint is checked with the standard secure-round verifier; an
+in-round checkpoint is checked with the in-round verifier after resolving and
+digest-checking its isolated validation file from the signed partition
+manifest. Unknown checkpoint types fail closed. It then independently verifies
+the M3 partitions, M2 artifacts and selected scaled rows, reruns
 model inference, resolves the source lineage again, regenerates all three
 files byte-for-byte, and rejects missing, changed, or unexpected files.
 
@@ -58,7 +62,7 @@ files byte-for-byte, and rejects missing, changed, or unexpected files.
 `m7-explain` accepts only a Prediction Bundle that passes
 `m7-verify-predictions`. It explains every prediction in that immutable
 selection; it cannot add, remove, or choose cases after observing an
-explanation. All computation runs on the verified M5 global model on CPU.
+explanation. All computation runs on the verified secure global model on CPU.
 The original `configs/investigation.yaml` remains byte-identical because its
 digest is part of the Prediction Bundle. Explanation parameters live in the
 separate, versioned `configs/investigation-explanations.yaml` contract.
@@ -133,7 +137,7 @@ verified bundle identifier is
 `m7-report` is the terminal reporting layer of M7. It accepts only an ATT&CK
 Mapping Bundle that passes `m7-verify-attack`; therefore publication also
 depends transitively on successful verification of explanations, predictions,
-the M5 checkpoint, M3 evaluation rows, and the M2 controlled-ingestion
+the signed secure-training checkpoint, M3 evaluation rows, and the M2 controlled-ingestion
 lineage.
 
 The report is deterministic and has no dynamic timestamp or other
@@ -191,6 +195,39 @@ The verifier returned `verified`, zero errors, `reportable=true`,
 `source_attack_verified=true`, and
 `verification_recomputed_report=true`. The complete local-test M7 chain is
 included in the verified M8 recovery package.
+
+## M6-linked thesis experiment
+
+The extended run applies the same four-stage M7 contract to selected round 11
+of `campaign-cdf764235033c2ea022c9a75`, the live M6 trust/statistical-
+disagreement campaign. Its checkpoint is
+`in-round-checkpoint-06bf9304ce99544438db99ca`; the prediction verifier checks
+the in-round schema and recomputes its signed validation and lineage bindings
+instead of coercing it into the standard M5 schema.
+
+The selection is the first 16 lexicographically ordered test-window identifiers.
+It is fixed without consulting labels, predictions, confidence, or explanation
+results. The verified chain contains:
+
+- Prediction Bundle `m7-prediction-bundle-0fb78b2c186b984ebcaacdaf`, with 16
+  predictions linked to 811 source events and 826 controlled source records;
+- Explanation Bundle `m7-explanation-bundle-e8efef6beaf5876d1cdcbf8b`, with 25
+  features, six class prototypes, and maximum absolute Integrated Gradients
+  completeness error `0.00079202652`;
+- ATT&CK Mapping Bundle `m7-attack-mapping-bundle-e72b7e1b245643ce29a55faa`,
+  with five candidate-tactic, four not-applicable, and seven unresolved cases;
+- Investigation Report Bundle
+  `m7-investigation-report-bundle-00689df47659e974273b1aae`, with all 16 cases
+  and the same 811-event/826-record lineage.
+
+Every corresponding verifier returned `verified`, zero errors, and recomputed
+its source artifacts. The Git snapshot under
+`results/m7-m6-disagreement-investigation-local-test-v1` intentionally removes
+raw evidence locations, row numbers, logits, full probability vectors, model
+parameters, prototypes, and private trust material. Its observed 15/16 label
+agreement is reported only as a description of this small label-independent
+case set, not as a performance estimate; campaign-level utility remains the M6
+isolated test macro-F1.
 
 
 ## Evidentiary interpretation
