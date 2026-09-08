@@ -128,6 +128,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--disagreement-experiment-config",
+        type=Path,
+        help=(
+            "bind controlled M6 trust/statistical disagreement treatments "
+            "before local training"
+        ),
+    )
+    parser.add_argument(
         "--attestation-refresh-interval",
         type=int,
         default=5,
@@ -164,6 +172,33 @@ def main() -> int:
                 "in-round admission configuration must be inside the project root"
             ) from exc
         in_round_container_config = f"/app/{relative_config.as_posix()}"
+    disagreement_config = (
+        arguments.disagreement_experiment_config.resolve()
+        if arguments.disagreement_experiment_config is not None
+        else None
+    )
+    disagreement_container_config: str | None = None
+    if disagreement_config is not None:
+        if in_round_config is None:
+            raise ValueError(
+                "--disagreement-experiment-config requires "
+                "--in-round-admission-config"
+            )
+        if not disagreement_config.is_file():
+            raise FileNotFoundError(
+                f"disagreement experiment configuration is missing: "
+                f"{disagreement_config}"
+            )
+        try:
+            relative_disagreement = disagreement_config.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(
+                "disagreement experiment configuration must be inside "
+                "the project root"
+            ) from exc
+        disagreement_container_config = (
+            f"/app/{relative_disagreement.as_posix()}"
+        )
     compose = ["docker", "compose", "-f", str(compose_path)]
     environment = os.environ.copy()
     environment.update(
@@ -209,6 +244,30 @@ def main() -> int:
     ]
     run(build_command, root=root, environment=environment)
     require_running_tpms(compose, root=root, environment=environment)
+
+    def verify_disagreement_round(round_workspace: Path) -> None:
+        environment["M5_WORKSPACE"] = str(round_workspace)
+        run(
+            [
+                *compose,
+                "--profile",
+                "coordinator",
+                "run",
+                "--rm",
+                "coordinator",
+                "m6-verify-live-disagreement-round",
+                "--workspace",
+                "/campaign",
+                "--trust-workspace",
+                "/trust",
+                "--submissions",
+                "/submissions",
+                "--validation-split",
+                "/partition/server/splits/validation.json",
+            ],
+            root=root,
+            environment=environment,
+        )
 
     if arguments.action == "run":
         campaign.mkdir(parents=True, exist_ok=True)
@@ -271,6 +330,13 @@ def main() -> int:
                             [
                                 "--in-round-admission-config",
                                 in_round_container_config,
+                            ]
+                        )
+                    if disagreement_container_config is not None:
+                        init_command.extend(
+                            [
+                                "--disagreement-experiment-config",
+                                disagreement_container_config,
                             ]
                         )
                     run(init_command, root=root, environment=environment)
@@ -357,6 +423,8 @@ def main() -> int:
                 root=root,
                 environment=environment,
             )
+            if disagreement_container_config is not None:
+                verify_disagreement_round(round_workspace)
             print(f"round {round_number:03d}/{arguments.rounds:03d}: verified", flush=True)
 
         environment["M5_WORKSPACE"] = str(
@@ -385,6 +453,20 @@ def main() -> int:
                 ],
                 root=root,
                 environment=environment,
+            )
+
+    elif disagreement_container_config is not None:
+        for round_number in range(1, arguments.rounds + 1):
+            round_workspace = campaign / "rounds" / f"round-{round_number:03d}"
+            if not (round_workspace / "checkpoint" / "manifest.json").is_file():
+                raise FileNotFoundError(
+                    f"required disagreement round is missing: {round_workspace}"
+                )
+            verify_disagreement_round(round_workspace)
+            print(
+                f"round {round_number:03d}/{arguments.rounds:03d}: "
+                "M6 disagreement verified",
+                flush=True,
             )
 
     final_round = campaign / "rounds" / f"round-{arguments.rounds:03d}"

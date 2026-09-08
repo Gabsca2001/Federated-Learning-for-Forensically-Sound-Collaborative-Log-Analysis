@@ -28,6 +28,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M6 contribution-decision explanations v1](m6-contribution-explanations-local-test-v1/README.md):
   per-client policy/tensor drivers plus clipping, trimmed-mean, MultiKrum, and Bulyan treatment
   traces reconstructed from the same frozen updates.
+- [M6 live TPM/statistical disagreement v1](m6-trust-statistical-disagreement-local-test-v1/README.md):
+  verified 30-round training-time 2x2 disagreement experiment, paired policy outcomes, safe
+  intervention costs, selected-model utility, and sanitized source bindings.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

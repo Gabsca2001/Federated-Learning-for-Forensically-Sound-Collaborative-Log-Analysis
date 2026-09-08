@@ -231,15 +231,77 @@ pilot validates policy scoring and lineage, not a newly signed malicious runtime
 submission. Second, the failed-trust matrix cells are counterfactual controls,
 not falsely labelled observed M5 admissions.
 
+## Live controlled disagreement experiment
+
+The new `trust-statistical-disagreement.yaml` profile addresses the first limitation without
+rewriting the preserved pilot. Its contract is copied into the round's public workspace and its
+digest is included in the signed M5 training contract before any client begins local training.
+Exactly one client is assigned to each controlled cell; the remaining eleven clients provide a
+trusted/normal background population.
+
+For the two statistically anomalous cells, deterministic local training runs normally first.
+The client then applies the bound `sign_flip_amplification` transformation, preserves the clean
+pre-intervention update, and signs the resulting candidate and metrics with its TPM ESK. The
+verifier recomputes the transformation from the signed digest links. This is consequently a
+genuine signed runtime contribution rather than an unsigned post-hoc M6 derivation.
+
+For the two trust-inadmissible cells, the experiment deliberately does not falsify M4 evidence.
+All observed `active_enrollment`, `tpm_esk_signature`, and `fresh_attestation` checks must pass.
+The coordinator preserves that signed decision, then applies a separately recorded, contract-
+bound failed-check counterfactual as the input to the four M6 policies. This distinction allows
+the policies to be compared on the same numeric update without claiming that a physical or
+software TPM actually failed.
+
+The `gated_composite` outcome controls the real effective FedAvg weight. TPM-only,
+statistics-only, and sequential outcomes remain shadow ablations over the same inputs. The
+round verifier checks all four scenario assignments, both update transformations, both trust
+counterfactuals, all policy decisions, and the exact weighted aggregate. Ground-truth labels
+are evaluated only after the decisions and never enter the score or thresholds.
+
+Implementation, unit/tamper verification, a fresh-baseline `1.2` Docker/`swtpm` smoke, and the
+30-round runtime campaign are complete. Independent verification recomputed all four decisions
+for each of the 450 contributions, both controlled interventions, all weighted aggregates, and
+the final campaign with zero errors.
+
+Across 30 repetitions of the four controlled cells, the policy-level results are:
+
+| Policy | True positives | False negatives | True negatives | False positives | Unsafe recall |
+|---|---:|---:|---:|---:|---:|
+| TPM only | 60 | 30 | 30 | 0 | 66.7% |
+| Statistics only | 60 | 30 | 30 | 0 | 66.7% |
+| Sequential | 90 | 0 | 30 | 0 | 100.0% |
+| Gated composite | 90 | 0 | 30 | 0 | 100.0% |
+
+The deployed composite policy contributed 358/450 updates: 334 at full weight and 24 at
+reduced weight. It quarantined the 90 controlled unsafe contributions plus two statistically
+atypical but declared-safe `client06` contributions at rounds 21 and 26. The strict safe
+quarantine rate is therefore 2/360 (`0.56%`). Validation-only selection chose round 11;
+isolated test macro-F1 is `0.924554`, compared with `0.935467` in the separate clean campaign
+(`-0.010913` absolute). This comparison is descriptive for two deterministic trajectories.
+
+```bash
+python scripts/run_m6_disagreement_experiment.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --node-root artifacts/m4-nodes-m6-disagreement-v2 \
+  --rounds 30 \
+  --workers 4 \
+  --attestation-refresh-interval 5
+```
+
+The sanitized tables, figures, source bindings, and boundary statements are published in
+[`results/m6-trust-statistical-disagreement-local-test-v1/`](../results/m6-trust-statistical-disagreement-local-test-v1/README.md).
+
 The policy is no longer restricted to retrospective comparison in the codebase.
 The optional M5 in-round profile binds the calibration and policy in the signed
 training contract, evaluates each newly trained and TPM-signed update before
 FedAvg, and writes signed contribution decisions into the checkpoint lineage.
 Its independent verifier recomputes all trust/statistical inputs and the exact
-weighted aggregate. What remains pending is empirical runtime execution with a
-compromised client that signs its attacked bundle and a dedicated failed
-Quote/attestation fixture; the existing M6 controlled cells are not relabelled
-as those future observations.
+weighted aggregate. The live M6 profile now supplies a controlled client that
+signs its directionally transformed update. A genuinely failed Quote/attestation fixture remains
+separate future validation; counterfactual cells are not relabelled as observed
+failures.
 
 ## Forensic explanation of contribution decisions
 

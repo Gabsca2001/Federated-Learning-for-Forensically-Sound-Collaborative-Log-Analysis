@@ -1,0 +1,33 @@
+schema_version: "1.0"
+
+experiment:
+  id: m6-live-trust-statistical-disagreement-v1
+  active_rounds: all
+  background_condition: trust_admissible_statistics_normal
+
+  # Exactly one source client represents each cell of the controlled 2x2 matrix.
+  # The remaining eleven clients are untreated trusted/normal background clients.
+  assignments:
+    client01: trust_admissible_statistics_normal
+    client02: trust_admissible_statistics_anomalous
+    client03: trust_inadmissible_statistics_normal
+    client04: trust_inadmissible_statistics_anomalous
+
+  # Observed swtpm evidence must pass first. This intervention is a labelled
+  # counterfactual policy input; it never rewrites the preserved M4 evidence.
+  trust_intervention:
+    type: controlled_failed_check
+    failed_check: fresh_attestation
+    reason: controlled stale-or-untrusted Quote for the M6 disagreement experiment
+
+  # Applied after deterministic local training and before the client TPM-signs
+  # the Update Bundle. Reversing and amplifying the model delta exercises both
+  # magnitude- and direction-sensitive statistics. The clean update is retained
+  # for exact recomputation.
+  update_intervention:
+    type: sign_flip_amplification
+    scale: 15.0
+    preserve_clean_update: true
+
+  require_observed_attestation_pass: true
+  evaluation_labels_used_for_scoring: false

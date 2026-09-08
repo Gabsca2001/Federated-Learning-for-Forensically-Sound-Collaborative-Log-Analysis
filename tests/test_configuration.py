@@ -48,7 +48,7 @@ class ConfigurationTests(unittest.TestCase):
     def test_m4_uses_sha256_quote_policy_and_separate_measurement_roles(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "trust.yaml")
         self.assertEqual(config["attestation"]["policy_version"], "2.1.0")
-        self.assertEqual(config["attestation"]["baseline_version"], "1.1.0")
+        self.assertEqual(config["attestation"]["baseline_version"], "1.2.0")
         self.assertEqual(config["attestation"]["pcr_bank"], "sha256")
         self.assertEqual(config["attestation"]["pcr_selection"], [0, 2, 4, 7, 10])
         self.assertEqual(config["mtls"]["minimum_version"], "TLSv1.3")
@@ -65,6 +65,10 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn("in-round-admission-controller", measured_components)
         self.assertIn("in-round-admission-schemas", measured_components)
         self.assertIn("in-round-admission-policy", measured_components)
+        self.assertIn("live-disagreement-controller", measured_components)
+        self.assertIn("live-disagreement-schemas", measured_components)
+        self.assertIn("live-disagreement-policy", measured_components)
+        self.assertIn("live-disagreement-orchestrator", measured_components)
 
     def test_m5_policy_gates_all_fifteen_signed_updates(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "secure-round.yaml")
@@ -106,6 +110,31 @@ class ConfigurationTests(unittest.TestCase):
             config["acceptance"]["same_frozen_updates_for_every_aggregator"]
         )
         self.assertTrue(config["acceptance"]["invalid_byzantine_bounds_halt"])
+
+    def test_m6_live_disagreement_declares_the_complete_controlled_matrix(self) -> None:
+        config, _ = load_yaml(
+            ROOT / "configs" / "trust-statistical-disagreement.yaml"
+        )
+        experiment = config["experiment"]
+        self.assertEqual(len(experiment["assignments"]), 4)
+        self.assertEqual(
+            set(experiment["assignments"].values()),
+            {
+                "trust_admissible_statistics_normal",
+                "trust_admissible_statistics_anomalous",
+                "trust_inadmissible_statistics_normal",
+                "trust_inadmissible_statistics_anomalous",
+            },
+        )
+        self.assertEqual(
+            experiment["trust_intervention"]["failed_check"],
+            "fresh_attestation",
+        )
+        self.assertEqual(
+            experiment["update_intervention"]["type"],
+            "sign_flip_amplification",
+        )
+        self.assertFalse(experiment["evaluation_labels_used_for_scoring"])
 
     def test_m6_prototype_contract_has_support_quorum_and_separate_aggregators(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "base.yaml")

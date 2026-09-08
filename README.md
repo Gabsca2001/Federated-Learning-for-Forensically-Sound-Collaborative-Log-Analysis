@@ -459,6 +459,57 @@ matrix exposes both disagreement directions without allowing a failed trust prer
 be compensated by a statistically normal update. The public sanitized result is available in
 [`results/m6-composite-admission-local-test-v1/`](results/m6-composite-admission-local-test-v1/README.md).
 
+The live M6 profile moves that controlled disagreement matrix into the training path.
+Four declared clients represent trusted/normal, trusted/anomalous, trust-failed/normal, and
+trust-failed/anomalous conditions in every round; the other eleven remain untreated background
+clients. An anomalous update is deterministically sign-flipped and amplified after local
+training and is then covered by the client's TPM ESK signature. The trust-failure cells are
+still explicitly labelled
+counterfactuals: the observed `swtpm` appraisal must pass and remains unchanged, while the bound
+M6 contract supplies the failed trust input used by the admission policy. Attack labels are not
+available to scoring. The completed reference execution uses a fresh M4 baseline `1.2` and
+dedicated trust/node workspaces.
+
+```bash
+python scripts/run_m6_disagreement_experiment.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --node-root artifacts/m4-nodes-m6-disagreement-v2 \
+  --rounds 30 \
+  --workers 4 \
+  --attestation-refresh-interval 5
+
+python scripts/run_m6_disagreement_experiment.py verify \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --node-root artifacts/m4-nodes-m6-disagreement-v2 \
+  --rounds 30 \
+  --workers 4 \
+  --attestation-refresh-interval 5
+```
+
+The runner invokes the ordinary containerized M5 lifecycle, performs the composite decision
+before each FedAvg operation, and additionally runs
+`m6-verify-live-disagreement-round` over every completed round. The independent 30-round
+verification recomputed all 450 decisions and every weighted checkpoint with zero errors.
+Across the 120 controlled observations, the sequential and gated-composite policies detected
+90/90 unsafe contributions; TPM-only and statistics-only each missed 30/90 because each lacks
+the other signal. The deployed composite trajectory selected round 11 and achieved isolated
+test macro-F1 `0.924554`. A sanitized result, including the two safe statistical quarantines,
+is available in
+[`results/m6-trust-statistical-disagreement-local-test-v1/`](results/m6-trust-statistical-disagreement-local-test-v1/README.md).
+
+The snapshot can be regenerated without publishing models, updates, or private trust state:
+
+```bash
+python scripts/render_m6_disagreement_summary.py \
+  --workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --output results/m6-trust-statistical-disagreement-local-test-v1 \
+  --replace-existing-snapshot
+```
+
 The contribution-explanation extension treats the training decision itself as an
 investigable event. For every update it preserves the threshold margin, ranked statistical
 drivers, named parameter-tensor deviations, and the exact treatment performed by clipping,
