@@ -6,8 +6,11 @@ The deterministic M1–M8 implementation and the current local-test reference ch
 complete and verified end to end. A joint M4/M6 admission pilot now compares four policies
 and both trust/statistics disagreement directions on verified round-11 inputs. A separately
 verified bundle explains all 15 contribution decisions and six aggregation mechanisms without
-using attack labels. The paired
-five-seed M3 evaluation and the 13-stage M4–M8
+using attack labels. The same gated-composite policy is now implemented as an opt-in M5
+in-round gate over newly trained, TPM-signed updates. Its unit/tamper checks, one-round smoke,
+and separate 30-round/450-contribution clean campaign all verify. The full run selected round
+25 and exposed 75 clean downweights plus six clean quarantines, now published for calibration
+analysis. The paired five-seed M3 evaluation and the 13-stage M4–M8
 offline-overhead reference execution are complete, verified, and published as sanitized
 snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
 verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
@@ -36,10 +39,11 @@ management.
 | Data22 Discovery alignment stress | Implemented and verified (M5 extension) | 2 independent bursts, 2,086 events, 12 correlated offsets; at least one segment detected in 24/24 burst-offset trials; every segment in 19/24; zero offset reproduces the primary result |
 | PROTEAN adaptation | Implemented and verified (M3 extension) | Four validation-only lambda candidates; two endpoints locked before test access |
 | Enrollment, AK/ESK separation, challenge, revocation | Implemented (M4) | Signed one-to-one bindings and append-only revocation semantics |
-| Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; 15/15 `swtpm` gate passed |
+| Quote/PCR appraisal and Attestation Result v2 | Implemented (M4) | One-use nonce and independent PCR replay; preserved baseline gate and fresh in-round baseline `1.1` smoke appraisal both passed 15/15 |
 | TLS 1.3 mutual authentication | Implemented (M4) | EKU, SAN, enrollment-fingerprint, and wrong-pair checks |
 | Physical TPM adapter | Implemented; runtime pending | Same `tpm2-tools` interface via `device:/dev/tpmrm0`; no hardware result claimed |
 | Secure FedAvg campaign | Implemented and verified (M5) | New campaigns bind post-selection client-local metrics; preserved reference has 30 rounds, 450/450 bundles, and selected round 11 |
+| In-round composite admission | Implemented, runtime-integrated, and verified | Fresh 30-round campaign; 450/450 decisions recomputed; 369 accepted, 75 downweighted, six quarantined; selected round 25; isolated test macro-F1 `0.935467` |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
 | Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
 | Preservation inventory | Implemented and verified (M8.1) | 2,381 artifacts, seven external bindings, 2,642,172,551 payload bytes |
@@ -97,6 +101,13 @@ The final assurance state is
 - The joint-admission pilot uses real verified update statistics, but its attacked M6 bytes
   are controlled derivations not re-signed as new M5 bundles. Its failed-trust 2x2 cells are
   explicit counterfactual policy controls, not observed M5 admissions.
+- The in-round implementation removes the retrospective-only limitation. Its clean one-round
+  smoke verifies integration, while the separate 30-round campaign measures the actual training
+  trajectory. Because that full campaign has no injected attack, its 75 downweights and six
+  quarantines are compatibility costs/false interventions, not evidence of Byzantine detection.
+  Signed anomalous/trust-failure fixtures remain pending. Each evidentiary run requires a fresh
+  M4 baseline `1.1`; restarting historical TPM state cannot establish the new measured-code
+  identity.
 - Contribution-decision explanations reconstruct configured policy and aggregator mechanics;
   they are derived interpretations, not primary Zeek evidence or proof of malicious intent.
 - The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
@@ -109,11 +120,13 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Repeat joint admission and its explanations across selected attacks/seeds, and add a signed
+1. Calibrate and compare the in-round policy with paired clean/attacked runs while preserving
+   the completed clean campaign unchanged.
+2. Repeat joint admission and its explanations across selected attacks/seeds, and add a signed
    runtime trust-failure fixture.
-2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-4. Validate service separation, multi-host performance, and failure recovery outside the research
+3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+5. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and

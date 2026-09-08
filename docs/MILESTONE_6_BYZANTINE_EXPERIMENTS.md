@@ -225,13 +225,21 @@ fl-forensics m6-verify-joint-admission \
   --workspace artifacts/m6-joint-admission-model-replacement-matrix-local-test-v2
 ```
 
-Two limitations are explicit. First, attacked candidate bytes are controlled
+Two limitations apply to the preserved comparison artifact. First, attacked candidate bytes are controlled
 M6 derivations and are not covered by the original M5 bundle signatures; the
 pilot validates policy scoring and lineage, not a newly signed malicious runtime
 submission. Second, the failed-trust matrix cells are counterfactual controls,
-not falsely labelled observed M5 admissions. A later runtime experiment should
-generate a dedicated failed Quote/attestation fixture and a compromised client
-should sign its attacked bundle before admission.
+not falsely labelled observed M5 admissions.
+
+The policy is no longer restricted to retrospective comparison in the codebase.
+The optional M5 in-round profile binds the calibration and policy in the signed
+training contract, evaluates each newly trained and TPM-signed update before
+FedAvg, and writes signed contribution decisions into the checkpoint lineage.
+Its independent verifier recomputes all trust/statistical inputs and the exact
+weighted aggregate. What remains pending is empirical runtime execution with a
+compromised client that signs its attacked bundle and a dedicated failed
+Quote/attestation fixture; the existing M6 controlled cells are not relabelled
+as those future observations.
 
 ## Forensic explanation of contribution decisions
 

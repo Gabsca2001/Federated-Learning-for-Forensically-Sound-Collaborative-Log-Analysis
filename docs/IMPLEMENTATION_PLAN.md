@@ -17,8 +17,8 @@ and a map of the evidence currently present in the canonical campaign.
 | M2 — Data | Controlled Data24 ingestion, audit, lineage, windows, split, scaler, central MLP | Deterministic rebuild; no split overlap; training-only scaler; metrics bound by digest | Complete |
 | M3 — Federation | 15-client IID/non-IID snapshots, Flower path, auditable FedAvg, PROTEAN | Exact partition coverage; round aggregation reproduced; validation-only selection locked | Complete |
 | M4 — Trust | Enrollment, AK/ESK separation, mTLS, Quote appraisal, revocation, TPM adapter | 15/15 `swtpm` gate; nonce replay, wrong pair, altered PCR/log, and revocation rejected | Complete for software-TPM profile |
-| M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain | Single-round reconstruction plus 30-round/450-contribution campaign verification | Complete |
-| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, model/prototype sensitivity, reports | Every method receives the same inputs; joint decisions recompute; invalid assumptions fail; reports regenerate | Complete plus verified joint-admission pilot |
+| M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain, optional in-round composite gate | Original and composite 30-round campaigns verify; all 450 in-round trust/statistical decisions and weighted checkpoints independently recompute | Complete for the local Docker/`swtpm` profile; clean-policy calibration analysis published |
+| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, model/prototype sensitivity, reports | Every method receives the same inputs; joint decisions recompute; invalid assumptions fail; reports regenerate | Complete plus verified joint-admission pilot and reusable runtime policy |
 | M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete |
 | M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Complete |
 
@@ -81,6 +81,14 @@ FedAvg checkpoint. The chained extension completed 30 rounds, admitted 450/450 c
 recorded zero quarantines, and passed independent campaign verification. Validation-only
 selection chose round 11 before test evaluation.
 
+The new opt-in profile binds the clean-calibrated gated-composite policy before local work
+starts. For every round it refreshes/validates M4 evidence, creates the signed context, lets
+the isolated clients train and TPM-sign their bundles, applies statistical admission before
+aggregation, and independently recomputes the resulting weighted checkpoint. Unit and tamper
+tests cover downweighting, idempotent replay, exact aggregation, and modified-update failure.
+A fresh containerized 15-client execution remains the acceptance gate before this extension
+can be reported as runtime evidence.
+
 ### M6 — Byzantine-resilience experiments
 
 M6 freezes verified M5 updates before applying declared attacks. FedAvg, coordinate median,
@@ -127,8 +135,11 @@ the completed M1–M8 acceptance chain:
   failure-recovery claims;
 - retain the completed, byte-recomputed UWF-ZeekData22 post-selection evaluation, its separate
   Discovery alignment stress, and their sanitized result snapshot as the external reference;
-- repeat the joint-admission comparison across selected attack families/seeds and replace the
-  controlled trust-failure cell with a dedicated signed failed-attestation runtime fixture;
+- retain the verified one-round in-round smoke and the separate 30-round clean campaign; treat
+  its 75 downweights and six quarantines as measured clean-run interventions when designing the
+  paired policy calibration/attack experiments;
+- repeat joint admission across selected attacks/seeds and replace the controlled trust-failure
+  cell with a dedicated, signed failed-attestation runtime fixture;
 - retain the completed contribution-decision explanations as the round-11 mechanism reference
   and extend them only when repeated joint-admission experiments add new source scenarios;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;

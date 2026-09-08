@@ -18,6 +18,10 @@ evidence, models, private trust state, and large recovery packages.
 - [M5 external Data22 generalization v1](m5-external-generalization-local-test-v1/README.md):
   verified binary/shared-label transfer metrics, confusion matrices, feature-shift evidence,
   and a two-burst Discovery window-alignment stress test.
+- [M5 in-round composite campaign v1](m5-in-round-composite-local-test-v1/README.md): verified
+  30-round TPM/statistical admission over newly trained contributions, selected-checkpoint
+  metrics, and clean-run intervention explanations by round, client, scalar indicator, named
+  model tensor, policy counterfactual, and effective aggregation influence.
 - [M6 joint TPM/statistical admission v1](m6-composite-admission-local-test-v1/README.md):
   clean-calibrated policy comparison, per-client risk/status table, and controlled 2x2
   trust/statistics disagreement matrix.

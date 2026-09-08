@@ -272,6 +272,7 @@ services:
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/enrollment-authority.public.pem:/trust/authority/enrollment-authority.public.pem:ro
       - ${M4_TRUST_WORKSPACE:-./artifacts/m4-trust}/authority/attestation-verifier.public.pem:/trust/authority/attestation-verifier.public.pem:ro
       - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/manifest.json:/partition/manifest.json:ro
+      - ${M5_PARTITION_WORKSPACE:-./artifacts/m3-data24-parquet-iid}/server/splits/validation.json:/partition/server/splits/validation.json:ro
       - ${M5_WORKSPACE:-./artifacts/m5-secure-round}/submissions:/submissions:ro
 
   finalizer:

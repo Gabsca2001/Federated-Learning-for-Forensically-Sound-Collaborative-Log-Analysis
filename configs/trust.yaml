@@ -7,9 +7,9 @@ enrollment:
 
 attestation:
   policy_id: m4-node-integrity
-  policy_version: "2.0.0"
+  policy_version: "2.1.0"
   baseline_id: m5-secure-client-baseline
-  baseline_version: "1.0.0"
+  baseline_version: "1.1.0"
   pcr_bank: sha256
   pcr_selection: [0, 2, 4, 7, 10]
   challenge_lifetime_seconds: 300
@@ -40,7 +40,7 @@ measurements:
     pcr_index: 7
     path: configs/policies/admission.yaml
   - component_id: trust-policy
-    component_version: "2.0.0"
+    component_version: "2.1.0"
     pcr_index: 10
     path: configs/trust.yaml
   - component_id: experiment-configuration
@@ -52,7 +52,7 @@ measurements:
     pcr_index: 0
     path: Dockerfile.m5
   - component_id: secure-round-client
-    component_version: "0.5.1"
+    component_version: "0.6.0"
     pcr_index: 4
     path: src/fl_forensics/secure_round.py
   - component_id: secure-round-schemas
@@ -67,20 +67,44 @@ measurements:
     component_version: "0.5.1"
     pcr_index: 4
     path: src/fl_forensics/federated_model.py
+  - component_id: byzantine-update-statistics
+    component_version: "0.6.0"
+    pcr_index: 4
+    path: src/fl_forensics/byzantine.py
+  - component_id: composite-admission-engine
+    component_version: "1.0.0"
+    pcr_index: 4
+    path: src/fl_forensics/composite_admission.py
+  - component_id: composite-admission-schemas
+    component_version: "1.0.0"
+    pcr_index: 4
+    path: src/fl_forensics/composite_admission_models.py
+  - component_id: in-round-admission-controller
+    component_version: "1.0.0"
+    pcr_index: 4
+    path: src/fl_forensics/in_round_admission.py
+  - component_id: in-round-admission-schemas
+    component_version: "1.0.0"
+    pcr_index: 4
+    path: src/fl_forensics/in_round_admission_models.py
   - component_id: secure-campaign-coordinator
-    component_version: "0.5.1"
+    component_version: "0.6.0"
     pcr_index: 4
     path: src/fl_forensics/secure_campaign.py
   - component_id: command-interface
-    component_version: "0.5.1"
+    component_version: "0.6.0"
     pcr_index: 4
     path: src/fl_forensics/cli.py
   - component_id: secure-round-policy
     component_version: "1.1.0"
     pcr_index: 7
     path: configs/secure-round.yaml
+  - component_id: in-round-admission-policy
+    component_version: "1.0.0"
+    pcr_index: 7
+    path: configs/in-round-admission.yaml
   - component_id: secure-round-topology
-    component_version: "1.1.0"
+    component_version: "1.2.0"
     pcr_index: 7
     path: compose.m5.yaml
   - component_id: federation-configuration
@@ -88,6 +112,6 @@ measurements:
     pcr_index: 10
     path: configs/federation.yaml
   - component_id: secure-multiround-orchestrator
-    component_version: "0.5.1"
+    component_version: "0.6.0"
     pcr_index: 7
     path: scripts/run_m5_secure_multiround.py

@@ -587,6 +587,23 @@ class SecureCampaignTests(unittest.TestCase):
                 round1 / "checkpoint" / "manifest.json",
                 checkpoint1.model_dump(mode="json"),
             )
+            with self.assertRaisesRegex(
+                SecureRoundError,
+                "previous round checkpoint is invalid",
+            ):
+                initialize_secure_round(
+                    workspace=campaign / "rounds" / "round-002-mixed-mode",
+                    coordinator_workspace=campaign,
+                    campaign_id=first["campaign_id"],
+                    round_number=2,
+                    previous_round_workspace=round1,
+                    trust_workspace=trust,
+                    partition_manifest_path=partition_path,
+                    config_path=config_path,
+                    secure_config_path=secure_config_path,
+                    in_round_admission_config_path=root / "unused-policy.yaml",
+                    now=now,
+                )
             round2 = campaign / "rounds" / "round-002"
             second = initialize_secure_round(
                 workspace=round2,

@@ -47,6 +47,8 @@ class ConfigurationTests(unittest.TestCase):
 
     def test_m4_uses_sha256_quote_policy_and_separate_measurement_roles(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "trust.yaml")
+        self.assertEqual(config["attestation"]["policy_version"], "2.1.0")
+        self.assertEqual(config["attestation"]["baseline_version"], "1.1.0")
         self.assertEqual(config["attestation"]["pcr_bank"], "sha256")
         self.assertEqual(config["attestation"]["pcr_selection"], [0, 2, 4, 7, 10])
         self.assertEqual(config["mtls"]["minimum_version"], "TLSv1.3")
@@ -57,6 +59,12 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn("secure-campaign-coordinator", measured_components)
         self.assertIn("command-interface", measured_components)
         self.assertIn("secure-multiround-orchestrator", measured_components)
+        self.assertIn("byzantine-update-statistics", measured_components)
+        self.assertIn("composite-admission-engine", measured_components)
+        self.assertIn("composite-admission-schemas", measured_components)
+        self.assertIn("in-round-admission-controller", measured_components)
+        self.assertIn("in-round-admission-schemas", measured_components)
+        self.assertIn("in-round-admission-policy", measured_components)
 
     def test_m5_policy_gates_all_fifteen_signed_updates(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "secure-round.yaml")

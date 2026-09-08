@@ -120,6 +120,14 @@ def main() -> int:
     parser.add_argument("--rounds", type=int, default=30)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument(
+        "--in-round-admission-config",
+        type=Path,
+        help=(
+            "enable trust/statistical admission before every aggregation using "
+            "a configuration copied into the runtime image"
+        ),
+    )
+    parser.add_argument(
         "--attestation-refresh-interval",
         type=int,
         default=5,
@@ -138,6 +146,24 @@ def main() -> int:
     campaign = arguments.workspace.resolve()
     trust_workspace = arguments.trust_workspace.resolve()
     node_root = arguments.node_root.resolve()
+    in_round_config = (
+        arguments.in_round_admission_config.resolve()
+        if arguments.in_round_admission_config is not None
+        else None
+    )
+    in_round_container_config: str | None = None
+    if in_round_config is not None:
+        if not in_round_config.is_file():
+            raise FileNotFoundError(
+                f"in-round admission configuration is missing: {in_round_config}"
+            )
+        try:
+            relative_config = in_round_config.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(
+                "in-round admission configuration must be inside the project root"
+            ) from exc
+        in_round_container_config = f"/app/{relative_config.as_posix()}"
     compose = ["docker", "compose", "-f", str(compose_path)]
     environment = os.environ.copy()
     environment.update(
@@ -162,6 +188,12 @@ def main() -> int:
     ):
         if not required.is_file():
             raise FileNotFoundError(f"required campaign input is missing: {required}")
+    if in_round_config is not None:
+        validation_path = partition / "server" / "splits" / "validation.json"
+        if not validation_path.is_file():
+            raise FileNotFoundError(
+                f"isolated validation split is missing: {validation_path}"
+            )
     missing_nodes = [
         client_id for client_id in CLIENT_IDS if not (node_root / client_id).is_dir()
     ]
@@ -234,6 +266,13 @@ def main() -> int:
                                 f"/coordinator/rounds/round-{round_number - 1:03d}",
                             ]
                         )
+                    if in_round_container_config is not None:
+                        init_command.extend(
+                            [
+                                "--in-round-admission-config",
+                                in_round_container_config,
+                            ]
+                        )
                     run(init_command, root=root, environment=environment)
 
                 def launch(client_id: str) -> None:
@@ -254,43 +293,67 @@ def main() -> int:
                     max_workers=max(1, arguments.workers)
                 ) as executor:
                     list(executor.map(launch, CLIENT_IDS))
-                run(
-                    [
-                        *compose,
-                        "--profile",
-                        "coordinator",
-                        "run",
-                        "--rm",
-                        "coordinator",
-                        "m5-admit-aggregate",
-                        "--workspace",
-                        "/campaign",
-                        "--coordinator-workspace",
-                        "/coordinator",
-                        "--trust-workspace",
-                        "/trust",
-                        "--submissions",
-                        "/submissions",
-                    ],
-                    root=root,
-                    environment=environment,
-                )
-            run(
-                [
+                aggregate_command = [
                     *compose,
                     "--profile",
                     "coordinator",
                     "run",
                     "--rm",
                     "coordinator",
-                    "m5-verify",
+                    (
+                        "m5-admit-composite-aggregate"
+                        if in_round_config is not None
+                        else "m5-admit-aggregate"
+                    ),
                     "--workspace",
                     "/campaign",
+                    "--coordinator-workspace",
+                    "/coordinator",
                     "--trust-workspace",
                     "/trust",
                     "--submissions",
                     "/submissions",
-                ],
+                ]
+                if in_round_config is not None:
+                    aggregate_command.extend(
+                        [
+                            "--validation-split",
+                            "/partition/server/splits/validation.json",
+                        ]
+                    )
+                run(
+                    aggregate_command,
+                    root=root,
+                    environment=environment,
+                )
+            verify_command = [
+                *compose,
+                "--profile",
+                "coordinator",
+                "run",
+                "--rm",
+                "coordinator",
+                (
+                    "m5-verify-composite-round"
+                    if in_round_config is not None
+                    else "m5-verify"
+                ),
+                "--workspace",
+                "/campaign",
+                "--trust-workspace",
+                "/trust",
+                "--submissions",
+                "/submissions",
+            ]
+            if in_round_config is not None:
+                verify_command.extend(
+                    [
+                        "--validation-split",
+                        "/partition/server/splits/validation.json",
+                    ]
+                )
+            run(
+                verify_command,
                 root=root,
                 environment=environment,
             )
