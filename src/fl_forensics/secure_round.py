@@ -244,6 +244,7 @@ def initialize_secure_round(
     round_number: int = 1,
     previous_round_workspace: Path | None = None,
     in_round_admission_config_path: Path | None = None,
+    disagreement_experiment_config_path: Path | None = None,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """Create a signed round context after validating all 15 M4 attestations."""
@@ -262,6 +263,13 @@ def initialize_secure_round(
     if round_number > 1 and (campaign_id is None or previous_round_workspace is None):
         raise SecureRoundError(
             "later rounds require a campaign id and previous round workspace"
+        )
+    if (
+        disagreement_experiment_config_path is not None
+        and in_round_admission_config_path is None
+    ):
+        raise SecureRoundError(
+            "the M6 disagreement experiment requires in-round admission"
         )
     manifest = load_json(partition_manifest_path)
     config, config_digest = load_yaml(config_path)
@@ -350,6 +358,9 @@ def initialize_secure_round(
         previous_checkpoint_sha256 = GENESIS_DIGEST
     else:
         previous_context = _load_context(previous_round_workspace / "public")
+        previous_training_contract = load_json(
+            previous_round_workspace / "public" / "training-contract.json"
+        )
         previous_checkpoint_path = (
             previous_round_workspace / "checkpoint" / "manifest.json"
         )
@@ -399,6 +410,10 @@ def initialize_secure_round(
             == required_client_count
             and composite_previous
             == (in_round_admission_config_path is not None)
+            and (
+                "m6_disagreement_experiment" in previous_training_contract
+            )
+            == (disagreement_experiment_config_path is not None)
             and previous_count_valid
             and previous_model_path.is_file()
             and sha256_file(previous_model_path)
@@ -461,6 +476,26 @@ def initialize_secure_round(
             partition_manifest=manifest,
         )
         training_contract["in_round_admission"] = in_round_binding
+    disagreement_contract = None
+    if disagreement_experiment_config_path is not None:
+        from .disagreement_experiment import install_disagreement_contract
+
+        disagreement_contract, disagreement_binding = install_disagreement_contract(
+            public_workspace=public,
+            config_path=disagreement_experiment_config_path,
+            client_ids=EXPECTED_CLIENTS,
+        )
+        if previous_round_workspace is not None:
+            previous_binding = previous_training_contract[
+                "m6_disagreement_experiment"
+            ]
+            if previous_binding.get("config_sha256") != disagreement_binding.get(
+                "config_sha256"
+            ):
+                raise SecureRoundError(
+                    "M6 disagreement configuration changed within the campaign"
+                )
+        training_contract["m6_disagreement_experiment"] = disagreement_binding
     contract_bytes = derived_json_bytes(training_contract)
     contract_digest = sha256_bytes(contract_bytes)
     write_once(public / "training-contract.json", contract_bytes)
@@ -510,6 +545,11 @@ def initialize_secure_round(
         "base_model_sha256": base_digest,
         "in_round_admission_contract_id": (
             in_round_contract.contract_id if in_round_contract is not None else None
+        ),
+        "m6_disagreement_contract_id": (
+            disagreement_contract.contract_id
+            if disagreement_contract is not None
+            else None
         ),
         "expires_at": context.core.expires_at,
         "workspace": str(workspace),
@@ -650,6 +690,15 @@ def create_secure_update(
         architecture=base_export["architecture"],
         class_names=list(base_export["class_names"]),
     )
+    from .disagreement_experiment import prepare_submission_intervention
+
+    updated_export, disagreement_record = prepare_submission_intervention(
+        public_workspace=public_workspace,
+        submission_workspace=submission_workspace,
+        client_id=client_id,
+        clean_export=updated_export,
+        round_number=context.core.round_number,
+    )
     metrics["update_delta_l2"] = delta_l2(
         arrays_from_export(base_export, np=np),
         arrays_from_export(updated_export, np=np),
@@ -663,6 +712,10 @@ def create_secure_update(
         "context_id": context.context_id,
         **metrics,
     }
+    if disagreement_record is not None:
+        metrics_artifact["m6_disagreement_experiment"] = (
+            disagreement_record.model_dump(mode="json")
+        )
     metrics_bytes = derived_json_bytes(metrics_artifact)
     schema_digest = digest_object(tensor_schema(updated_export))
     signer = TPM2ToolsSigner(

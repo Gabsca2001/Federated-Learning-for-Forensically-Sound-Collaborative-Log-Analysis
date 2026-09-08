@@ -27,6 +27,7 @@ from .composite_admission_artifact import (
     verify_composite_admission_artifact,
 )
 from .config import load_yaml
+from .disagreement_experiment import verify_disagreement_round
 from .contribution_explanation import (
     create_contribution_explanation_bundle,
     verify_contribution_explanation_bundle,
@@ -683,6 +684,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="bind a gated-composite policy before clients start local training",
     )
+    m5_init.add_argument(
+        "--disagreement-experiment-config",
+        type=Path,
+        help="bind controlled M6 trust/update treatments before local training",
+    )
 
     m5_client = subparsers.add_parser(
         "m5-client-update", help="train one isolated client and TPM-sign its Update Bundle"
@@ -757,6 +763,23 @@ def build_parser() -> argparse.ArgumentParser:
     m5_verify_campaign.add_argument("--trust-workspace", type=Path, required=True)
     m5_verify_campaign.add_argument("--partition-manifest", type=Path, required=True)
     m5_verify_campaign.add_argument("--server-evaluation", type=Path, required=True)
+
+    m6_verify_live_disagreement = subparsers.add_parser(
+        "m6-verify-live-disagreement-round",
+        help="verify bound M6 treatments and their in-round policy decisions",
+    )
+    m6_verify_live_disagreement.add_argument(
+        "--workspace", type=Path, required=True
+    )
+    m6_verify_live_disagreement.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_verify_live_disagreement.add_argument(
+        "--submissions", type=Path, required=True
+    )
+    m6_verify_live_disagreement.add_argument(
+        "--validation-split", type=Path, required=True
+    )
 
     m6_freeze = subparsers.add_parser(
         "m6-freeze", help="freeze one deterministic attack set from a verified M5 round"
@@ -1919,6 +1942,9 @@ def main(argv: list[str] | None = None) -> int:
             round_number=arguments.round_number,
             previous_round_workspace=arguments.previous_round_workspace,
             in_round_admission_config_path=arguments.in_round_admission_config,
+            disagreement_experiment_config_path=(
+                arguments.disagreement_experiment_config
+            ),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -1986,6 +2012,15 @@ def main(argv: list[str] | None = None) -> int:
             trust_workspace=arguments.trust_workspace,
             partition_manifest_path=arguments.partition_manifest,
             server_evaluation_path=arguments.server_evaluation,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-verify-live-disagreement-round":
+        result = verify_disagreement_round(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            submissions_root=arguments.submissions,
+            validation_split_path=arguments.validation_split,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

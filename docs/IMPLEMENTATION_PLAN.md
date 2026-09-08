@@ -18,7 +18,7 @@ and a map of the evidence currently present in the canonical campaign.
 | M3 — Federation | 15-client IID/non-IID snapshots, Flower path, auditable FedAvg, PROTEAN | Exact partition coverage; round aggregation reproduced; validation-only selection locked | Complete |
 | M4 — Trust | Enrollment, AK/ESK separation, mTLS, Quote appraisal, revocation, TPM adapter | 15/15 `swtpm` gate; nonce replay, wrong pair, altered PCR/log, and revocation rejected | Complete for software-TPM profile |
 | M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain, optional in-round composite gate | Original and composite 30-round campaigns verify; all 450 in-round trust/statistical decisions and weighted checkpoints independently recompute | Complete for the local Docker/`swtpm` profile; clean-policy calibration analysis published |
-| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, model/prototype sensitivity, reports | Every method receives the same inputs; joint decisions recompute; invalid assumptions fail; reports regenerate | Complete plus verified joint-admission pilot and reusable runtime policy |
+| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, live disagreement training, model/prototype sensitivity, reports | Every method receives the same inputs; all 450 live decisions and weighted checkpoints recompute; invalid assumptions fail; reports regenerate | Complete for the controlled local Docker/`swtpm` profiles |
 | M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete |
 | M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Complete |
 
@@ -81,13 +81,15 @@ FedAvg checkpoint. The chained extension completed 30 rounds, admitted 450/450 c
 recorded zero quarantines, and passed independent campaign verification. Validation-only
 selection chose round 11 before test evaluation.
 
-The new opt-in profile binds the clean-calibrated gated-composite policy before local work
+The opt-in profile binds the clean-calibrated gated-composite policy before local work
 starts. For every round it refreshes/validates M4 evidence, creates the signed context, lets
 the isolated clients train and TPM-sign their bundles, applies statistical admission before
 aggregation, and independently recomputes the resulting weighted checkpoint. Unit and tamper
 tests cover downweighting, idempotent replay, exact aggregation, and modified-update failure.
-A fresh containerized 15-client execution remains the acceptance gate before this extension
-can be reported as runtime evidence.
+The clean one-round smoke and separate 30-round campaign are complete. The M6 disagreement
+profile reuses this runtime gate with a separately bound treatment contract. Its fresh-baseline
+one-round calibration smoke and 30-round container execution are also complete and independently
+verified.
 
 ### M6 — Byzantine-resilience experiments
 
@@ -107,6 +109,16 @@ treatment as a forensic event. It reports exact threshold margins, ranked indica
 contributions, named tensor deviations, clip scales, coordinate-retention fractions, Krum
 ranks, and client selections. Its verifier recreates all 15 explanations and all six traces
 from the frozen inputs; attack labels are excluded from explanation generation.
+
+The live disagreement extension assigns one client to each trust/statistics cell before a round
+starts. Its anomalous clients sign a directionally sign-flipped and amplified update with their
+TPM ESK, while controlled
+trust failures remain explicitly separated from the observed passing `swtpm` evidence. The
+gated-composite decision controls the actual aggregation and the other three policies are paired
+shadow ablations. The completed 30-round execution recomputed 450/450 decisions. The combined
+policies detected all 90 controlled unsafe observations; each single-signal ablation missed 30.
+The selected round 11 model reached isolated test macro-F1 `0.924554`. Two of 360 safe
+contributions were statistically quarantined and 24 were retained at reduced weight.
 
 ### M7 — investigation reporting
 
@@ -138,8 +150,8 @@ the completed M1–M8 acceptance chain:
 - retain the verified one-round in-round smoke and the separate 30-round clean campaign; treat
   its 75 downweights and six quarantines as measured clean-run interventions when designing the
   paired policy calibration/attack experiments;
-- repeat joint admission across selected attacks/seeds and replace the controlled trust-failure
-  cell with a dedicated, signed failed-attestation runtime fixture;
+- retain the verified bound live-disagreement smoke and 30-round campaign; add a genuinely
+  failed-attestation runtime fixture only as separate future validation;
 - retain the completed contribution-decision explanations as the round-11 mechanism reference
   and extend them only when repeated joint-admission experiments add new source scenarios;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;

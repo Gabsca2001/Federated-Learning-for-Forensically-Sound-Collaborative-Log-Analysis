@@ -9,7 +9,7 @@ attestation:
   policy_id: m4-node-integrity
   policy_version: "2.1.0"
   baseline_id: m5-secure-client-baseline
-  baseline_version: "1.1.0"
+  baseline_version: "1.2.0"
   pcr_bank: sha256
   pcr_selection: [0, 2, 4, 7, 10]
   challenge_lifetime_seconds: 300
@@ -52,7 +52,7 @@ measurements:
     pcr_index: 0
     path: Dockerfile.m5
   - component_id: secure-round-client
-    component_version: "0.6.0"
+    component_version: "0.7.0"
     pcr_index: 4
     path: src/fl_forensics/secure_round.py
   - component_id: secure-round-schemas
@@ -80,19 +80,27 @@ measurements:
     pcr_index: 4
     path: src/fl_forensics/composite_admission_models.py
   - component_id: in-round-admission-controller
-    component_version: "1.0.0"
+    component_version: "1.1.0"
     pcr_index: 4
     path: src/fl_forensics/in_round_admission.py
   - component_id: in-round-admission-schemas
     component_version: "1.0.0"
     pcr_index: 4
     path: src/fl_forensics/in_round_admission_models.py
+  - component_id: live-disagreement-controller
+    component_version: "1.0.0"
+    pcr_index: 4
+    path: src/fl_forensics/disagreement_experiment.py
+  - component_id: live-disagreement-schemas
+    component_version: "1.0.0"
+    pcr_index: 4
+    path: src/fl_forensics/disagreement_experiment_models.py
   - component_id: secure-campaign-coordinator
     component_version: "0.6.0"
     pcr_index: 4
     path: src/fl_forensics/secure_campaign.py
   - component_id: command-interface
-    component_version: "0.6.0"
+    component_version: "0.7.0"
     pcr_index: 4
     path: src/fl_forensics/cli.py
   - component_id: secure-round-policy
@@ -103,6 +111,10 @@ measurements:
     component_version: "1.0.0"
     pcr_index: 7
     path: configs/in-round-admission.yaml
+  - component_id: live-disagreement-policy
+    component_version: "1.0.0"
+    pcr_index: 7
+    path: configs/trust-statistical-disagreement.yaml
   - component_id: secure-round-topology
     component_version: "1.2.0"
     pcr_index: 7
@@ -112,6 +124,10 @@ measurements:
     pcr_index: 10
     path: configs/federation.yaml
   - component_id: secure-multiround-orchestrator
-    component_version: "0.6.0"
+    component_version: "0.7.0"
     pcr_index: 7
     path: scripts/run_m5_secure_multiround.py
+  - component_id: live-disagreement-orchestrator
+    component_version: "1.0.0"
+    pcr_index: 7
+    path: scripts/run_m6_disagreement_experiment.py

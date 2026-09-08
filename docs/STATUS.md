@@ -10,13 +10,21 @@ using attack labels. The same gated-composite policy is now implemented as an op
 in-round gate over newly trained, TPM-signed updates. Its unit/tamper checks, one-round smoke,
 and separate 30-round/450-contribution clean campaign all verify. The full run selected round
 25 and exposed 75 clean downweights plus six clean quarantines, now published for calibration
-analysis. The paired five-seed M3 evaluation and the 13-stage M4–M8
+analysis. The live M6 disagreement profile has also completed its fresh-baseline smoke and
+30-round campaign: 450/450 decisions and all weighted checkpoints independently recompute,
+the combined policies detect 90/90 controlled unsafe contributions, and the deployed model
+reaches isolated test macro-F1 `0.924554`. The paired five-seed M3 evaluation and the 13-stage M4–M8
 offline-overhead reference execution are complete, verified, and published as sanitized
 snapshots. The separate three-trial M4/M5 containerized-runtime benchmark is also complete,
 verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
 alignment stress are complete, independently recomputed, and published. Other principal gaps
 are physical-TPM and multi-host/API benchmarks, and production-grade evidence storage and key
 management.
+
+The M6 live-disagreement implementation now has empirical runtime evidence. It binds the four
+controlled trust/statistics cells before training, makes anomalous clients TPM-sign their
+transformed update, and applies the composite decision before FedAvg. The observed `swtpm`
+appraisals pass; the failed-trust cells remain explicitly labelled counterfactual policy inputs.
 
 ## Current coverage
 
@@ -45,6 +53,7 @@ management.
 | Secure FedAvg campaign | Implemented and verified (M5) | New campaigns bind post-selection client-local metrics; preserved reference has 30 rounds, 450/450 bundles, and selected round 11 |
 | In-round composite admission | Implemented, runtime-integrated, and verified | Fresh 30-round campaign; 450/450 decisions recomputed; 369 accepted, 75 downweighted, six quarantined; selected round 25; isolated test macro-F1 `0.935467` |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
+| Live TPM/statistical disagreement experiment | Implemented and verified (M6) | Fresh 30-round campaign; 450/450 decisions recomputed; combined policies detect 90/90 controlled unsafe contributions; two safe quarantines; selected round 11; isolated test macro-F1 `0.924554` |
 | Investigation chain | Implemented and verified (M7) | Six cases, 69 events, 81 source records; prediction-to-report lineage complete |
 | Preservation inventory | Implemented and verified (M8.1) | 2,381 artifacts, seven external bindings, 2,642,172,551 payload bytes |
 | Merkle commitment | Implemented and verified (M8.2) | 2,388 leaves, 13 levels, deterministic duplicate-last rule |
@@ -98,16 +107,19 @@ The final assurance state is
 - Earlier M2 seed diagnostics used a separate partial-fit monitoring protocol. They are useful
   sensitivity evidence but do not substitute for repetitions of the canonical M3 protocol.
 - Model explanations and ATT&CK mappings are interpretive, not proof of attacker intent.
-- The joint-admission pilot uses real verified update statistics, but its attacked M6 bytes
+- The preserved joint-admission pilot uses real verified update statistics, but its attacked M6 bytes
   are controlled derivations not re-signed as new M5 bundles. Its failed-trust 2x2 cells are
   explicit counterfactual policy controls, not observed M5 admissions.
 - The in-round implementation removes the retrospective-only limitation. Its clean one-round
   smoke verifies integration, while the separate 30-round campaign measures the actual training
   trajectory. Because that full campaign has no injected attack, its 75 downweights and six
   quarantines are compatibility costs/false interventions, not evidence of Byzantine detection.
-  Signed anomalous/trust-failure fixtures remain pending. Each evidentiary run requires a fresh
-  M4 baseline `1.1`; restarting historical TPM state cannot establish the new measured-code
-  identity.
+  The live profile signs anomalous updates inside the client and its 30-round result is verified.
+  Its failed-trust cells remain labelled counterfactuals rather than observed Quote failures;
+  all 450 observed appraisals passed. TPM-only, statistics-only, and sequential are shadow
+  decisions, while gated-composite alone controls this model trajectory. Each evidentiary run
+  requires a fresh M4 baseline `1.2`; restarting historical TPM state cannot establish the new
+  measured-code identity.
 - Contribution-decision explanations reconstruct configured policy and aggregator mechanics;
   they are derived interpretations, not primary Zeek evidence or proof of malicious intent.
 - The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
@@ -120,13 +132,11 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Calibrate and compare the in-round policy with paired clean/attacked runs while preserving
-   the completed clean campaign unchanged.
-2. Repeat joint admission and its explanations across selected attacks/seeds, and add a signed
-   runtime trust-failure fixture.
-3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-5. Validate service separation, multi-host performance, and failure recovery outside the research
+1. Retain the verified live-disagreement campaign and add the adaptive attack as a separate
+   scenario without overwriting the clean or disagreement references.
+2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+4. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and

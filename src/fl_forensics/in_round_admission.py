@@ -31,6 +31,11 @@ from .composite_admission_models import (
 )
 from .config import load_yaml
 from .crypto import public_key_id, verify_digest_signature
+from .disagreement_experiment import (
+    effective_trust_checks,
+    load_bound_disagreement_contract,
+)
+from .disagreement_experiment_models import DisagreementExperimentContract
 from .federated_model import (
     arrays_from_export,
     build_model,
@@ -87,6 +92,8 @@ def _implementation_sha256() -> str:
                 "byzantine.py",
                 "composite_admission.py",
                 "composite_admission_models.py",
+                "disagreement_experiment.py",
+                "disagreement_experiment_models.py",
                 "in_round_admission.py",
                 "in_round_admission_models.py",
                 "secure_round.py",
@@ -469,6 +476,7 @@ def _compute_statistical_state(
     validation_rows: list[dict[str, Any]],
     batch_size: int,
     contract: InRoundAdmissionContract,
+    disagreement_contract: DisagreementExperimentContract | None,
 ) -> dict[str, dict[str, Any]]:
     eligible = [
         item
@@ -506,8 +514,13 @@ def _compute_statistical_state(
     result: dict[str, dict[str, Any]] = {}
     for item in eligible:
         client_id = str(item["client_id"])
+        policy_checks = effective_trust_checks(
+            checks=list(item["checks"]),
+            contract=disagreement_contract,
+            client_id=client_id,
+        )
         trust = trust_signal_from_checks(
-            [check.model_dump(mode="json") for check in item["checks"]],
+            [check.model_dump(mode="json") for check in policy_checks],
             raw_status=str(item["raw_attestation_status"]),
             passed_with_warning_risk=contract.core.passed_with_warning_risk,
         )
@@ -537,12 +550,17 @@ def _runtime_decision_core(
     contract: InRoundAdmissionContract,
     record: dict[str, Any],
     statistical_state: dict[str, dict[str, Any]],
+    disagreement_contract: DisagreementExperimentContract | None,
     decided_at: str,
 ) -> InRoundContributionDecisionCore:
     client_id = str(record["client_id"])
     bundle = record["bundle"]
     trust_decision = record["trust_decision"]
-    checks = list(record["checks"])
+    checks = effective_trust_checks(
+        checks=list(record["checks"]),
+        contract=disagreement_contract,
+        client_id=client_id,
+    )
     failed = [item for item in checks if not item.passed]
     check_names = {item.name for item in checks}
     if set(TRUST_CHECK_NAMES).issubset(check_names):
@@ -561,17 +579,20 @@ def _runtime_decision_core(
             reasons=["bundle integrity failed before complete trust evaluation"],
         )
     state = statistical_state.get(client_id)
-    if failed:
-        trust_failed = any(item.name in TRUST_CHECK_NAMES for item in failed)
-        final_status = "trust_quarantined" if trust_failed else "integrity_quarantined"
+    integrity_failed = [
+        item for item in failed if item.name not in TRUST_CHECK_NAMES
+    ]
+    if integrity_failed:
+        final_status = "integrity_quarantined"
         effective = Decimal("0")
         policies: list[Any] = []
         primary = None
         statistics = None
         trust = default_trust
-        reasons = [f"{item.name}: {item.detail}" for item in failed]
+        reasons = [f"{item.name}: {item.detail}" for item in integrity_failed]
     elif state is None:
-        final_status = "integrity_quarantined"
+        trust_failed = any(item.name in TRUST_CHECK_NAMES for item in failed)
+        final_status = "trust_quarantined" if trust_failed else "integrity_quarantined"
         effective = Decimal("0")
         policies = []
         primary = None
@@ -629,6 +650,7 @@ def _load_or_create_runtime_decisions(
     records: list[dict[str, Any]],
     statistical_state: dict[str, dict[str, Any]],
     contract: InRoundAdmissionContract,
+    disagreement_contract: DisagreementExperimentContract | None,
     now: datetime,
     create: bool,
     coordinator_workspace: Path | None = None,
@@ -662,6 +684,7 @@ def _load_or_create_runtime_decisions(
                 contract=contract,
                 record=record,
                 statistical_state=statistical_state,
+                disagreement_contract=disagreement_contract,
                 decided_at=decided_at,
             )
             digest = _artifact_core_digest(core.model_dump(mode="json"))
@@ -681,6 +704,7 @@ def _load_or_create_runtime_decisions(
             contract=contract,
             record=record,
             statistical_state=statistical_state,
+            disagreement_contract=disagreement_contract,
             decided_at=decided_at,
         )
         if decision.core.model_dump(mode="json") != expected_core.model_dump(mode="json"):
@@ -783,6 +807,7 @@ def admit_and_aggregate_in_round(
     if not (_parse_time(context.core.issued_at) <= now < _parse_time(context.core.expires_at)):
         raise InRoundAdmissionError("round context expired before in-round admission")
     contract = _load_bound_contract(workspace)
+    disagreement_contract = load_bound_disagreement_contract(workspace / "public")
     validation_rows = _load_validation_rows(
         workspace=workspace,
         validation_split_path=validation_split_path,
@@ -803,12 +828,14 @@ def admit_and_aggregate_in_round(
         validation_rows=validation_rows,
         batch_size=context.core.batch_size,
         contract=contract,
+        disagreement_contract=disagreement_contract,
     )
     decisions = _load_or_create_runtime_decisions(
         workspace=workspace,
         records=records,
         statistical_state=statistical_state,
         contract=contract,
+        disagreement_contract=disagreement_contract,
         now=now,
         create=True,
         coordinator_workspace=coordinator_workspace,
@@ -918,6 +945,9 @@ def verify_in_round_secure_round(
     try:
         context = _load_context(workspace / "public")
         contract = _load_bound_contract(workspace)
+        disagreement_contract = load_bound_disagreement_contract(
+            workspace / "public"
+        )
         validation_rows = _load_validation_rows(
             workspace=workspace,
             validation_split_path=validation_split_path,
@@ -942,12 +972,14 @@ def verify_in_round_secure_round(
             validation_rows=validation_rows,
             batch_size=context.core.batch_size,
             contract=contract,
+            disagreement_contract=disagreement_contract,
         )
         decisions = _load_or_create_runtime_decisions(
             workspace=workspace,
             records=records,
             statistical_state=statistical_state,
             contract=contract,
+            disagreement_contract=disagreement_contract,
             now=_parse_time(checkpoint.core.created_at),
             create=False,
         )
