@@ -18,7 +18,7 @@ and a map of the evidence currently present in the canonical campaign.
 | M3 — Federation | 15-client IID/non-IID snapshots, Flower path, auditable FedAvg, PROTEAN | Exact partition coverage; round aggregation reproduced; validation-only selection locked | Complete |
 | M4 — Trust | Enrollment, AK/ESK separation, mTLS, Quote appraisal, revocation, TPM adapter | 15/15 `swtpm` gate; nonce replay, wrong pair, altered PCR/log, and revocation rejected | Complete for software-TPM profile |
 | M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain, optional in-round composite gate | Original and composite 30-round campaigns verify; all 450 in-round trust/statistical decisions and weighted checkpoints independently recompute | Complete for the local Docker/`swtpm` profile; clean-policy calibration analysis published |
-| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, live disagreement training, model/prototype sensitivity, reports | Every method receives the same inputs; all 450 live decisions and weighted checkpoints recompute; invalid assumptions fail; reports regenerate | Complete for the controlled local Docker/`swtpm` profiles |
+| M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, live disagreement training, independently verifiable live-decision explanations, model/prototype sensitivity, reports | Every method receives the same inputs; all 450 live decisions, explanations, and weighted checkpoints recompute; invalid assumptions fail; reports regenerate | Complete for the controlled local Docker/`swtpm` profiles |
 | M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete for both the original M5 reference and the M6 live-disagreement checkpoint |
 | M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Original and M6-linked reference closures complete |
 
@@ -123,6 +123,13 @@ policies detected all 90 controlled unsafe observations; each single-signal abla
 The selected round 11 model reached isolated test macro-F1 `0.924554`. Two of 360 safe
 contributions were statistically quarantined and 24 were retained at reduced weight.
 
+A second explanation path covers this full live trajectory rather than one frozen round. It
+binds all 450 deployed decisions to their signed bundles, update tensors, checkpoint weights,
+exact policy margins, and counterfactual aggregate influence. Its verifier first reconstructs
+the campaign and then regenerates the explanation payload and indexes byte for byte. This closes
+the gap between the readable live summaries and an independently verifiable explanation
+artifact; test data and attack labels remain outside explanation generation.
+
 The separate real post-training PCR profile is now empirically complete. It binds the
 intervention into the signed round contract. In round 30, a fresh AK-signed Quote for `client03`
 received a verifier-signed `failed_measurement` appraisal; its unchanged probe bundle was TPM
@@ -173,8 +180,8 @@ the completed M1–M8 acceptance chain:
   paired policy calibration/attack experiments;
 - retain the verified bound live-disagreement campaign and the separately published 30-round
   real-attestation-failure result without overwriting either reference;
-- retain the completed contribution-decision explanations as the round-11 mechanism reference
-  and extend them only when repeated joint-admission experiments add new source scenarios;
+- retain the completed frozen round-11 mechanism explanations and the separate 450-decision
+  live bundle; extend them only when repeated joint-admission experiments add new sources;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;
 - move evidence into WORM/object-lock storage with retention and access-control policy;
 - define production key custody, rotation, revocation distribution, and disaster recovery;
