@@ -76,6 +76,22 @@ class InRoundAdmissionError(SecureRoundError):
     """Raised when an in-round policy contract or checkpoint is invalid."""
 
 
+SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256 = frozenset(
+    {
+        # Published clean in-round campaign.
+        "e85281aa872bcc937d7b5bf4e48490d0af6f2067a36aa029ca2e24e9232ebd87",
+        # Published live trust/statistical disagreement campaign.
+        "ef7ccf7d8b4e2189c6fcd7a0a3a8922c8ba148a8e12b60403f4d23f80bc94fd3",
+        # Published real post-training TPM-failure campaign.
+        "c0fa9b9a2728308f0513bf263b01f965d74df8aad1a433c2b075cabf6ef7b47d",
+    }
+)
+
+LEGACY_FRESH_ATTESTATION_DETAIL = (
+    "signed, passed, fresh attestation and identity binding"
+)
+
+
 def _utc(value: datetime) -> str:
     return value.astimezone(UTC).isoformat().replace("+00:00", "Z")
 
@@ -243,10 +259,27 @@ def _load_bound_contract(workspace: Path) -> InRoundAdmissionContract:
     if sha256_file(contract_path) != binding.get("contract_sha256"):
         raise InRoundAdmissionError("bound in-round admission contract changed")
     partition = load_json(public / "partition-manifest.json")
+    observed = InRoundAdmissionContract.model_validate(load_json(contract_path))
     expected = build_in_round_contract(
         config_path=config_path, partition_manifest=partition
     )
-    observed = InRoundAdmissionContract.model_validate(load_json(contract_path))
+    if observed.core.implementation_sha256 != expected.core.implementation_sha256:
+        if (
+            observed.core.implementation_sha256
+            not in SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+        ):
+            raise InRoundAdmissionError(
+                "unsupported historical in-round implementation digest"
+            )
+        legacy_core = expected.core.model_copy(
+            update={"implementation_sha256": observed.core.implementation_sha256}
+        )
+        legacy_digest = _artifact_core_digest(legacy_core.model_dump(mode="json"))
+        expected = InRoundAdmissionContract(
+            contract_id=f"in-round-contract-{legacy_digest[:24]}",
+            core=legacy_core,
+            core_digest=legacy_digest,
+        )
     if observed.model_dump(mode="json") != expected.model_dump(mode="json"):
         raise InRoundAdmissionError("in-round admission contract does not recompute")
     if observed.contract_id != binding.get("contract_id"):
@@ -453,9 +486,27 @@ def _load_or_create_trust_records(
             if [item.model_dump(mode="json") for item in trust_decision.core.checks] != [
                 item.model_dump(mode="json") for item in expected_checks
             ]:
-                raise InRoundAdmissionError(
-                    f"trust decision checks do not recompute: {client_id}"
+                legacy_checks = [
+                    check.model_copy(
+                        update={"detail": LEGACY_FRESH_ATTESTATION_DETAIL}
+                    )
+                    if check.name == "fresh_attestation"
+                    else check
+                    for check in expected_checks
+                ]
+                legacy_compatible = (
+                    post_training_attestation_client_id is None
+                    and [
+                        item.model_dump(mode="json")
+                        for item in trust_decision.core.checks
+                    ]
+                    == [item.model_dump(mode="json") for item in legacy_checks]
                 )
+                if not legacy_compatible:
+                    raise InRoundAdmissionError(
+                        f"trust decision checks do not recompute: {client_id}"
+                    )
+                expected_checks = legacy_checks
             expected_status = (
                 "accepted" if all(item.passed for item in expected_checks) else "quarantined"
             )
@@ -1065,14 +1116,21 @@ def verify_in_round_secure_round(
                 checkpoint.core.validation_split_sha256,
                 contract.core.validation_split_sha256,
             ),
-            "implementation": (
-                checkpoint.core.implementation_sha256,
-                _implementation_sha256(),
-            ),
         }
         for name, (observed, expected) in expected_values.items():
             if observed != expected:
                 errors.append(f"in-round checkpoint {name} mismatch")
+        implementation_matches = (
+            checkpoint.core.implementation_sha256 == _implementation_sha256()
+            or (
+                checkpoint.core.implementation_sha256
+                == contract.core.implementation_sha256
+                and checkpoint.core.implementation_sha256
+                in SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+            )
+        )
+        if not implementation_matches:
+            errors.append("in-round checkpoint implementation mismatch")
         expected_trust_accepted = sum(
             item["trust_decision"].core.status == "accepted" for item in records
         )

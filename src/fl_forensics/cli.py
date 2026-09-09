@@ -60,6 +60,10 @@ from .in_round_admission import (
     admit_and_aggregate_in_round,
     verify_in_round_secure_round,
 )
+from .live_contribution_explanation import (
+    create_live_contribution_explanation_bundle,
+    verify_live_contribution_explanation_bundle,
+)
 from .merkle import create_merkle_tree, verify_merkle_tree
 from .multiseed import (
     create_multiseed_summary,
@@ -165,6 +169,19 @@ def _add_contribution_explanation_sources(command: argparse.ArgumentParser) -> N
         "--config",
         type=Path,
         default=Path("configs/contribution-explanations.yaml"),
+    )
+
+
+def _add_live_contribution_explanation_sources(
+    command: argparse.ArgumentParser,
+) -> None:
+    command.add_argument("--campaign-workspace", type=Path, required=True)
+    command.add_argument("--trust-workspace", type=Path, required=True)
+    command.add_argument("--partition-workspace", type=Path, required=True)
+    command.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/live-contribution-explanations.yaml"),
     )
 
 
@@ -975,6 +992,24 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _add_contribution_explanation_sources(m6_verify_contribution_explanations)
     m6_verify_contribution_explanations.add_argument(
+        "--workspace", type=Path, required=True
+    )
+
+    m6_explain_live_contributions = subparsers.add_parser(
+        "m6-explain-live-contributions",
+        help="explain all decisions made during a verified live M6 campaign",
+    )
+    _add_live_contribution_explanation_sources(m6_explain_live_contributions)
+    m6_explain_live_contributions.add_argument("--output", type=Path, required=True)
+
+    m6_verify_live_contribution_explanations = subparsers.add_parser(
+        "m6-verify-live-contribution-explanations",
+        help="recompute the live M6 explanation bundle from campaign evidence",
+    )
+    _add_live_contribution_explanation_sources(
+        m6_verify_live_contribution_explanations
+    )
+    m6_verify_live_contribution_explanations.add_argument(
         "--workspace", type=Path, required=True
     )
 
@@ -2212,6 +2247,26 @@ def main(argv: list[str] | None = None) -> int:
             config_path=arguments.config,
             composite_config_path=arguments.admission_config,
             byzantine_config_path=arguments.byzantine_config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-explain-live-contributions":
+        result = create_live_contribution_explanation_bundle(
+            campaign_workspace=arguments.campaign_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            output=arguments.output,
+            config_path=arguments.config,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m6-verify-live-contribution-explanations":
+        result = verify_live_contribution_explanation_bundle(
+            campaign_workspace=arguments.campaign_workspace,
+            trust_workspace=arguments.trust_workspace,
+            partition_workspace=arguments.partition_workspace,
+            workspace=arguments.workspace,
+            config_path=arguments.config,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

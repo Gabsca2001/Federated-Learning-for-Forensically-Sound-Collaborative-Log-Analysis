@@ -510,6 +510,37 @@ python scripts/render_m6_disagreement_summary.py \
   --replace-existing-snapshot
 ```
 
+The 450 decisions made along this live trajectory can also be exported as a separate,
+content-addressed explanation bundle. This is an M6 training-decision explanation, not M7
+prediction XAI: it explains why each submitted model update was accepted, downweighted, or
+quarantined and what weight it actually retained in FedAvg. The verifier first re-verifies the
+complete campaign, then reconstructs all policy margins, statistical components, named tensor
+drivers, prior client treatments, leave-one-out influence, and full-weight counterfactuals from
+the signed source decisions and update bytes. Test rows and attack labels are excluded.
+
+```bash
+fl-forensics m6-explain-live-contributions \
+  --campaign-workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --config configs/live-contribution-explanations.yaml \
+  --output artifacts/m6-live-contribution-explanations-local-test-v1
+
+fl-forensics m6-verify-live-contribution-explanations \
+  --campaign-workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --config configs/live-contribution-explanations.yaml \
+  --workspace artifacts/m6-live-contribution-explanations-local-test-v1
+```
+
+The hard TPM prerequisite is represented explicitly: when trust is inadmissible, the
+counterfactual states that no reduction of statistical risk can restore admission. This keeps
+the trust veto distinct from the score-level margins that are meaningful for trust-admissible
+updates. The detailed sanitized tables, deterministic case studies, plots, source bindings, and
+verification receipt are published in
+[`results/m6-live-contribution-explanations-local-test-v1/`](results/m6-live-contribution-explanations-local-test-v1/README.md).
+
 The separate real-attestation profile closes the missing observed-failure check. In round 30,
 all clients first passed M4 and trained normally; `client03` then extended a real `swtpm` PCR
 and produced a fresh AK-signed Quote that the verifier appraised as `failed_measurement`. The

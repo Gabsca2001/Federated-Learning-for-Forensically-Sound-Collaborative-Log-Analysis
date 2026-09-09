@@ -293,6 +293,61 @@ python scripts/run_m6_disagreement_experiment.py run \
 The sanitized tables, figures, source bindings, and boundary statements are published in
 [`results/m6-trust-statistical-disagreement-local-test-v1/`](../results/m6-trust-statistical-disagreement-local-test-v1/README.md).
 
+### Verifiable explanations of the live training decisions
+
+The earlier contribution-explanation experiment below explains one frozen round and compares
+six aggregation mechanisms. The live explanation bundle has a different scope: it follows the
+deployed `gated_composite` path across all 30 rounds and explains all 450 decisions that actually
+determined the trained trajectory.
+
+For each `(round, client)` slot, `explanations.json` records:
+
+- the signed source decision and Update Bundle digests;
+- every M5 trust check and all four shadow/deployed policy outcomes;
+- the statistical risk components, exact threshold headroom, and top three named parameter
+  tensors by squared distance from the round median;
+- the actual nominal/effective FedAvg weight, retained fraction, leave-one-out influence, and
+  aggregate displacement that full weight would have caused;
+- the client's prior downweight/quarantine history and rank among the 15 round contributions;
+- an exact score-level counterfactual for trust-admissible updates, or an explicit hard-veto
+  statement when trust is inadmissible.
+
+`index.json` provides round- and client-level counts without replacing the per-contribution
+evidence. `manifest.json` binds both payloads, the complete inventories of source decisions,
+updates, checkpoints, disagreement contracts, configuration, and the implementation files.
+The manifest is content-addressed but not externally time-anchored unless a later M8 package
+preserves it.
+
+Generation uses neither attack labels nor test rows. Verification is intentionally expensive:
+it re-verifies the complete M5/M6 campaign and reconstructs every explanation byte from the
+source workspaces. Historical campaigns are accepted only through explicit allowlists of their
+published implementation digests; signatures, contracts, update hashes, decisions, and weighted
+FedAvg checkpoints are still recomputed.
+
+```bash
+fl-forensics m6-explain-live-contributions \
+  --campaign-workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --config configs/live-contribution-explanations.yaml \
+  --output artifacts/m6-live-contribution-explanations-local-test-v1
+
+fl-forensics m6-verify-live-contribution-explanations \
+  --campaign-workspace artifacts/m6-trust-statistical-disagreement-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-m6-disagreement-v2 \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --config configs/live-contribution-explanations.yaml \
+  --workspace artifacts/m6-live-contribution-explanations-local-test-v1
+```
+
+The reference source reconstructs 450 explanations: 334 full-weight acceptances, 24
+downweights, 32 statistical quarantines, and 60 hard trust quarantines. These are mechanism
+outcomes, not labels of malicious intent. Independent verification passed with zero errors;
+the bundle is `m6-live-contribution-explanations-c39cd61a6d17a40691a6928d` and its manifest
+SHA-256 is `9d4b30ac3edeafbf1c9a8be7053e280fe28af19b3d44a3d640bfc9fb9e641a6a`.
+The thesis-facing snapshot is in
+[`results/m6-live-contribution-explanations-local-test-v1/`](../results/m6-live-contribution-explanations-local-test-v1/README.md).
+
 The policy is no longer restricted to retrospective comparison in the codebase.
 The optional M5 in-round profile binds the calibration and policy in the signed
 training contract, evaluates each newly trained and TPM-signed update before

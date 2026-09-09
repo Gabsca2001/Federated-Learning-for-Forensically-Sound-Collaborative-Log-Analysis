@@ -1,0 +1,16 @@
+schema_version: "1.0"
+
+experiment:
+  id: m6-live-contribution-explanations-v1
+  expected_source_experiment_id: m6-live-trust-statistical-disagreement-v1
+
+live_contribution_explanations:
+  expected_round_count: 30
+  expected_client_count: 15
+  primary_policy: gated_composite
+  top_tensor_drivers: 3
+  require_complete_disagreement_verification: true
+  interpretation:
+    attack_labels_used: false
+    test_data_used: false
+    hard_trust_veto_is_explainable_not_compensable: true

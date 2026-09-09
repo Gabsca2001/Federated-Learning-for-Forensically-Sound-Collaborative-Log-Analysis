@@ -5,8 +5,10 @@
 The deterministic M1–M8 implementation and the current local-test reference chain are
 complete and verified end to end. A joint M4/M6 admission pilot now compares four policies
 and both trust/statistics disagreement directions on verified round-11 inputs. A separately
-verified bundle explains all 15 contribution decisions and six aggregation mechanisms without
-using attack labels. The same gated-composite policy is now implemented as an opt-in M5
+verified frozen-round bundle explains all 15 contribution decisions and six aggregation
+mechanisms without using attack labels. A second independently verifiable bundle reconstructs
+the 450 decisions that drove the live M6 trajectory. The same gated-composite policy is now
+implemented as an opt-in M5
 in-round gate over newly trained, TPM-signed updates. Its unit/tamper checks, one-round smoke,
 and separate 30-round/450-contribution clean campaign all verify. The full run selected round
 25 and exposed 75 clean downweights plus six clean quarantines, now published for calibration
@@ -67,6 +69,7 @@ continuity but not the general utility cost of trust failures.
 | In-round composite admission | Implemented, runtime-integrated, and verified | Fresh 30-round campaign; 450/450 decisions recomputed; 369 accepted, 75 downweighted, six quarantined; selected round 25; isolated test macro-F1 `0.935467` |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
 | Live TPM/statistical disagreement experiment | Implemented and verified (M6) | Fresh 30-round campaign; 450/450 decisions recomputed; combined policies detect 90/90 controlled unsafe contributions; two safe quarantines; selected round 11; isolated test macro-F1 `0.924554` |
+| Live contribution-decision explanation bundle | Implemented and independently verified (M6) | 30 rounds and 450/450 slots; exact trust/policy margins, tensor drivers, retained FedAvg weight, influence, and counterfactuals recompute without test data or attack labels |
 | Real post-training TPM failure | Implemented, runtime-integrated, and verified (M4/M6) | Baseline-`1.3`, 30 rounds, 450 submissions; one authentic `failed_measurement`, one trust quarantine, target weight zero and exclusion independently verified; selected test macro-F1 `0.935467` |
 | Investigation chain | Implemented and verified (M7) | Original M5 reference: six cases/69 events/81 records; M6-linked extension: 16 cases/811 events/826 records; both prediction-to-report lineages complete |
 | Preservation inventory | Implemented and verified (M8.1) | Original: 2,381 artifacts; M6-linked thesis closure: 3,011 artifacts and seven external bindings |
@@ -105,6 +108,7 @@ experimental chain.
 | Extended thesis stage | Workspace or identifier |
 |---|---|
 | M6 live disagreement campaign | `artifacts/m6-trust-statistical-disagreement-local-test-v1` |
+| M6 live decision explanations | `artifacts/m6-live-contribution-explanations-local-test-v1` |
 | M6-linked M7 report | `artifacts/m7-investigation-report-m6-disagreement-test-first16-local-test-v1` |
 | M6-linked M8 inventory | `m8-preservation-e7e01dfefa1dfb07bddd7fef` |
 | M6-linked M8 Merkle tree | `m8-merkle-tree-88109448b5da654b7124d218` |
@@ -164,8 +168,7 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Turn live contribution explanations into a separately hashed and independently verifiable
-   bundle, then run the M6 multi-seed and threshold/weight ablation experiments.
+1. Run the M6 multi-seed and threshold/weight ablation experiments over complete live campaigns.
 2. Add the adaptive attack as a separate scenario without overwriting the clean or disagreement
    references.
 3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.

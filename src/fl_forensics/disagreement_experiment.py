@@ -34,6 +34,13 @@ CONDITIONS = (
     "trust_inadmissible_statistics_anomalous",
 )
 
+SUPPORTED_LEGACY_DISAGREEMENT_IMPLEMENTATION_SHA256 = frozenset(
+    {
+        # Published 30-round live trust/statistical disagreement campaign.
+        "6d84c7c53d2fb2482d4a097d3dda6fc67f666276b8afd07ee5bba3739e19718a",
+    }
+)
+
 
 class DisagreementExperimentError(RuntimeError):
     """Raised when the controlled M6 experiment cannot be reproduced."""
@@ -174,10 +181,27 @@ def load_bound_disagreement_contract(
     if sha256_file(contract_path) != binding.get("contract_sha256"):
         raise DisagreementExperimentError("bound disagreement contract changed")
     client_ids = [str(item["client_id"]) for item in training.get("clients", [])]
+    observed = DisagreementExperimentContract.model_validate(load_json(contract_path))
     expected = build_disagreement_contract(
         config_path=config_path, client_ids=client_ids
     )
-    observed = DisagreementExperimentContract.model_validate(load_json(contract_path))
+    if observed.core.implementation_sha256 != expected.core.implementation_sha256:
+        if (
+            observed.core.implementation_sha256
+            not in SUPPORTED_LEGACY_DISAGREEMENT_IMPLEMENTATION_SHA256
+        ):
+            raise DisagreementExperimentError(
+                "unsupported historical disagreement implementation digest"
+            )
+        legacy_core = expected.core.model_copy(
+            update={"implementation_sha256": observed.core.implementation_sha256}
+        )
+        legacy_digest = _artifact_digest(legacy_core.model_dump(mode="json"))
+        expected = DisagreementExperimentContract(
+            contract_id=f"m6-live-disagreement-contract-{legacy_digest[:24]}",
+            core=legacy_core,
+            core_digest=legacy_digest,
+        )
     if observed.model_dump(mode="json") != expected.model_dump(mode="json"):
         raise DisagreementExperimentError(
             "bound disagreement contract does not recompute"
@@ -409,6 +433,7 @@ def verify_disagreement_round(
     trust_workspace: Path,
     submissions_root: Path,
     validation_split_path: Path,
+    verify_base: bool = True,
 ) -> dict[str, Any]:
     """Verify live treatments, policy inputs, and the resulting aggregation."""
 
@@ -421,14 +446,17 @@ def verify_disagreement_round(
     from .secure_round_models import ContributionDecision
 
     errors: list[str] = []
-    base_verification = verify_in_round_secure_round(
-        workspace=workspace,
-        trust_workspace=trust_workspace,
-        submissions_root=submissions_root,
-        validation_split_path=validation_split_path,
-    )
-    if base_verification["status"] != "verified":
-        errors.extend(f"M5: {item}" for item in base_verification["errors"])
+    if verify_base:
+        base_verification = verify_in_round_secure_round(
+            workspace=workspace,
+            trust_workspace=trust_workspace,
+            submissions_root=submissions_root,
+            validation_split_path=validation_split_path,
+        )
+        if base_verification["status"] != "verified":
+            errors.extend(f"M5: {item}" for item in base_verification["errors"])
+    else:
+        base_verification = {"status": "skipped", "errors": []}
     context = _load_context(workspace / "public")
     contract = load_bound_disagreement_contract(workspace / "public")
     if contract is None:
