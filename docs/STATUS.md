@@ -22,14 +22,22 @@ evaluation and the 13-stage M4–M8 offline-overhead reference execution are com
 and published as sanitized snapshots. The separate three-trial M4/M5 containerized-runtime
 benchmark is also complete,
 verified, and published. The isolated UWF-ZeekData22 evaluation and its two-burst Discovery
-alignment stress are complete, independently recomputed, and published. Other principal gaps
-are physical-TPM and multi-host/API benchmarks, and production-grade evidence storage and key
-management.
+alignment stress are complete, independently recomputed, and published. The real post-training
+TPM-failure profile has now also completed 30 rounds: an authentic non-conforming Quote caused
+one hard trust quarantine and zero FedAvg weight, with the independent verifier passing. Other
+principal gaps are physical-TPM and multi-host/API benchmarks, and production-grade evidence
+storage and key management.
 
 The M6 live-disagreement implementation now has empirical runtime evidence. It binds the four
 controlled trust/statistics cells before training, makes anomalous clients TPM-sign their
 transformed update, and applies the composite decision before FedAvg. The observed `swtpm`
 appraisals pass; the failed-trust cells remain explicitly labelled counterfactual policy inputs.
+The separate real-failure path is empirically complete. It used a fresh post-training challenge
+and an authentic AK-signed Quote over an actually extended `swtpm` PCR. M4 issued the signed
+`failed_measurement` result; M5/M6 failed only `fresh_attestation`, skipped statistical scoring,
+and excluded `client03` before FedAvg. The run selected round 25 and achieved isolated test
+macro-F1 `0.935467`; the intervention was in round 30, so this selected metric demonstrates
+continuity but not the general utility cost of trust failures.
 
 ## Current coverage
 
@@ -59,6 +67,7 @@ appraisals pass; the failed-trust cells remain explicitly labelled counterfactua
 | In-round composite admission | Implemented, runtime-integrated, and verified | Fresh 30-round campaign; 450/450 decisions recomputed; 369 accepted, 75 downweighted, six quarantined; selected round 25; isolated test macro-F1 `0.935467` |
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
 | Live TPM/statistical disagreement experiment | Implemented and verified (M6) | Fresh 30-round campaign; 450/450 decisions recomputed; combined policies detect 90/90 controlled unsafe contributions; two safe quarantines; selected round 11; isolated test macro-F1 `0.924554` |
+| Real post-training TPM failure | Implemented, runtime-integrated, and verified (M4/M6) | Baseline-`1.3`, 30 rounds, 450 submissions; one authentic `failed_measurement`, one trust quarantine, target weight zero and exclusion independently verified; selected test macro-F1 `0.935467` |
 | Investigation chain | Implemented and verified (M7) | Original M5 reference: six cases/69 events/81 records; M6-linked extension: 16 cases/811 events/826 records; both prediction-to-report lineages complete |
 | Preservation inventory | Implemented and verified (M8.1) | Original: 2,381 artifacts; M6-linked thesis closure: 3,011 artifacts and seven external bindings |
 | Merkle commitment | Implemented and verified (M8.2) | Original: 2,388 leaves; M6-linked thesis closure: 3,018 leaves; deterministic duplicate-last rule |
@@ -138,8 +147,8 @@ The final assurance state is
   Its failed-trust cells remain labelled counterfactuals rather than observed Quote failures;
   all 450 observed appraisals passed. TPM-only, statistics-only, and sequential are shadow
   decisions, while gated-composite alone controls this model trajectory. Each evidentiary run
-  requires a fresh M4 baseline `1.2`; restarting historical TPM state cannot establish the new
-  measured-code identity.
+  used a fresh M4 baseline `1.2`. The new real-failure implementation requires baseline `1.3`;
+  restarting historical TPM state cannot establish either measured-code identity.
 - Contribution-decision explanations reconstruct configured policy and aggregator mechanics;
   they are derived interpretations, not primary Zeek evidence or proof of malicious intent.
 - The overhead reference is warm-process offline replay under WSL2. Nested verifiers overlap,
@@ -149,14 +158,19 @@ The final assurance state is
   includes container scheduling, training, validation, serialization, ESK signing, and writes
   through bind-mounted submission directories; it cannot establish WAN/API or physical-TPM
   latency.
+- The real-attestation result covers one `swtpm` client and one late failure in one deterministic
+  campaign. Its selected checkpoint precedes the failure. Earlier/repeated failures, multiple
+  seeds, and a physical TPM are required before estimating a general utility or latency effect.
 
 ## Outstanding validation and engineering work
 
-1. Retain the verified live-disagreement campaign and add the adaptive attack as a separate
-   scenario without overwriting the clean or disagreement references.
-2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-4. Validate service separation, multi-host performance, and failure recovery outside the research
+1. Turn live contribution explanations into a separately hashed and independently verifiable
+   bundle, then run the M6 multi-seed and threshold/weight ablation experiments.
+2. Add the adaptive attack as a separate scenario without overwriting the clean or disagreement
+   references.
+3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+5. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and

@@ -18,7 +18,7 @@ def run(command: list[str], *, root: Path, environment: dict[str, str]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=("provision", "quote", "stop"))
+    parser.add_argument("action", choices=("provision", "quote", "extend", "stop"))
     parser.add_argument("--compose", type=Path, default=Path("compose.m4.yaml"))
     parser.add_argument(
         "--trust-workspace", type=Path, default=Path("artifacts/m4-trust")
@@ -29,6 +29,10 @@ def main() -> int:
         action="store_true",
         help="reuse prebuilt Compose images (used by runtime latency experiments)",
     )
+    parser.add_argument("--client-id", choices=CLIENT_IDS)
+    parser.add_argument("--pcr-index", type=int)
+    parser.add_argument("--measurement-sha256")
+    parser.add_argument("--event-id")
     arguments = parser.parse_args()
     root = arguments.compose.resolve().parent
     trust_workspace = arguments.trust_workspace.resolve()
@@ -48,21 +52,68 @@ def main() -> int:
         run([*compose, "down"], root=root, environment=environment)
         return 0
 
-    for client_id in CLIENT_IDS:
+    selected_clients = [arguments.client_id] if arguments.client_id else CLIENT_IDS
+    selected_tpms = [
+        f"tpm{int(client_id.removeprefix('client')):02d}"
+        for client_id in selected_clients
+    ]
+    for client_id in selected_clients:
         (node_root / client_id).mkdir(parents=True, exist_ok=True)
     trust_workspace.mkdir(parents=True, exist_ok=True)
     # run([*compose, "up", "-d", "--build", *TPM_IDS], root=root)
     if arguments.action == "provision":
         build_flag = [] if arguments.skip_build else ["--build"]
         run(
-            [*compose, "up", "-d", *build_flag, *TPM_IDS],
+            [*compose, "up", "-d", *build_flag, *selected_tpms],
             root=root,
             environment=environment,
         )
     else:
-        run([*compose, "up", "-d", *TPM_IDS], root=root, environment=environment)
+        run(
+            [*compose, "up", "-d", *selected_tpms],
+            root=root,
+            environment=environment,
+        )
 
-    for index, client_id in enumerate(CLIENT_IDS, start=1):
+    if arguments.action == "extend":
+        if arguments.client_id is None:
+            parser.error("extend requires --client-id")
+        if arguments.pcr_index is None:
+            parser.error("extend requires --pcr-index")
+        if arguments.measurement_sha256 is None:
+            parser.error("extend requires --measurement-sha256")
+        if arguments.event_id is None:
+            parser.error("extend requires --event-id")
+        build_flag = [] if arguments.skip_build else ["--build"]
+        run(
+            [
+                *compose,
+                "--profile",
+                "provision",
+                "run",
+                *build_flag,
+                "--rm",
+                arguments.client_id,
+                "m4-tpm-extend-pcr",
+                "--workspace",
+                "/runtime",
+                "--tcti",
+                "swtpm:path=/run/swtpm/swtpm.sock",
+                "--client-id",
+                arguments.client_id,
+                "--pcr-index",
+                str(arguments.pcr_index),
+                "--measurement-sha256",
+                arguments.measurement_sha256,
+                "--event-id",
+                arguments.event_id,
+            ],
+            root=root,
+            environment=environment,
+        )
+        return 0
+
+    for index, client_id in enumerate(selected_clients, start=1):
         if arguments.action == "provision":
             build_flag = [] if arguments.skip_build else ["--build"]
             run(
@@ -96,7 +147,11 @@ def main() -> int:
                 root=root,
                 environment=environment,
             )
-        print(f"[{index:02d}/15] {client_id} {arguments.action} completed", flush=True)
+        print(
+            f"[{index:02d}/{len(selected_clients):02d}] "
+            f"{client_id} {arguments.action} completed",
+            flush=True,
+        )
     return 0
 
 

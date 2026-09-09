@@ -1,0 +1,22 @@
+schema_version: "1.0"
+
+experiment:
+  id: m4-m6-real-attestation-failure-v1
+  target_client_id: client03
+  active_rounds: [30]
+  phase: post_local_training_pre_aggregation
+
+  # This digest is extended into the real swtpm PCR. It represents an
+  # unapproved post-training integrity event; it is not a rewritten JSON flag.
+  pcr_bank: sha256
+  pcr_index: 10
+  measurement_sha256: 46bd17be2508159f1fd57637a43b982147822385f07b908a2da279d12efabb66
+
+  expected_initial_statuses: [passed, passed_with_warning]
+  expected_post_status: failed_measurement
+  quote_format: tpm2-tools-tpms-attest
+
+  # The local update is retained only to prove that the live admission gate
+  # excludes it. Production deployments may suppress this wasted local work.
+  local_update_is_probe_only: true
+  evaluation_labels_used_for_admission: false

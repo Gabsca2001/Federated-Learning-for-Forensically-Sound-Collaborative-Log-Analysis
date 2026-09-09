@@ -48,7 +48,7 @@ class ConfigurationTests(unittest.TestCase):
     def test_m4_uses_sha256_quote_policy_and_separate_measurement_roles(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "trust.yaml")
         self.assertEqual(config["attestation"]["policy_version"], "2.1.0")
-        self.assertEqual(config["attestation"]["baseline_version"], "1.2.0")
+        self.assertEqual(config["attestation"]["baseline_version"], "1.3.0")
         self.assertEqual(config["attestation"]["pcr_bank"], "sha256")
         self.assertEqual(config["attestation"]["pcr_selection"], [0, 2, 4, 7, 10])
         self.assertEqual(config["mtls"]["minimum_version"], "TLSv1.3")
@@ -69,6 +69,10 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn("live-disagreement-schemas", measured_components)
         self.assertIn("live-disagreement-policy", measured_components)
         self.assertIn("live-disagreement-orchestrator", measured_components)
+        self.assertIn("real-attestation-failure-controller", measured_components)
+        self.assertIn("real-attestation-failure-schemas", measured_components)
+        self.assertIn("real-attestation-failure-policy", measured_components)
+        self.assertIn("real-attestation-failure-orchestrator", measured_components)
 
     def test_m5_policy_gates_all_fifteen_signed_updates(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "secure-round.yaml")
@@ -135,6 +139,20 @@ class ConfigurationTests(unittest.TestCase):
             "sign_flip_amplification",
         )
         self.assertFalse(experiment["evaluation_labels_used_for_scoring"])
+
+    def test_m4_m6_real_failure_is_post_training_and_uses_one_real_pcr(self) -> None:
+        config, _ = load_yaml(
+            ROOT / "configs" / "real-attestation-failure.yaml"
+        )
+        experiment = config["experiment"]
+        self.assertEqual(experiment["target_client_id"], "client03")
+        self.assertEqual(experiment["active_rounds"], [30])
+        self.assertEqual(
+            experiment["phase"], "post_local_training_pre_aggregation"
+        )
+        self.assertEqual(experiment["expected_post_status"], "failed_measurement")
+        self.assertEqual(experiment["quote_format"], "tpm2-tools-tpms-attest")
+        self.assertFalse(experiment["evaluation_labels_used_for_admission"])
 
     def test_m6_prototype_contract_has_support_quorum_and_separate_aggregators(self) -> None:
         config, _ = load_yaml(ROOT / "configs" / "base.yaml")
