@@ -1,0 +1,5 @@
+policy,policy_label,deployed_for_training,accepted_count,downweighted_count,contributing_count,quarantined_count,controlled_true_positive,controlled_false_positive,controlled_true_negative,controlled_false_negative,controlled_unsafe_recall,controlled_safe_false_positive_rate
+tpm_only,TPM only,False,390,0,390,60,60,0,30,30,0.6666666666666666,0.0
+statistics_only,Statistics only,False,388,0,388,62,60,0,30,30,0.6666666666666666,0.0
+sequential,Sequential,False,358,0,358,92,90,0,30,0,1.0,0.0
+gated_composite,Gated composite,True,334,24,358,92,90,0,30,0,1.0,0.0

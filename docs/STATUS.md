@@ -15,7 +15,9 @@ analysis. The live M6 disagreement profile has also completed its fresh-baseline
 the combined policies detect 90/90 controlled unsafe contributions, and the deployed model
 reaches isolated test macro-F1 `0.924554`. That selected checkpoint has now completed a fresh
 16-case M7 prediction-to-report chain, resolving 811 events and 826 controlled source records
-with all four verifiers passing. Its fresh M8 closure remains pending. The paired five-seed M3
+with all four verifiers passing. Its independent M8 closure is now complete: 3,011 payload
+files, 3,018 Merkle leaves, an RFC 3161 anchor, a 2.49 GiB offline package, all 450 in-round
+submissions reconstructed, and final lineage verification passed. The paired five-seed M3
 evaluation and the 13-stage M4–M8 offline-overhead reference execution are complete, verified,
 and published as sanitized snapshots. The separate three-trial M4/M5 containerized-runtime
 benchmark is also complete,
@@ -58,19 +60,20 @@ appraisals pass; the failed-trust cells remain explicitly labelled counterfactua
 | Byzantine/robust aggregation experiments | Implemented and verified (M6) | Frozen real M5 inputs; model/prototype campaigns; joint TPM/statistical admission; controlled 2x2 disagreement matrix; 15 contribution explanations and six aggregator traces |
 | Live TPM/statistical disagreement experiment | Implemented and verified (M6) | Fresh 30-round campaign; 450/450 decisions recomputed; combined policies detect 90/90 controlled unsafe contributions; two safe quarantines; selected round 11; isolated test macro-F1 `0.924554` |
 | Investigation chain | Implemented and verified (M7) | Original M5 reference: six cases/69 events/81 records; M6-linked extension: 16 cases/811 events/826 records; both prediction-to-report lineages complete |
-| Preservation inventory | Implemented and verified (M8.1) | 2,381 artifacts, seven external bindings, 2,642,172,551 payload bytes |
-| Merkle commitment | Implemented and verified (M8.2) | 2,388 leaves, 13 levels, deterministic duplicate-last rule |
+| Preservation inventory | Implemented and verified (M8.1) | Original: 2,381 artifacts; M6-linked thesis closure: 3,011 artifacts and seven external bindings |
+| Merkle commitment | Implemented and verified (M8.2) | Original: 2,388 leaves; M6-linked thesis closure: 3,018 leaves; deterministic duplicate-last rule |
 | Trusted timestamp | Implemented and verified (M8.3) | RFC 3161 token over the M8 Merkle root; offline verification succeeds |
-| Offline recovery export | Implemented and verified (M8.4) | Deterministic TAR, 2,381 payload entries, 11 assurance entries |
-| Campaign invariant accounting | Implemented and verified (M8.5) | 30 rounds, 15 clients, 450 contributions reconstructed from recovery TAR |
-| Final preservation verification | Implemented and verified (M8.6) | Five assurance stages; offline inputs only; zero errors |
+| Offline recovery export | Implemented and verified (M8.4) | Deterministic TAR; M6-linked closure has 3,011 payload and 11 assurance entries |
+| Campaign invariant accounting | Implemented and verified (M8.5) | Both profiles reconstruct 30 rounds × 15 clients; in-round profile also verifies policy treatments, 358 contributors, 24 downweights, and 92 quarantines |
+| Final preservation verification | Implemented and verified (M8.6) | Original and M6-linked chains; five assurance stages; offline inputs only; zero errors |
 | Offline verification-overhead benchmark | Implemented and verified | 13/13 stages, 45 measured samples, 13 source snapshots, zero errors; receipt `overhead-benchmark-242c9f91b96d5b8fad17acff`; no runtime/TPM claim |
 | Containerized runtime-overhead benchmark | Implemented and verified | Three fresh M4/M5 trials; 36/36 stages; median secure-round span `105.980 s`; direct ESK signature `13.854 ms`; receipt `runtime-overhead-adb5811cce9ded407e4b1e0d` |
 
 ## Canonical reference chain
 
-The original M5-based reference remains preserved by the completed M8 package. The M6-linked
-thesis extension is listed separately until its new M8 closure is complete.
+The original M5-based reference remains preserved by its completed M8 package. The M6-linked
+thesis experiment is closed by a second, independent package and is the primary extended
+experimental chain.
 
 | Stage | Workspace or identifier |
 |---|---|
@@ -94,7 +97,12 @@ thesis extension is listed separately until its new M8 closure is complete.
 |---|---|
 | M6 live disagreement campaign | `artifacts/m6-trust-statistical-disagreement-local-test-v1` |
 | M6-linked M7 report | `artifacts/m7-investigation-report-m6-disagreement-test-first16-local-test-v1` |
-| M6-linked M8 closure | Pending; create new workspaces and identifiers |
+| M6-linked M8 inventory | `m8-preservation-e7e01dfefa1dfb07bddd7fef` |
+| M6-linked M8 Merkle tree | `m8-merkle-tree-88109448b5da654b7124d218` |
+| M6-linked M8 timestamp | `m8-timestamp-anchor-1a4cceb5a6de79502f2cf0f2` |
+| M6-linked M8 recovery | `m8-recovery-export-d70949e9c95d458578d07428` |
+| M6-linked M8 accounting | `m8-in-round-campaign-accounting-c38e5feea19c1e9d11b94b48` |
+| M6-linked M8 final receipt | `m8-in-round-final-verification-67924c5247b31fce59ae5080` |
 
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
@@ -144,13 +152,11 @@ The final assurance state is
 
 ## Outstanding validation and engineering work
 
-1. Complete and verify a fresh M8 closure over the M6-linked M7 experiment without overwriting
-   the original reference package.
-2. Retain the verified live-disagreement campaign and add the adaptive attack as a separate
+1. Retain the verified live-disagreement campaign and add the adaptive attack as a separate
    scenario without overwriting the clean or disagreement references.
-3. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
-4. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
-5. Validate service separation, multi-host performance, and failure recovery outside the research
+2. Run the M4 adapter against a physical TPM 2.0 host and document the hardware evidence.
+3. Store retained packages in WORM/object-lock storage and define the production key lifecycle.
+4. Validate service separation, multi-host performance, and failure recovery outside the research
    deployment.
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and

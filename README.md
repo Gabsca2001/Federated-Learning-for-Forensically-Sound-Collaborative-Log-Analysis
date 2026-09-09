@@ -627,6 +627,23 @@ inputs. The recovery verifier reads the exported package rather than trusting th
 source workspaces; campaign accounting then reconstructs all 30 rounds and 450 accepted
 contributions from the offline package.
 
+The extended thesis experiment now has its own independent M8 closure. It preserves the live
+M6 disagreement campaign and the linked 16-case M7 chain without overwriting the earlier M5
+reference. Its offline accounting reconstructs all 450 submissions: 334 accepted at full
+weight, 24 downweighted, and 92 quarantined. The final in-round receipt verifies 3,011 payload
+files, a 3,018-leaf Merkle commitment, RFC 3161 time evidence, the recovery package, and the
+round/client/policy ledger under one lineage. The compact, thesis-facing view is available at
+[`results/m8-m6-disagreement-preservation-local-test-v1`](results/m8-m6-disagreement-preservation-local-test-v1/README.md).
+
+```bash
+python scripts/render_m8_disagreement_preservation_summary.py \
+  --recovery-workspace artifacts/m8-recovery-m6-disagreement-local-test-v1 \
+  --accounting-workspace artifacts/m8-campaign-accounting-m6-disagreement-local-test-v1 \
+  --m6-results results/m6-trust-statistical-disagreement-local-test-v1 \
+  --m7-results results/m7-m6-disagreement-investigation-local-test-v1 \
+  --output results/m8-m6-disagreement-preservation-local-test-v1
+```
+
 See [M8 preservation and recovery](docs/MILESTONE_8_PRESERVATION.md).
 
 ### Post-M8 — overhead benchmarking
@@ -722,7 +739,8 @@ See [External UWF-ZeekData22 generalization](docs/EXTERNAL_GENERALIZATION.md) an
 | M5 external Data22 | 10,128 windows; binary attack F1 `0.0863`; shared-label macro-F1 `0.4968`; verification passed |
 | M7 | six report cases bound to 69 events and 81 source records |
 | M6-linked M7 | 16 report cases bound to 811 events and 826 source records; four-stage verification passed |
-| M8 | 2,381 artifacts preserved; 2,388 Merkle leaves; all five assurance stages verified |
+| M8 original reference | 2,381 artifacts preserved; 2,388 Merkle leaves; all five assurance stages verified |
+| M8 M6-linked thesis closure | 3,011 artifacts; 3,018 Merkle leaves; 450 submissions reconstructed; final lineage verified |
 | Post-M8 overhead | 13/13 offline verifier stages; 45 measured samples; receipt verified |
 | Post-M8 runtime | Three fresh trials; 36/36 stages; median secure round `105.980 s`; receipt verified |
 

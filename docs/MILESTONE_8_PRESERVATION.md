@@ -228,6 +228,58 @@ Reference result:
 The final assurance state is
 `merkle-committed-time-anchored-recovery-exported-campaign-accounted-finally-verified`.
 
+## M6-linked thesis experiment closure
+
+The original reference above remains unchanged. A second set of write-once workspaces closes
+the live M6 trust/statistics disagreement campaign and its linked 16-case M7 investigation.
+This profile extends M8.5 accounting from accepted/quarantined M5 contributions to the actual
+in-round composite treatments and the four paired admission policies.
+
+| Field | M6-linked verified value |
+|---|---|
+| Campaign | `campaign-cdf764235033c2ea022c9a75` |
+| Preservation ID | `m8-preservation-e7e01dfefa1dfb07bddd7fef` |
+| Preserved payload files | 3,011 |
+| Merkle tree | `m8-merkle-tree-88109448b5da654b7124d218` |
+| Merkle leaves / root | 3,018 / `1362e47ca27682083b3a116bbd26fc90e80631f1ed87b268984211dcbe4ce2ba` |
+| RFC 3161 timestamp | `m8-timestamp-anchor-1a4cceb5a6de79502f2cf0f2`, `Sep  9 00:13:49 2026 GMT` |
+| Recovery / package | `m8-recovery-export-d70949e9c95d458578d07428` / `m8-recovery-package-4bcb7e7a2ef635c9b515032f` |
+| Recovery contents | 3,011 payload entries, 11 assurance entries, 2,671,749,120 bytes |
+| Accounting | `m8-in-round-campaign-accounting-c38e5feea19c1e9d11b94b48` |
+| Accounting totals | 450 submissions; 334 full-weight; 24 downweighted; 92 quarantined; 0 missing |
+| Controlled outcomes | 90/90 unsafe quarantined; 2/360 safe quarantined |
+| Final verification | `m8-in-round-final-verification-67924c5247b31fce59ae5080` |
+| Final core / receipt SHA-256 | `67924c5247b31fce59ae508042705a022146c36ada33c8247a451aec787ec6e0` / `78dead06d3e99f91678df7741c2745e09e9d7aea6ace53c4f9532ebd56a73a0d` |
+
+The in-round accountant reconstructs every unique signed bundle, update, trust decision, and
+composite decision from the recovery TAR. It verifies 30 consecutive checkpoint transitions,
+15 submissions per round, effective aggregation weights, six attestation refreshes per client,
+the controlled disagreement contract, and all four policy outcomes. This matters because the
+final claim is not merely that the files were archived: the training-time decision ledger can
+be recomputed from the retained bytes.
+
+All 450 observed M4 trust admissions passed. The controlled trust-inadmissible cells are
+counterfactual policy inputs declared before training, whereas update interventions are signed
+inside the client runtime. The report must retain this distinction. Gated-composite alone
+controlled aggregation; TPM-only, statistics-only, and sequential are shadow decisions over
+the same submissions.
+
+The Git-trackable result snapshot is generated only after the final offline verification:
+
+```bash
+python scripts/render_m8_disagreement_preservation_summary.py \
+  --recovery-workspace artifacts/m8-recovery-m6-disagreement-local-test-v1 \
+  --accounting-workspace artifacts/m8-campaign-accounting-m6-disagreement-local-test-v1 \
+  --m6-results results/m6-trust-statistical-disagreement-local-test-v1 \
+  --m7-results results/m7-m6-disagreement-investigation-local-test-v1 \
+  --output results/m8-m6-disagreement-preservation-local-test-v1
+```
+
+The renderer repeats the offline recovery, accounting, and final-lineage checks. It publishes
+the canonical final receipt plus per-policy, per-round, per-client, and thesis-oriented tables;
+it never copies datasets, source records, model parameters, client updates, TPM state, private
+keys, or the recovery TAR into Git.
+
 ## What is saved and what is reconstructed
 
 | Object | Saved directly? | Reconstructed or checked later? |

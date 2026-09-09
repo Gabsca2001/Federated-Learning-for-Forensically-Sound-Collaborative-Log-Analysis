@@ -10,6 +10,7 @@ from .attestation import verify_attestation_signature
 from .canonical import canonical_json_bytes, digest_object, sha256_bytes, sha256_file
 from .config import load_yaml
 from .crypto import load_public_key, public_key_id, verify_digest_signature
+from .disagreement_experiment import verify_disagreement_round
 from .investigation_models import PredictionBundleManifest
 from .investigation_report import verify_investigation_report_bundle
 from .preservation_models import (
@@ -277,6 +278,41 @@ def _verify_sources(root: Path, settings: dict[str, Any]) -> None:
     selected = int(campaign_result["selected_round"])
     if selected != int(settings["selected_derivation_round"]):
         raise PreservationError("configured selected round differs from verified campaign")
+    campaign_profile = settings.get("campaign_profile")
+    if campaign_profile is not None:
+        if campaign_profile != "m6-live-trust-statistical-disagreement-v1":
+            raise PreservationError(
+                f"unsupported preservation campaign profile: {campaign_profile}"
+            )
+        partition_workspace = _resolve(root, settings["partition_workspace"])
+        partition_manifest = load_json(partition_workspace / "manifest.json")
+        split_records = partition_manifest.get("server_evaluation_splits")
+        if not isinstance(split_records, dict) or not isinstance(
+            split_records.get("validation"), dict
+        ):
+            raise PreservationError(
+                "M6 disagreement preservation requires an isolated validation split"
+            )
+        validation_relative = split_records["validation"].get("path")
+        if not isinstance(validation_relative, str):
+            raise PreservationError(
+                "M6 disagreement validation split path is missing"
+            )
+        validation_split = partition_workspace / validation_relative
+        for round_number in range(1, int(settings["expected_rounds"]) + 1):
+            round_workspace = campaign / "rounds" / f"round-{round_number:03d}"
+            disagreement_result = verify_disagreement_round(
+                workspace=round_workspace,
+                trust_workspace=trust,
+                submissions_root=round_workspace / "submissions",
+                validation_split_path=validation_split,
+            )
+            if disagreement_result.get("status") != "verified":
+                raise PreservationError(
+                    "M6 disagreement round verification failed: "
+                    f"round {round_number}: "
+                    f"{disagreement_result.get('errors', [])}"
+                )
     report_result = verify_investigation_report_bundle(
         round_workspace=campaign / "rounds" / f"round-{selected:03d}",
         trust_workspace=trust,

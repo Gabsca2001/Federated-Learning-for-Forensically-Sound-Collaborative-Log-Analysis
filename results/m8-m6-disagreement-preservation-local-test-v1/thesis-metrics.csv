@@ -1,0 +1,22 @@
+domain,metric,value,unit,evidence_type
+experiment,federated rounds,30,rounds,observed
+experiment,clients per round,15,clients,observed
+trust,observed TPM admission passes,450,contributions,observed
+trust,verified attestations,90,attestations,observed
+training,submitted contributions,450,contributions,observed
+training,fully accepted contributions,334,contributions,observed
+training,downweighted contributions,24,contributions,observed
+training,quarantined contributions,92,contributions,observed
+controlled experiment,unsafe quarantined,90,contributions,controlled
+controlled experiment,safe quarantined,2,contributions,controlled
+controlled experiment,unsafe recall,1.0,fraction,controlled
+model,selected round,11,round,observed
+model,validation macro-F1,0.9478635077857449,score,observed
+model,isolated test macro-F1,0.9245538255799056,score,post-selection
+model,test macro-F1 delta from clean,-0.01091320808638474,score,descriptive comparison
+M7,investigation cases,16,cases,descriptive
+M7,source events resolved,811,events,verified lineage
+M7,source records resolved,826,records,verified lineage
+preservation,preserved payload,3011,files,verified
+preservation,Merkle leaves,3018,leaves,verified
+preservation,recovery archive size,2671749120,bytes,verified

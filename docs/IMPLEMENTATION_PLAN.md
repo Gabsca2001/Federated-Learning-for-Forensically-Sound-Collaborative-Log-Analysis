@@ -20,7 +20,7 @@ and a map of the evidence currently present in the canonical campaign.
 | M5 — Secure training | Signed contexts/bundles/decisions, replay rules, isolated training, campaign chain, optional in-round composite gate | Original and composite 30-round campaigns verify; all 450 in-round trust/statistical decisions and weighted checkpoints independently recompute | Complete for the local Docker/`swtpm` profile; clean-policy calibration analysis published |
 | M6 — Byzantine analysis | Frozen attacks, robust aggregation, joint trust/statistical admission, live disagreement training, model/prototype sensitivity, reports | Every method receives the same inputs; all 450 live decisions and weighted checkpoints recompute; invalid assumptions fail; reports regenerate | Complete for the controlled local Docker/`swtpm` profiles |
 | M7 — Investigation | Predictions, IG/prototype explanations, ATT&CK mapping, deterministic report | Complete digest-valid lineage from report case to controlled source records | Complete for both the original M5 reference and the M6 live-disagreement checkpoint |
-| M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Original reference complete; fresh M6-linked closure pending |
+| M8 — Preservation | Inventory, Merkle commitment, RFC 3161 time proof, recovery TAR, accounting | Entire chain verified offline; all campaign invariants and final lineage pass | Original and M6-linked reference closures complete |
 
 ## Dependency order
 
@@ -38,10 +38,10 @@ M1 artifact rules
 ```
 
 The completed original M8 package preserves the canonical M2, M3, M4, M5, and six-case M7
-chain. The extended thesis experiment now has a verified M6-to-M7 lineage: the M7 verifier
-accepts the signed in-round checkpoint, re-verifies its isolated validation binding, and traces
-16 cases to controlled source records. A new M8 package must close this extended chain without
-overwriting the original reference.
+chain. A separate completed package closes the extended thesis experiment: it accepts the
+signed in-round M6 checkpoint, preserves the 16-case M7 lineage, and reconstructs every
+round/client/policy decision from its offline recovery archive. The two closures use distinct
+workspaces and identifiers, so neither silently rewrites the other.
 
 ## Completed gates
 
@@ -140,12 +140,19 @@ Merkle root, obtains a verified RFC 3161 token, writes a deterministic offline r
 and reconstructs the 30-round/450-contribution M5 campaign from that package. The final
 verifier reports five verified stages and zero errors.
 
+The separate M6-linked closure inventories 3,011 artifacts, commits 3,018 leaves, timestamps
+the new root, and exports a 2.49 GiB recovery TAR. Its in-round accounting reconstructs all
+450 submissions, 358 contributors, 24 downweights, and 92 quarantines. It binds the observed
+450/450 passing M4 admissions, the controlled disagreement contract, the selected round-11
+model, and the linked M7 investigation. M8.6 verifies the complete lineage with zero errors.
+
 ## Post-M8 work
 
 These tasks can strengthen the thesis or a later production design, but they are not part of
 the completed M1–M8 acceptance chain:
 
-- complete a fresh M8 preservation and offline-recovery closure over the M6-linked M7 chain;
+- retain the completed M6-linked M8 recovery archive, accounting workspace, final receipt,
+  and sanitized thesis-facing result snapshot as the primary experimental closure;
 - retain the completed paired five-seed M3 evaluation as the statistical reference;
 - retain the verified 13-stage offline M4–M8 overhead receipt as the reference replay result;
 - retain the verified three-trial containerized `swtpm`/mTLS/secure-round runtime receipt and
