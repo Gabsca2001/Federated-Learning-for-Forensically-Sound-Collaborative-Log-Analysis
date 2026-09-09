@@ -403,6 +403,82 @@ def _parse_pcr_output(output: str, selection: list[int]) -> dict[str, str]:
     return values
 
 
+def extend_tpm_pcr_for_experiment(
+    *,
+    node_workspace: Path,
+    tcti: str,
+    client_id: str,
+    pcr_index: int,
+    measurement_sha256: str,
+    event_id: str,
+) -> dict[str, Any]:
+    """Extend one real TPM PCR once and preserve a reproducible mutation record."""
+
+    _require_tools(("tpm2_pcrextend", "tpm2_pcrread"))
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", event_id):
+        raise ValueError("PCR mutation event id contains unsafe characters")
+    if not 0 <= pcr_index <= 23:
+        raise ValueError("PCR index must be between 0 and 23")
+    if not re.fullmatch(r"[0-9a-f]{64}", measurement_sha256):
+        raise ValueError("PCR measurement must be a lowercase SHA-256 digest")
+    enrollment = EnrollmentRecord.model_validate(
+        load_json(node_workspace / "enrollment_record.json")
+    )
+    if enrollment.core.client_id != client_id:
+        raise ValueError("PCR mutation client does not match the enrolled node")
+    record_path = node_workspace / "pcr-mutations" / f"{event_id}.json"
+    if record_path.is_file():
+        record = load_json(record_path)
+        current = _parse_pcr_output(
+            _run(["tpm2_pcrread", f"sha256:{pcr_index}"], tcti=tcti).stdout,
+            [pcr_index],
+        )[str(pcr_index)]
+        if (
+            record.get("client_id") != client_id
+            or record.get("pcr_index") != pcr_index
+            or record.get("measurement_sha256") != measurement_sha256
+            or record.get("after_sha256") != current
+        ):
+            raise RuntimeError("existing PCR mutation record does not match TPM state")
+        return {"status": "pcr_extended", "idempotent": True, **record}
+
+    before = _parse_pcr_output(
+        _run(["tpm2_pcrread", f"sha256:{pcr_index}"], tcti=tcti).stdout,
+        [pcr_index],
+    )[str(pcr_index)]
+    _run(
+        [
+            "tpm2_pcrextend",
+            "-Q",
+            f"{pcr_index}:sha256={measurement_sha256}",
+        ],
+        tcti=tcti,
+    )
+    after = _parse_pcr_output(
+        _run(["tpm2_pcrread", f"sha256:{pcr_index}"], tcti=tcti).stdout,
+        [pcr_index],
+    )[str(pcr_index)]
+    expected_after = sha256_bytes(
+        bytes.fromhex(before) + bytes.fromhex(measurement_sha256)
+    )
+    if after != expected_after:
+        raise RuntimeError("TPM PCR extend result does not match SHA-256 extend semantics")
+    record = {
+        "schema_version": "1.0",
+        "artifact_type": "m4_real_pcr_mutation",
+        "event_id": event_id,
+        "client_id": client_id,
+        "pcr_bank": "sha256",
+        "pcr_index": pcr_index,
+        "measurement_sha256": measurement_sha256,
+        "before_sha256": before,
+        "after_sha256": after,
+        "extended_at": utc_now(),
+    }
+    write_json_once(record_path, record)
+    return {"status": "pcr_extended", "idempotent": False, **record}
+
+
 def create_tpm_quote_evidence(
     *, node_workspace: Path, tcti: str
 ) -> dict[str, Any]:

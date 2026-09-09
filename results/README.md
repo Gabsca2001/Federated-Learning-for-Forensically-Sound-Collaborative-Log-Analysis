@@ -31,6 +31,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M6 live TPM/statistical disagreement v1](m6-trust-statistical-disagreement-local-test-v1/README.md):
   verified 30-round training-time 2x2 disagreement experiment, paired policy outcomes, safe
   intervention costs, selected-model utility, and sanitized source bindings.
+- [M4/M6 real post-training TPM failure v1](m6-real-attestation-failure-local-test-v1/README.md):
+  authentic non-conforming `swtpm` Quote, signed failed appraisal, fail-closed contribution
+  decision, zero-weight FedAvg exclusion, paired clean effects, and all 450 sanitized outcomes.
 - [M7 investigation of the M6 disagreement checkpoint](m7-m6-disagreement-investigation-local-test-v1/README.md):
   16 label-independent cases with verified prediction, Integrated Gradients, prototype geometry,
   ATT&CK outcomes, four compact figures, and sanitized bindings to the selected M6 checkpoint.

@@ -54,6 +54,7 @@ from .in_round_admission_models import (
     InRoundSecureCheckpointCore,
 )
 from .preprocessing import derived_json_bytes
+from .real_attestation_failure import active_target_for_round
 from .secure_round import (
     EXPECTED_CLIENTS,
     SecureRoundError,
@@ -351,6 +352,9 @@ def _load_or_create_trust_records(
     missing: list[str] = []
     state_path = workspace / "state.json"
     state = load_json(state_path)
+    post_training_attestation_client_id = active_target_for_round(
+        workspace / "public", context.core.round_number
+    )
     if (
         state.get("campaign_id") != context.core.campaign_id
         or state.get("context_id") != context.context_id
@@ -400,6 +404,9 @@ def _load_or_create_trust_records(
                     trust_workspace=trust_workspace,
                     now=decision_time,
                     expected_client_id=client_id,
+                    post_training_attestation_client_id=(
+                        post_training_attestation_client_id
+                    ),
                 )
                 trust_decision = _sign_decision(
                     signer=signer,
@@ -439,6 +446,9 @@ def _load_or_create_trust_records(
                 trust_workspace=trust_workspace,
                 now=decision_time,
                 expected_client_id=client_id,
+                post_training_attestation_client_id=(
+                    post_training_attestation_client_id
+                ),
             )
             if [item.model_dump(mode="json") for item in trust_decision.core.checks] != [
                 item.model_dump(mode="json") for item in expected_checks

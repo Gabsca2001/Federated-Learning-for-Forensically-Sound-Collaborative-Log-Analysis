@@ -123,6 +123,13 @@ policies detected all 90 controlled unsafe observations; each single-signal abla
 The selected round 11 model reached isolated test macro-F1 `0.924554`. Two of 360 safe
 contributions were statistically quarantined and 24 were retained at reduced weight.
 
+The separate real post-training PCR profile is now empirically complete. It binds the
+intervention into the signed round contract. In round 30, a fresh AK-signed Quote for `client03`
+received a verifier-signed `failed_measurement` appraisal; its unchanged probe bundle was TPM
+re-signed against that result and quarantined before FedAvg. Independent verification proved
+Quote authenticity, the failed measurement, and zero-weight exclusion. This remains separate
+from the controlled disagreement matrix and uses a fresh M4 baseline `1.3` workspace.
+
 ### M7 — investigation reporting
 
 The original six-case M5 reference resolves 69 events and 81 controlled source records. The
@@ -164,8 +171,8 @@ the completed M1–M8 acceptance chain:
 - retain the verified one-round in-round smoke and the separate 30-round clean campaign; treat
   its 75 downweights and six quarantines as measured clean-run interventions when designing the
   paired policy calibration/attack experiments;
-- retain the verified bound live-disagreement smoke and 30-round campaign; add a genuinely
-  failed-attestation runtime fixture only as separate future validation;
+- retain the verified bound live-disagreement campaign and the separately published 30-round
+  real-attestation-failure result without overwriting either reference;
 - retain the completed contribution-decision explanations as the round-11 mechanism reference
   and extend them only when repeated joint-admission experiments add new source scenarios;
 - execute the trust workflow with a physical TPM 2.0 node or fleet;

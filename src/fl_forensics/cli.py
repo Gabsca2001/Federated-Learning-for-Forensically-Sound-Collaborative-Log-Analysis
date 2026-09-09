@@ -103,6 +103,10 @@ from .prototype_sensitivity_reporting import (
     verify_prototype_sensitivity_report,
 )
 from .recovery import create_recovery_export, verify_recovery_export
+from .real_attestation_failure import (
+    refresh_update_bundle_attestation,
+    verify_real_attestation_failure_round,
+)
 from .reporting import generate_m3_report
 from .runtime_overhead import (
     benchmark_tpm_esk_sign,
@@ -121,6 +125,7 @@ from .timestamp_anchor import (
 )
 from .tpm_adapter import (
     create_tpm_quote_evidence,
+    extend_tpm_pcr_for_experiment,
     physical_tpm_preflight,
     provision_tpm_node,
     verify_tpm2_quote,
@@ -619,12 +624,29 @@ def build_parser() -> argparse.ArgumentParser:
     m4_challenge.add_argument(
         "--config", type=Path, default=Path("configs/trust.yaml")
     )
+    m4_challenge.add_argument(
+        "--client-id",
+        action="append",
+        dest="client_ids",
+        help="issue a challenge only for this enrolled client; repeat as needed",
+    )
 
     m4_quote = subparsers.add_parser(
         "m4-tpm-quote", help="produce Quote evidence with the enrolled AK"
     )
     m4_quote.add_argument("--workspace", type=Path, required=True)
     m4_quote.add_argument("--tcti", required=True)
+
+    m4_extend = subparsers.add_parser(
+        "m4-tpm-extend-pcr",
+        help="extend one real TPM PCR and preserve the experimental mutation record",
+    )
+    m4_extend.add_argument("--workspace", type=Path, required=True)
+    m4_extend.add_argument("--tcti", required=True)
+    m4_extend.add_argument("--client-id", required=True)
+    m4_extend.add_argument("--pcr-index", type=int, required=True)
+    m4_extend.add_argument("--measurement-sha256", required=True)
+    m4_extend.add_argument("--event-id", required=True)
 
     m4_verify = subparsers.add_parser(
         "m4-verify-attestations",
@@ -695,6 +717,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="bind controlled M6 trust/update treatments before local training",
     )
+    m5_init.add_argument(
+        "--real-attestation-failure-config",
+        type=Path,
+        help="bind a real post-training TPM failure before local training",
+    )
 
     m5_client = subparsers.add_parser(
         "m5-client-update", help="train one isolated client and TPM-sign its Update Bundle"
@@ -706,6 +733,21 @@ def build_parser() -> argparse.ArgumentParser:
     m5_client.add_argument("--submission-workspace", type=Path, required=True)
     m5_client.add_argument("--client-id", required=True)
     m5_client.add_argument("--tcti", required=True)
+
+    m5_refresh_attestation = subparsers.add_parser(
+        "m5-refresh-bundle-attestation",
+        help="TPM re-sign an existing update against its post-training appraisal",
+    )
+    m5_refresh_attestation.add_argument("--public-workspace", type=Path, required=True)
+    m5_refresh_attestation.add_argument("--node-workspace", type=Path, required=True)
+    m5_refresh_attestation.add_argument(
+        "--submission-workspace", type=Path, required=True
+    )
+    m5_refresh_attestation.add_argument(
+        "--attestation-result", type=Path, required=True
+    )
+    m5_refresh_attestation.add_argument("--client-id", required=True)
+    m5_refresh_attestation.add_argument("--tcti", required=True)
 
     m5_aggregate = subparsers.add_parser(
         "m5-admit-aggregate", help="admit 15 bundles and create a signed FedAvg checkpoint"
@@ -777,6 +819,16 @@ def build_parser() -> argparse.ArgumentParser:
     m6_verify_live_disagreement.add_argument(
         "--workspace", type=Path, required=True
     )
+
+    m6_verify_real_attestation = subparsers.add_parser(
+        "m6-verify-real-attestation-failure-round",
+        help="verify the authentic failed Quote and its exclusion before FedAvg",
+    )
+    m6_verify_real_attestation.add_argument("--workspace", type=Path, required=True)
+    m6_verify_real_attestation.add_argument(
+        "--trust-workspace", type=Path, required=True
+    )
+    m6_verify_real_attestation.add_argument("--submissions", type=Path, required=True)
     m6_verify_live_disagreement.add_argument(
         "--trust-workspace", type=Path, required=True
     )
@@ -1905,12 +1957,24 @@ def main(argv: list[str] | None = None) -> int:
             workspace=arguments.workspace,
             node_root=arguments.node_root,
             trust_config_path=arguments.config,
+            client_ids=arguments.client_ids,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     if arguments.command == "m4-tpm-quote":
         result = create_tpm_quote_evidence(
             node_workspace=arguments.workspace, tcti=arguments.tcti
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m4-tpm-extend-pcr":
+        result = extend_tpm_pcr_for_experiment(
+            node_workspace=arguments.workspace,
+            tcti=arguments.tcti,
+            client_id=arguments.client_id,
+            pcr_index=arguments.pcr_index,
+            measurement_sha256=arguments.measurement_sha256,
+            event_id=arguments.event_id,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -1951,6 +2015,9 @@ def main(argv: list[str] | None = None) -> int:
             disagreement_experiment_config_path=(
                 arguments.disagreement_experiment_config
             ),
+            real_attestation_failure_config_path=(
+                arguments.real_attestation_failure_config
+            ),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -1963,6 +2030,17 @@ def main(argv: list[str] | None = None) -> int:
             submission_workspace=arguments.submission_workspace,
             tcti=arguments.tcti,
             client_id=arguments.client_id,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "m5-refresh-bundle-attestation":
+        result = refresh_update_bundle_attestation(
+            public_workspace=arguments.public_workspace,
+            node_workspace=arguments.node_workspace,
+            submission_workspace=arguments.submission_workspace,
+            attestation_result_path=arguments.attestation_result,
+            client_id=arguments.client_id,
+            tcti=arguments.tcti,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -2027,6 +2105,14 @@ def main(argv: list[str] | None = None) -> int:
             trust_workspace=arguments.trust_workspace,
             submissions_root=arguments.submissions,
             validation_split_path=arguments.validation_split,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified" else 1
+    if arguments.command == "m6-verify-real-attestation-failure-round":
+        result = verify_real_attestation_failure_round(
+            workspace=arguments.workspace,
+            trust_workspace=arguments.trust_workspace,
+            submissions_root=arguments.submissions,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

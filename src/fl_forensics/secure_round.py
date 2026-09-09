@@ -245,6 +245,7 @@ def initialize_secure_round(
     previous_round_workspace: Path | None = None,
     in_round_admission_config_path: Path | None = None,
     disagreement_experiment_config_path: Path | None = None,
+    real_attestation_failure_config_path: Path | None = None,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """Create a signed round context after validating all 15 M4 attestations."""
@@ -270,6 +271,20 @@ def initialize_secure_round(
     ):
         raise SecureRoundError(
             "the M6 disagreement experiment requires in-round admission"
+        )
+    if (
+        real_attestation_failure_config_path is not None
+        and in_round_admission_config_path is None
+    ):
+        raise SecureRoundError(
+            "the real attestation-failure experiment requires in-round admission"
+        )
+    if (
+        real_attestation_failure_config_path is not None
+        and disagreement_experiment_config_path is not None
+    ):
+        raise SecureRoundError(
+            "real and controlled trust-failure experiments must use separate campaigns"
         )
     manifest = load_json(partition_manifest_path)
     config, config_digest = load_yaml(config_path)
@@ -414,6 +429,10 @@ def initialize_secure_round(
                 "m6_disagreement_experiment" in previous_training_contract
             )
             == (disagreement_experiment_config_path is not None)
+            and (
+                "m4_m6_real_attestation_failure" in previous_training_contract
+            )
+            == (real_attestation_failure_config_path is not None)
             and previous_count_valid
             and previous_model_path.is_file()
             and sha256_file(previous_model_path)
@@ -496,6 +515,32 @@ def initialize_secure_round(
                     "M6 disagreement configuration changed within the campaign"
                 )
         training_contract["m6_disagreement_experiment"] = disagreement_binding
+    real_attestation_contract = None
+    if real_attestation_failure_config_path is not None:
+        from .real_attestation_failure import (
+            install_real_attestation_failure_contract,
+        )
+
+        real_attestation_contract, real_attestation_binding = (
+            install_real_attestation_failure_contract(
+                public_workspace=public,
+                config_path=real_attestation_failure_config_path,
+                client_ids=EXPECTED_CLIENTS,
+            )
+        )
+        if previous_round_workspace is not None:
+            previous_binding = previous_training_contract[
+                "m4_m6_real_attestation_failure"
+            ]
+            if previous_binding.get("config_sha256") != real_attestation_binding.get(
+                "config_sha256"
+            ):
+                raise SecureRoundError(
+                    "real attestation-failure configuration changed within the campaign"
+                )
+        training_contract["m4_m6_real_attestation_failure"] = (
+            real_attestation_binding
+        )
     contract_bytes = derived_json_bytes(training_contract)
     contract_digest = sha256_bytes(contract_bytes)
     write_once(public / "training-contract.json", contract_bytes)
@@ -549,6 +594,11 @@ def initialize_secure_round(
         "m6_disagreement_contract_id": (
             disagreement_contract.contract_id
             if disagreement_contract is not None
+            else None
+        ),
+        "real_attestation_failure_contract_id": (
+            real_attestation_contract.contract_id
+            if real_attestation_contract is not None
             else None
         ),
         "expires_at": context.core.expires_at,
@@ -818,6 +868,7 @@ def _admission_checks(
     trust_workspace: Path,
     now: datetime,
     expected_client_id: str | None = None,
+    post_training_attestation_client_id: str | None = None,
 ) -> list[SecureCheck]:
     contracts = {item.client_id: item for item in context.core.clients}
     expected = contracts.get(bundle.core.client_id)
@@ -888,10 +939,39 @@ def _admission_checks(
         if not path.is_file():
             return False, "referenced attestation result is missing"
         result = AttestationResultV2.model_validate(load_json(path))
+        post_training = bundle.core.client_id == post_training_attestation_client_id
+        if post_training:
+            generated_at = _parse_time(bundle.core.generated_at)
+            eligible_results: list[tuple[datetime, AttestationResultV2, Path]] = []
+            for candidate_path in (trust_workspace / "results").glob(
+                "attestation-*.json"
+            ):
+                candidate = AttestationResultV2.model_validate(
+                    load_json(candidate_path)
+                )
+                evaluated_at = _parse_time(candidate.core.evaluated_at)
+                if (
+                    candidate.core.client_id == bundle.core.client_id
+                    and candidate.core.enrollment_id == bundle.core.enrollment_id
+                    and evaluated_at <= generated_at
+                ):
+                    eligible_results.append((evaluated_at, candidate, candidate_path))
+            latest = max(eligible_results, key=lambda item: item[0]) if eligible_results else None
+            result_binding_valid = bool(
+                latest is not None
+                and latest[1].result_id == result.result_id
+                and sha256_file(latest[2]) == sha256_file(path)
+                and _parse_time(result.core.evaluated_at)
+                >= _parse_time(context.core.issued_at)
+            )
+        else:
+            result_binding_valid = (
+                result.result_id == expected.attestation_result_id
+                and sha256_file(path) == expected.attestation_result_sha256
+            )
         valid = (
             sha256_file(path) == bundle.core.attestation_result_sha256
-            and result.result_id == expected.attestation_result_id
-            and sha256_file(path) == expected.attestation_result_sha256
+            and result_binding_valid
             and verify_result_signature(trust_workspace, result)
             and result.core.status in {"passed", "passed_with_warning"}
             and result.core.client_id == bundle.core.client_id
@@ -900,7 +980,12 @@ def _admission_checks(
             and result.signature.trust_level == enrollment.core.trust_level
             and _parse_time(result.core.expires_at) > now
         )
-        return valid, "signed, passed, fresh attestation and identity binding"
+        mode = "latest post-training" if post_training else "round-initial"
+        detail = (
+            f"{mode} signed attestation status={result.core.status}; "
+            f"reasons={'; '.join(result.core.reasons)}"
+        )
+        return valid, detail
 
     update_path = submission / "update.json"
     metrics_path = submission / "metrics.json"

@@ -298,10 +298,32 @@ The optional M5 in-round profile binds the calibration and policy in the signed
 training contract, evaluates each newly trained and TPM-signed update before
 FedAvg, and writes signed contribution decisions into the checkpoint lineage.
 Its independent verifier recomputes all trust/statistical inputs and the exact
-weighted aggregate. The live M6 profile now supplies a controlled client that
-signs its directionally transformed update. A genuinely failed Quote/attestation fixture remains
-separate future validation; counterfactual cells are not relabelled as observed
-failures.
+weighted aggregate. The live M6 profile supplies a controlled client that
+signs its directionally transformed update. A separate opt-in profile has now completed a fresh
+baseline-`1.3` 30-round execution with a genuinely failed Quote appraisal, without relabelling
+the counterfactual 2×2 cells as observed trust failures.
+
+## Real post-training Quote failure
+
+The real-failure profile is deliberately separate from the 2×2 policy comparison. All 15
+clients first pass M4 and train. In round 30, `client03` extends PCR 10 with the measurement
+declared in the signed experiment contract, answers a new one-use challenge, and produces an
+authentic AK-signed Quote over the changed PCR state. M4 preserves a signed
+`failed_measurement` result. The client then re-signs its unchanged update bundle against that
+new appraisal so the live gate can make—and preserve—a real `trust_quarantined` decision before
+FedAvg.
+
+The verifier proves both sides of the apparent contradiction: the Quote signature is valid for
+the observed PCR values, while the same values do not match the enrolled baseline. It also checks
+that every other M5 structural and cryptographic check passes, that the update/metrics bytes are
+unchanged across re-attestation, and that the target is absent from the checkpoint's weighted
+inputs. The independent verifier passed with zero errors. The campaign contains 450 submissions:
+368 full-weight, 75 downweighted, six statistical quarantines, and one real trust quarantine.
+The selected round-25 model reaches isolated test macro-F1 `0.935467`; because the failure is in
+round 30, the selected metric is a continuity result rather than an estimate of general failure
+cost. Full setup and commands are documented in
+[`REAL_ATTESTATION_FAILURE.md`](REAL_ATTESTATION_FAILURE.md), and the sanitized evidence is in
+[`results/m6-real-attestation-failure-local-test-v1/`](../results/m6-real-attestation-failure-local-test-v1/README.md).
 
 ## Forensic explanation of contribution decisions
 

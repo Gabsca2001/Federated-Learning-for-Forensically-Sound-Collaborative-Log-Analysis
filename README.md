@@ -510,6 +510,31 @@ python scripts/render_m6_disagreement_summary.py \
   --replace-existing-snapshot
 ```
 
+The separate real-attestation profile closes the missing observed-failure check. In round 30,
+all clients first passed M4 and trained normally; `client03` then extended a real `swtpm` PCR
+and produced a fresh AK-signed Quote that the verifier appraised as `failed_measurement`. The
+unchanged local update was retained as a probe, its bundle was re-signed with the TPM ESK against
+the new appraisal, and the deployed in-round gate quarantined it before FedAvg. Independent
+verification confirmed Quote authenticity, the failed measurement, and exclusion from the
+weighted checkpoint with zero errors.
+
+```bash
+python scripts/run_m4_m6_real_attestation_failure.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m6-real-attestation-failure-local-test-v1 \
+  --trust-workspace artifacts/m4-trust-real-attestation-failure-v1 \
+  --node-root artifacts/m4-nodes-real-attestation-failure-v1 \
+  --rounds 30 \
+  --workers 8 \
+  --attestation-refresh-interval 3
+```
+
+See [real post-training TPM failure](docs/REAL_ATTESTATION_FAILURE.md) for the fresh-workspace
+setup, independent verification command, exact evidence tree, and claim boundary. The
+[sanitized result](results/m6-real-attestation-failure-local-test-v1/README.md) publishes all
+450 decision outcomes, the forensic decision chain, selected-checkpoint metrics, and a paired
+clean comparison without exposing models, updates, Quotes, or private trust material.
+
 The contribution-explanation extension treats the training decision itself as an
 investigable event. For every update it preserves the threshold margin, ranked statistical
 drivers, named parameter-tensor deviations, and the exact treatment performed by clipping,
@@ -736,6 +761,7 @@ See [External UWF-ZeekData22 generalization](docs/EXTERNAL_GENERALIZATION.md) an
 | M3 non-IID FedAvg | selected round 28; test macro-F1 `0.943849` |
 | M4 | 15/15 software-TPM Quotes appraised successfully |
 | M5 | 30 rounds; 450/450 admitted contributions; zero quarantines |
+| M4/M6 real TPM failure | One authentic non-conforming post-training Quote; one hard trust quarantine; zero FedAvg weight; verifier passed |
 | M5 external Data22 | 10,128 windows; binary attack F1 `0.0863`; shared-label macro-F1 `0.4968`; verification passed |
 | M7 | six report cases bound to 69 events and 81 source records |
 | M6-linked M7 | 16 report cases bound to 811 events and 826 source records; four-stage verification passed |
