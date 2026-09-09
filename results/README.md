@@ -34,6 +34,9 @@ evidence, models, private trust state, and large recovery packages.
 - [M7 investigation of the M6 disagreement checkpoint](m7-m6-disagreement-investigation-local-test-v1/README.md):
   16 label-independent cases with verified prediction, Integrated Gradients, prototype geometry,
   ATT&CK outcomes, four compact figures, and sanitized bindings to the selected M6 checkpoint.
+- [M8 closure of the M6 disagreement experiment](m8-m6-disagreement-preservation-local-test-v1/README.md):
+  final offline-verified M6→M7→M8 lineage, thesis-oriented metrics, per-policy/round/client
+  accounting, canonical receipt, cryptographic bindings, and two compact figures.
 
 A snapshot is evidence of a particular completed run. It is not an input to training and is
 not a substitute for the complete M8 recovery package. The source report manifests retain

@@ -1,0 +1,7 @@
+stage,status,identifier,primary_sha256,item_count,meaning
+M8.1 preservation inventory,verified,m8-preservation-e7e01dfefa1dfb07bddd7fef,79c848f451186eb22b19bf74ba7c3fc3a4ca6e14a74c3cf9982528d674efce7d,3011,content-addressed payload inventory
+M8.2 Merkle commitment,verified,m8-merkle-tree-88109448b5da654b7124d218,1362e47ca27682083b3a116bbd26fc90e80631f1ed87b268984211dcbe4ce2ba,3018,single commitment to artifacts and external bindings
+M8.3 RFC 3161 timestamp,verified,m8-timestamp-anchor-1a4cceb5a6de79502f2cf0f2,9e30db4bcb97839c4edf936928e47907c08eba29973b2f498bfda2f2aaa13f15,1,trusted time anchor at Sep  9 00:13:49 2026 GMT
+M8.4 offline recovery,verified,m8-recovery-export-d70949e9c95d458578d07428,05e2b011353deeaed0ea39015973bc0ebbb189780c048acf6751d86e63de1311,3023,self-verifying deterministic recovery package
+M8.5 campaign accounting,verified,m8-in-round-campaign-accounting-c38e5feea19c1e9d11b94b48,35264184decbf34d76d8d0bcc4c79d2ce0ae3b007216850d8576d2c498a77514,450,round/client/policy ledger reconstructed offline
+M8.6 final lineage,verified,m8-in-round-final-verification-67924c5247b31fce59ae5080,67924c5247b31fce59ae508042705a022146c36ada33c8247a451aec787ec6e0,5,cross-stage identifiers and digests jointly verified

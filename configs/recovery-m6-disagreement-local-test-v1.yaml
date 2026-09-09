@@ -1,0 +1,8 @@
+schema_version: "1.0"
+recovery:
+  preservation_workspace: artifacts/m8-preservation-m6-disagreement-local-test-v1
+  merkle_workspace: artifacts/m8-merkle-m6-disagreement-local-test-v1
+  timestamp_workspace: artifacts/m8-timestamp-m6-disagreement-local-test-v1
+  timestamp_config: configs/timestamp-m6-disagreement-local-test-v1.yaml
+  archive_format: deterministic-ustar-v1
+  include_external_evidence_files: false

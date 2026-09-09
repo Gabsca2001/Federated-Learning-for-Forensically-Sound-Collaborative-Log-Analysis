@@ -214,3 +214,73 @@ def test_verifier_rejects_changed_source_artifact(
     )
     assert result["status"] == "failed"
     assert result["errors"] == ["preserved artifact mismatch: source.json"]
+
+
+def test_m6_profile_verifies_every_disagreement_round(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls: list[dict[str, Path]] = []
+    monkeypatch.setattr(
+        preservation,
+        "verify_secure_campaign",
+        lambda **_kwargs: {"status": "verified", "selected_round": 11},
+    )
+    monkeypatch.setattr(
+        preservation,
+        "verify_investigation_report_bundle",
+        lambda **_kwargs: {"status": "verified"},
+    )
+    monkeypatch.setattr(
+        preservation,
+        "verify_disagreement_round",
+        lambda **kwargs: calls.append(kwargs) or {"status": "verified"},
+    )
+    monkeypatch.setattr(
+        preservation,
+        "load_json",
+        lambda _path: {
+            "server_evaluation_splits": {
+                "validation": {"path": "server/splits/validation.json"}
+            }
+        },
+    )
+
+    class _Prediction:
+        class _Core:
+            class _Sources:
+                round_number = 11
+
+            sources = _Sources()
+
+        core = _Core()
+
+    class _PredictionModel:
+        @staticmethod
+        def model_validate(_value: object) -> _Prediction:
+            return _Prediction()
+
+    monkeypatch.setattr(preservation, "PredictionBundleManifest", _PredictionModel)
+    settings = {
+        "campaign_profile": "m6-live-trust-statistical-disagreement-v1",
+        "campaign_workspace": "artifacts/campaign",
+        "trust_workspace": "artifacts/trust",
+        "partition_workspace": "artifacts/partition",
+        "partition_manifest": "artifacts/partition/manifest.json",
+        "server_evaluation": "artifacts/partition/server/evaluation.json",
+        "selected_derivation_round": 11,
+        "expected_rounds": 30,
+        "dataset_workspace": "artifacts/dataset",
+        "prediction_workspace": "artifacts/prediction",
+        "explanation_workspace": "artifacts/explanation",
+        "attack_workspace": "artifacts/attack",
+        "report_workspace": "artifacts/report",
+        "prediction_config": "configs/prediction.yaml",
+        "explanation_config": "configs/explanation.yaml",
+        "attack_config": "configs/attack.yaml",
+        "report_config": "configs/report.yaml",
+    }
+    preservation._verify_sources(tmp_path, settings)
+    assert len(calls) == 30
+    assert calls[0]["workspace"].name == "round-001"
+    assert calls[-1]["workspace"].name == "round-030"
+    assert calls[0]["submissions_root"] == calls[0]["workspace"] / "submissions"

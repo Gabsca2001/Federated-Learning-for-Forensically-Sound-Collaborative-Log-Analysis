@@ -1,0 +1,11 @@
+schema_version: "2.0"
+campaign_accounting:
+  recovery_workspace: artifacts/m8-recovery-m6-disagreement-local-test-v1
+  campaign_relative_path: artifacts/m6-trust-statistical-disagreement-local-test-v1
+  trust_relative_path: artifacts/m4-trust-m6-disagreement-v2
+  partition_relative_path: artifacts/m3-data24-parquet-iid-local-test-v1
+  expected_disagreement_experiment_id: m6-live-trust-statistical-disagreement-v1
+  expected_round_count: 30
+  required_client_count: 15
+  attestation_refresh_interval_rounds: 5
+  source_profile: recovery-tar-offline-in-round-disagreement-accounting-v2

@@ -26,6 +26,19 @@ from .final_preservation_models import (
     FinalRecoveryStage,
     FinalTimestampStage,
 )
+from .in_round_campaign_accounting import (
+    is_in_round_accounting_workspace,
+    verify_in_round_campaign_accounting,
+)
+from .in_round_campaign_accounting_models import (
+    InRoundCampaignAccountingEnvelope,
+    InRoundCampaignAccountingReport,
+)
+from .in_round_final_preservation_models import (
+    InRoundFinalCampaignAccountingStage,
+    InRoundFinalPreservationCore,
+    InRoundFinalPreservationReceipt,
+)
 from .merkle_models import MerkleEnvelope, MerkleTreeManifest
 from .models import StrictModel
 from .preservation_models import (
@@ -72,9 +85,11 @@ class _VerifiedInputs:
     recovery: RecoveryManifest
     recovery_bytes: bytes
     recovery_envelope: RecoveryEnvelope
-    accounting: CampaignAccountingReport
+    accounting: CampaignAccountingReport | InRoundCampaignAccountingReport
     accounting_bytes: bytes
-    accounting_envelope: CampaignAccountingEnvelope
+    accounting_envelope: (
+        CampaignAccountingEnvelope | InRoundCampaignAccountingEnvelope
+    )
 
 
 def _ensure(condition: bool, message: str) -> None:
@@ -114,9 +129,16 @@ def _verify_source_workspaces(
             "M8.4 source recovery verification failed: "
             f"{recovery_result.get('errors', [])}"
         )
-    accounting_result = verify_campaign_accounting(
-        workspace=accounting_workspace,
-        recovery_workspace=recovery_workspace,
+    accounting_result = (
+        verify_in_round_campaign_accounting(
+            workspace=accounting_workspace,
+            recovery_workspace=recovery_workspace,
+        )
+        if is_in_round_accounting_workspace(accounting_workspace)
+        else verify_campaign_accounting(
+            workspace=accounting_workspace,
+            recovery_workspace=recovery_workspace,
+        )
     )
     if not (
         accounting_result.get("status") == "verified"
@@ -192,14 +214,25 @@ def _load_verified_inputs(
         RecoveryEnvelope,
         "M8.4 envelope",
     )
+    in_round_accounting = is_in_round_accounting_workspace(accounting_workspace)
+    accounting_type = (
+        InRoundCampaignAccountingReport
+        if in_round_accounting
+        else CampaignAccountingReport
+    )
+    envelope_type = (
+        InRoundCampaignAccountingEnvelope
+        if in_round_accounting
+        else CampaignAccountingEnvelope
+    )
     accounting, accounting_bytes = _load_canonical_model(
         accounting_workspace / "campaign-accounting.json",
-        CampaignAccountingReport,
+        accounting_type,
         "M8.5 campaign accounting",
     )
     accounting_envelope, _accounting_envelope_bytes = _load_canonical_model(
         accounting_workspace / "manifest.json",
-        CampaignAccountingEnvelope,
+        envelope_type,
         "M8.5 envelope",
     )
     assurance = _read_assurance_json(
@@ -508,20 +541,228 @@ def _build_core(inputs: _VerifiedInputs) -> FinalPreservationCore:
     return core
 
 
+def _build_in_round_core(inputs: _VerifiedInputs) -> InRoundFinalPreservationCore:
+    _validate_outer_bindings(inputs)
+    preservation = inputs.preservation
+    accounting = inputs.accounting
+    if not isinstance(accounting, InRoundCampaignAccountingReport):
+        raise FinalPreservationError("M8.5 accounting is not the in-round v2 profile")
+    selected_round = preservation.core.selected_derivation_round
+    campaign_manifest = _one_artifact(
+        preservation.core.campaign_assurance,
+        role="campaign-assurance",
+        suffix="/campaign-manifest.json",
+    )
+    selected_checkpoint = _one_artifact(
+        preservation.core.campaign_assurance,
+        role="selected-derivation-round",
+        suffix=f"/round-{selected_round:03d}/checkpoint/manifest.json",
+    )
+    selected_model = _one_artifact(
+        preservation.core.campaign_assurance,
+        role="selected-derivation-round",
+        suffix=f"/round-{selected_round:03d}/checkpoint/global-model.json",
+    )
+    trust_roles = Counter(item.artifact_role for item in preservation.core.trust_assurance)
+    private_exclusion = any(
+        item.pattern == "*.private.pem" and item.must_not_be_exported
+        for item in preservation.core.excluded_material
+    )
+    private_payload = any(
+        item.source_relative_path.endswith(".private.pem")
+        for item in inputs.package.core.entries
+    )
+    _ensure(
+        private_exclusion and not private_payload,
+        "private cryptographic material is not fail-closed excluded",
+    )
+    _ensure(
+        preservation.core.campaign_rounds
+        == list(range(1, accounting.core.round_count + 1)),
+        "final campaign round coverage mismatch",
+    )
+    _ensure(
+        inputs.timestamp.core.timestamp_proof_sha256
+        == sha256_bytes(
+            canonical_json_bytes(inputs.timestamp_proof.model_dump(mode="json"))
+            + b"\n"
+        )
+        and inputs.timestamp.core.merkle_tree_id == inputs.tree.tree_id
+        and inputs.timestamp.core.merkle_root_sha256
+        == inputs.tree.core.root_sha256,
+        "final M8.3 proof binding mismatch",
+    )
+    core = InRoundFinalPreservationCore(
+        preservation=FinalPreservationStage(
+            preservation_id=preservation.preservation_id,
+            preservation_manifest_sha256=sha256_bytes(inputs.preservation_bytes),
+            canonical_core_sha256=preservation.canonical_core_sha256,
+            inventory_sha256=preservation.core.preservation_state.inventory_sha256,
+            implementation_sha256=inputs.preservation_envelope.implementation_sha256,
+            config_sha256=inputs.preservation_envelope.config_sha256,
+            artifact_count=preservation.core.preservation_state.artifact_count,
+            external_evidence_binding_count=len(preservation.core.external_evidence),
+            selected_derivation_round=selected_round,
+            source_campaign_manifest_sha256=campaign_manifest.sha256,
+            selected_checkpoint_sha256=selected_checkpoint.sha256,
+            selected_model_sha256=selected_model.sha256,
+            enrollment_count=trust_roles["referenced-enrollment-record"],
+            attestation_count=trust_roles["referenced-attestation-result"],
+            challenge_count=trust_roles["referenced-attestation-challenge"],
+        ),
+        merkle=FinalMerkleStage(
+            tree_id=inputs.tree.tree_id,
+            merkle_tree_sha256=sha256_bytes(inputs.tree_bytes),
+            canonical_core_sha256=inputs.tree.canonical_core_sha256,
+            implementation_sha256=inputs.merkle_envelope.implementation_sha256,
+            config_sha256=inputs.merkle_envelope.config_sha256,
+            source_preservation_id=inputs.tree.core.source_preservation_id,
+            source_preservation_manifest_sha256=(
+                inputs.tree.core.source_preservation_manifest_sha256
+            ),
+            source_inventory_sha256=inputs.tree.core.source_inventory_sha256,
+            root_sha256=inputs.tree.core.root_sha256,
+            artifact_leaf_count=inputs.tree.core.artifact_leaf_count,
+            external_evidence_leaf_count=(
+                inputs.tree.core.external_evidence_leaf_count
+            ),
+            leaf_count=inputs.tree.core.leaf_count,
+        ),
+        timestamp=FinalTimestampStage(
+            timestamp_id=inputs.timestamp.timestamp_id,
+            timestamp_manifest_sha256=sha256_bytes(inputs.timestamp_bytes),
+            canonical_core_sha256=inputs.timestamp.canonical_core_sha256,
+            implementation_sha256=inputs.timestamp.implementation_sha256,
+            config_sha256=inputs.timestamp.config_sha256,
+            merkle_tree_id=inputs.timestamp.core.merkle_tree_id,
+            merkle_root_sha256=inputs.timestamp.core.merkle_root_sha256,
+            timestamp_response_sha256=inputs.timestamp.core.timestamp_response_sha256,
+            gen_time=inputs.timestamp_proof.gen_time,
+            policy_oid=inputs.timestamp_proof.policy_oid,
+            serial_number=inputs.timestamp_proof.serial_number,
+        ),
+        recovery=FinalRecoveryStage(
+            recovery_id=inputs.recovery.recovery_id,
+            recovery_manifest_sha256=sha256_bytes(inputs.recovery_bytes),
+            canonical_core_sha256=inputs.recovery.canonical_core_sha256,
+            implementation_sha256=inputs.recovery.implementation_sha256,
+            config_sha256=inputs.recovery.config_sha256,
+            package_id=inputs.package.package_id,
+            package_inventory_sha256=sha256_bytes(inputs.package_bytes),
+            archive_sha256=inputs.recovery.core.archive_sha256,
+            archive_size_bytes=inputs.recovery.core.archive_size_bytes,
+            archived_entry_count=inputs.recovery.core.archived_entry_count,
+            payload_entry_count=inputs.recovery.core.payload_entry_count,
+            assurance_entry_count=inputs.recovery.core.assurance_entry_count,
+            external_evidence_binding_count=(
+                inputs.recovery.core.external_evidence_binding_count
+            ),
+            source_preservation_id=inputs.package.core.source_preservation_id,
+            source_inventory_sha256=inputs.package.core.source_inventory_sha256,
+            source_merkle_tree_id=inputs.package.core.source_merkle_tree_id,
+            source_merkle_root_sha256=inputs.package.core.source_merkle_root_sha256,
+            source_timestamp_id=inputs.package.core.source_timestamp_id,
+            source_timestamp_response_sha256=(
+                inputs.package.core.source_timestamp_response_sha256
+            ),
+        ),
+        campaign_accounting=InRoundFinalCampaignAccountingStage(
+            accounting_id=accounting.accounting_id,
+            campaign_accounting_sha256=sha256_bytes(inputs.accounting_bytes),
+            canonical_core_sha256=accounting.canonical_core_sha256,
+            implementation_sha256=accounting.implementation_sha256,
+            config_sha256=accounting.config_sha256,
+            contribution_inventory_sha256=(
+                accounting.core.contribution_inventory_sha256
+            ),
+            source_recovery_id=accounting.core.source_recovery_id,
+            source_package_id=accounting.core.source_package_id,
+            source_recovery_archive_sha256=(
+                accounting.core.source_recovery_archive_sha256
+            ),
+            source_preservation_id=accounting.core.source_preservation_id,
+            source_merkle_tree_id=accounting.core.source_merkle_tree_id,
+            source_merkle_root_sha256=accounting.core.source_merkle_root_sha256,
+            source_timestamp_id=accounting.core.source_timestamp_id,
+            source_campaign_id=accounting.core.source_campaign_id,
+            source_campaign_manifest_sha256=(
+                accounting.core.source_campaign_manifest_sha256
+            ),
+            source_disagreement_experiment_id=(
+                accounting.core.source_disagreement_experiment_id
+            ),
+            source_disagreement_contract_id=(
+                accounting.core.source_disagreement_contract_id
+            ),
+            source_disagreement_contract_sha256=(
+                accounting.core.source_disagreement_contract_sha256
+            ),
+            selected_round=accounting.core.selected_round,
+            selected_checkpoint_sha256=accounting.core.selected_checkpoint_sha256,
+            selected_model_sha256=accounting.core.selected_model_sha256,
+            round_count=accounting.core.round_count,
+            required_client_count=accounting.core.required_client_count,
+            submission_count=accounting.core.submission_count,
+            observed_trust_accepted_count=(
+                accounting.core.observed_trust_accepted_count
+            ),
+            fully_accepted_count=accounting.core.fully_accepted_count,
+            downweighted_count=accounting.core.downweighted_count,
+            contributing_count=accounting.core.contributing_count,
+            quarantined_count=accounting.core.quarantined_count,
+            missing_count=accounting.core.missing_count,
+            safe_submission_count=accounting.core.safe_submission_count,
+            unsafe_submission_count=accounting.core.unsafe_submission_count,
+            safe_quarantined_count=accounting.core.safe_quarantined_count,
+            unsafe_quarantined_count=accounting.core.unsafe_quarantined_count,
+            controlled_trust_failure_count=(
+                accounting.core.controlled_trust_failure_count
+            ),
+            controlled_update_intervention_count=(
+                accounting.core.controlled_update_intervention_count
+            ),
+            enrollment_count=accounting.core.trust_accounting.enrollment_count,
+            attestation_count=accounting.core.trust_accounting.attestation_count,
+            challenge_count=accounting.core.trust_accounting.challenge_count,
+            policy_outcomes=accounting.core.policy_outcomes,
+        ),
+        verified_stages=list(VERIFIED_STAGES),
+    )
+    _ensure(
+        campaign_manifest.sha256 == accounting.core.source_campaign_manifest_sha256,
+        "final campaign manifest digest mismatch",
+    )
+    return core
+
+
 def _derive_core(
     *, recovery_workspace: Path, accounting_workspace: Path
-) -> FinalPreservationCore:
+) -> FinalPreservationCore | InRoundFinalPreservationCore:
     inputs = _load_verified_inputs(
         recovery_workspace=recovery_workspace,
         accounting_workspace=accounting_workspace,
     )
-    return _build_core(inputs)
+    return (
+        _build_in_round_core(inputs)
+        if isinstance(inputs.accounting, InRoundCampaignAccountingReport)
+        else _build_core(inputs)
+    )
 
 
-def _receipt(core: FinalPreservationCore) -> FinalPreservationReceipt:
+def _receipt(
+    core: FinalPreservationCore | InRoundFinalPreservationCore,
+) -> FinalPreservationReceipt | InRoundFinalPreservationReceipt:
     core_digest = digest_object(core.model_dump(mode="json"))
-    return FinalPreservationReceipt(
-        verification_id=f"m8-final-verification-{core_digest[:24]}",
+    receipt_type = (
+        InRoundFinalPreservationReceipt
+        if isinstance(core, InRoundFinalPreservationCore)
+        else FinalPreservationReceipt
+    )
+    prefix = "m8-in-round-final-verification" if isinstance(
+        core, InRoundFinalPreservationCore
+    ) else "m8-final-verification"
+    return receipt_type(
+        verification_id=f"{prefix}-{core_digest[:24]}",
         core=core,
         canonical_core_sha256=core_digest,
         verifier_implementation_sha256=sha256_file(Path(__file__)),
@@ -532,7 +773,7 @@ def verify_final_preservation(
     *, recovery_workspace: Path, accounting_workspace: Path
 ) -> dict[str, Any]:
     errors: list[str] = []
-    receipt: FinalPreservationReceipt | None = None
+    receipt: FinalPreservationReceipt | InRoundFinalPreservationReceipt | None = None
     try:
         core = _derive_core(
             recovery_workspace=recovery_workspace,
@@ -564,7 +805,9 @@ def verify_final_preservation(
             if receipt
             else None
         ),
-        "assurance_state": FINAL_ASSURANCE_STATE if receipt else None,
+        "assurance_state": (
+            receipt.core.assurance_state if receipt else None
+        ),
         "verified_stage_count": len(VERIFIED_STAGES) if receipt else 0,
         "preservation_id": core.preservation.preservation_id if core else None,
         "merkle_tree_id": core.merkle.tree_id if core else None,
@@ -581,7 +824,34 @@ def verify_final_preservation(
         ),
         "round_count": core.campaign_accounting.round_count if core else 0,
         "contribution_count": (
-            core.campaign_accounting.contribution_count if core else 0
+            (
+                core.campaign_accounting.submission_count
+                if isinstance(core, InRoundFinalPreservationCore)
+                else core.campaign_accounting.contribution_count
+            )
+            if core
+            else 0
+        ),
+        "contributing_count": (
+            core.campaign_accounting.contributing_count
+            if isinstance(core, InRoundFinalPreservationCore)
+            else core.campaign_accounting.accepted_contribution_count
+            if core
+            else 0
+        ),
+        "downweighted_count": (
+            core.campaign_accounting.downweighted_count
+            if isinstance(core, InRoundFinalPreservationCore)
+            else 0
+        ),
+        "quarantined_count": (
+            (
+                core.campaign_accounting.quarantined_count
+                if isinstance(core, InRoundFinalPreservationCore)
+                else core.campaign_accounting.quarantined_contribution_count
+            )
+            if core
+            else 0
         ),
         "selected_round": (
             core.campaign_accounting.selected_round if core else None

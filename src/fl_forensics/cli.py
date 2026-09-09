@@ -50,6 +50,12 @@ from .investigation_report import (
     create_investigation_report_bundle,
     verify_investigation_report_bundle,
 )
+from .in_round_campaign_accounting import (
+    create_in_round_campaign_accounting,
+    is_in_round_accounting_config,
+    is_in_round_accounting_workspace,
+    verify_in_round_campaign_accounting,
+)
 from .in_round_admission import (
     admit_and_aggregate_in_round,
     verify_in_round_secure_round,
@@ -1511,7 +1517,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     m8_account_campaign = subparsers.add_parser(
         "m8-account-campaign",
-        help="account M5 invariants from the offline M8.4 recovery package",
+        help="account M5/M6 invariants from the offline M8.4 recovery package",
     )
     m8_account_campaign.add_argument(
         "--config", type=Path, default=Path("configs/campaign-accounting.yaml")
@@ -1524,7 +1530,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     m8_verify_campaign_accounting = subparsers.add_parser(
         "m8-verify-campaign-accounting",
-        help="recompute M8.5 accounting from the offline M8.4 package",
+        help="recompute M8.5 M5/M6 accounting from the offline M8.4 package",
     )
     m8_verify_campaign_accounting.add_argument(
         "--workspace",
@@ -2391,17 +2397,31 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if result["status"] == "verified" else 1
 
     if arguments.command == "m8-account-campaign":
-        result = create_campaign_accounting(
-            output=arguments.output,
-            config_path=arguments.config,
+        result = (
+            create_in_round_campaign_accounting(
+                output=arguments.output,
+                config_path=arguments.config,
+            )
+            if is_in_round_accounting_config(arguments.config)
+            else create_campaign_accounting(
+                output=arguments.output,
+                config_path=arguments.config,
+            )
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
 
     if arguments.command == "m8-verify-campaign-accounting":
-        result = verify_campaign_accounting(
-            workspace=arguments.workspace,
-            recovery_workspace=arguments.recovery_workspace,
+        result = (
+            verify_in_round_campaign_accounting(
+                workspace=arguments.workspace,
+                recovery_workspace=arguments.recovery_workspace,
+            )
+            if is_in_round_accounting_workspace(arguments.workspace)
+            else verify_campaign_accounting(
+                workspace=arguments.workspace,
+                recovery_workspace=arguments.recovery_workspace,
+            )
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
