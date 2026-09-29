@@ -1,5 +1,13 @@
 # Adaptive targeted attack: implementation pilot
 
+> Current status — 2026-09-29: the frozen pilot, signed live smoke and paired
+> 30-round v4 reference are complete. See the [verified v4 report](../results/m6-adaptive-paired-v4/README.md).
+> Four additional seeds are in progress under the [fixed extension protocol](M6_ADAPTIVE_MULTISEED_V1.md).
+> The sections below retain the chronological development record: statements
+> about pending live execution, stopped v3 or preparation of v4 describe their
+> dated stage, not the current campaign. A single completed pair does not
+> establish general robustness. Latest scope: [review for the supervisor](SUPERVISOR_UPDATE_2026_09_29.md).
+
 Executed and independently recomputed on 2026-09-27. All 66 queries matched byte
 for byte. The targeted success criterion was not achieved. See
 [the complete result](../results/m6-adaptive-frozen-pilot-v1/README.md).

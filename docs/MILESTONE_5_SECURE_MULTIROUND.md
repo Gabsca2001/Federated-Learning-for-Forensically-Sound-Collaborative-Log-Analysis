@@ -333,5 +333,7 @@ Mean test macro-F1: gated/sequential 0.942285/0.939303 clean and
 declared-unsafe contributions per policy, while gated produces more benign
 quarantines and downweights. Trust-failure cells remain counterfactual.
 Five seed pairs are the statistical units; rounds and contributions are not
-independent repetitions. Adaptive attack and threshold/weight sensitivity remain
-future gates; the existing M8 closures do not automatically cover these new runs.
+independent repetitions. Subsequent threshold sensitivity replay and live campaigns,
+and the first paired adaptive v4 campaign, are now complete; four adaptive replicas
+remain in progress as of 2026-09-29. See the [current evidence review](SUPERVISOR_UPDATE_2026_09_29.md).
+The existing M8 closures do not automatically cover these new runs.

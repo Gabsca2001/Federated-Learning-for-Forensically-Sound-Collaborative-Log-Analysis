@@ -108,8 +108,10 @@ approve its own attestation.
 
 Baseline `1.1` extends the measured code surface to the Byzantine-update statistics,
 composite-admission engine and schemas, in-round controller and schemas, and the in-round
-policy. A client therefore cannot retain a passed hardware identity while silently changing
-the code that calculates or enforces contribution admission.
+policy. Appraisal detects disagreement between these measured files and the approved
+baseline at attestation time. This is not a guarantee against every runtime change
+or against malicious updates produced by an otherwise correctly attested client.
+The reported local experiments use software TPMs (swtpm), not physical TPM hardware.
 
 ### M5 — secure campaign
 

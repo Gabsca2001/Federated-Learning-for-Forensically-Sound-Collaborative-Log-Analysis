@@ -916,3 +916,5 @@ Consult the execution history before any recovery. Never restart active TPMs.
 Raw logs, datasets, private trust material and generated experiment workspaces stay
 local. Publish reviewed code/configuration, documentation and compact result snapshots.
 See [publication checklist](docs/PUBLICATION_READINESS.md) for the reviewed scope.
+
+See the [supervisor-feedback evidence review](docs/SUPERVISOR_UPDATE_2026_09_29.md) for the scope and limitations of the August 27 follow-up experiments.
