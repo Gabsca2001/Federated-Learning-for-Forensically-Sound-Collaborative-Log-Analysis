@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve exact bytes for SHA-256-bound experiment inputs and result snapshots.
+configs/** -text
+results/** -text
+scripts/** -text
+src/** -text
+docs/M6_ADAPTIVE_MULTISEED_V1.md -text

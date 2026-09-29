@@ -1,0 +1,66 @@
+{
+  "experiment_id": "m6-adaptive-paired-s343593-v1",
+  "seed": 343593,
+  "rounds": 30,
+  "arms": [
+    "clean",
+    "adaptive"
+  ],
+  "attack_rounds": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "attackers": [
+    "client02",
+    "client05",
+    "client14"
+  ],
+  "queries_per_attack_round": 66,
+  "workers": 2,
+  "attestation_refresh": "every round",
+  "no_feasible_candidate": "submit original proposals unchanged; count failed search; do not retune",
+  "selection": "existing validation macro-F1, earliest tie, selected checkpoint only",
+  "primary_endpoints": [
+    "selected-checkpoint test reconnaissance-to-benign ASR",
+    "selected-checkpoint test macro-F1"
+  ],
+  "test_access": "only after both 30-round trajectories and adaptive searches are verified",
+  "scope": "Prespecified four-seed extension after exploratory seed 341593; prior dataset reuse, not confirmatory.",
+  "knowledge": "privileged validation oracle and all proposals; no test access by optimizer",
+  "runtime_image": "flforensics-m6-adaptive-live-v1:latest",
+  "runtime_image_id": "sha256:c5fdc9897569c01651e5af83be32f10bd63ff53d8a3288fe2391544a7cc9e1f0",
+  "trust_tag": "m6-adaptive-paired-s343593-v1",
+  "partition": "artifacts/m6-policy-partition-s343593-v1",
+  "node_lifecycle": "fresh TPM identities per pair; never restart during pair; stop after both final verifications",
+  "m4_runtime_image_id": "sha256:36cbed2fcb4b2f6ce60e1eed2929037296939ec20be37f2383724ffe79450eb2",
+  "numerical_runtime": {
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "MKL_CBWR": "COMPATIBLE",
+    "torch_intraop_threads": 1,
+    "torch_interop_threads": 1
+  },
+  "numerical_preflight": "results/m6-numeric-runtime-preflight-v1/summary.json",
+  "execution_order": "round-wise pairing: clean then adaptive; compare each pre-attack round immediately",
+  "federation_config": "configs/federation-m6-policy-seed-343593.yaml"
+}

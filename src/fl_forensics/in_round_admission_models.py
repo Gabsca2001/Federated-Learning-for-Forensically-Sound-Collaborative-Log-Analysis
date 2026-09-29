@@ -19,7 +19,7 @@ from .secure_round_models import SecureCheck
 
 class InRoundAdmissionContractCore(StrictModel):
     policy_id: str
-    primary_policy: Literal["gated_composite"] = "gated_composite"
+    primary_policy: Literal["gated_composite", "sequential"] = "gated_composite"
     policy_config_sha256: str = Field(pattern=HEX_256_PATTERN)
     calibration_source_admission_sha256: str = Field(pattern=HEX_256_PATTERN)
     calibration_semantics: Literal["verified-clean-development-reference"] = (
@@ -118,7 +118,7 @@ class InRoundSecureCheckpointCore(StrictModel):
     round_number: int = Field(gt=0)
     previous_checkpoint_sha256: str = Field(pattern=HEX_256_PATTERN)
     base_model_sha256: str = Field(pattern=HEX_256_PATTERN)
-    aggregation_strategy: Literal["FedAvg-gated-composite"] = (
+    aggregation_strategy: Literal["FedAvg-gated-composite", "FedAvg-sequential"] = (
         "FedAvg-gated-composite"
     )
     required_client_count: int = Field(gt=0)

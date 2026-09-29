@@ -1,5 +1,13 @@
 # Implementation status
 
+> **Current status (2026-09-29):** the active-policy five-seed comparison, fixed-signal
+> sensitivity, live +10% sensitivity, adaptive frozen pilot, signed smoke and paired
+> v4 seed341593 are completed. The four additional adaptive seed pairs are running;
+> their results are not yet available. See [current result index](../results/README.md)
+> and [publication checklist](PUBLICATION_READINESS.md). Dated preparation, stopped,
+> pending and running notes below are historical execution records, superseded by
+> the later completion/recovery entries. Original locked protocols remain unchanged.
+
 ## Summary
 
 The deterministic M1–M8 implementation and the current local-test reference chain are
@@ -178,3 +186,301 @@ The final assurance state is
 
 See [Implementation plan](IMPLEMENTATION_PLAN.md) for milestone gates and
 [Architecture](ARCHITECTURE.md) for the trust and claim boundaries.
+
+## Active-policy extension — checkpoint 2026-09-25
+
+- Implemented opt-in sequential admission controlling real aggregation, with the same
+  mandatory integrity/TPM veto. The default remains gated_composite. Checkpoint verification
+  binds the recorded aggregation strategy; the prior implementation digest remains supported.
+- Four one-round smoke campaigns and four 30-round seed-341593 pilot campaigns verified.
+  Exact pilot results and limits: [sanitized snapshot](../results/m6-active-policy-pilot-v1/README.md).
+- Four additional seeds (342593, 343593, 344593, 345593) are running as 16 new campaigns,
+  using seed-specific CPU configs and paired IID partitions. The runner now accepts
+  `--federation-config`; code/config and pilot manifest hashes are frozen in the experiment lock.
+- At this checkpoint the first 12 extension campaigns verified. The final seed's clean
+  gated campaign completed and passed its internal verifier; a Docker Hub metadata timeout
+  interrupted the additional verification build. The build retry succeeded, and targeted
+  recovery is running. Full five-seed completion and statistical conclusions remain pending.
+- Targeted validation: 21 tests passed for the runner, secure-round and disagreement paths;
+  shell syntax, static checks and experiment preflight passed. This is not a new claim that
+  the entire test suite was rerun after the runner extension.
+
+Protocol, commands and recovery details: [M6 policy pilot](M6_POLICY_PILOT.md).
+
+### Recovery update — 2026-09-25
+
+The targeted recovery verified the final seed's gated/clean, gated/disagreement and
+sequential/clean campaigns. Total completed: 19/20 including the pilot. The last
+sequential/disagreement campaign stopped before client01 provisioning because Docker
+exhausted its default network address pools. No training began and node directories
+were empty. Removed only the unused smoke gated/clean bridge after confirming it had
+no attached containers; retained every TPM volume and artifact. The incident-specific
+root script `resume_m6_policy_last.sh` resumes provisioning in the existing namespace
+and then runs/verifies the last campaign. Final five-seed charts and statistics remain
+pending completion; no missing result is imputed.
+
+## Five-seed active-policy gate completed — 2026-09-25
+
+This completion update supersedes the earlier in-progress checkpoints above. All 20
+30-round campaigns completed and passed their campaign verifiers (600 rounds, 9,000
+contribution decisions). Recovery retained previous artifacts. The final
+[report, figures and source-bound tables](../results/m6-active-policy-multiseed-v1/README.md) are available.
+
+Mean test macro-F1: gated/sequential 0.942285/0.939303 clean and
+0.939053/0.936771 under controlled disagreement. Paired gated-minus-sequential
+95% t intervals include zero in both conditions: [-0.004490, 0.010455] and
+[-0.009307, 0.013869]. Superiority is not established. Both exclude 450/450
+declared-unsafe contributions per policy, while gated produces more benign
+quarantines and downweights. Trust-failure cells remain counterfactual.
+Five seed pairs are the statistical units; rounds and contributions are not
+independent repetitions. Adaptive attack and threshold/weight sensitivity remain
+future gates; the existing M8 closures do not automatically cover these new runs.
+
+## Fixed-signal sensitivity completed — 2026-09-25
+
+[Replay report and figures](../results/m6-policy-sensitivity-replay-v1/README.md): seven predeclared variants across five seeds and
+both recorded policy trajectories; 9,000 baseline decisions reproduced and 63,000
+variant decisions recomputed. No retraining, test access or configuration selection.
+On gated trajectories, downweight threshold +10% reduces clean downweights 366→248
+and attacked downweights 196→108 while preserving 450/450 unsafe exclusions.
+Quarantine threshold +10% instead retains three unsafe updates at half weight.
+These are fixed-signal outcomes, not predictive-performance improvements. Current
+policy and frozen experiment inputs are unchanged. Live sensitivity and adaptive
+attack validation remain separate future gates.
+
+## Exploratory live sensitivity prepared — 2026-09-25
+
+The [fixed protocol](M6_LIVE_SENSITIVITY.md) tests only the downweight threshold +10% with two
+pilot and eight subsequent campaigns, paired against the ten preserved original
+gated runs. Config/runner/baseline hashes are frozen; the reference policy is
+unchanged. Continuation depends on technical verification, not favorable scores.
+Campaign execution is pending. Test results from the standard finalizer will be
+exploratory, not independent confirmation after the replay-informed choice.
+
+### Pilot verification recovery — 2026-09-25
+
+Both seed-341593 downplus10 campaigns completed training. Clean passed the additional
+verification; disagreement passed its internal campaign verifier, then the additional
+verification build failed on a Docker Hub metadata timeout. The build retry succeeded
+and verification-only replay was restarted against the existing artifacts. No training
+or provisioning was repeated. Final recovery confirmation is pending.
+
+### Pilot recovery completed — 2026-09-26
+
+The disagreement verification completed all 30 rounds and final campaign verification
+with zero errors (selected round 11; 19 downweights; 92 quarantines). Both pilot
+campaigns are now verified. Restored the completion marker after checking the logs;
+stopped only the recovered campaign TPM containers and removed its empty bridge.
+Volumes and artifacts were retained. The remaining eight campaigns are ready, not
+yet launched by this recovery.
+
+### Remaining-seed recovery — 2026-09-26
+
+Seeds 342593, 343593 and 344593 passed both conditions (six campaigns). Seed
+345593 clean completed 30 rounds and internal verification, then Docker Hub
+metadata resolution timed out before additional verification. The last attacked
+campaign has not started. Root script resume_m6_downplus10_345593.sh verifies
+the existing clean campaign, then provisions/runs only the untouched attacked
+campaign. It preserves frozen scripts, configuration, volumes and artifacts.
+Completion of these last steps is pending; do not repeat earlier training.
+
+## Live +10% sensitivity completed — 2026-09-26
+
+Supersedes prior pending recovery notes: all ten new campaigns passed verification.
+[Full paired report and four figures](../results/m6-live-downplus10-v1/README.md) compare them with the ten original
+gated campaigns. Clean test means: original 0.942285, variant 0.942222; attacked:
+0.939053 versus 0.933250. Both paired 95% intervals include zero. Safe downweights
+fall 366→242 clean and 196→106 attacked; all 450 unsafe observations per arm remain
+excluded in the controlled scenario. The reference remains original gated: the
+variant reduces interventions but does not demonstrate predictive improvement.
+This replay-motivated experiment is exploratory; adaptive attack validation and
+new M7/M8 preservation remain outstanding.
+
+## Adaptive targeted-attack pilot prepared — 2026-09-27
+
+[Threat model, algorithm and execution](M6_ADAPTIVE_ATTACK.md): three colluding clients, targeted
+reconnaissance-to-benign gradients over model tensors, projected proposals and exact
+gate-feedback backtracking, 66 total queries. Two tests and production source-round
+preflight pass, including byte-identical clean aggregation. The search has not yet
+run. This privileged white-box frozen-round experiment is not a live signed campaign;
+optimization validation is attacker-visible, test access forbidden. No success or
+general robustness claim is made. The unexecuted scale-grid draft was superseded.
+
+### Adaptive pilot result — 2026-09-27
+
+The frozen adaptive pilot was executed and independently recomputed (66 queries).
+60/64 adaptive proposals were feasible, but selected reconnaissance-to-benign ASR
+and ASR gain were both zero. Selected validation macro-F1 decreased by 1.019
+percentage points. See `results/m6-adaptive-frozen-pilot-v1/README.md` for all
+attempts, figures and limitations. This is not a signed live attack result;
+live integration remains in progress.
+
+### Live smoke recovery — 2026-09-28
+
+The v1 smoke stopped after all 15 attestations passed and M5 initialized, before
+proposal training. The coordinator precommit attempted to canonicalize float-valued
+attack settings; canonical signing deliberately rejects floats. The fix binds the
+exact derived JSON configuration as a string in the signed core. A regression test
+now covers this case; eight focused tests pass.
+
+The failed v1 artifacts and log are preserved. Recovery runs via
+`scripts/recover_m6_adaptive_live_smoke_v2.py` into the fresh
+`artifacts/m6-adaptive-live-smoke-v2` campaign, reusing only the existing v1 nodes
+and trust namespace with refreshed attestations. Its log is
+`m6-adaptive-live-smoke-v2.log`. The v1 round is not resumed or backdated.
+The v2 run has started; its end-to-end result is still pending.
+
+### Live adaptive smoke independently verified — 2026-09-28
+
+The v2 one-round smoke and independent signed-provenance/search verifier passed.
+Three adaptive contributions were newly TPM-signed; actual and predicted aggregates
+match exactly. Optimization-validation ASR: 0 to 1; macro-F1: 0.342901 to 0.107455.
+This is round 1, one seed, a weak initial baseline and privileged validation access;
+no test access or 30-round efficacy claim. See `results/m6-adaptive-live-smoke-v2/README.md`
+for figures, all queries and limitations. TPM containers are stopped; evidence is retained.
+
+### Paired adaptive multiround protocol — 2026-09-28
+
+Prepared two 30-round arms at seed 341593: clean and adaptive in rounds 11–30,
+66 queries per attacked round, original gated policy. Nine focused tests and
+undefined-name checks pass. Test evaluation follows completion of both trajectories.
+See `docs/M6_ADAPTIVE_MULTIROUND.md` and `configs/m6-adaptive-paired-s341593-v1.json`.
+No multiround attack outcome is claimed before execution and verification.
+
+## Fresh-node correction before training — v2
+
+The v1 paired attempt was stopped at the first attestation, before any training:
+all nodes returned failed_measurement. The simulator entrypoint uses startup-clear;
+restarting the smoke's stopped TPMs no longer matches the prior measured PCR state.
+Quote verification correctly rejected the mismatch. No trust checks are bypassed.
+The failed v1 experiment and trust results remain preserved.
+
+The operative plan is now `configs/m6-adaptive-paired-s341593-v2.json` and runner
+`scripts/run_m6_adaptive_paired_v2.py`. It provisions fresh nodes in its own Docker
+namespace and holds them active across both arms. Scientific settings, attack schedule,
+query budget and endpoints are unchanged. New evidence is under
+`artifacts/m6-adaptive-paired-s341593-v2`; local log:
+`m6-adaptive-paired-s341593-v2.log`. A TPM restart during execution requires stopping
+and investigating, not silently reusing prior attestation state.
+
+## Local-image recovery — v3
+
+V2 provisioning stopped before creating TPMs: the WSL/Windows credential helper
+failed during Docker image metadata resolution. The actual message was
+`error getting credentials` with `UtilAcceptVsock ... accept4 failed 110`.
+No training occurred. All failed workspaces and logs remain preserved.
+
+The operative runner is `scripts/run_m6_adaptive_paired_v3.py`, plan
+`configs/m6-adaptive-paired-s341593-v3.json`, log
+`m6-adaptive-paired-s341593-v3.log`. It uses fresh nodes and the official
+`run_m4_swtpm.py provision --skip-build` path. All 31 measured source files
+inside the previously verified M4 image matched the current repository by SHA-256.
+That immutable image is recorded in the v3 plan and locally tagged for the new
+services. No global Docker credential settings or verification rules are changed.
+The scientific protocol remains the same; this change concerns provisioning only.
+
+## V3 stopped by strict pre-attack reproducibility check
+
+The clean arm completed 30 rounds. The adaptive arm stopped at round 1 before
+any adaptive treatment: its aggregate was not byte-identical to the clean round.
+The bases and configuration match exactly; 14 client updates match exactly.
+Client01 differs in 288/13862 values, maximum absolute difference
+1.4901161193847656e-08. The aggregate maximum difference is
+2.9802322387695312e-08. All admission statuses and all 3223 validation predictions
+are unchanged, although gate scores differ in trailing digits. Neither arm was
+finalized and no test evaluation was run.
+
+This is consistent with small numerical reproducibility variation, not demonstrated
+attack damage. The exact low-level cause has not been proven. Two independent
+unsigned client01 diagnostic replays with one intra-op/inter-op thread,
+OMP/MKL/OpenBLAS threads fixed to 1 and MKL_CBWR=COMPATIBLE produced the identical
+hash d57b0cc25aaa329c632e081d9ff810690aa2eebd782391b5f94a24b823759f33.
+This supports testing an explicit numerical runtime configuration for a new paired
+run, but two repetitions alone do not guarantee determinism across all clients.
+
+The original lock, comparison criterion, 30 clean rounds and failed adaptive round
+remain unchanged. The current campaign is stopped; no tolerance was relaxed after
+observing this discrepancy. See `results/m6-adaptive-paired-v3-reproducibility-incident/diagnosis.json`.
+
+
+## V4 numerical runtime and paired execution — prepared before restart
+
+Thirty-six independent container probes passed exact model-hash equality: two
+repetitions for every client at round 1 and clients 01, 02, 15 at round 10.
+The results and code digests are in `results/m6-numeric-runtime-preflight-v1`.
+This is finite supporting evidence, not a guarantee for all future rounds.
+
+V4 uses `scripts/m6_numeric_runtime.py` to set one Torch intra/inter-op thread,
+one OMP/MKL/OpenBLAS/NumExpr thread and MKL_CBWR=COMPATIBLE before numerical
+imports. Training, signing, coordinator numerical commands, search and verification
+use this runtime. Two clients run concurrently. Both arms are rebuilt in a fresh
+pair workspace; no previous checkpoint is overwritten or reclassified.
+
+Arms now progress round by round (clean then adaptive), so the unchanged exact
+pre-attack equality check runs immediately at each of rounds 1–10. Attack timing,
+query budget, policy, seed, dataset and selected-checkpoint-only test rule remain
+unchanged. The currently running v3 TPMs are reused with fresh attestations and
+startup timestamps bound in the execution lock; a restart stops the run.
+
+Operative runner: `scripts/run_m6_adaptive_paired_v4.py`; plan:
+`configs/m6-adaptive-paired-s341593-v4.json`; log:
+`m6-adaptive-paired-s341593-v4.log`. Completion still requires both 30-round arms
+and final verifications. No numerical tolerance replaces the original equality gate.
+
+## Completed paired adaptive v4 — 2026-09-29 analysis
+
+Both 30-round trajectories completed and verified on 2026-09-28 at 18:30 local
+(log marker ADAPTIVE PAIRED CAMPAIGN VERIFIED). This supersedes the earlier
+running/interrupted status notes, retained above as execution history. The recovery
+reverified existing rounds and preserved the original lock. TPMs were stopped by
+the completed runner after final verification, not restarted during recovery.
+
+Selected checkpoints: clean round 20, adaptive round 25. Pooled test macro-F1 is
+0.9242495921 and 0.9389700250 respectively (adaptive minus clean +1.4720 percentage
+points). Targeted reconnaissance-to-benign test ASR is 0/669 for both. None of the
+20 adaptive search rounds met the prespecified success criterion (1,320 queries).
+All 60 malicious client-round contributions participated: 32 accepted and 28
+accepted downweighted. Thus contribution admission is not equivalent to achieving
+the attack objective. Honest interventions in rounds 11–30 were 73 downweighted
+and 8 quarantined out of 300 clean decisions, versus 47 and 3 out of 240 adaptive
+honest decisions; denominators differ and these are descriptive counts.
+
+The first ten paired checkpoints match byte for byte. Selection in the adaptive
+arm occurred after attack onset; the zero-ASR finding is not explained by choosing
+a pre-attack checkpoint. One seed does not establish statistical superiority,
+universal robustness, or a beneficial effect of poisoning. No additional test
+inference or post-test tuning was performed for the report.
+
+Report: `results/m6-adaptive-paired-v4/README.md`, source-bound JSON results and four
+PNG/PDF figures. Generator: `scripts/report_m6_adaptive_paired_v4.py`. Checks cover
+locked files, checkpoint/evaluation/decision hashes, exact pre-attack pairing,
+selected query metrics and validation-based checkpoint selection. Existing M8
+preservation packages do not yet cover this new experiment. Next: prespecify the
+multiseed extension before running it, then extend investigative/preservation
+artifacts and thesis discussion. No new experiments were launched by this report.
+## Adaptive four-seed extension launched — 2026-09-29
+
+The protocol is fixed in docs/M6_ADAPTIVE_MULTISEED_V1.md and
+configs/m6-adaptive-multiseed-v1.lock.json before training. Four new seeds
+342593–345593 repeat the unchanged v4 attack and gated-composite defense in paired
+clean/adaptive trajectories (240 new rounds, 5,280 search queries). The previously
+observed seed 341593 remains explicitly exploratory; no new attack objective or
+post-test parameter tuning is included. See the protocol for endpoints and limits.
+
+Runner scripts/run_m6_adaptive_paired_seed.py adds explicit seed-specific federation
+and partition checks without changing locked v4 sources. The supervisor
+scripts/run_m6_adaptive_multiseed_v1.py uses fresh TPM workspaces and existing M4/M5
+commands, verifies immutable inputs and stops on any failed step. Eleven focused
+tests and undefined-name checks passed. Live log: m6-adaptive-multiseed-v1.log.
+The detached launch receipt is artifacts/m6-adaptive-multiseed-v1-process.json.
+
+All 31 measured M4 image files matched the host. The first preflight probe used
+python instead of python3, which is what Dockerfile.m4 provides; it failed before
+any network removal or training. After correcting that probe, four historical clean
+policy network bridges were inspected and released only after confirming they had
+no attached containers or active project containers. Inspection snapshots are under
+results/m6-adaptive-multiseed-preflight-v1. All volumes and evidence remain intact.
+No new results are claimed until each full pair and final evaluation verify.
+
+### Second invocation correction — 2026-09-29
+The first recovery preserved the seed argument but passed a relative script path. Path(__file__).relative_to(ROOT) then failed before writing the pair lock or starting training. The pair directory was confirmed empty. Separate recovery v2 passes the absolute runner path through the unchanged numerical wrapper. Its exclusive process guard and original input lock checks remain; it removes only the empty pair directory with nonrecursive rmdir, refusing any contents. A subprocess probe verified absolute __file__, preserved seed argument and numerical runtime before launch. Original scripts, locks, receipts and logs remain unchanged. Recovery v2 launched as PID 2305906; active log m6-adaptive-multiseed-v1-recovery2.log. See scripts/recover_m6_adaptive_multiseed_invocation_v2.py and artifacts/m6-adaptive-multiseed-v1-invocation-recovery2.json.

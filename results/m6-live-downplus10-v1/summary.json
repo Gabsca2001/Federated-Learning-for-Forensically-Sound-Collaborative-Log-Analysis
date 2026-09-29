@@ -1,0 +1,181 @@
+{
+  "summary": {
+    "clean": {
+      "original": {
+        "n": 5,
+        "mean": 0.9422849473771443,
+        "sample_sd": 0.019478497396091657,
+        "ci95": [
+          0.9180991984213115,
+          0.9664706963329771
+        ]
+      },
+      "downplus10": {
+        "n": 5,
+        "mean": 0.9422215814761404,
+        "sample_sd": 0.018248679152678127,
+        "ci95": [
+          0.9195628535574885,
+          0.9648803093947924
+        ]
+      }
+    },
+    "disagreement": {
+      "original": {
+        "n": 5,
+        "mean": 0.9390525045879855,
+        "sample_sd": 0.02085325394997844,
+        "ci95": [
+          0.9131597699128968,
+          0.9649452392630742
+        ]
+      },
+      "downplus10": {
+        "n": 5,
+        "mean": 0.9332504989025004,
+        "sample_sd": 0.017658059381643398,
+        "ci95": [
+          0.9113251222901696,
+          0.9551758755148313
+        ]
+      }
+    }
+  },
+  "paired_variant_minus_original": {
+    "clean": {
+      "differences": [
+        -0.008889984271561957,
+        -8.072499090405749e-05,
+        0.007845262507908624,
+        -0.0010581851852249358,
+        0.0018668024347632262
+      ],
+      "n": 5,
+      "mean": -6.336590100382011e-05,
+      "sample_sd": 0.006024348755682838,
+      "ci95": [
+        -0.007543582863558843,
+        0.007416851061551203
+      ]
+    },
+    "disagreement": {
+      "differences": [
+        0.0,
+        -0.03193680978080948,
+        0.0,
+        0.0029267813533842,
+        0.0
+      ],
+      "n": 5,
+      "mean": -0.005802005685485057,
+      "sample_sd": 0.014664664317621806,
+      "ci95": [
+        -0.02401059141441942,
+        0.012406580043449307
+      ]
+    }
+  },
+  "sources": {
+    "m6-policy-pilot-gated_composite-clean-s341593-v1": {
+      "manifest_sha256": "688ec16abe4953c5235b59449b4fa67ecdccfc58ebafa3c69a7cad0e2422c0d6",
+      "evaluation_sha256": "027649491dd06e027774656cee9e2773adaa15b72b48b53181ae09004278bc6e",
+      "campaign_id": "campaign-1e5626ff5f42948ad8e27fa7"
+    },
+    "m6-policy-pilot-gated_composite-disagreement-s341593-v1": {
+      "manifest_sha256": "0a4973b806e336bdbe18d0fd6531c37f8bf20474a6661b068c948557d4574e6b",
+      "evaluation_sha256": "63b028bc516ba17b26b623c25dfddd154d87d71dfef29ed3e07111b0da38c763",
+      "campaign_id": "campaign-fe46b9098be3e7bc1eb3fb4d"
+    },
+    "m6-downplus10-clean-s341593-v1": {
+      "manifest_sha256": "17c403d0a2869c5181fa63c990729bfe498e247908ff8b28391afc51dbe210a0",
+      "evaluation_sha256": "e9d80d73a586d6d06ac704b3fb243a631e96b8b11f2eea63c791123f3e6d7805",
+      "campaign_id": "campaign-ba448ebb09735d64ada904f3"
+    },
+    "m6-downplus10-disagreement-s341593-v1": {
+      "manifest_sha256": "209c13aac2a68decb0253ffc196ceac17b34b1eb941d41c048c3de0b878c3438",
+      "evaluation_sha256": "17e4c02e571351648c2c27712ad3706f9e5aae35583dc369703588fc441ffe52",
+      "campaign_id": "campaign-a41f18d40f2ea9c0f1042a9f"
+    },
+    "m6-policy-multiseed-gated_composite-clean-s342593-v1": {
+      "manifest_sha256": "4b04db56620b5aa8ae61ebb41bba0f30f94aa183b6a92712d9ae4aa34f6aaf2e",
+      "evaluation_sha256": "cec68b20d1638644d20f989fd9030af01069a7311d7f5db045c5ce54185d6dc0",
+      "campaign_id": "campaign-7dbbbe10f194bc6cb0e5746c"
+    },
+    "m6-policy-multiseed-gated_composite-disagreement-s342593-v1": {
+      "manifest_sha256": "ca1f16f4781e55fa2c72ba10c60d05016e2b2e47e10c695f5807aa92da4b075c",
+      "evaluation_sha256": "98da6d1ba66ebd330f86dd6fd0c82858bb9c875d0da23e8f03690f688d93fd3c",
+      "campaign_id": "campaign-e5e12b118c321bf1a79200a3"
+    },
+    "m6-downplus10-clean-s342593-v1": {
+      "manifest_sha256": "ed114217e56877542f1394d89700419be82de7d95066d0c5b1f15e942baecf49",
+      "evaluation_sha256": "2c70256dcf89f4b9037a612cd5a9046d73de87120c5b1e2d0372b6eefd309ae0",
+      "campaign_id": "campaign-a3c2244a1fc31f7d9d64c252"
+    },
+    "m6-downplus10-disagreement-s342593-v1": {
+      "manifest_sha256": "fdc0fd244d2b89c2d045a5162c78c4b3819215bceb6e324e9c77f4c765940b78",
+      "evaluation_sha256": "19c7bf1584cec6403681bb8d1a032ce3bb6e1fe294a9e0c02ef7196d88af7ef1",
+      "campaign_id": "campaign-8a942dec4038c8da954255ec"
+    },
+    "m6-policy-multiseed-gated_composite-clean-s343593-v1": {
+      "manifest_sha256": "0c1221a6b242d4907c85974b22204904663dc64428c3e2c3e8c7f17a479b5a57",
+      "evaluation_sha256": "e2cf5e89a85bbee9a600f3d5f201de7e585c5e29c834da8ada8137a7d78969c7",
+      "campaign_id": "campaign-f1204b1b921f9a2ec66a72b5"
+    },
+    "m6-policy-multiseed-gated_composite-disagreement-s343593-v1": {
+      "manifest_sha256": "f839d6e75417814402452ac6386fcab1cba37266ec9661bc2a65815393c2b510",
+      "evaluation_sha256": "db2f77eb75b91f8e9a602eefb540c9dc6ab5fad507a16dc53ced60996dd142b0",
+      "campaign_id": "campaign-0de8b2776fd60c9724614d5d"
+    },
+    "m6-downplus10-clean-s343593-v1": {
+      "manifest_sha256": "0a85ca7eb7af100675b2f0460c53325b26a68dfc5c2a07c49ff22b5aaf80cc06",
+      "evaluation_sha256": "39be1fb05203647e2e2f237390460c240bf537884dca074f0eadc83e96a390e5",
+      "campaign_id": "campaign-2a5a5262fe359c94392a3d44"
+    },
+    "m6-downplus10-disagreement-s343593-v1": {
+      "manifest_sha256": "a13bba7530526dc12210fd89b0e2f7af68a0e1cddef80128e3dda18cf3e6993e",
+      "evaluation_sha256": "5ae2a7f8f4d799931be0d4bbe026001fe340eb47c26b68c39a2a5d350f929640",
+      "campaign_id": "campaign-21cbc6f6e74182d237e15d65"
+    },
+    "m6-policy-multiseed-gated_composite-clean-s344593-v1": {
+      "manifest_sha256": "1617b026a905d34939cb7baa52ab1fd09dfc91cc6314cbc9cfc0c1b3bb89dddc",
+      "evaluation_sha256": "32e84b01757eafc813eab0e52a900a50225d1c220a2131a168ed711fb8a0646a",
+      "campaign_id": "campaign-805c2449f3f3d23d99354d62"
+    },
+    "m6-policy-multiseed-gated_composite-disagreement-s344593-v1": {
+      "manifest_sha256": "fe23d05cb6d3d83761cf629799a3c5a28b8c09baa77e41c36b36a909a489c52c",
+      "evaluation_sha256": "6c75dfac73f603e1feffaa6fbf6e4709b2ca195a28087161346c54c347763972",
+      "campaign_id": "campaign-b580c51faf181a585e894715"
+    },
+    "m6-downplus10-clean-s344593-v1": {
+      "manifest_sha256": "988e1b3331dca441496571d2e584c23dd468a96f6828eadc36fec7f47fb62fdd",
+      "evaluation_sha256": "7298ec3fa283729fefbc1069410da94b5c04bb71082ad94e688e9fd06c328931",
+      "campaign_id": "campaign-91023280de42ba1868ab8068"
+    },
+    "m6-downplus10-disagreement-s344593-v1": {
+      "manifest_sha256": "b634b2b555616110ee1c78df58f3a2942b6b022eb42f347ddca41cfbbaf4422e",
+      "evaluation_sha256": "9c5f9d764b4a51acc0e537b216db457873ad0883c0634c0a3f01aa72ec983a96",
+      "campaign_id": "campaign-42dbf5d16eb57c983824f6ad"
+    },
+    "m6-policy-multiseed-gated_composite-clean-s345593-v1": {
+      "manifest_sha256": "e281fea0f29c8758f02cf91ebc8928e2da13fffc3ac4ab720f9aa2a97c640a50",
+      "evaluation_sha256": "467f2d5e905cd3aa4b01ebfdb0ce22bfb0b7f97696edacd41dd41b05408946b3",
+      "campaign_id": "campaign-fba320f1359875ceb4d032ec"
+    },
+    "m6-policy-multiseed-gated_composite-disagreement-s345593-v1": {
+      "manifest_sha256": "92d4bf4caaf962f5963b06698cda27ae3aebbf6c368f6289b1d02617f9d70745",
+      "evaluation_sha256": "5933aaef97ffc2ed3c05650c6962ccc979a9e0592b66a546814342e0b244a485",
+      "campaign_id": "campaign-de1c2fbf07ecd9be3f432a10"
+    },
+    "m6-downplus10-clean-s345593-v1": {
+      "manifest_sha256": "34e63663bd8691c561b4e491ed0dc5c34d66b828f73f03e1809fa4a8c8a0b67a",
+      "evaluation_sha256": "283c5496f5bb1334ec675c8389431e45e0dbe8a4fcc41d4edf5ef229ff1ad091",
+      "campaign_id": "campaign-91e5d79b7f318fefb59b197a"
+    },
+    "m6-downplus10-disagreement-s345593-v1": {
+      "manifest_sha256": "7f2cb0a0f4db1ee98f79a78c961e85a5076082226f205028da8d658abd13d338",
+      "evaluation_sha256": "41d1b9e5562be7908a636a071a98dd53fbbec310969c5e0965cb2b902aaf85a3",
+      "campaign_id": "campaign-04a21493f4710271570cf535"
+    }
+  },
+  "verification_scope": "Prior M5 verifier success markers plus source digest, decision binding, seed and partition checks; not a replacement cryptographic verifier"
+}

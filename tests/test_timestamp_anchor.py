@@ -259,3 +259,15 @@ def test_timestamp_proof_schema_rejects_unverified_status() -> None:
     }
     with pytest.raises(ValueError):
         TimestampProof.model_validate(value)
+
+
+@pytest.mark.parametrize("ascii_column", ["1.Pr.....xvv..U.", "abcdef0123456789"])
+def test_message_imprint_excludes_hex_like_ascii_column(ascii_column: str) -> None:
+    details = (
+        "Message data:\n"
+        "    0000 - a2 b2 7e c2 1b 84 d0 03-2b e9 a8 8d ca 99 48 8b   ..~.....+.....H.\n"
+        f"    0010 - 31 0f 50 72 d3 e3 8e bf-e8 78 76 76 b4 b8 55 19   {ascii_column}\n"
+    )
+    assert _message_imprint(details) == (
+        "a2b27ec21b84d0032be9a88dca99488b310f5072d3e38ebfe8787676b4b85519"
+    )

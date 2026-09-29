@@ -1,5 +1,13 @@
 # Implementation plan and acceptance gates
 
+> **Current status (2026-09-29):** the active-policy five-seed comparison, fixed-signal
+> sensitivity, live +10% sensitivity, adaptive frozen pilot, signed smoke and paired
+> v4 seed341593 are completed. The four additional adaptive seed pairs are running;
+> their results are not yet available. See [current result index](../results/README.md)
+> and [publication checklist](PUBLICATION_READINESS.md). Dated preparation, stopped,
+> pending and running notes below are historical execution records, superseded by
+> the later completion/recovery entries. Original locked protocols remain unchanged.
+
 ## Planning rule
 
 The project is organized as a sequence of executable acceptance gates. A milestone is
@@ -191,3 +199,179 @@ the completed M1–M8 acceptance chain:
 
 These extensions must receive new experiment identifiers and must not overwrite the preserved
 reference workspaces.
+
+## Active-policy replication acceptance gate (2026-09-25)
+
+The four-campaign one-seed pilot passed. The next gate is 20 verified campaigns:
+five paired seeds × two deployed policies × clean/controlled disagreement. Preserve
+the four pilot campaigns and add 16 without changing thresholds or attack assignments.
+Completion requires per-campaign verification, matching paired inputs, seed-level paired
+statistics and sanitized source-bound results. Do not count rounds or client decisions
+as independent seeds. The multi-seed gate remains in progress. See
+[M6 policy protocol](M6_POLICY_PILOT.md) and [pilot results](../results/m6-active-policy-pilot-v1/README.md).
+
+## Five-seed active-policy gate completed — 2026-09-25
+
+This completion update supersedes the earlier in-progress checkpoints above. All 20
+30-round campaigns completed and passed their campaign verifiers (600 rounds, 9,000
+contribution decisions). Recovery retained previous artifacts. The final
+[report, figures and source-bound tables](../results/m6-active-policy-multiseed-v1/README.md) are available.
+
+Mean test macro-F1: gated/sequential 0.942285/0.939303 clean and
+0.939053/0.936771 under controlled disagreement. Paired gated-minus-sequential
+95% t intervals include zero in both conditions: [-0.004490, 0.010455] and
+[-0.009307, 0.013869]. Superiority is not established. Both exclude 450/450
+declared-unsafe contributions per policy, while gated produces more benign
+quarantines and downweights. Trust-failure cells remain counterfactual.
+Five seed pairs are the statistical units; rounds and contributions are not
+independent repetitions. Adaptive attack and threshold/weight sensitivity remain
+future gates; the existing M8 closures do not automatically cover these new runs.
+
+## Fixed-signal sensitivity completed — 2026-09-25
+
+[Replay report and figures](../results/m6-policy-sensitivity-replay-v1/README.md): seven predeclared variants across five seeds and
+both recorded policy trajectories; 9,000 baseline decisions reproduced and 63,000
+variant decisions recomputed. No retraining, test access or configuration selection.
+On gated trajectories, downweight threshold +10% reduces clean downweights 366→248
+and attacked downweights 196→108 while preserving 450/450 unsafe exclusions.
+Quarantine threshold +10% instead retains three unsafe updates at half weight.
+These are fixed-signal outcomes, not predictive-performance improvements. Current
+policy and frozen experiment inputs are unchanged. Live sensitivity and adaptive
+attack validation remain separate future gates.
+
+## Exploratory live sensitivity prepared — 2026-09-25
+
+The [fixed protocol](M6_LIVE_SENSITIVITY.md) tests only the downweight threshold +10% with two
+pilot and eight subsequent campaigns, paired against the ten preserved original
+gated runs. Config/runner/baseline hashes are frozen; the reference policy is
+unchanged. Continuation depends on technical verification, not favorable scores.
+Campaign execution is pending. Test results from the standard finalizer will be
+exploratory, not independent confirmation after the replay-informed choice.
+
+## Live +10% sensitivity completed — 2026-09-26
+
+Supersedes prior pending recovery notes: all ten new campaigns passed verification.
+[Full paired report and four figures](../results/m6-live-downplus10-v1/README.md) compare them with the ten original
+gated campaigns. Clean test means: original 0.942285, variant 0.942222; attacked:
+0.939053 versus 0.933250. Both paired 95% intervals include zero. Safe downweights
+fall 366→242 clean and 196→106 attacked; all 450 unsafe observations per arm remain
+excluded in the controlled scenario. The reference remains original gated: the
+variant reduces interventions but does not demonstrate predictive improvement.
+This replay-motivated experiment is exploratory; adaptive attack validation and
+new M7/M8 preservation remain outstanding.
+
+## Adaptive targeted-attack pilot prepared — 2026-09-27
+
+[Threat model, algorithm and execution](M6_ADAPTIVE_ATTACK.md): three colluding clients, targeted
+reconnaissance-to-benign gradients over model tensors, projected proposals and exact
+gate-feedback backtracking, 66 total queries. Two tests and production source-round
+preflight pass, including byte-identical clean aggregation. The search has not yet
+run. This privileged white-box frozen-round experiment is not a live signed campaign;
+optimization validation is attacker-visible, test access forbidden. No success or
+general robustness claim is made. The unexecuted scale-grid draft was superseded.
+
+### Adaptive pilot result — 2026-09-27
+
+The frozen adaptive pilot was executed and independently recomputed (66 queries).
+60/64 adaptive proposals were feasible, but selected reconnaissance-to-benign ASR
+and ASR gain were both zero. Selected validation macro-F1 decreased by 1.019
+percentage points. See `results/m6-adaptive-frozen-pilot-v1/README.md` for all
+attempts, figures and limitations. This is not a signed live attack result;
+live integration remains in progress.
+
+### Live adaptive smoke independently verified — 2026-09-28
+
+The v2 one-round smoke and independent signed-provenance/search verifier passed.
+Three adaptive contributions were newly TPM-signed; actual and predicted aggregates
+match exactly. Optimization-validation ASR: 0 to 1; macro-F1: 0.342901 to 0.107455.
+This is round 1, one seed, a weak initial baseline and privileged validation access;
+no test access or 30-round efficacy claim. See `results/m6-adaptive-live-smoke-v2/README.md`
+for figures, all queries and limitations. TPM containers are stopped; evidence is retained.
+
+### Paired adaptive multiround protocol — 2026-09-28
+
+Prepared two 30-round arms at seed 341593: clean and adaptive in rounds 11–30,
+66 queries per attacked round, original gated policy. Nine focused tests and
+undefined-name checks pass. Test evaluation follows completion of both trajectories.
+See `docs/M6_ADAPTIVE_MULTIROUND.md` and `configs/m6-adaptive-paired-s341593-v1.json`.
+No multiround attack outcome is claimed before execution and verification.
+
+
+## V4 numerical runtime and paired execution — prepared before restart
+
+Thirty-six independent container probes passed exact model-hash equality: two
+repetitions for every client at round 1 and clients 01, 02, 15 at round 10.
+The results and code digests are in `results/m6-numeric-runtime-preflight-v1`.
+This is finite supporting evidence, not a guarantee for all future rounds.
+
+V4 uses `scripts/m6_numeric_runtime.py` to set one Torch intra/inter-op thread,
+one OMP/MKL/OpenBLAS/NumExpr thread and MKL_CBWR=COMPATIBLE before numerical
+imports. Training, signing, coordinator numerical commands, search and verification
+use this runtime. Two clients run concurrently. Both arms are rebuilt in a fresh
+pair workspace; no previous checkpoint is overwritten or reclassified.
+
+Arms now progress round by round (clean then adaptive), so the unchanged exact
+pre-attack equality check runs immediately at each of rounds 1–10. Attack timing,
+query budget, policy, seed, dataset and selected-checkpoint-only test rule remain
+unchanged. The currently running v3 TPMs are reused with fresh attestations and
+startup timestamps bound in the execution lock; a restart stops the run.
+
+Operative runner: `scripts/run_m6_adaptive_paired_v4.py`; plan:
+`configs/m6-adaptive-paired-s341593-v4.json`; log:
+`m6-adaptive-paired-s341593-v4.log`. Completion still requires both 30-round arms
+and final verifications. No numerical tolerance replaces the original equality gate.
+
+## Completed paired adaptive v4 — 2026-09-29 analysis
+
+Both 30-round trajectories completed and verified on 2026-09-28 at 18:30 local
+(log marker ADAPTIVE PAIRED CAMPAIGN VERIFIED). This supersedes the earlier
+running/interrupted status notes, retained above as execution history. The recovery
+reverified existing rounds and preserved the original lock. TPMs were stopped by
+the completed runner after final verification, not restarted during recovery.
+
+Selected checkpoints: clean round 20, adaptive round 25. Pooled test macro-F1 is
+0.9242495921 and 0.9389700250 respectively (adaptive minus clean +1.4720 percentage
+points). Targeted reconnaissance-to-benign test ASR is 0/669 for both. None of the
+20 adaptive search rounds met the prespecified success criterion (1,320 queries).
+All 60 malicious client-round contributions participated: 32 accepted and 28
+accepted downweighted. Thus contribution admission is not equivalent to achieving
+the attack objective. Honest interventions in rounds 11–30 were 73 downweighted
+and 8 quarantined out of 300 clean decisions, versus 47 and 3 out of 240 adaptive
+honest decisions; denominators differ and these are descriptive counts.
+
+The first ten paired checkpoints match byte for byte. Selection in the adaptive
+arm occurred after attack onset; the zero-ASR finding is not explained by choosing
+a pre-attack checkpoint. One seed does not establish statistical superiority,
+universal robustness, or a beneficial effect of poisoning. No additional test
+inference or post-test tuning was performed for the report.
+
+Report: `results/m6-adaptive-paired-v4/README.md`, source-bound JSON results and four
+PNG/PDF figures. Generator: `scripts/report_m6_adaptive_paired_v4.py`. Checks cover
+locked files, checkpoint/evaluation/decision hashes, exact pre-attack pairing,
+selected query metrics and validation-based checkpoint selection. Existing M8
+preservation packages do not yet cover this new experiment. Next: prespecify the
+multiseed extension before running it, then extend investigative/preservation
+artifacts and thesis discussion. No new experiments were launched by this report.
+## Adaptive four-seed extension launched — 2026-09-29
+
+The protocol is fixed in docs/M6_ADAPTIVE_MULTISEED_V1.md and
+configs/m6-adaptive-multiseed-v1.lock.json before training. Four new seeds
+342593–345593 repeat the unchanged v4 attack and gated-composite defense in paired
+clean/adaptive trajectories (240 new rounds, 5,280 search queries). The previously
+observed seed 341593 remains explicitly exploratory; no new attack objective or
+post-test parameter tuning is included. See the protocol for endpoints and limits.
+
+Runner scripts/run_m6_adaptive_paired_seed.py adds explicit seed-specific federation
+and partition checks without changing locked v4 sources. The supervisor
+scripts/run_m6_adaptive_multiseed_v1.py uses fresh TPM workspaces and existing M4/M5
+commands, verifies immutable inputs and stops on any failed step. Eleven focused
+tests and undefined-name checks passed. Live log: m6-adaptive-multiseed-v1.log.
+The detached launch receipt is artifacts/m6-adaptive-multiseed-v1-process.json.
+
+All 31 measured M4 image files matched the host. The first preflight probe used
+python instead of python3, which is what Dockerfile.m4 provides; it failed before
+any network removal or training. After correcting that probe, four historical clean
+policy network bridges were inspected and released only after confirming they had
+no attached containers or active project containers. Inspection snapshots are under
+results/m6-adaptive-multiseed-preflight-v1. All volumes and evidence remain intact.
+No new results are claimed until each full pair and final evaluation verify.

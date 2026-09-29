@@ -106,6 +106,9 @@ class TrustDeploymentTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             compose = root / "compose.m5.yaml"
+            (root / "configs").mkdir()
+            federation = root / "configs" / "federation.yaml"
+            federation.write_text("schema_version: 1.0\n", encoding="utf-8")
             partition = root / "partition"
             campaign = root / "campaign"
             trust = root / "trust"
@@ -124,6 +127,8 @@ class TrustDeploymentTests(unittest.TestCase):
                 "verify",
                 "--compose",
                 str(compose),
+                "--federation-config",
+                str(federation),
                 "--partition-workspace",
                 str(partition),
                 "--workspace",

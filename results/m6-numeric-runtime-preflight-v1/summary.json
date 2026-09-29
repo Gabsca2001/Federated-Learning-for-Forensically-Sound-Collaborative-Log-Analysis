@@ -1,0 +1,13 @@
+{
+  "status": "verified",
+  "runtime_image_id": "sha256:c5fdc9897569c01651e5af83be32f10bd63ff53d8a3288fe2391544a7cc9e1f0",
+  "case_count": 18,
+  "independent_containers": 36,
+  "test_data_accessed": false,
+  "code": {
+    "scripts/m6_numeric_runtime.py": "1b888c65ca3b2f81d33330593bf1d86e3dd2de75b73cb108d100877cc0508470",
+    "scripts/probe_m6_numeric_runtime.py": "a2645e1f2bdaf9b5fca7d4c05a30fc9e9f2f9e47563c8cf7b65be51eb3e0d562",
+    "scripts/check_m6_numeric_runtime.py": "5d05f616553cfc431b710ea48ef12d4a9a24b6350b40203be5390aed5edae6b9"
+  },
+  "limitation": "Finite preflight, not a guarantee for all rounds; strict paired checkpoint equality remains enforced."
+}

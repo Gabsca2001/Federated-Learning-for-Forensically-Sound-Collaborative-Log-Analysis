@@ -431,6 +431,12 @@ class SecureRoundAdmissionTests(unittest.TestCase):
         self.assertEqual(decision["core"]["checks"][0]["name"], "replay_slot")
 
     def test_in_round_policy_controls_and_verifies_the_actual_checkpoint(self) -> None:
+        self._check_live_policy("gated_composite", 1)
+
+    def test_sequential_controls_and_verifies_the_actual_checkpoint(self) -> None:
+        self._check_live_policy("sequential", 0)
+
+    def _check_live_policy(self, policy: str, downweighted: int) -> None:
         import numpy as np
 
         workspace = self._aggregation_workspace()
@@ -473,7 +479,7 @@ class SecureRoundAdmissionTests(unittest.TestCase):
                     "schema_version": "1.0",
                     "runtime_admission": {
                         "policy_id": "test-in-round",
-                        "primary_policy": "gated_composite",
+                        "primary_policy": policy,
                         "minimum_contributors": 1,
                         "accepted_downweight_factor": 0.5,
                         "passed_with_warning_risk": 0.25,
@@ -647,7 +653,17 @@ class SecureRoundAdmissionTests(unittest.TestCase):
             )
         self.assertEqual(result["status"], "aggregated")
         self.assertEqual(result["accepted_count"], 1)
-        self.assertEqual(result["downweighted_count"], 1)
+        self.assertEqual(result["downweighted_count"], downweighted)
+        checkpoint = load_json(workspace / "checkpoint" / "manifest.json")
+        self.assertEqual(
+            checkpoint["core"]["aggregation_strategy"],
+            "FedAvg-" + policy.replace("_", "-"),
+        )
+        retained = checkpoint["core"]["accepted_inputs"][0]
+        self.assertEqual(
+            float(retained["effective_weight_decimal"]),
+            retained["num_examples"] * (0.5 if downweighted else 1.0),
+        )
         self.assertEqual(result["quarantined_count"], 0)
         self.assertEqual(verification["status"], "verified", verification)
         self.assertTrue(verification["trust_recomputed"])

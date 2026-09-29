@@ -1,0 +1,99 @@
+{
+  "runs": [
+    {
+      "condition": "clean",
+      "counts": {
+        "accepted": 369,
+        "accepted_downweighted": 75,
+        "statistically_quarantined": 6
+      },
+      "evaluation_sha256": "027649491dd06e027774656cee9e2773adaa15b72b48b53181ae09004278bc6e",
+      "manifest_sha256": "688ec16abe4953c5235b59449b4fa67ecdccfc58ebafa3c69a7cad0e2422c0d6",
+      "policy": "gated_composite",
+      "safe_counts": {
+        "accepted": 369,
+        "accepted_downweighted": 75,
+        "statistically_quarantined": 6
+      },
+      "seed": 341593,
+      "selected_round": 25,
+      "source_workspace": "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1",
+      "test_macro_f1": 0.9354670336662904,
+      "unsafe_counts": {},
+      "validation_macro_f1": 0.9617189166341542
+    },
+    {
+      "condition": "disagreement",
+      "counts": {
+        "accepted": 334,
+        "accepted_downweighted": 24,
+        "statistically_quarantined": 32,
+        "trust_quarantined": 60
+      },
+      "evaluation_sha256": "63b028bc516ba17b26b623c25dfddd154d87d71dfef29ed3e07111b0da38c763",
+      "manifest_sha256": "0a4973b806e336bdbe18d0fd6531c37f8bf20474a6661b068c948557d4574e6b",
+      "policy": "gated_composite",
+      "safe_counts": {
+        "accepted": 334,
+        "accepted_downweighted": 24,
+        "statistically_quarantined": 2
+      },
+      "seed": 341593,
+      "selected_round": 11,
+      "source_workspace": "artifacts/m6-policy-pilot-gated_composite-disagreement-s341593-v1",
+      "test_macro_f1": 0.9245538255799056,
+      "unsafe_counts": {
+        "statistically_quarantined": 30,
+        "trust_quarantined": 60
+      },
+      "validation_macro_f1": 0.9478635077857449
+    },
+    {
+      "condition": "clean",
+      "counts": {
+        "accepted": 446,
+        "statistically_quarantined": 4
+      },
+      "evaluation_sha256": "003b0d8e306483ea03db4e8ddf307fe6edf5ef9809b58ca93aecbe4f41052a00",
+      "manifest_sha256": "118f293555a40d9509e7a979b7f05154596f6e57d6efdb6d6c1aa173378ddc8a",
+      "policy": "sequential",
+      "safe_counts": {
+        "accepted": 446,
+        "statistically_quarantined": 4
+      },
+      "seed": 341593,
+      "selected_round": 11,
+      "source_workspace": "artifacts/m6-policy-pilot-sequential-clean-s341593-v1",
+      "test_macro_f1": 0.9225672285470168,
+      "unsafe_counts": {},
+      "validation_macro_f1": 0.9483333731727267
+    },
+    {
+      "condition": "disagreement",
+      "counts": {
+        "accepted": 358,
+        "statistically_quarantined": 32,
+        "trust_quarantined": 60
+      },
+      "evaluation_sha256": "7db2318eae515cfbf4466f048f19ec6c9f329885af001a31f9d18e24a811bf2f",
+      "manifest_sha256": "327aa0af2c269a560fcc404b06fcf29de347b5ec6b2db263b23b1f93b0d6adb8",
+      "policy": "sequential",
+      "safe_counts": {
+        "accepted": 358,
+        "statistically_quarantined": 2
+      },
+      "seed": 341593,
+      "selected_round": 11,
+      "source_workspace": "artifacts/m6-policy-pilot-sequential-disagreement-s341593-v1",
+      "test_macro_f1": 0.9224306784752164,
+      "unsafe_counts": {
+        "statistically_quarantined": 30,
+        "trust_quarantined": 60
+      },
+      "validation_macro_f1": 0.9480130654854643
+    }
+  ],
+  "schema_version": "1.0",
+  "scope": "one-seed descriptive pilot; no population superiority claim",
+  "source_verification": "M5 campaign verifiers passed in execution log; digest and decision-count checks repeated during summary extraction"
+}

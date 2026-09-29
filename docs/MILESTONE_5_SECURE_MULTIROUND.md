@@ -305,3 +305,33 @@ six-class head, so this cannot be reported as 24 independent samples or open-set
 
 See [External UWF-ZeekData22 generalization](EXTERNAL_GENERALIZATION.md) for acquisition,
 commands, artifacts, verified results, and the claim boundary.
+
+## Active sequential ablation (2026-09-25)
+
+The new opt-in `configs/in-round-admission-sequential.yaml` uses the same calibration
+as the default gated-composite config, with sequential controlling actual admission.
+Sequential admits at full weight or quarantines; it does not use intermediate downweights.
+Both enforce integrity and observed-trust vetoes. Checkpoints explicitly record
+`FedAvg-sequential` or `FedAvg-gated-composite`, independently checked against the bound policy.
+Historical gated artifacts retain compatibility through the explicit prior-digest allowlist.
+
+`run_m5_secure_multiround.py --federation-config configs/<file>.yaml` passes the selected
+config into M5 initialization; the default is unchanged. Each new seed needs a matching
+CPU partition and fresh measured M4 state. [Protocol](M6_POLICY_PILOT.md).
+
+## Five-seed active-policy gate completed — 2026-09-25
+
+This completion update supersedes the earlier in-progress checkpoints above. All 20
+30-round campaigns completed and passed their campaign verifiers (600 rounds, 9,000
+contribution decisions). Recovery retained previous artifacts. The final
+[report, figures and source-bound tables](../results/m6-active-policy-multiseed-v1/README.md) are available.
+
+Mean test macro-F1: gated/sequential 0.942285/0.939303 clean and
+0.939053/0.936771 under controlled disagreement. Paired gated-minus-sequential
+95% t intervals include zero in both conditions: [-0.004490, 0.010455] and
+[-0.009307, 0.013869]. Superiority is not established. Both exclude 450/450
+declared-unsafe contributions per policy, while gated produces more benign
+quarantines and downweights. Trust-failure cells remain counterfactual.
+Five seed pairs are the statistical units; rounds and contributions are not
+independent repetitions. Adaptive attack and threshold/weight sensitivity remain
+future gates; the existing M8 closures do not automatically cover these new runs.

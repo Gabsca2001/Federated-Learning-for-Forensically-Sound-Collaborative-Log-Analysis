@@ -55,3 +55,23 @@ The repository intentionally does not publish:
 - model checkpoints or client updates;
 - private keys, TPM state, or client certificates;
 - the 2.6 GB offline recovery archive.
+
+## Additional completed research snapshots (status 2026-09-29)
+
+- [Active-policy pilot](m6-active-policy-pilot-v1/README.md): initial paired policy runs.
+- [Five-seed active-policy comparison](m6-active-policy-multiseed-v1/README.md): 20 verified campaigns; paired intervals include zero.
+- [Fixed-signal sensitivity](m6-policy-sensitivity-replay-v1/README.md): seven variants, replay only.
+- [Live +10% downweight sensitivity](m6-live-downplus10-v1/README.md): ten new campaigns; reference policy retained.
+- [Frozen adaptive pilot](m6-adaptive-frozen-pilot-v1/README.md): no targeted success within the fixed 66-query budget.
+- [Signed adaptive smoke](m6-adaptive-live-smoke-v2/README.md): round-1 validation success; not a mature-model/test result.
+- [Paired adaptive v4](m6-adaptive-paired-v4/README.md): 60 verified rounds; selected-checkpoint test ASR 0/669 in both arms.
+- [Numerical runtime preflight](m6-numeric-runtime-preflight-v1/summary.json): 36 independent container probes.
+- [Preserved v3 numerical incident](m6-adaptive-paired-v3-reproducibility-incident/diagnosis.json): stopped before adaptive treatment and test evaluation.
+
+These are dated snapshots. Their future-work paragraphs describe what remained at
+publication time; the index above and current protocol documentation describe today's
+status. Snapshot files with recorded hashes are not retroactively rewritten.
+The [four-new-seed extension](../docs/M6_ADAPTIVE_MULTISEED_V1.md) is running, not a
+completed result. Raw Docker network inspection from its preflight is local operational
+material and is excluded from publication. The existing M8 snapshots do not cover
+these newer extensions. No private keys, full updates or dataset records are published.

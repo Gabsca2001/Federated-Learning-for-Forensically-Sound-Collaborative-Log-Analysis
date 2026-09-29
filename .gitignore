@@ -190,3 +190,9 @@ cython_debug/
 
 # Local diagnostic and transfer archives
 /*.zip
+
+# Local experiment process state and operational recovery material
+/*.process-lock
+/m8-final-receipt-*.json
+/resume_m6_*.sh
+/results/m6-adaptive-multiseed-preflight-v1/

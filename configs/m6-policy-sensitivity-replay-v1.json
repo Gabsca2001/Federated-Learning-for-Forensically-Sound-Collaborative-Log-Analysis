@@ -1,0 +1,63 @@
+{
+  "experiment_id": "m6-policy-sensitivity-replay-v1",
+  "semantics": "fixed recorded signals; no retraining, no test access, no parameter selection",
+  "seeds": [
+    341593,
+    342593,
+    343593,
+    344593,
+    345593
+  ],
+  "source_policies": [
+    "gated_composite",
+    "sequential"
+  ],
+  "conditions": [
+    "clean",
+    "disagreement"
+  ],
+  "variants": [
+    {
+      "id": "baseline",
+      "down_multiplier": 1,
+      "quarantine_multiplier": 1,
+      "weight": 0.5
+    },
+    {
+      "id": "down-10pct",
+      "down_multiplier": 0.9,
+      "quarantine_multiplier": 1,
+      "weight": 0.5
+    },
+    {
+      "id": "down+10pct",
+      "down_multiplier": 1.1,
+      "quarantine_multiplier": 1,
+      "weight": 0.5
+    },
+    {
+      "id": "quarantine-10pct",
+      "down_multiplier": 1,
+      "quarantine_multiplier": 0.9,
+      "weight": 0.5
+    },
+    {
+      "id": "quarantine+10pct",
+      "down_multiplier": 1,
+      "quarantine_multiplier": 1.1,
+      "weight": 0.5
+    },
+    {
+      "id": "weight-025",
+      "down_multiplier": 1,
+      "quarantine_multiplier": 1,
+      "weight": 0.25
+    },
+    {
+      "id": "weight-075",
+      "down_multiplier": 1,
+      "quarantine_multiplier": 1,
+      "weight": 0.75
+    }
+  ]
+}

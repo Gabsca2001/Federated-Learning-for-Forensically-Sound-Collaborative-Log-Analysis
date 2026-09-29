@@ -1,0 +1,30 @@
+{
+  "experiment_id": "m6-downplus10-v1",
+  "scope": "exploratory live sensitivity; no untouched test confirmation",
+  "seeds": [
+    341593,
+    342593,
+    343593,
+    344593,
+    345593
+  ],
+  "rounds": 30,
+  "workers": 4,
+  "refresh_interval": 3,
+  "continuation": "continue remaining seeds after technical verification regardless of favorable or unfavorable scores",
+  "files": {
+    "configs/in-round-admission-downplus10-v1.yaml": "19193c4a27a3206a4ccfa0a6c40257bbfbec0597586201bc0ee42000efdc0d7e",
+    "scripts/run_m6_downplus10.sh": "8ccf9caa45c1f681b4023a487e6094cec54d18360e6494b9034c87cc74b72c65",
+    "scripts/check_m6_downplus10.py": "d669eaef74fd2c79abaafad810d4e93fdddd6701383de92aa2d55af7859e8e78",
+    "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1/campaign-manifest.json": "688ec16abe4953c5235b59449b4fa67ecdccfc58ebafa3c69a7cad0e2422c0d6",
+    "artifacts/m6-policy-pilot-gated_composite-disagreement-s341593-v1/campaign-manifest.json": "0a4973b806e336bdbe18d0fd6531c37f8bf20474a6661b068c948557d4574e6b",
+    "artifacts/m6-policy-multiseed-gated_composite-clean-s342593-v1/campaign-manifest.json": "4b04db56620b5aa8ae61ebb41bba0f30f94aa183b6a92712d9ae4aa34f6aaf2e",
+    "artifacts/m6-policy-multiseed-gated_composite-disagreement-s342593-v1/campaign-manifest.json": "ca1f16f4781e55fa2c72ba10c60d05016e2b2e47e10c695f5807aa92da4b075c",
+    "artifacts/m6-policy-multiseed-gated_composite-clean-s343593-v1/campaign-manifest.json": "0c1221a6b242d4907c85974b22204904663dc64428c3e2c3e8c7f17a479b5a57",
+    "artifacts/m6-policy-multiseed-gated_composite-disagreement-s343593-v1/campaign-manifest.json": "f839d6e75417814402452ac6386fcab1cba37266ec9661bc2a65815393c2b510",
+    "artifacts/m6-policy-multiseed-gated_composite-clean-s344593-v1/campaign-manifest.json": "1617b026a905d34939cb7baa52ab1fd09dfc91cc6314cbc9cfc0c1b3bb89dddc",
+    "artifacts/m6-policy-multiseed-gated_composite-disagreement-s344593-v1/campaign-manifest.json": "fe23d05cb6d3d83761cf629799a3c5a28b8c09baa77e41c36b36a909a489c52c",
+    "artifacts/m6-policy-multiseed-gated_composite-clean-s345593-v1/campaign-manifest.json": "e281fea0f29c8758f02cf91ebc8928e2da13fffc3ac4ab720f9aa2a97c640a50",
+    "artifacts/m6-policy-multiseed-gated_composite-disagreement-s345593-v1/campaign-manifest.json": "92d4bf4caaf962f5963b06698cda27ae3aebbf6c368f6289b1d02617f9d70745"
+  }
+}

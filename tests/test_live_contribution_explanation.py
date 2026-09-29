@@ -116,7 +116,11 @@ live_contribution_explanations:
                 _settings(path)
 
     def test_legacy_implementation_compatibility_is_an_explicit_allowlist(self) -> None:
-        self.assertEqual(len(SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256), 3)
+        self.assertEqual(len(SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256), 4)
+        self.assertIn(
+            "25d41f7bfc3d254f99ff737007c76f4da31047c7c9d31f95f390eb6ab3e20517",
+            SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256,
+        )
         self.assertNotIn("0" * 64, SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256)
 
 

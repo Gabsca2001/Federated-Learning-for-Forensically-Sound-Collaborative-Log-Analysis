@@ -338,6 +338,7 @@ def main() -> int:
         "--trust-workspace", type=Path, default=Path("artifacts/m4-trust")
     )
     parser.add_argument("--node-root", type=Path, default=Path("artifacts/m4-nodes"))
+    parser.add_argument("--federation-config", type=Path, default=Path("configs/federation.yaml"))
     parser.add_argument("--rounds", type=int, default=30)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument(
@@ -377,6 +378,12 @@ def main() -> int:
         raise ValueError("--attestation-refresh-interval cannot be negative")
 
     root = arguments.compose.resolve().parent
+    federation_config = arguments.federation_config.resolve()
+    # Dockerfile.m5 copies configs/, not arbitrary host directories.
+    relative_federation = federation_config.relative_to(root / "configs")
+    if not federation_config.is_file():
+        raise FileNotFoundError(federation_config)
+    federation_container_config = f"/app/configs/{relative_federation.as_posix()}"
     compose_path = arguments.compose.resolve()
     compose_m4 = arguments.compose_m4.resolve()
     partition = arguments.partition_workspace.resolve()
@@ -579,7 +586,7 @@ def main() -> int:
                         "--partition-manifest",
                         "/partition/manifest.json",
                         "--config",
-                        "/app/configs/federation.yaml",
+                        federation_container_config,
                         "--secure-config",
                         "/app/configs/secure-round.yaml",
                         "--round-number",

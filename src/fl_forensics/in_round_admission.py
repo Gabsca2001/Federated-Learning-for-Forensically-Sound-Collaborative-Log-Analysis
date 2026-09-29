@@ -78,6 +78,8 @@ class InRoundAdmissionError(SecureRoundError):
 
 SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256 = frozenset(
     {
+        # Pre-policy-ablation implementation, retained for reconstructed campaigns.
+        "25d41f7bfc3d254f99ff737007c76f4da31047c7c9d31f95f390eb6ab3e20517",
         # Published clean in-round campaign.
         "e85281aa872bcc937d7b5bf4e48490d0af6f2067a36aa029ca2e24e9232ebd87",
         # Published live trust/statistical disagreement campaign.
@@ -264,6 +266,10 @@ def _load_bound_contract(workspace: Path) -> InRoundAdmissionContract:
         config_path=config_path, partition_manifest=partition
     )
     if observed.core.implementation_sha256 != expected.core.implementation_sha256:
+        if observed.core.primary_policy != "gated_composite":
+            raise InRoundAdmissionError(
+                "historical implementations only support gated_composite"
+            )
         if (
             observed.core.implementation_sha256
             not in SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
@@ -599,7 +605,8 @@ def _compute_statistical_state(
             "statistics": statistical[client_id],
             "policies": policies,
             "primary": next(
-                decision for decision in policies if decision.policy == "gated_composite"
+                decision for decision in policies
+                if decision.policy == contract.core.primary_policy
             ),
         }
     return result
@@ -937,6 +944,7 @@ def admit_and_aggregate_in_round(
         round_number=context.core.round_number,
         previous_checkpoint_sha256=context.core.previous_checkpoint_sha256,
         base_model_sha256=context.core.base_model_sha256,
+        aggregation_strategy="FedAvg-" + contract.core.primary_policy.replace("_", "-"),
         required_client_count=context.core.required_client_count,
         minimum_contributors=contract.core.minimum_contributors,
         evaluated_count=len(decisions),
@@ -1053,6 +1061,10 @@ def verify_in_round_secure_round(
             if item.core.final_status not in {"accepted", "accepted_downweighted"}
         ]
         expected_values = {
+            "aggregation strategy": (
+                checkpoint.core.aggregation_strategy,
+                "FedAvg-" + contract.core.primary_policy.replace("_", "-"),
+            ),
             "campaign": (checkpoint.core.campaign_id, context.core.campaign_id),
             "context": (checkpoint.core.context_id, context.context_id),
             "context digest": (checkpoint.core.context_digest, context.core_digest),

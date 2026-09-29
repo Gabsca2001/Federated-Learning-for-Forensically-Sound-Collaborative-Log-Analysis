@@ -883,3 +883,36 @@ The dataset and all generated workspaces are intentionally excluded from Git. Be
 or moving an experiment, create and verify its M8 recovery export and retain the archive,
 timestamp material, and verification receipt under the evidence-retention policy chosen for
 the thesis.
+
+## Research status — 2026-09-29
+
+| Experiment | Verified scope | Current interpretation |
+|---|---|---|
+| Active policy comparison | 5 seeds, 20 campaigns, 600 rounds | Gated vs sequential: paired intervals include zero; no superiority claim |
+| Fixed-signal sensitivity | 7 variants, 63,000 recomputed decisions | Replay only; no retraining or predictive-performance claim |
+| Live downweight threshold +10% | 5 seeds, 10 new campaigns | Fewer benign interventions; no demonstrated predictive improvement |
+| Frozen adaptive pilot | 66 queries, independently recomputed | Targeted ASR gain zero; privileged validation oracle |
+| Live adaptive smoke | 1 round, 3 TPM-signed malicious updates | Validation ASR 0→1 on the weak initial model; no test evaluation |
+| Paired adaptive v4 | 1 seed, 30 clean + 30 adaptive rounds | Selected test ASR 0/669 in both; macro-F1 0.924250 vs 0.938970 |
+| Adaptive multiseed extension | 4 additional seed pairs, execution ongoing | Protocol fixed; no completed multiseed efficacy claim yet |
+
+The original gated-composite configuration remains the reference. Successful
+verification establishes the specified integrity/provenance checks, not attack
+success or universal robustness. Existing M8 packages cover their named historical
+campaigns; they do not yet preserve the later policy/sensitivity/adaptive extensions.
+
+See [the result index](results/README.md), [paired adaptive analysis](results/m6-adaptive-paired-v4/README.md),
+[execution history](docs/M6_ADAPTIVE_MULTIROUND.md), and the
+[fixed multiseed protocol](docs/M6_ADAPTIVE_MULTISEED_V1.md).
+
+### Running experiments and historical launchers
+
+Current multiseed supervision uses `scripts/recover_m6_adaptive_multiseed_invocation_v2.py`
+and log `m6-adaptive-multiseed-v1-recovery2.log`. The launchers are fresh-only:
+do not rerun them against an existing workspace. Earlier invocation scripts and
+failed attempts are retained for provenance, not advertised as current entry points.
+Consult the execution history before any recovery. Never restart active TPMs.
+
+Raw logs, datasets, private trust material and generated experiment workspaces stay
+local. Publish reviewed code/configuration, documentation and compact result snapshots.
+See [publication checklist](docs/PUBLICATION_READINESS.md) for the reviewed scope.

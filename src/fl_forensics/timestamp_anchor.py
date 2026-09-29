@@ -260,7 +260,12 @@ def _message_imprint(details: str) -> str:
     )
     if match is None:
         raise TimestampAnchorError("timestamp response is missing message imprint")
-    groups = re.findall(r"[0-9a-f]{4}\s+-\s+([0-9a-f -]+)", match.group(1), re.IGNORECASE)
+    # Stop at the multi-space separator before OpenSSL's ASCII column.
+    groups = re.findall(
+        r"[0-9a-f]{4}[ \t]+-[ \t]+([0-9a-f]{2}(?:[ -][0-9a-f]{2})*)(?=[ \t]{2,}|$)",
+        match.group(1),
+        re.IGNORECASE,
+    )
     value = "".join(groups).replace(" ", "").replace("-", "").lower()
     if re.fullmatch(r"[0-9a-f]{64}", value) is None:
         raise TimestampAnchorError("timestamp message imprint is not SHA-256")

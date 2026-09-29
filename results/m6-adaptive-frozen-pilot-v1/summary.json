@@ -1,0 +1,29 @@
+{
+  "baseline_targeted_asr": 0.0,
+  "baseline_validation_macro_f1": 0.9481838085763261,
+  "clean_aggregate_recomputed": true,
+  "config_sha256": "8e2660a3eedea44c9d7cc86b4a6626023b21e175654869f3af830da8663ae568",
+  "experiment_id": "m6-adaptive-frozen-pilot-v1",
+  "fixed_attack_feasible": false,
+  "fixed_attack_targeted_asr": 0.0,
+  "generator_sha256": "c7bd40315880ee0c9dc40cdb60c750a5295d3145bea1278e719bf736dd9f4030",
+  "knowledge": "white-box coordinator oracle: exact validation, all frozen updates, calibration and all gate responses; strong-knowledge stress test, not a guaranteed upper bound",
+  "query_count": 66,
+  "selected_asr_gain": 0.0,
+  "selected_query": 47,
+  "selected_targeted_asr": 0.0,
+  "selected_validation_drop": 0.010194637626025682,
+  "selection_rule": "maximize feasible aggregate targeted ASR; tie-break lower targeted cross-entropy, then earlier query; controls excluded",
+  "semantics": "controlled derived updates, not new TPM-signed submissions; no live trajectory",
+  "source_bindings": {
+    "artifacts/m3-data24-parquet-iid-local-test-v1/server/splits/validation.json": "0fcab9a116521fe94714e00d3e5620cdbabfdae8f0aea61bbd0c3acb5eac4d3d",
+    "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1/rounds/round-011/checkpoint/manifest.json": "b2b971ab67e257c3dfe6fde5211cc3c1918cfc1a0e6cd5132a05e2c386b1783a",
+    "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1/rounds/round-011/public/in-round-admission-contract.json": "caced59bf4edec67dfe16dfb9b9d97a205e357e74d333a6a71360e549c80adb9"
+  },
+  "source_verified": true,
+  "success_on_optimization_validation": false,
+  "target_validation_rows": 343,
+  "test_data_accessed": false,
+  "adaptive_feasible_count": 60,
+  "adaptive_attempt_count": 64
+}

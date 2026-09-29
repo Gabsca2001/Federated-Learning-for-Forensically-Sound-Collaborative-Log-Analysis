@@ -1,0 +1,20 @@
+{
+  "status": "stopped_before_attack",
+  "clean_rounds_complete": 30,
+  "adaptive_rounds_aggregated": 1,
+  "base_models_identical": true,
+  "federation_configs_identical": true,
+  "different_client": "client01",
+  "different_client_tensor_values": 288,
+  "client_tensor_value_count": 13862,
+  "client_max_absolute_difference": 1.4901161193847656e-08,
+  "aggregate_max_absolute_difference": 2.9802322387695312e-08,
+  "validation_prediction_differences": 0,
+  "validation_rows": 3223,
+  "admission_statuses_unchanged": true,
+  "gate_scores_bitwise_identical": false,
+  "test_accessed": false,
+  "single_thread_independent_repetitions": 2,
+  "single_thread_update_sha256": "d57b0cc25aaa329c632e081d9ff810690aa2eebd782391b5f94a24b823759f33",
+  "limitations": "Two matching diagnostic repetitions support a runtime correction but do not prove universal bitwise reproducibility. No tolerance change, locked-code edit or campaign continuation performed."
+}
