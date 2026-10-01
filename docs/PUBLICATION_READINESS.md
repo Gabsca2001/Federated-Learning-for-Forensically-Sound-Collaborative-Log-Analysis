@@ -52,7 +52,7 @@ closures for these extensions remain outstanding.
 
 These groups can be reviewed separately; they must remain dependency-complete before
 publishing. Do not stage only a report while omitting code/configuration referenced by
-its manifest. No commit, staging, push or external message was performed by this review.
+its manifest. At the time of the 2026-09-29 publication review no commit, staging, push or`nexternal message had been performed; later commits are recorded in Git history.
 
 ## Keep local
 
@@ -80,13 +80,16 @@ or oversized-file findings and no active-lock mismatches. Final counts change as
 checklist and audit script are included. Report snapshots and recorded hashes were
 not edited by this documentation review.
 
-## Accurate points for the supervisor update
+## Current accurate points for the supervisor update — 2026-09-30
 
-Completed: five-seed policy comparison, replay/live sensitivity and the first signed
-paired adaptive campaign. Available: reproducible code, verified source bindings,
-compact result tables and comparison figures. Preliminary adaptive finding: targeted
-ASR zero in the selected test models for one seed, despite admitted malicious updates.
-Ongoing: four additional adaptive seed pairs. Limitations: controlled/privileged threat
-model, small seed count, reused dataset, software TPMs, and new preservation closures
-still to produce. Avoid saying adaptive robustness is demonstrated or that the original
-gated policy is statistically superior.
+Completed: five-seed adaptive paired evaluation, four-cell frozen objective/filter
+ablation, five-seed gated/sequential comparison, replay/live threshold sensitivity,
+and decision explanation/preservation for the named earlier M6 disagreement case.
+The five paired adaptive seeds all have selected test ASR 0/669 in clean and adaptive
+arms; the mean descriptive adaptive-minus-clean test macro-F1 difference is +0.404 pp.
+The new frozen untargeted pilot selected a 25.297 pp validation macro-F1 loss under
+TPM-only versus 0.675 pp under gated-composite, without accessing test. It suggests
+a filter effect for one round and a finite privileged search, not held-out/live
+robustness. M8 does not yet preserve the new objective pilot or the later adaptive
+extensions. Avoid claims of universal robustness, causal deployment efficacy,
+or statistical superiority of the original gated policy.

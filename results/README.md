@@ -75,3 +75,11 @@ The [four-new-seed extension](../docs/M6_ADAPTIVE_MULTISEED_V1.md) is running, n
 completed result. Raw Docker network inspection from its preflight is local operational
 material and is excluded from publication. The existing M8 snapshots do not cover
 these newer extensions. No private keys, full updates or dataset records are published.
+
+## Adaptive extension completed — 2026-09-30
+
+[Five-seed paired analysis](m6-adaptive-multiseed-v1/README.md): all four new pairs verified; prior in-progress notes above are historical. Includes per-seed outcomes, separate four-new-seed statistics, four PNG/PDF figures, data and source/output hashes. No new model inference. This extension is not yet covered by an M8 recovery package.
+
+## Adaptive objective and policy ablation — 2026-09-30
+
+[Four-cell frozen-round pilot](m6-adaptive-objectives-ablation-v1/README.md), independently recomputed. The untargeted objective finds a 25.297 pp validation macro-F1 reduction under TPM-only and 0.675 pp under gated-composite. The result is validation-selected on one frozen round; it motivates, but does not replace, a new signed live multi-seed experiment.

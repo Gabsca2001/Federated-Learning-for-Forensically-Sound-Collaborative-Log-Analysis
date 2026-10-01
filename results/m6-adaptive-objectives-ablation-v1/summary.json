@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-09-30T12:42:21.266011+00:00",
+  "experiment": "M6 adaptive objective/policy frozen-round pilot v1",
+  "status": "verified",
+  "new_inference_performed": false,
+  "cells": [
+    {
+      "objective": "targeted",
+      "policy": "gated_composite",
+      "baseline_validation_macro_f1": 0.9481838085763261,
+      "selected_validation_macro_f1": 0.9379891709503004,
+      "selected_validation_drop": 0.010194637626025682,
+      "prespecified_threshold": 0.1,
+      "success_on_validation": false,
+      "selected_targeted_asr": 0.0,
+      "selected_query": 47,
+      "feasible_adaptive_proposals": 60,
+      "attacker_selected_status": {
+        "client02": "accepted",
+        "client05": "accepted_downweighted",
+        "client14": "accepted_downweighted"
+      },
+      "fixed_control_feasible": false,
+      "fixed_control_validation_drop": 0.0,
+      "objective_loss": 4.296928405761719,
+      "target_validation_rows": 343,
+      "query_count": 66,
+      "test_accessed": false
+    },
+    {
+      "objective": "targeted",
+      "policy": "tpm_only",
+      "baseline_validation_macro_f1": 0.9483333731727267,
+      "selected_validation_macro_f1": 0.8741383284793135,
+      "selected_validation_drop": 0.0741950446934132,
+      "prespecified_threshold": 0.1,
+      "success_on_validation": false,
+      "selected_targeted_asr": 0.0,
+      "selected_query": 65,
+      "feasible_adaptive_proposals": 64,
+      "attacker_selected_status": {
+        "client02": "accepted",
+        "client05": "accepted",
+        "client14": "accepted"
+      },
+      "fixed_control_feasible": true,
+      "fixed_control_validation_drop": 0.09442987104114753,
+      "objective_loss": 1.9114279747009277,
+      "target_validation_rows": 343,
+      "query_count": 66,
+      "test_accessed": false
+    },
+    {
+      "objective": "untargeted",
+      "policy": "gated_composite",
+      "baseline_validation_macro_f1": 0.9481838085763261,
+      "selected_validation_macro_f1": 0.941437624041726,
+      "selected_validation_drop": 0.006746184534600075,
+      "prespecified_threshold": 0.01,
+      "success_on_validation": false,
+      "selected_targeted_asr": 0.0,
+      "selected_query": 47,
+      "feasible_adaptive_proposals": 42,
+      "attacker_selected_status": {
+        "client02": "accepted_downweighted",
+        "client05": "accepted_downweighted",
+        "client14": "accepted_downweighted"
+      },
+      "fixed_control_feasible": false,
+      "fixed_control_validation_drop": 0.0,
+      "objective_loss": 0.15819604694843292,
+      "target_validation_rows": 343,
+      "query_count": 66,
+      "test_accessed": false
+    },
+    {
+      "objective": "untargeted",
+      "policy": "tpm_only",
+      "baseline_validation_macro_f1": 0.9483333731727267,
+      "selected_validation_macro_f1": 0.6953598633936066,
+      "selected_validation_drop": 0.25297350977912014,
+      "prespecified_threshold": 0.01,
+      "success_on_validation": true,
+      "selected_targeted_asr": 0.0,
+      "selected_query": 65,
+      "feasible_adaptive_proposals": 64,
+      "attacker_selected_status": {
+        "client02": "accepted",
+        "client05": "accepted",
+        "client14": "accepted"
+      },
+      "fixed_control_feasible": true,
+      "fixed_control_validation_drop": 0.09442987104114753,
+      "objective_loss": 0.7441532015800476,
+      "target_validation_rows": 343,
+      "query_count": 66,
+      "test_accessed": false
+    }
+  ],
+  "interpretation": "Validation-only, one seed and frozen round. The finite search suggests the statistical gate materially limits this untargeted search on this source round; this is not a live multi-round or held-out efficacy result."
+}

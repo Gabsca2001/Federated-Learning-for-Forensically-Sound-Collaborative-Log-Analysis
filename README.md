@@ -884,7 +884,7 @@ or moving an experiment, create and verify its M8 recovery export and retain the
 timestamp material, and verification receipt under the evidence-retention policy chosen for
 the thesis.
 
-## Research status — 2026-09-29
+## Research status — 2026-09-30
 
 | Experiment | Verified scope | Current interpretation |
 |---|---|---|
@@ -894,7 +894,7 @@ the thesis.
 | Frozen adaptive pilot | 66 queries, independently recomputed | Targeted ASR gain zero; privileged validation oracle |
 | Live adaptive smoke | 1 round, 3 TPM-signed malicious updates | Validation ASR 0→1 on the weak initial model; no test evaluation |
 | Paired adaptive v4 | 1 seed, 30 clean + 30 adaptive rounds | Selected test ASR 0/669 in both; macro-F1 0.924250 vs 0.938970 |
-| Adaptive multiseed extension | 4 additional seed pairs, execution ongoing | Protocol fixed; no completed multiseed efficacy claim yet |
+| Adaptive multiseed extension | 4 additional pairs verified; 5 pairs / 300 rounds overall | Selected test ASR 0/669 in both arms for every seed; descriptive paired analysis |`n| Multiobjective/filter ablation | 4 verified frozen-round searches, 66 queries each | Untargeted validation degradation 0.675 pp gated vs 25.297 pp TPM-only; pilot only |
 
 The original gated-composite configuration remains the reference. Successful
 verification establishes the specified integrity/provenance checks, not attack
@@ -907,7 +907,7 @@ See [the result index](results/README.md), [paired adaptive analysis](results/m6
 
 ### Running experiments and historical launchers
 
-Current multiseed supervision uses `scripts/recover_m6_adaptive_multiseed_invocation_v2.py`
+The completed multiseed extension used `scripts/recover_m6_adaptive_multiseed_invocation_v2.py`
 and log `m6-adaptive-multiseed-v1-recovery2.log`. The launchers are fresh-only:
 do not rerun them against an existing workspace. Earlier invocation scripts and
 failed attempts are retained for provenance, not advertised as current entry points.
@@ -918,3 +918,7 @@ local. Publish reviewed code/configuration, documentation and compact result sna
 See [publication checklist](docs/PUBLICATION_READINESS.md) for the reviewed scope.
 
 See the [supervisor-feedback evidence review](docs/SUPERVISOR_UPDATE_2026_09_29.md) for the scope and limitations of the August 27 follow-up experiments.
+
+[Completed five-seed adaptive analysis and figures](results/m6-adaptive-multiseed-v1/README.md). The recovery2 runner finished successfully; do not relaunch the completed workspaces.
+
+See the [multiobjective ablation report and figures](results/m6-adaptive-objectives-ablation-v1/README.md) and its [prespecified protocol](docs/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).

@@ -1,9 +1,26 @@
 # Implementation plan and acceptance gates
 
-> **Current status (2026-09-29):** the active-policy five-seed comparison, fixed-signal
+> **Pilot multiobiettivo — 2026-09-30:** quattro ricerche validation-only su un round firmato congelato.
+> Obiettivi reconnaissance→benign e degrado generale, gated-composite e TPM-only;
+> 66 query per cella, verifiche indipendenti completate. Nel caso untargeted il calo
+> selezionato è 0,675 pp con gated e 25,297 pp con TPM-only (soglia predefinita 1 pp).
+> Non è evidenza su test o training live; vedere il [report e i grafici](../results/m6-adaptive-objectives-ablation-v1/README.md)
+> e il [protocollo](M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
+
+
+> **Completion update — 2026-09-30:** all four adaptive extension pairs are verified.
+> The [five-seed report](../results/m6-adaptive-multiseed-v1/README.md) includes paired endpoints,
+> trajectories and admission counts. Selected test ASR is 0/669 in both arms for every seed.
+> The mean adaptive-minus-clean macro-F1 difference is +0.4038 pp across all five
+> seeds (+0.1367 pp for the four new seeds). These are descriptive outcomes, not
+> proof of universal robustness or beneficial poisoning. Earlier running/pending
+> statements below are historical. The original locked protocol is unchanged.
+
+
+> **Historical status snapshot (2026-09-29):** the active-policy five-seed comparison, fixed-signal
 > sensitivity, live +10% sensitivity, adaptive frozen pilot, signed smoke and paired
 > v4 seed341593 are completed. The four additional adaptive seed pairs are running;
-> their results are not yet available. See [current result index](../results/README.md)
+> their completion is recorded in the newer update. See [current result index](../results/README.md)
 > and [publication checklist](PUBLICATION_READINESS.md). Dated preparation, stopped,
 > pending and running notes below are historical execution records, superseded by
 > the later completion/recovery entries. Original locked protocols remain unchanged.

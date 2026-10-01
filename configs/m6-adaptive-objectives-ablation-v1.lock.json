@@ -1,0 +1,18 @@
+{
+  "experiment_id": "m6-adaptive-objectives-ablation-v1",
+  "files": {
+    "configs/m6-adaptive-objectives-ablation-v1.json": "90116109396b2ef28d054965e1e0310705acb50d6059e3eaa18da6773c1828fa",
+    "docs/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md": "6316778f3d9365a827a8d30cd6430d9a2f85cbbe3ca769f9c4270dc732f13fb8",
+    "scripts/run_m6_adaptive_objectives_ablation_v1.py": "2196e9fa42c87344ae49c7ee9de28a37aff6a52a01fe7e91dcd2762f9ab6eedc",
+    "configs/m6-adaptive-frozen-pilot-v1.json": "8e2660a3eedea44c9d7cc86b4a6626023b21e175654869f3af830da8663ae568",
+    "configs/m6-adaptive-frozen-pilot-v1.lock.json": "b60cea62dab01356a1841c4c13ae727e13005c3f3354cf7bc17848b8ac9adcce",
+    "scripts/run_m6_adaptive_frozen.py": "c7bd40315880ee0c9dc40cdb60c750a5295d3145bea1278e719bf736dd9f4030"
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.3",
+    "torch": "2.14.0",
+    "flwr": "1.38.0",
+    "scikit-learn": "1.9.1"
+  }
+}

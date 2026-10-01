@@ -1,0 +1,30 @@
+{
+  "experiment_id": "m6-adaptive-objectives-ablation-v1",
+  "source_workspace": "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1/rounds/round-011",
+  "trust_workspace": "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1-trust",
+  "validation_split": "artifacts/m3-data24-parquet-iid-local-test-v1/server/splits/validation.json",
+  "attackers": ["client02", "client05", "client14"],
+  "max_queries": 66,
+  "knowledge": "Privileged white-box validation oracle, all frozen updates and exact policy responses; finite heuristic, not a guaranteed upper bound.",
+  "selection": {
+    "targeted": "Among feasible adaptive proposals, maximize reconnaissance-to-benign validation ASR; tie-break by lower target cross-entropy, then earlier query. Controls excluded.",
+    "untargeted": "Among feasible adaptive proposals, minimize all-class validation macro-F1; tie-break by higher all-row true-label cross-entropy, then earlier query. Controls excluded."
+  },
+  "test_access": false,
+  "artifact_semantics": "Derived candidate updates on a frozen signed round; no new client signatures, TPM submissions or live trajectory.",
+  "bindings": {
+    "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1/rounds/round-011/checkpoint/manifest.json": "b2b971ab67e257c3dfe6fde5211cc3c1918cfc1a0e6cd5132a05e2c386b1783a",
+    "artifacts/m6-policy-pilot-gated_composite-clean-s341593-v1/rounds/round-011/public/in-round-admission-contract.json": "caced59bf4edec67dfe16dfb9b9d97a205e357e74d333a6a71360e549c80adb9",
+    "artifacts/m3-data24-parquet-iid-local-test-v1/server/splits/validation.json": "0fcab9a116521fe94714e00d3e5620cdbabfdae8f0aea61bbd0c3acb5eac4d3d"
+  },
+  "radii": [0.25, 0.5, 1.0, 2.0],
+  "steps_per_radius": 16,
+  "initial_step": 0.25,
+  "step_growth": 1.25,
+  "step_shrink": 0.5,
+  "minimum_step": 0.0001,
+  "source_class": "reconnaissance",
+  "target_class": "benign",
+  "minimum_asr_gain": 0.1,
+  "minimum_macro_f1_drop": 0.01
+}

@@ -1,5 +1,14 @@
 # Paired active-policy pilot
 
+> **Completion update — 2026-09-30:** all four adaptive extension pairs are verified.
+> The [five-seed report](../results/m6-adaptive-multiseed-v1/README.md) includes paired endpoints,
+> trajectories and admission counts. Selected test ASR is 0/669 in both arms for every seed.
+> The mean adaptive-minus-clean macro-F1 difference is +0.4038 pp across all five
+> seeds (+0.1367 pp for the four new seeds). These are descriptive outcomes, not
+> proof of universal robustness or beneficial poisoning. Earlier running/pending
+> statements below are historical. The original locked protocol is unchanged.
+
+
 > **Current status (2026-09-29):** the active-policy five-seed comparison, fixed-signal
 > sensitivity, live +10% sensitivity, adaptive frozen pilot, signed smoke and paired
 > v4 seed341593 are completed. The four additional adaptive seed pairs are running;

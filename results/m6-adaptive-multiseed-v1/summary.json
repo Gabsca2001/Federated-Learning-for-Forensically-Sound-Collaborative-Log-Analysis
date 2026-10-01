@@ -1,0 +1,319 @@
+{
+  "seeds": [
+    {
+      "seed": 341593,
+      "cohort": "exploratory reference",
+      "clean_selected_round": 20,
+      "clean_test_macro_f1": 0.9242495921056749,
+      "clean_test_asr": 0.0,
+      "clean_target_errors": 0,
+      "clean_target_examples": 669,
+      "adaptive_selected_round": 25,
+      "adaptive_test_macro_f1": 0.9389700250156934,
+      "adaptive_test_asr": 0.0,
+      "adaptive_target_errors": 0,
+      "adaptive_target_examples": 669,
+      "delta_macro_f1": 0.014720432910018455,
+      "delta_asr": 0.0
+    },
+    {
+      "seed": 342593,
+      "cohort": "prespecified extension",
+      "clean_selected_round": 30,
+      "clean_test_macro_f1": 0.9624881755526044,
+      "clean_test_asr": 0.0,
+      "clean_target_errors": 0,
+      "clean_target_examples": 669,
+      "adaptive_selected_round": 30,
+      "adaptive_test_macro_f1": 0.9625691285316114,
+      "adaptive_test_asr": 0.0,
+      "adaptive_target_errors": 0,
+      "adaptive_target_examples": 669,
+      "delta_macro_f1": 8.09529790070096e-05,
+      "delta_asr": 0.0
+    },
+    {
+      "seed": 343593,
+      "cohort": "prespecified extension",
+      "clean_selected_round": 13,
+      "clean_test_macro_f1": 0.9188388681060778,
+      "clean_test_asr": 0.0,
+      "clean_target_errors": 0,
+      "clean_target_examples": 669,
+      "adaptive_selected_round": 19,
+      "adaptive_test_macro_f1": 0.9321904439880826,
+      "adaptive_test_asr": 0.0,
+      "adaptive_target_errors": 0,
+      "adaptive_target_examples": 669,
+      "delta_macro_f1": 0.013351575882004751,
+      "delta_asr": 0.0
+    },
+    {
+      "seed": 344593,
+      "cohort": "prespecified extension",
+      "clean_selected_round": 21,
+      "clean_test_macro_f1": 0.9625249474568522,
+      "clean_test_asr": 0.0,
+      "clean_target_errors": 0,
+      "clean_target_examples": 669,
+      "adaptive_selected_round": 23,
+      "adaptive_test_macro_f1": 0.9626309559292303,
+      "adaptive_test_asr": 0.0,
+      "adaptive_target_errors": 0,
+      "adaptive_target_examples": 669,
+      "delta_macro_f1": 0.00010600847237807187,
+      "delta_asr": 0.0
+    },
+    {
+      "seed": 345593,
+      "cohort": "prespecified extension",
+      "clean_selected_round": 18,
+      "clean_test_macro_f1": 0.9321057121038964,
+      "clean_test_asr": 0.0,
+      "clean_target_errors": 0,
+      "clean_target_examples": 669,
+      "adaptive_selected_round": 18,
+      "adaptive_test_macro_f1": 0.9240367449514189,
+      "adaptive_test_asr": 0.0,
+      "adaptive_target_errors": 0,
+      "adaptive_target_examples": 669,
+      "delta_macro_f1": -0.008068967152477513,
+      "delta_asr": 0.0
+    }
+  ],
+  "aggregates": {
+    "all_five": {
+      "clean_test_macro_f1": {
+        "n": 5,
+        "mean": 0.9400414590650211,
+        "sample_sd": 0.021043237254546293
+      },
+      "adaptive_test_macro_f1": {
+        "n": 5,
+        "mean": 0.9440794596832073,
+        "sample_sd": 0.017714339514431618
+      },
+      "delta_macro_f1": {
+        "n": 5,
+        "mean": 0.004038000618186155,
+        "sample_sd": 0.00972823854453767
+      },
+      "clean_test_asr": {
+        "n": 5,
+        "mean": 0.0,
+        "sample_sd": 0.0
+      },
+      "adaptive_test_asr": {
+        "n": 5,
+        "mean": 0.0,
+        "sample_sd": 0.0
+      },
+      "delta_asr": {
+        "n": 5,
+        "mean": 0.0,
+        "sample_sd": 0.0
+      }
+    },
+    "four_new": {
+      "clean_test_macro_f1": {
+        "n": 4,
+        "mean": 0.9439894258048577,
+        "sample_sd": 0.022057066207358478
+      },
+      "adaptive_test_macro_f1": {
+        "n": 4,
+        "mean": 0.9453568183500858,
+        "sample_sd": 0.02018711135397387
+      },
+      "delta_macro_f1": {
+        "n": 4,
+        "mean": 0.00136739254522808,
+        "sample_sd": 0.008867760918644886
+      },
+      "clean_test_asr": {
+        "n": 4,
+        "mean": 0.0,
+        "sample_sd": 0.0
+      },
+      "adaptive_test_asr": {
+        "n": 4,
+        "mean": 0.0,
+        "sample_sd": 0.0
+      },
+      "delta_asr": {
+        "n": 4,
+        "mean": 0.0,
+        "sample_sd": 0.0
+      }
+    }
+  },
+  "rounds": 300,
+  "attack_search_queries": 6600,
+  "successful_validation_search_rounds": 0,
+  "admissions": [
+    {
+      "seed": 341593,
+      "arm": "clean",
+      "group": "honest",
+      "denominator": 300,
+      "counts": {
+        "accepted_downweighted": 73,
+        "accepted": 219,
+        "statistically_quarantined": 8
+      }
+    },
+    {
+      "seed": 341593,
+      "arm": "adaptive",
+      "group": "honest",
+      "denominator": 240,
+      "counts": {
+        "accepted_downweighted": 47,
+        "accepted": 190,
+        "statistically_quarantined": 3
+      }
+    },
+    {
+      "seed": 341593,
+      "arm": "adaptive",
+      "group": "attacker",
+      "denominator": 60,
+      "counts": {
+        "accepted_downweighted": 28,
+        "accepted": 32
+      }
+    },
+    {
+      "seed": 342593,
+      "arm": "clean",
+      "group": "honest",
+      "denominator": 300,
+      "counts": {
+        "accepted": 219,
+        "accepted_downweighted": 66,
+        "statistically_quarantined": 15
+      }
+    },
+    {
+      "seed": 342593,
+      "arm": "adaptive",
+      "group": "honest",
+      "denominator": 240,
+      "counts": {
+        "accepted": 197,
+        "accepted_downweighted": 39,
+        "statistically_quarantined": 4
+      }
+    },
+    {
+      "seed": 342593,
+      "arm": "adaptive",
+      "group": "attacker",
+      "denominator": 60,
+      "counts": {
+        "accepted_downweighted": 45,
+        "accepted": 7,
+        "statistically_quarantined": 8
+      }
+    },
+    {
+      "seed": 343593,
+      "arm": "clean",
+      "group": "honest",
+      "denominator": 300,
+      "counts": {
+        "accepted_downweighted": 63,
+        "statistically_quarantined": 13,
+        "accepted": 224
+      }
+    },
+    {
+      "seed": 343593,
+      "arm": "adaptive",
+      "group": "honest",
+      "denominator": 240,
+      "counts": {
+        "accepted_downweighted": 43,
+        "statistically_quarantined": 10,
+        "accepted": 187
+      }
+    },
+    {
+      "seed": 343593,
+      "arm": "adaptive",
+      "group": "attacker",
+      "denominator": 60,
+      "counts": {
+        "accepted_downweighted": 38,
+        "accepted": 21,
+        "statistically_quarantined": 1
+      }
+    },
+    {
+      "seed": 344593,
+      "arm": "clean",
+      "group": "honest",
+      "denominator": 300,
+      "counts": {
+        "accepted": 205,
+        "statistically_quarantined": 10,
+        "accepted_downweighted": 85
+      }
+    },
+    {
+      "seed": 344593,
+      "arm": "adaptive",
+      "group": "honest",
+      "denominator": 240,
+      "counts": {
+        "accepted": 180,
+        "statistically_quarantined": 5,
+        "accepted_downweighted": 55
+      }
+    },
+    {
+      "seed": 344593,
+      "arm": "adaptive",
+      "group": "attacker",
+      "denominator": 60,
+      "counts": {
+        "accepted": 19,
+        "accepted_downweighted": 41
+      }
+    },
+    {
+      "seed": 345593,
+      "arm": "clean",
+      "group": "honest",
+      "denominator": 300,
+      "counts": {
+        "accepted_downweighted": 63,
+        "accepted": 233,
+        "statistically_quarantined": 4
+      }
+    },
+    {
+      "seed": 345593,
+      "arm": "adaptive",
+      "group": "honest",
+      "denominator": 240,
+      "counts": {
+        "accepted_downweighted": 38,
+        "accepted": 201,
+        "statistically_quarantined": 1
+      }
+    },
+    {
+      "seed": 345593,
+      "arm": "adaptive",
+      "group": "attacker",
+      "denominator": 60,
+      "counts": {
+        "accepted_downweighted": 34,
+        "accepted": 26
+      }
+    }
+  ],
+  "new_inference_performed": false,
+  "scope": "Descriptive paired analysis; one known exploratory reference plus four prespecified extensions. Seeds, not rounds/queries, are experimental units."
+}

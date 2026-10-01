@@ -1,0 +1,5 @@
+objective,policy,baseline_validation_macro_f1,selected_validation_macro_f1,selected_validation_drop,prespecified_threshold,success_on_validation,selected_targeted_asr,selected_query,feasible_adaptive_proposals,fixed_control_feasible,fixed_control_validation_drop,objective_loss
+targeted,gated_composite,0.9481838085763261,0.9379891709503004,0.010194637626025682,0.1,False,0.0,47,60,False,0.0,4.296928405761719
+targeted,tpm_only,0.9483333731727267,0.8741383284793135,0.0741950446934132,0.1,False,0.0,65,64,True,0.09442987104114753,1.9114279747009277
+untargeted,gated_composite,0.9481838085763261,0.941437624041726,0.006746184534600075,0.01,False,0.0,47,42,False,0.0,0.15819604694843292
+untargeted,tpm_only,0.9483333731727267,0.6953598633936066,0.25297350977912014,0.01,True,0.0,65,64,True,0.09442987104114753,0.7441532015800476
