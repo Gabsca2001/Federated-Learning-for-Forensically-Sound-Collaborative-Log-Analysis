@@ -130,6 +130,27 @@ fl-forensics verify --workspace artifacts/demo-output
 The verifier must return `"status": "verified"`. The workspace is disposable and can be
 regenerated; it is not the thesis reference campaign.
 
+## Minimal orchestration with Make
+
+The root Makefile wraps documented CLI and script commands; it does not replace the
+experiment contracts. Run `make help` to list targets. The default target only prints
+help. Start with `make setup`, then `make validate` for dependency checks, pytest, Ruff,
+and the M1 fixture demo. The demo writes to `artifacts/demo-output-make`; it refuses an
+existing path. Choose a fresh path with `make smoke DEMO_WORKSPACE=artifacts/demo-run-2`.
+
+For a clean M2–M3 rebuild, download the controlled Parquet release with
+`make dataset-download`, then run `make foundation`. Alternatively, run `make m2`
+and `make m3` separately. M2 and M3 check all their output paths before starting and
+stop on the first failed command; set variables such as `DATA24_SOURCE`, `M2_DATA`,
+or `M3_IID_RUN` to use a new workspace. They never delete prior outputs. Do not use
+`make foundation` when any of its output workspaces already exists.
+
+The later M4–M8 workflows are not bundled into a single default target: the repository has
+distinct trust namespaces, locked experiment profiles, TPM state, and preservation
+configurations. Choose the exact documented profile and fresh workspace for those stages.
+The Makefile does not start Docker campaigns, adaptive attacks, or timestamp acquisition
+implicitly.
+
 ## Canonical experiment chain
 
 All commands below are run from the repository root with the virtual environment active.
