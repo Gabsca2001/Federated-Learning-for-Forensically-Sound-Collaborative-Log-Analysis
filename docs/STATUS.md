@@ -1,9 +1,26 @@
 # Implementation status
 
-> **Current status (2026-09-29):** the active-policy five-seed comparison, fixed-signal
+> **Pilot multiobiettivo — 2026-09-30:** quattro ricerche validation-only su un round firmato congelato.
+> Obiettivi reconnaissance→benign e degrado generale, gated-composite e TPM-only;
+> 66 query per cella, verifiche indipendenti completate. Nel caso untargeted il calo
+> selezionato è 0,675 pp con gated e 25,297 pp con TPM-only (soglia predefinita 1 pp).
+> Non è evidenza su test o training live; vedere il [report e i grafici](../results/m6-adaptive-objectives-ablation-v1/README.md)
+> e il [protocollo](M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
+
+
+> **Completion update — 2026-09-30:** all four adaptive extension pairs are verified.
+> The [five-seed report](../results/m6-adaptive-multiseed-v1/README.md) includes paired endpoints,
+> trajectories and admission counts. Selected test ASR is 0/669 in both arms for every seed.
+> The mean adaptive-minus-clean macro-F1 difference is +0.4038 pp across all five
+> seeds (+0.1367 pp for the four new seeds). These are descriptive outcomes, not
+> proof of universal robustness or beneficial poisoning. Earlier running/pending
+> statements below are historical. The original locked protocol is unchanged.
+
+
+> **Historical status snapshot (2026-09-29):** the active-policy five-seed comparison, fixed-signal
 > sensitivity, live +10% sensitivity, adaptive frozen pilot, signed smoke and paired
 > v4 seed341593 are completed. The four additional adaptive seed pairs are running;
-> their results are not yet available. See [current result index](../results/README.md)
+> their completion is recorded in the newer update. See [current result index](../results/README.md)
 > and [publication checklist](PUBLICATION_READINESS.md). Dated preparation, stopped,
 > pending and running notes below are historical execution records, superseded by
 > the later completion/recovery entries. Original locked protocols remain unchanged.
@@ -484,3 +501,95 @@ No new results are claimed until each full pair and final evaluation verify.
 
 ### Second invocation correction — 2026-09-29
 The first recovery preserved the seed argument but passed a relative script path. Path(__file__).relative_to(ROOT) then failed before writing the pair lock or starting training. The pair directory was confirmed empty. Separate recovery v2 passes the absolute runner path through the unchanged numerical wrapper. Its exclusive process guard and original input lock checks remain; it removes only the empty pair directory with nonrecursive rmdir, refusing any contents. A subprocess probe verified absolute __file__, preserved seed argument and numerical runtime before launch. Original scripts, locks, receipts and logs remain unchanged. Recovery v2 launched as PID 2305906; active log m6-adaptive-multiseed-v1-recovery2.log. See scripts/recover_m6_adaptive_multiseed_invocation_v2.py and artifacts/m6-adaptive-multiseed-v1-invocation-recovery2.json.
+
+## Untargeted adaptive M6 follow-up — seed 342593
+
+This new four-arm experiment uses the pre-specified protocol in
+M6_ADAPTIVE_UNTARGETED_LIVE_V1.md. The first launch verified 93/120
+arm-rounds before Docker Desktop exhausted its runtime mount table during
+client signing in gated_adaptive round 24. The error was diagnosed as a
+100,000-mount kernel limit at 99,938 active mounts, not data-disk exhaustion.
+The temporary runtime cap is 200,000; TPM containers and original artifacts
+were preserved.
+
+As of 2026-10-01, the strict resume preflight has revalidated the signed
+query-32 selection and replayed all 66 validation queries with no test access.
+Continuation is pending launch; no new experiment outcome is claimed. See
+M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md for the exact partial state,
+recovery script and receipts.
+
+The guarded continuation subsequently launched as PID 3254152 after all
+scientific lock hashes matched. At the latest process check it was signing the
+missing client05 submission for gated_adaptive round 24. The execution log is
+m6-adaptive-untargeted-paired-v1-resume2.log; the earlier preflight and
+lock-guard failures remain in separate preserved logs. No new round result is
+claimed until its independent verifier passes.
+
+The first continuation process exited before producing a signature: its Docker
+service did not receive the M5 workspace environment, so /campaign/public was
+not mounted. This is isolated to the recovery wrapper. The failed attempt log
+and receipt are preserved; staging is empty, no campaign submission changed,
+and all 15 TPMs are healthy. The wrapper now passes the frozen runner's M5
+workspace variables and will use a new attempt log and receipt.
+
+The continuation then stopped at the M5 context-validity gate. The signed
+gated_adaptive round-24 context expired at 2026-10-01T03:50:38Z; the signer
+rejected it and created no client05 signature or aggregation checkpoint.
+Changing the context or bypassing validation would break its signed selection
+binding, so the wrapper will not be retried. The original workspace remains
+preserved with 93 verified arm-rounds, a partial gated_adaptive round 24, and
+the two TPM-only round-24 arms not yet run. All 15 TPMs are healthy and unchanged.
+Any next attempt requires a separate workspace/branch and an explicit
+plan-aware decision about reusing verified rounds or repeating the campaign.
+No result is claimed from this incomplete run.
+
+The latest and terminal recovery attempt was PID 3255590, logged in
+m6-adaptive-untargeted-paired-v1-resume3.log. It reached the signer with the
+correct M5 mount, but the signed round context had expired. The signer rejected
+it before producing a TPM signature. The two process receipts are stale; process
+inspection found no active recovery/signing worker. Only the 15 persistent,
+healthy TPM containers remain.
+
+## Untargeted adaptive four-arm M6 campaign — verified 2026-10-01
+
+The v3 continuation branch at `artifacts/m6-adaptive-untargeted-paired-s342593-v1-continuation-v3/` completed with status `verified`: all four arms have 30 verified rounds (120 total). It preserves 93 previously verified rounds and rebuilds the expired gated-adaptive round 24 from a fresh signed M5 context. The final M5 campaign finalization and verification passed for all arms. The launcher exited and stopped its TPM containers. This section supersedes the pending/interrupted status entries above; they remain as execution history.
+
+Selected-checkpoint test macro-F1 was 0.962488 (gated clean), 0.962301 (gated adaptive), 0.957628 (TPM-only clean), and 0.904285 (TPM-only adaptive). The clean-minus-adaptive loss was 0.000187 for gated-composite and 0.053343 for TPM-only, a difference of 0.053156. The prespecified 0.01 practical threshold was exceeded only by TPM-only in this seed. This is a descriptive single-seed result, not evidence of statistical significance or general robustness.
+
+The report and three comparison figures are in `results/m6-adaptive-untargeted-paired-s342593-v1-continuation-v3/`; its manifest hashes were checked. The report summarizes already finalized evaluation artifacts and does not rerun the test evaluation. See `docs/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md`.
+
+## Interpretation of the adaptive rounds
+
+The attack is active in rounds 11–30. The frozen search-success rule requires a feasible selected proposal to lower all-class validation macro-F1 by at least 0.01 against that round's clean control. This flag was true in 19/20 TPM-only adaptive rounds and 4/20 gated-composite adaptive rounds. Mean validation macro-F1 over rounds 11–30 was 0.6078 for TPM-only and 0.9344 for gated-composite. Across the clean and adaptive arms (900 decisions per policy), gated-composite recorded 714 accepted, 159 downweighted and 27 quarantined contributions; TPM-only accepted all 900.
+
+Checkpoint timing matters when reading the held-out scores: TPM-only adaptive selected round 10, immediately before the attack starts, whereas gated-composite adaptive selected round 30. Therefore the TPM-only test score is from an unpoisoned pre-attack checkpoint. The large clean-minus-adaptive test gap reflects that validation-based selection fell back to this earlier checkpoint after later attacked rounds had poor validation performance; it is not evidence that the selected TPM-only checkpoint contains a successful poisoned update. This distinction and the single-seed scope should be retained in thesis claims.
+## Untargeted adaptive seed extension planned - 2026-10-01
+
+The verified seed-342593 live campaign now has an attacker-versus-benign admission
+breakdown documented in [its continuation record](M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md).
+Three additional seed replications (343593-345593) are specified in
+[M6 adaptive untargeted replication v1](M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md).
+This is an outcome-aware exploratory extension on the same dataset, not a
+confirmatory or independent-dataset study.
+
+## M6 untargeted seed 343593 infrastructure recovery
+
+The first launch stopped before enrollment/training due to Docker subnet exhaustion.
+The documented infrastructure-only recovery reused the 15 healthy TPMs on a
+separate internal subnet; M4 enrollment and mTLS passed. The four-arm 30-round
+campaign is now running under the unchanged seed-specific lock. See
+[M6 seed-343593 recovery record](M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md).
+
+
+## Untargeted adaptive M6 four-seed extension — completed 2026-10-03
+
+The four matched arms (`gated_clean`, `gated_adaptive`, `tpm_clean`,
+`tpm_adaptive`) completed 30 verified rounds on each of seeds 342593–345593
+(480 secure rounds total). The final [multi-seed report and comparison figures](../results/m6-adaptive-untargeted-multiseed-v1/README.md)
+passed manifest and source-receipt hash checks. Mean clean-minus-adaptive selected
+test macro-F1 loss was 0.000552 for gated-composite and 0.013886 for TPM-only;
+the seed-level difference was descriptive only and was strongly influenced by
+the exploratory 342593 TPM-only checkpoint selected before attack onset. The
+three later seeds show no consistent predictive-performance advantage. See the
+[detailed results and limitations](M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md).
+The locked protocol documents remain unchanged.

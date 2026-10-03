@@ -71,8 +71,8 @@ The repository intentionally does not publish:
 These are dated snapshots. Their future-work paragraphs describe what remained at
 publication time; the index above and current protocol documentation describe today's
 status. Snapshot files with recorded hashes are not retroactively rewritten.
-The [four-new-seed extension](../docs/M6_ADAPTIVE_MULTISEED_V1.md) is running, not a
-completed result. Raw Docker network inspection from its preflight is local operational
+The earlier running note for the targeted four-new-seed extension is historical and is
+superseded by the completion entry below. Raw Docker network inspection is local operational
 material and is excluded from publication. The existing M8 snapshots do not cover
 these newer extensions. No private keys, full updates or dataset records are published.
 
@@ -83,3 +83,14 @@ these newer extensions. No private keys, full updates or dataset records are pub
 ## Adaptive objective and policy ablation — 2026-09-30
 
 [Four-cell frozen-round pilot](m6-adaptive-objectives-ablation-v1/README.md), independently recomputed. The untargeted objective finds a 25.297 pp validation macro-F1 reduction under TPM-only and 0.675 pp under gated-composite. The result is validation-selected on one frozen round; it motivates, but does not replace, a new signed live multi-seed experiment.
+
+
+## Untargeted live adaptive extension — completed 2026-10-03
+
+[Four-seed report and figures](m6-adaptive-untargeted-multiseed-v1/README.md):
+seeds 342593–345593 completed and verified four matched 30-round arms each.
+The report includes paired selected-checkpoint test losses, search success by
+policy and seed, admission counts with denominators, three PNG comparisons, and
+source-lock/completion receipts. Results are descriptive on one dataset; the
+342593 TPM-only adaptive checkpoint predates attack onset and strongly affects
+its aggregate mean. See the [detailed interpretation](../docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md).

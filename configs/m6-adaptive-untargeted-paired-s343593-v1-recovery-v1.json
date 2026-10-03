@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "m6_adaptive_untargeted_infrastructure_recovery_plan",
+  "experiment_id": "m6-adaptive-untargeted-paired-s343593-v1",
+  "network_internal": true,
+  "network_name": "flforensics_m6_adaptive_untargeted_paired_s343593_v1_trust",
+  "network_subnet": "10.254.253.0/24",
+  "plan_sha256": "12870b0e1858b7d1d831caa445e1943eb2062040605bdedb4be416efcb2717a2",
+  "static_lock_sha256": "2f1aea31e71f763de640053cabefefb30fcf65a6d0cc2062a7ea1a2d1b1ca3f2",
+  "provisioning": "compose.m4.yaml client01-client15 sequential --no-deps --rm",
+  "failure_record": "artifacts/m6-adaptive-untargeted-paired-s343593-v1-network-failure-record.json",
+  "reason": "Docker address pools exhausted before client01 provisioning; no enrollment or training began.",
+  "training_protocol_change": false
+}

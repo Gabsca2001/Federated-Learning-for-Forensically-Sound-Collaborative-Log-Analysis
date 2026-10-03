@@ -884,7 +884,7 @@ or moving an experiment, create and verify its M8 recovery export and retain the
 timestamp material, and verification receipt under the evidence-retention policy chosen for
 the thesis.
 
-## Research status — 2026-09-30
+## Research status — 2026-10-03
 
 | Experiment | Verified scope | Current interpretation |
 |---|---|---|
@@ -894,14 +894,17 @@ the thesis.
 | Frozen adaptive pilot | 66 queries, independently recomputed | Targeted ASR gain zero; privileged validation oracle |
 | Live adaptive smoke | 1 round, 3 TPM-signed malicious updates | Validation ASR 0→1 on the weak initial model; no test evaluation |
 | Paired adaptive v4 | 1 seed, 30 clean + 30 adaptive rounds | Selected test ASR 0/669 in both; macro-F1 0.924250 vs 0.938970 |
-| Adaptive multiseed extension | 4 additional pairs verified; 5 pairs / 300 rounds overall | Selected test ASR 0/669 in both arms for every seed; descriptive paired analysis |`n| Multiobjective/filter ablation | 4 verified frozen-round searches, 66 queries each | Untargeted validation degradation 0.675 pp gated vs 25.297 pp TPM-only; pilot only |
+| Adaptive multiseed extension | 4 additional pairs verified; 5 pairs / 300 rounds overall | Selected test ASR 0/669 in both arms for every seed; descriptive paired analysis | Untargeted adaptive live extension | 4 seeds × 4 arms × 30 rounds, all verified | Paired selected-test losses are descriptive; no consistent predictive-performance advantage |
+| Multiobjective/filter ablation | 4 verified frozen-round searches, 66 queries each | Untargeted validation degradation 0.675 pp gated vs 25.297 pp TPM-only; pilot only |
+
+The untargeted adaptive four-seed extension is distinct from the earlier targeted reconnaissance-to-benign campaigns. The TPM-only mean loss is strongly influenced by seed 342593, whose adaptive checkpoint was selected before attack onset; the three added seeds show nearly equal descriptive mean losses for the two policies. Do not treat the four seeds as a significance test or independent-dataset generalization.
 
 The original gated-composite configuration remains the reference. Successful
 verification establishes the specified integrity/provenance checks, not attack
 success or universal robustness. Existing M8 packages cover their named historical
 campaigns; they do not yet preserve the later policy/sensitivity/adaptive extensions.
 
-See [the result index](results/README.md), [paired adaptive analysis](results/m6-adaptive-paired-v4/README.md),
+See [the result index](results/README.md), [untargeted adaptive four-seed results](results/m6-adaptive-untargeted-multiseed-v1/README.md), [paired adaptive analysis](results/m6-adaptive-paired-v4/README.md),
 [execution history](docs/M6_ADAPTIVE_MULTIROUND.md), and the
 [fixed multiseed protocol](docs/M6_ADAPTIVE_MULTISEED_V1.md).
 

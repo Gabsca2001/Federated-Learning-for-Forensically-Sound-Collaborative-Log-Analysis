@@ -1,0 +1,13 @@
+{
+  "artifact_type": "m6_adaptive_untargeted_infrastructure_recovery_plan",
+  "experiment_id": "m6-adaptive-untargeted-paired-s342593-v1",
+  "network_internal": true,
+  "network_name": "flforensics_m6_adaptive_untargeted_paired_s342593_v1_trust",
+  "network_subnet": "10.254.254.0/24",
+  "plan_sha256": "392518c77fd06af5b02982add961b120e200e5559262d73534a95db27e09ecbb",
+  "provisioning": "compose.m4.yaml client01-client15 sequential --no-deps --rm",
+  "reason": "Automatic Docker pools exhausted before client01 provisioning; no enrollment or training had started.",
+  "schema_version": "1.0",
+  "static_lock_sha256": "7ec6528f22454bc358d34fac3b9b001061dcb0823677fc6189f9faa8bf358e7d",
+  "training_protocol_change": false
+}

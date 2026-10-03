@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "m6_adaptive_untargeted_continuation_prespecification",
+  "continuation_id": "m6-adaptive-untargeted-continuation-s342593-v2",
+  "source_experiment_id": "m6-adaptive-untargeted-paired-s342593-v1",
+  "source_workspace": "artifacts/m6-adaptive-untargeted-paired-s342593-v1",
+  "branch_workspace": "artifacts/m6-adaptive-untargeted-paired-s342593-v1-continuation-v2",
+  "source_plan": "configs/m6-adaptive-untargeted-paired-s342593-v1.json",
+  "source_lock": "configs/m6-adaptive-untargeted-paired-s342593-v1.lock.json",
+  "preserved_verified_rounds": 93,
+  "preserved_round_set": "all four arms rounds 1-23 plus gated_clean round 24",
+  "excluded_partial_round": "gated_adaptive round 24, including its expired M5 context, adaptive search, selection, proposals and staging",
+  "recreated_rounds": [
+    "gated_adaptive round 24",
+    "tpm_clean round 24",
+    "tpm_adaptive round 24",
+    "all four arms rounds 25-30"
+  ],
+  "recreated_round_count": 27,
+  "scientific_protocol": "unchanged from the source plan and source lock",
+  "campaign_identity": "retained from copied rounds 1-23 and their coordinator authorities; the continuation is explicitly a separate evidence branch",
+  "test_access": "only after all four 30-round trajectories and every round verify; no adaptive search reads test",
+  "interpretation_scope": "single-seed exploratory stress test; the branch is not an independent replication"
+}
