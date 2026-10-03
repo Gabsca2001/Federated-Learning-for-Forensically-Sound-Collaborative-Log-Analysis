@@ -1091,3 +1091,9 @@ policy network bridges were inspected and released only after confirming they ha
 no attached containers or active project containers. Inspection snapshots are under
 results/m6-adaptive-multiseed-preflight-v1. All volumes and evidence remain intact.
 No new results are claimed until each full pair and final evaluation verify.
+
+## Untargeted adaptive four-seed extension — completed 2026-10-03
+
+Four matched arms (gated-composite clean/adaptive and TPM-only clean/adaptive) completed 30 verified rounds on each of seeds 342593–345593, for 480 secure rounds total. The [published report and comparison figures](../results/m6-adaptive-untargeted-multiseed-v1/README.md) passed manifest and source-receipt checks; the [detailed analysis](M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md) records per-seed outcomes and limitations.
+
+Mean clean-minus-adaptive selected-checkpoint test macro-F1 loss was 0.000552 for gated-composite and 0.013886 for TPM-only. These are descriptive results, not a significance test or independent-dataset generalization. Seed 342593 was exploratory and its result was known before the other three replications were planned; the TPM-only adaptive checkpoint for that seed was selected at round 10, before the attack began in round 11. The three later seeds show no consistent predictive-performance advantage. Earlier launch and in-progress entries remain historical records; the locked protocol was not changed.

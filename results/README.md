@@ -115,6 +115,15 @@ superseded by the completion entry below. Raw Docker network inspection is local
 material and is excluded from publication. The existing M8 snapshots do not cover
 these newer extensions. No private keys, full updates or dataset records are published.
 
+## Follow-ups to recommendations in dated snapshots
+
+The report READMEs below preserve their original wording because published manifests bind their bytes. Use this status map for work completed after those snapshots:
+
+- The five-seed active-policy reports proposed threshold sensitivity and adaptive testing. Follow-ups include the [fixed-signal sensitivity replay](m6-policy-sensitivity-replay-v1/README.md), the [live +10% downweight campaign](m6-live-downplus10-v1/README.md), and the adaptive campaigns summarized above. The original gated-composite policy remains the reference.
+- The frozen targeted pilot and signed smoke called for a paired multiround evaluation. That work is recorded in [paired adaptive v4](m6-adaptive-paired-v4/README.md) and the [five-seed targeted extension](m6-adaptive-multiseed-v1/README.md). The selected test targeted ASR stayed at 0/669; this targeted finding does not apply to the different untargeted objective.
+- The [objective/policy frozen pilot](m6-adaptive-objectives-ablation-v1/README.md) proposed a live multiseed untargeted evaluation. That follow-up is complete in the [four-seed live report](m6-adaptive-untargeted-multiseed-v1/README.md); treat it as descriptive, not a significance test.
+- In the [M8 closure report](m8-m6-disagreement-preservation-local-test-v1/README.md), M8.1-M8.5 are the five assurance stages; M8.6 is the final-lineage verification that closes the chain.
+
 ## Adaptive extension completed — 2026-09-30
 
 [Five-seed paired analysis](m6-adaptive-multiseed-v1/README.md): all four new pairs verified; prior in-progress notes above are historical. Includes per-seed outcomes, separate four-new-seed statistics, four PNG/PDF figures, data and source/output hashes. No new model inference. This extension is not yet covered by an M8 recovery package.
