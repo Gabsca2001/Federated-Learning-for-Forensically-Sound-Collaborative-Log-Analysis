@@ -1,0 +1,219 @@
+{
+  "admission_status_counts": {
+    "gated_composite:accepted": 714,
+    "gated_composite:accepted_downweighted": 159,
+    "gated_composite:statistically_quarantined": 27,
+    "tpm_only:accepted": 900
+  },
+  "arm_metrics": {
+    "gated_adaptive": {
+      "arm": "gated_adaptive",
+      "policy": "gated_composite",
+      "selected_round": 30,
+      "selected_test_accuracy": 0.9787320234960503,
+      "selected_test_macro_f1": 0.9623013843102447,
+      "selected_test_recon_to_benign_asr": 0.0,
+      "selected_validation_macro_f1": 0.9669941569174513,
+      "test_per_class": {
+        "benign": {
+          "f1": 0.9979123173277662,
+          "precision": 1.0,
+          "recall": 0.9958333333333333,
+          "support": 1440
+        },
+        "credential_access": {
+          "f1": 0.9969040247678018,
+          "precision": 0.9938271604938271,
+          "recall": 1.0,
+          "support": 644
+        },
+        "exfiltration": {
+          "f1": 0.88,
+          "precision": 0.8148148148148148,
+          "recall": 0.9565217391304348,
+          "support": 23
+        },
+        "initial_access": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 489
+        },
+        "multi_tactic": {
+          "f1": 0.9700385642242658,
+          "precision": 0.9623307828134197,
+          "recall": 0.9778708133971292,
+          "support": 1672
+        },
+        "reconnaissance": {
+          "f1": 0.9289533995416348,
+          "precision": 0.95,
+          "recall": 0.9088191330343797,
+          "support": 669
+        }
+      },
+      "treatment": "adaptive"
+    },
+    "gated_clean": {
+      "arm": "gated_clean",
+      "policy": "gated_composite",
+      "selected_round": 30,
+      "selected_test_accuracy": 0.9789345756532307,
+      "selected_test_macro_f1": 0.9624881755526044,
+      "selected_test_recon_to_benign_asr": 0.0,
+      "selected_validation_macro_f1": 0.9674623155544846,
+      "test_per_class": {
+        "benign": {
+          "f1": 0.9982608695652174,
+          "precision": 1.0,
+          "recall": 0.9965277777777778,
+          "support": 1440
+        },
+        "credential_access": {
+          "f1": 0.9976762199845082,
+          "precision": 0.9953632148377125,
+          "recall": 1.0,
+          "support": 644
+        },
+        "exfiltration": {
+          "f1": 0.88,
+          "precision": 0.8148148148148148,
+          "recall": 0.9565217391304348,
+          "support": 23
+        },
+        "initial_access": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 489
+        },
+        "multi_tactic": {
+          "f1": 0.9700385642242658,
+          "precision": 0.9623307828134197,
+          "recall": 0.9778708133971292,
+          "support": 1672
+        },
+        "reconnaissance": {
+          "f1": 0.9289533995416348,
+          "precision": 0.95,
+          "recall": 0.9088191330343797,
+          "support": 669
+        }
+      },
+      "treatment": "clean"
+    },
+    "tpm_adaptive": {
+      "arm": "tpm_adaptive",
+      "policy": "tpm_only",
+      "selected_round": 10,
+      "selected_test_accuracy": 0.949159408547701,
+      "selected_test_macro_f1": 0.9042853951089089,
+      "selected_test_recon_to_benign_asr": 0.0,
+      "selected_validation_macro_f1": 0.9265220734782337,
+      "test_per_class": {
+        "benign": {
+          "f1": 0.9986091794158554,
+          "precision": 1.0,
+          "recall": 0.9972222222222222,
+          "support": 1440
+        },
+        "credential_access": {
+          "f1": 0.9961270333075135,
+          "precision": 0.9938176197836167,
+          "recall": 0.9984472049689441,
+          "support": 644
+        },
+        "exfiltration": {
+          "f1": 0.676923076923077,
+          "precision": 0.5238095238095238,
+          "recall": 0.9565217391304348,
+          "support": 23
+        },
+        "initial_access": {
+          "f1": 0.9969418960244648,
+          "precision": 0.9939024390243902,
+          "recall": 1.0,
+          "support": 489
+        },
+        "multi_tactic": {
+          "f1": 0.9264354066985646,
+          "precision": 0.9264354066985646,
+          "recall": 0.9264354066985646,
+          "support": 1672
+        },
+        "reconnaissance": {
+          "f1": 0.8306757782839788,
+          "precision": 0.8441358024691358,
+          "recall": 0.8176382660687593,
+          "support": 669
+        }
+      },
+      "treatment": "adaptive"
+    },
+    "tpm_clean": {
+      "arm": "tpm_clean",
+      "policy": "tpm_only",
+      "selected_round": 27,
+      "selected_test_accuracy": 0.9767065019242455,
+      "selected_test_macro_f1": 0.9576280456449222,
+      "selected_test_recon_to_benign_asr": 0.0,
+      "selected_validation_macro_f1": 0.9660044911811679,
+      "test_per_class": {
+        "benign": {
+          "f1": 0.9982608695652174,
+          "precision": 1.0,
+          "recall": 0.9965277777777778,
+          "support": 1440
+        },
+        "credential_access": {
+          "f1": 0.9969040247678018,
+          "precision": 0.9938271604938271,
+          "recall": 1.0,
+          "support": 644
+        },
+        "exfiltration": {
+          "f1": 0.8627450980392157,
+          "precision": 0.7857142857142857,
+          "recall": 0.9565217391304348,
+          "support": 23
+        },
+        "initial_access": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 489
+        },
+        "multi_tactic": {
+          "f1": 0.9671500443918319,
+          "precision": 0.9572349150556532,
+          "recall": 0.9772727272727273,
+          "support": 1672
+        },
+        "reconnaissance": {
+          "f1": 0.9207082371054658,
+          "precision": 0.9492063492063492,
+          "recall": 0.8938714499252616,
+          "support": 669
+        }
+      },
+      "treatment": "clean"
+    }
+  },
+  "artifact_type": "m6_adaptive_untargeted_four_arm_report",
+  "campaign_complete_sha256": "4ebb121a388162f086a14108c7626842c8e25dc1a1f777a8b8558e6f85f85023",
+  "difference_of_paired_losses_tpm_minus_gated": 0.05315585929365363,
+  "execution_lock_sha256": "49160396076bccab63c538108543ea4578ccdd4834d643b8dd42c370eb761ab4",
+  "experiment_id": "m6-adaptive-untargeted-paired-s342593-v1",
+  "inferential_scope": "descriptive single-seed exploratory study",
+  "policy_paired_test_macro_f1_loss": {
+    "gated_composite": 0.00018679124235965183,
+    "tpm_only": 0.05334265053601328
+  },
+  "practical_success_by_policy": {
+    "gated_composite": false,
+    "tpm_only": true
+  },
+  "prespecified_practical_threshold": 0.01,
+  "seed_count": 1,
+  "status": "reported_from_verified_campaign"
+}
