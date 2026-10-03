@@ -894,7 +894,8 @@ the thesis.
 | Frozen adaptive pilot | 66 queries, independently recomputed | Targeted ASR gain zero; privileged validation oracle |
 | Live adaptive smoke | 1 round, 3 TPM-signed malicious updates | Validation ASR 0→1 on the weak initial model; no test evaluation |
 | Paired adaptive v4 | 1 seed, 30 clean + 30 adaptive rounds | Selected test ASR 0/669 in both; macro-F1 0.924250 vs 0.938970 |
-| Adaptive multiseed extension | 4 additional pairs verified; 5 pairs / 300 rounds overall | Selected test ASR 0/669 in both arms for every seed; descriptive paired analysis | Untargeted adaptive live extension | 4 seeds × 4 arms × 30 rounds, all verified | Paired selected-test losses are descriptive; no consistent predictive-performance advantage |
+| Targeted adaptive multiseed extension | 5 pairs / 300 rounds overall | Selected test ASR 0/669 in both arms for every seed; descriptive paired analysis |
+| Untargeted adaptive live extension | 4 seeds x 4 arms x 30 rounds, all verified | Validation search success was lower with gated-composite; paired test losses are descriptive and show no consistent advantage |
 | Multiobjective/filter ablation | 4 verified frozen-round searches, 66 queries each | Untargeted validation degradation 0.675 pp gated vs 25.297 pp TPM-only; pilot only |
 
 The untargeted adaptive four-seed extension is distinct from the earlier targeted reconnaissance-to-benign campaigns. The TPM-only mean loss is strongly influenced by seed 342593, whose adaptive checkpoint was selected before attack onset; the three added seeds show nearly equal descriptive mean losses for the two policies. Do not treat the four seeds as a significance test or independent-dataset generalization.

@@ -56,6 +56,45 @@ The repository intentionally does not publish:
 - private keys, TPM state, or client certificates;
 - the 2.6 GB offline recovery archive.
 
+## Adaptive-attack results: how to read them
+
+"Adaptive" means that the attacker uses feedback from a declared validation objective and admission policy to shape candidate updates. The experiments below answer different questions; do not compare their headline metrics as if they measured the same attack.
+
+There are two objectives:
+
+- **Targeted reconnaissance-to-benign:** count true reconnaissance examples classified as benign. Targeted ASR is this count divided by the number of true reconnaissance examples.
+- **Untargeted degradation:** reduce overall validation macro-F1 without targeting one class.
+
+Keep three outcomes separate:
+
+1. **Search success**: the optimizer found a candidate satisfying its predeclared validation criterion. The attacker sees that validation feedback, so this is not a held-out attack-success rate.
+2. **Admission**: whether a malicious contribution was accepted, downweighted, or quarantined. Admission is not attack success, and an intervention is not proof the attack was detected or stopped.
+3. **Selected-checkpoint test performance**: the clean and adaptive trajectories after checkpoint selection. This is the held-out predictive endpoint, but it does not identify which update caused a change.
+
+### Targeted reconnaissance-to-benign experiments
+
+- [Frozen pilot](m6-adaptive-frozen-pilot-v1/README.md): one frozen round and 66 validation-oracle queries. Targeted ASR stayed at zero, although the selected candidate reduced validation macro-F1 by 1.019 percentage points. This is a finite-search negative result, not a live trajectory or test evaluation.
+- [Signed live smoke](m6-adaptive-live-smoke-v2/README.md): one live round with three newly TPM-signed malicious updates. Validation ASR rose from 0 to 1 on the initial model. This confirms the signing/admission path for an adaptive proposal; the starting model was weak and no test set or mature model was evaluated.
+- [Paired adaptive v4](m6-adaptive-paired-v4/README.md): one seed, matched clean and targeted-adaptive runs of 30 rounds each, with attack from round 11. Selected test ASR was 0/669 in both arms, and no attacked round met the validation success threshold. This objective did not succeed in this run; that does not mean there were no other classification errors.
+- [Targeted five-seed extension](m6-adaptive-multiseed-v1/README.md): five paired seeds and 300 rounds overall. Selected test ASR remained 0/669 in both arms for every seed. Mean adaptive-minus-clean test macro-F1 difference was +0.4038 percentage points. This is descriptive evidence from a small number of seeds on the same dataset, not a significance test or proof of general robustness.
+
+### Untargeted all-class degradation experiments
+
+- [Objective/policy frozen pilot](m6-adaptive-objectives-ablation-v1/README.md): targeted and untargeted searches under gated-composite and TPM-only, with one signed round and 66 queries per cell. For the untargeted objective, validation degradation was 0.675 points with gated-composite and 25.297 points with TPM-only. This shows that the statistical filter constrained this finite validation search on this particular round. No test data or live multiround training were used; TPM-only still retains TPM trust and signature checks.
+- [Untargeted live four-seed extension](m6-adaptive-untargeted-multiseed-v1/README.md): four seeds, four matched arms per seed, 30 rounds per arm, and attacks in rounds 11-30. This is the latest live experiment and the most relevant result for the untargeted objective.
+
+### What the latest live result says
+
+The four arms are gated-composite clean/adaptive and TPM-only clean/adaptive: 480 verified secure rounds in total. "TPM-only" removes the statistical admission gate; TPM trust and signature checks remain.
+
+For each policy there are 80 attacked rounds. Search success means finding a proposal with at least 0.01 absolute validation macro-F1 loss against that round's clean control. It occurred in 5/80 gated-composite rounds and 46/80 TPM-only rounds. This is a **validation-search result**, not test ASR. The difference is consistent with the statistical gate limiting proposals that meet the exposed validation objective.
+
+Admission is a separate result. Across 240 malicious client-round contributions in gated adaptive arms, 105 were accepted at full weight, 124 were downweighted, and 11 were quarantined. All 240 matched TPM-only contributions were accepted. These counts describe policy treatment; they do not mean that 105 attacks succeeded or that 11 were detected.
+
+For selected-checkpoint test performance, loss is clean macro-F1 minus adaptive macro-F1, so positive means the adaptive checkpoint scored lower. The four-seed means are +0.000552 for gated-composite and +0.013886 for TPM-only. However, the TPM-only adaptive checkpoint for seed 342593 was selected at round 10, before the attack began in round 11; it is not a poisoned selected checkpoint. Across the three additional seeds alone, mean losses are nearly equal: +0.000674 gated-composite and +0.000734 TPM-only. The test averages therefore show no consistent replicated advantage for either policy.
+
+Post-attack validation trajectories show a much larger gap under TPM-only than under gated-composite, but the attacker search and checkpoint selection both use that same validation signal. Treat this as a descriptive mechanism check, not an independent endpoint or significance result. The four seeds use UWF-ZeekData24 with different training/partition seeds; they are not four independent datasets. See the [full interpretation and per-seed table](../docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md), then inspect the linked CSVs and figures before quoting a summary number.
+
 ## Additional completed research snapshots (status 2026-09-29)
 
 - [Active-policy pilot](m6-active-policy-pilot-v1/README.md): initial paired policy runs.
