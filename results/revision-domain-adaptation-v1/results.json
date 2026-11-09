@@ -1,0 +1,372 @@
+{
+ "datasets": {
+  "data22": {
+   "A_reconnaissance_recall_six_class": 0.0,
+   "C0_reconnaissance_recall_six_class": 0.0,
+   "baseline_dates": [
+    "2022-01-09",
+    "2022-01-10",
+    "2022-01-11",
+    "2022-01-12"
+   ],
+   "baseline_released_labels_check": [
+    "benign"
+   ],
+   "baseline_std_replaced_by_source_scale": [
+    "protocol_other_fraction",
+    "service_http_fraction",
+    "service_ssh_fraction",
+    "state_rej_fraction",
+    "state_rsto_fraction",
+    "state_rstr_fraction"
+   ],
+   "baseline_windows": 5760,
+   "configs": {
+    "A": {
+     "attack_precision": 0.025183150183150184,
+     "attack_recall": 1.0,
+     "auroc": 0.9874268756138178,
+     "balanced_accuracy": 0.5,
+     "baseline_alert_rate": 1.0,
+     "binary_macro_f1": 0.02456453774006253,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        0,
+        4258
+       ],
+       [
+        0,
+        110
+       ]
+      ]
+     },
+     "false_positive_rate": 1.0,
+     "verdict": "negative"
+    },
+    "AB1": {
+     "attack_precision": 0.7982456140350878,
+     "attack_recall": 0.8272727272727273,
+     "auroc": 0.9874268756138178,
+     "balanced_accuracy": 0.9109355651394166,
+     "baseline_alert_rate": 0.010069444444444445,
+     "binary_macro_f1": 0.903782894736842,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        4235,
+        23
+       ],
+       [
+        19,
+        91
+       ]
+      ]
+     },
+     "false_positive_rate": 0.005401596993893847,
+     "verdict": "improvement"
+    },
+    "AB5": {
+     "attack_precision": 0.41295546558704455,
+     "attack_recall": 0.9272727272727272,
+     "auroc": 0.9874268756138178,
+     "balanced_accuracy": 0.9466095905034373,
+     "baseline_alert_rate": 0.05,
+     "binary_macro_f1": 0.7765843179377014,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        4113,
+        145
+       ],
+       [
+        8,
+        102
+       ]
+      ]
+     },
+     "false_positive_rate": 0.03405354626585251,
+     "verdict": "improvement"
+    },
+    "B1": {
+     "attack_precision": 0.16666666666666666,
+     "attack_recall": 0.05454545454545454,
+     "auroc": 0.7253853708527264,
+     "balanced_accuracy": 0.5237499466245357,
+     "baseline_alert_rate": 0.010069444444444445,
+     "binary_macro_f1": 0.5332961232398297,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        4228,
+        30
+       ],
+       [
+        104,
+        6
+       ]
+      ]
+     },
+     "false_positive_rate": 0.007045561296383279,
+     "verdict": "negative"
+    },
+    "B5": {
+     "attack_precision": 0.062111801242236024,
+     "attack_recall": 0.09090909090909091,
+     "auroc": 0.7253853708527264,
+     "balanced_accuracy": 0.5277232161919808,
+     "baseline_alert_rate": 0.05,
+     "binary_macro_f1": 0.5220746159026859,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        4107,
+        151
+       ],
+       [
+        100,
+        10
+       ]
+      ]
+     },
+     "false_positive_rate": 0.03546265852512917,
+     "verdict": "negative"
+    },
+    "C0": {
+     "attack_precision": 0.3333333333333333,
+     "attack_recall": 0.05454545454545454,
+     "auroc": 0.7253853708527264,
+     "balanced_accuracy": 0.5258636150134506,
+     "baseline_alert_rate": 0.0019097222222222222,
+     "binary_macro_f1": 0.5401370817843867,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        4246,
+        12
+       ],
+       [
+        104,
+        6
+       ]
+      ]
+     },
+     "false_positive_rate": 0.0028182245185533112,
+     "verdict": "negative"
+    }
+   },
+   "input": {
+    "path": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-data22-external-v1/dataset.json",
+    "sha256": "4a27d8aada69b3372232383e9826394e2fe79d1ad0e5dc184c0629f2d4feb9f9"
+   },
+   "test_attack": 110,
+   "test_benign": 4258,
+   "test_windows": 4368,
+   "thresholds": {
+    "baseline_p95": 0.9940287470817566,
+    "baseline_p99": 0.9981824159622192,
+    "source_p95": 0.01230976264923811,
+    "source_p99": 0.06222498416900635
+   }
+  },
+  "ton_iot": {
+   "baseline_dates": [
+    "2019-04-02",
+    "2019-04-03"
+   ],
+   "baseline_released_labels_check": [
+    "benign"
+   ],
+   "baseline_std_replaced_by_source_scale": [
+    "protocol_other_fraction",
+    "service_ssh_fraction",
+    "state_rej_fraction"
+   ],
+   "baseline_windows": 2295,
+   "configs": {
+    "A": {
+     "attack_precision": 0.8959332267803232,
+     "attack_recall": 0.9998018232263178,
+     "auroc": 0.8786354409583601,
+     "balanced_accuracy": 0.505803103855992,
+     "baseline_alert_rate": 0.963834422657952,
+     "binary_macro_f1": 0.4841582595396483,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        7,
+        586
+       ],
+       [
+        1,
+        5045
+       ]
+      ]
+     },
+     "false_positive_rate": 0.9881956155143339,
+     "verdict": "negative"
+    },
+    "AB1": {
+     "attack_precision": 0.9763374485596708,
+     "attack_recall": 0.9403487911216806,
+     "auroc": 0.8786354409583601,
+     "balanced_accuracy": 0.8732098087142972,
+     "baseline_alert_rate": 0.010021786492374727,
+     "binary_macro_f1": 0.827399126129642,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        478,
+        115
+       ],
+       [
+        301,
+        4745
+       ]
+      ]
+     },
+     "false_positive_rate": 0.19392917369308602,
+     "verdict": "improvement"
+    },
+    "AB5": {
+     "attack_precision": 0.9725921636749663,
+     "attack_recall": 0.9986127625842252,
+     "auroc": 0.8786354409583601,
+     "balanced_accuracy": 0.8795761957946421,
+     "baseline_alert_rate": 0.04967320261437908,
+     "binary_macro_f1": 0.9218304897476196,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        451,
+        142
+       ],
+       [
+        7,
+        5039
+       ]
+      ]
+     },
+     "false_positive_rate": 0.23946037099494097,
+     "verdict": "improvement"
+    },
+    "B1": {
+     "attack_precision": 0.0,
+     "attack_recall": 0.0,
+     "auroc": 0.8346295030074077,
+     "balanced_accuracy": 0.5,
+     "baseline_alert_rate": 0.0,
+     "binary_macro_f1": 0.09515404364569961,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        593,
+        0
+       ],
+       [
+        5046,
+        0
+       ]
+      ]
+     },
+     "false_positive_rate": 0.0,
+     "verdict": "negative"
+    },
+    "B5": {
+     "attack_precision": 0.0,
+     "attack_recall": 0.0,
+     "auroc": 0.8346295030074077,
+     "balanced_accuracy": 0.5,
+     "baseline_alert_rate": 0.0,
+     "binary_macro_f1": 0.09515404364569961,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        593,
+        0
+       ],
+       [
+        5046,
+        0
+       ]
+      ]
+     },
+     "false_positive_rate": 0.0,
+     "verdict": "negative"
+    },
+    "C0": {
+     "attack_precision": 0.894820858460447,
+     "attack_recall": 0.9998018232263178,
+     "auroc": 0.8346295030074077,
+     "balanced_accuracy": 0.4999009116131589,
+     "baseline_alert_rate": 0.9965141612200435,
+     "binary_macro_f1": 0.4722014226881318,
+     "confusion_matrix": {
+      "rows_true_benign_attack": [
+       [
+        0,
+        593
+       ],
+       [
+        1,
+        5045
+       ]
+      ]
+     },
+     "false_positive_rate": 1.0,
+     "verdict": "negative"
+    }
+   },
+   "input": {
+    "path": "/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/ton-iot-transfer-20261109/windows/occurrence-windows.json",
+    "sha256": "57ebec4e6fc6d087b5da527421ce32b08382e9666993b8fa7a9556b9592e3c2c"
+   },
+   "test_attack": 5046,
+   "test_benign": 593,
+   "test_windows": 5639,
+   "thresholds": {
+    "baseline_p95": 0.9929636716842651,
+    "baseline_p99": 0.9999590516090393,
+    "source_p95": 1.0,
+    "source_p99": 1.0
+   }
+  }
+ },
+ "device": "cpu",
+ "model_sha256": "39075d9cbf7c45248c475ae3ddfb66f0e032d55cc210eba2a9e97c19e3d594e5",
+ "overall": {
+  "A": {
+   "data22": "negative",
+   "label_free_generalization": false,
+   "ton_iot": "negative"
+  },
+  "AB1": {
+   "data22": "improvement",
+   "label_free_generalization": true,
+   "ton_iot": "improvement"
+  },
+  "AB5": {
+   "data22": "improvement",
+   "label_free_generalization": true,
+   "ton_iot": "improvement"
+  },
+  "B1": {
+   "data22": "negative",
+   "label_free_generalization": false,
+   "ton_iot": "negative"
+  },
+  "B5": {
+   "data22": "negative",
+   "label_free_generalization": false,
+   "ton_iot": "negative"
+  },
+  "C0": {
+   "data22": "negative",
+   "label_free_generalization": false,
+   "ton_iot": "negative"
+  }
+ },
+ "protocol_sha256": "e2d728c8c5c6434fecde556b1f2b9eef2c94fc4692caf4a70833479a06693dc0",
+ "scaler_sha256": "70b0471a62214bac0a2a872f5c9662d61e596c8efe829aef4fe414a8075523ce",
+ "script_sha256": "0fffb5f3f346ff28862d1101930f948e59c402277f77597e11f75cd6325778a2"
+}
