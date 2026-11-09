@@ -72,6 +72,32 @@ may be genuinely perturbed by surrounding attack activity (shared hosts, network
 the rule partly acts as a detector of departure from the baseline period. Data22 has no
 benign windows on attack dates, so the same check is impossible there.
 
+## Follow-up: what the flagged attack-date benign minutes are
+
+`scripts/domain_adaptation_late_benign.py` (post-hoc, inference only;
+`late-benign-diagnostic.json`) examines the 122 ToN-IoT benign windows on attack dates.
+
+- **They are interleaved with attacks.** Median distance to the nearest attack window is
+  2 minutes (range 1–27); 48 lie within 1 minute. They come from the same source files as
+  the attacks (`Network_dataset_22/23.csv` for 115 of them), whereas the 4 April benign
+  windows all come from `Network_dataset_1.csv`.
+- **Their traffic mix is absent from the baseline.** In baseline z units their median
+  `service_http_fraction` is 42.4 and `state_sf_fraction` 17.6 (attacks: 4.2 and 3.1;
+  baseline benign: about −0.1 and −0.4). They are dominated by completed HTTP
+  connections, which the 2–3 April baseline essentially never contains. Destination and
+  port counts are also higher than in the baseline (z 0.70 and 1.82).
+- **Alerting is not driven by proximity alone.** Alert rates are similar at every distance
+  (42/48 within 1 minute, 44/45 between 5 and 27 minutes).
+
+**Interpretation.** The flagged benign minutes are not ordinary background traffic: they
+carry a service and connection-state profile that the benign baseline never observed. The
+AB1 rule therefore behaves as **novelty detection relative to the baseline**, applied
+through the frozen classifier: traffic the baseline covers is rarely flagged (0.4–0.5%),
+while new attack families and new benign services are both flagged. Whether these
+minutes are additionally perturbed by the concurrent attacks cannot be established
+without host-level identities. The practical consequence is that the false-positive rate
+depends on how well the baseline period covers the organization's legitimate services.
+
 ## Claim boundary
 
 Supported: with a short benign baseline and no attack labels, re-estimating
@@ -79,7 +105,8 @@ standardization and the alert threshold makes the frozen Data24 model usable on 
 independent networks under the predeclared criteria, and both steps are necessary.
 
 Not supported: that the rule distinguishes attacks from *all* benign variation (benign
-minutes during attack periods are mostly flagged); that the six-class tactic output
+services absent from the baseline, here HTTP-dominated minutes on attack dates, are mostly
+flagged); that the six-class tactic output
 transfers (only the binary alert is evaluated); deployment readiness. Single checkpoint,
 correlated windows, no significance testing. The baseline is assumed clean by the
 receiving organization; a contaminated baseline would raise thresholds and lower recall.

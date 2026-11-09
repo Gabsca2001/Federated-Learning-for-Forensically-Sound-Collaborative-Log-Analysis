@@ -1,0 +1,1533 @@
+{
+ "attack_date_benign_minutes_to_attack": {
+  "by_bucket_and_alert": {
+   "<=1|alert=False": 6,
+   "<=1|alert=True": 42,
+   "<=30|alert=False": 1,
+   "<=30|alert=True": 44,
+   "<=5|alert=False": 2,
+   "<=5|alert=True": 27
+  },
+  "max": 27.0,
+  "median": 2.0,
+  "min": 1.0
+ },
+ "attack_date_benign_windows": [
+  {
+   "alert": true,
+   "date": "2019-04-24",
+   "minutes_to_nearest_attack_window": 3.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_7.csv": 3
+   },
+   "source_record_count": 3,
+   "window_id": "toniot-occurrence-25934723"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-25",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9999969601631165,
+   "source_files": {
+    "Network_dataset_12.csv": 225
+   },
+   "source_record_count": 225,
+   "window_id": "toniot-occurrence-25936288"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-25",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_12.csv": 116
+   },
+   "source_record_count": 116,
+   "window_id": "toniot-occurrence-25936304"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-25",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_12.csv": 76
+   },
+   "source_record_count": 76,
+   "window_id": "toniot-occurrence-25936306"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-25",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_12.csv": 77
+   },
+   "source_record_count": 77,
+   "window_id": "toniot-occurrence-25936313"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-25",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_12.csv": 104
+   },
+   "source_record_count": 104,
+   "window_id": "toniot-occurrence-25936315"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-26",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9190723299980164,
+   "source_files": {
+    "Network_dataset_18.csv": 8
+   },
+   "source_record_count": 8,
+   "window_id": "toniot-occurrence-25938104"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 908
+   },
+   "source_record_count": 908,
+   "window_id": "toniot-occurrence-25940392"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 34486
+   },
+   "source_record_count": 34486,
+   "window_id": "toniot-occurrence-25940394"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 1223
+   },
+   "source_record_count": 1223,
+   "window_id": "toniot-occurrence-25940395"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 1479
+   },
+   "source_record_count": 1479,
+   "window_id": "toniot-occurrence-25940396"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 1521
+   },
+   "source_record_count": 1521,
+   "window_id": "toniot-occurrence-25940398"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 1212
+   },
+   "source_record_count": 1212,
+   "window_id": "toniot-occurrence-25940399"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 1220
+   },
+   "source_record_count": 1220,
+   "window_id": "toniot-occurrence-25940472"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 100
+   },
+   "source_record_count": 100,
+   "window_id": "toniot-occurrence-25940487"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 104
+   },
+   "source_record_count": 104,
+   "window_id": "toniot-occurrence-25940488"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 75
+   },
+   "source_record_count": 75,
+   "window_id": "toniot-occurrence-25940489"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 69
+   },
+   "source_record_count": 69,
+   "window_id": "toniot-occurrence-25940490"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 82
+   },
+   "source_record_count": 82,
+   "window_id": "toniot-occurrence-25940492"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 74
+   },
+   "source_record_count": 74,
+   "window_id": "toniot-occurrence-25940493"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 3.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 104
+   },
+   "source_record_count": 104,
+   "window_id": "toniot-occurrence-25940494"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 4.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 71
+   },
+   "source_record_count": 71,
+   "window_id": "toniot-occurrence-25940495"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 5.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 85
+   },
+   "source_record_count": 85,
+   "window_id": "toniot-occurrence-25940496"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 6.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 79
+   },
+   "source_record_count": 79,
+   "window_id": "toniot-occurrence-25940497"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 7.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 73
+   },
+   "source_record_count": 73,
+   "window_id": "toniot-occurrence-25940498"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 8.0,
+   "score": 0.9999952912330627,
+   "source_files": {
+    "Network_dataset_22.csv": 135
+   },
+   "source_record_count": 135,
+   "window_id": "toniot-occurrence-25940499"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 9.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 83
+   },
+   "source_record_count": 83,
+   "window_id": "toniot-occurrence-25940500"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 10.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 66
+   },
+   "source_record_count": 66,
+   "window_id": "toniot-occurrence-25940501"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 11.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 83
+   },
+   "source_record_count": 83,
+   "window_id": "toniot-occurrence-25940502"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 12.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 88
+   },
+   "source_record_count": 88,
+   "window_id": "toniot-occurrence-25940503"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 13.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 78
+   },
+   "source_record_count": 78,
+   "window_id": "toniot-occurrence-25940504"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 14.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 98
+   },
+   "source_record_count": 98,
+   "window_id": "toniot-occurrence-25940505"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 15.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 85
+   },
+   "source_record_count": 85,
+   "window_id": "toniot-occurrence-25940506"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 16.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 69
+   },
+   "source_record_count": 69,
+   "window_id": "toniot-occurrence-25940507"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 17.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 75
+   },
+   "source_record_count": 75,
+   "window_id": "toniot-occurrence-25940508"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 16.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 93
+   },
+   "source_record_count": 93,
+   "window_id": "toniot-occurrence-25940509"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 15.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 77
+   },
+   "source_record_count": 77,
+   "window_id": "toniot-occurrence-25940510"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 14.0,
+   "score": 0.9999839663505554,
+   "source_files": {
+    "Network_dataset_22.csv": 469
+   },
+   "source_record_count": 469,
+   "window_id": "toniot-occurrence-25940511"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 13.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 91
+   },
+   "source_record_count": 91,
+   "window_id": "toniot-occurrence-25940512"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 12.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 77
+   },
+   "source_record_count": 77,
+   "window_id": "toniot-occurrence-25940513"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 11.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 81
+   },
+   "source_record_count": 81,
+   "window_id": "toniot-occurrence-25940514"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 10.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 110
+   },
+   "source_record_count": 110,
+   "window_id": "toniot-occurrence-25940515"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 9.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 72
+   },
+   "source_record_count": 72,
+   "window_id": "toniot-occurrence-25940516"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 8.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 70
+   },
+   "source_record_count": 70,
+   "window_id": "toniot-occurrence-25940517"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 7.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 71
+   },
+   "source_record_count": 71,
+   "window_id": "toniot-occurrence-25940518"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 6.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 96
+   },
+   "source_record_count": 96,
+   "window_id": "toniot-occurrence-25940519"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 5.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 73
+   },
+   "source_record_count": 73,
+   "window_id": "toniot-occurrence-25940520"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 4.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 76
+   },
+   "source_record_count": 76,
+   "window_id": "toniot-occurrence-25940521"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 3.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 69
+   },
+   "source_record_count": 69,
+   "window_id": "toniot-occurrence-25940522"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 90
+   },
+   "source_record_count": 90,
+   "window_id": "toniot-occurrence-25940523"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 65
+   },
+   "source_record_count": 65,
+   "window_id": "toniot-occurrence-25940524"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 65
+   },
+   "source_record_count": 65,
+   "window_id": "toniot-occurrence-25940526"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 79
+   },
+   "source_record_count": 79,
+   "window_id": "toniot-occurrence-25940527"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 3.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 85
+   },
+   "source_record_count": 85,
+   "window_id": "toniot-occurrence-25940528"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 4.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 64
+   },
+   "source_record_count": 64,
+   "window_id": "toniot-occurrence-25940529"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 5.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 80
+   },
+   "source_record_count": 80,
+   "window_id": "toniot-occurrence-25940530"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 6.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 76
+   },
+   "source_record_count": 76,
+   "window_id": "toniot-occurrence-25940531"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 7.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 77
+   },
+   "source_record_count": 77,
+   "window_id": "toniot-occurrence-25940532"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 8.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 68
+   },
+   "source_record_count": 68,
+   "window_id": "toniot-occurrence-25940533"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 9.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 95
+   },
+   "source_record_count": 95,
+   "window_id": "toniot-occurrence-25940534"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 10.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 96
+   },
+   "source_record_count": 96,
+   "window_id": "toniot-occurrence-25940535"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 11.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 77
+   },
+   "source_record_count": 77,
+   "window_id": "toniot-occurrence-25940536"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 12.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 81
+   },
+   "source_record_count": 81,
+   "window_id": "toniot-occurrence-25940537"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 13.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 86
+   },
+   "source_record_count": 86,
+   "window_id": "toniot-occurrence-25940538"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 14.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 78
+   },
+   "source_record_count": 78,
+   "window_id": "toniot-occurrence-25940539"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 15.0,
+   "score": 0.9998217821121216,
+   "source_files": {
+    "Network_dataset_22.csv": 49
+   },
+   "source_record_count": 49,
+   "window_id": "toniot-occurrence-25940540"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 16.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 90
+   },
+   "source_record_count": 90,
+   "window_id": "toniot-occurrence-25940541"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 17.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 79
+   },
+   "source_record_count": 79,
+   "window_id": "toniot-occurrence-25940542"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 18.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 85
+   },
+   "source_record_count": 85,
+   "window_id": "toniot-occurrence-25940543"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 19.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 69
+   },
+   "source_record_count": 69,
+   "window_id": "toniot-occurrence-25940544"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 20.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 80
+   },
+   "source_record_count": 80,
+   "window_id": "toniot-occurrence-25940545"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 21.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 81
+   },
+   "source_record_count": 81,
+   "window_id": "toniot-occurrence-25940546"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 22.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 63
+   },
+   "source_record_count": 63,
+   "window_id": "toniot-occurrence-25940547"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 23.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 78
+   },
+   "source_record_count": 78,
+   "window_id": "toniot-occurrence-25940548"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 24.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 81
+   },
+   "source_record_count": 81,
+   "window_id": "toniot-occurrence-25940549"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 25.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 60
+   },
+   "source_record_count": 60,
+   "window_id": "toniot-occurrence-25940550"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 26.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 129
+   },
+   "source_record_count": 129,
+   "window_id": "toniot-occurrence-25940551"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 27.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 25
+   },
+   "source_record_count": 25,
+   "window_id": "toniot-occurrence-25940552"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 45
+   },
+   "source_record_count": 45,
+   "window_id": "toniot-occurrence-25940615"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 58
+   },
+   "source_record_count": 58,
+   "window_id": "toniot-occurrence-25940616"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 3.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 60
+   },
+   "source_record_count": 60,
+   "window_id": "toniot-occurrence-25940617"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 3.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 47
+   },
+   "source_record_count": 47,
+   "window_id": "toniot-occurrence-25940618"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 83
+   },
+   "source_record_count": 83,
+   "window_id": "toniot-occurrence-25940619"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 56
+   },
+   "source_record_count": 56,
+   "window_id": "toniot-occurrence-25940620"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 544
+   },
+   "source_record_count": 544,
+   "window_id": "toniot-occurrence-25940624"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9998416900634766,
+   "source_files": {
+    "Network_dataset_22.csv": 292
+   },
+   "source_record_count": 292,
+   "window_id": "toniot-occurrence-25940625"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9999999403953552,
+   "source_files": {
+    "Network_dataset_22.csv": 21
+   },
+   "source_record_count": 21,
+   "window_id": "toniot-occurrence-25941299"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 16
+   },
+   "source_record_count": 16,
+   "window_id": "toniot-occurrence-25941300"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 15
+   },
+   "source_record_count": 15,
+   "window_id": "toniot-occurrence-25941320"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 15
+   },
+   "source_record_count": 15,
+   "window_id": "toniot-occurrence-25941330"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9998475313186646,
+   "source_files": {
+    "Network_dataset_22.csv": 27
+   },
+   "source_record_count": 27,
+   "window_id": "toniot-occurrence-25941331"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-28",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_22.csv": 17
+   },
+   "source_record_count": 17,
+   "window_id": "toniot-occurrence-25941341"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 147
+   },
+   "source_record_count": 147,
+   "window_id": "toniot-occurrence-25942348"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 173
+   },
+   "source_record_count": 173,
+   "window_id": "toniot-occurrence-25942349"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 0.9999999403953552,
+   "source_files": {
+    "Network_dataset_23.csv": 189
+   },
+   "source_record_count": 189,
+   "window_id": "toniot-occurrence-25942350"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 63
+   },
+   "source_record_count": 63,
+   "window_id": "toniot-occurrence-25942351"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 26
+   },
+   "source_record_count": 26,
+   "window_id": "toniot-occurrence-25942356"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 19
+   },
+   "source_record_count": 19,
+   "window_id": "toniot-occurrence-25942357"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 22
+   },
+   "source_record_count": 22,
+   "window_id": "toniot-occurrence-25942365"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 17
+   },
+   "source_record_count": 17,
+   "window_id": "toniot-occurrence-25942366"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.999998927116394,
+   "source_files": {
+    "Network_dataset_23.csv": 33
+   },
+   "source_record_count": 33,
+   "window_id": "toniot-occurrence-25942372"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 0.999943733215332,
+   "source_files": {
+    "Network_dataset_23.csv": 29
+   },
+   "source_record_count": 29,
+   "window_id": "toniot-occurrence-25942373"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 57
+   },
+   "source_record_count": 57,
+   "window_id": "toniot-occurrence-25942374"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9998216032981873,
+   "source_files": {
+    "Network_dataset_23.csv": 99
+   },
+   "source_record_count": 99,
+   "window_id": "toniot-occurrence-25942380"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 25
+   },
+   "source_record_count": 25,
+   "window_id": "toniot-occurrence-25942381"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 25
+   },
+   "source_record_count": 25,
+   "window_id": "toniot-occurrence-25942397"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 21
+   },
+   "source_record_count": 21,
+   "window_id": "toniot-occurrence-25942412"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 27
+   },
+   "source_record_count": 27,
+   "window_id": "toniot-occurrence-25942413"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 34
+   },
+   "source_record_count": 34,
+   "window_id": "toniot-occurrence-25942414"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 36
+   },
+   "source_record_count": 36,
+   "window_id": "toniot-occurrence-25942415"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 23
+   },
+   "source_record_count": 23,
+   "window_id": "toniot-occurrence-25942420"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 19
+   },
+   "source_record_count": 19,
+   "window_id": "toniot-occurrence-25942421"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 21
+   },
+   "source_record_count": 21,
+   "window_id": "toniot-occurrence-25942438"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 39
+   },
+   "source_record_count": 39,
+   "window_id": "toniot-occurrence-25942439"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9999710321426392,
+   "source_files": {
+    "Network_dataset_23.csv": 501
+   },
+   "source_record_count": 501,
+   "window_id": "toniot-occurrence-25942444"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 0.999918520450592,
+   "source_files": {
+    "Network_dataset_23.csv": 146
+   },
+   "source_record_count": 146,
+   "window_id": "toniot-occurrence-25942445"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9999998211860657,
+   "source_files": {
+    "Network_dataset_23.csv": 40
+   },
+   "source_record_count": 40,
+   "window_id": "toniot-occurrence-25942446"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 26
+   },
+   "source_record_count": 26,
+   "window_id": "toniot-occurrence-25942460"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 1.0,
+   "source_files": {
+    "Network_dataset_23.csv": 24
+   },
+   "source_record_count": 24,
+   "window_id": "toniot-occurrence-25942461"
+  },
+  {
+   "alert": true,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 2.0,
+   "score": 0.9999995827674866,
+   "source_files": {
+    "Network_dataset_23.csv": 624
+   },
+   "source_record_count": 624,
+   "window_id": "toniot-occurrence-25942462"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.9793509840965271,
+   "source_files": {
+    "Network_dataset_23.csv": 166
+   },
+   "source_record_count": 166,
+   "window_id": "toniot-occurrence-25942463"
+  },
+  {
+   "alert": false,
+   "date": "2019-04-29",
+   "minutes_to_nearest_attack_window": 1.0,
+   "score": 0.999923586845398,
+   "source_files": {
+    "Network_dataset_23.csv": 204
+   },
+   "source_record_count": 204,
+   "window_id": "toniot-occurrence-25942476"
+  }
+ ],
+ "features_where_attack_date_benign_is_closer_to_attacks": [
+  {
+   "feature": "unique_destination_count",
+   "z_attack": 0.43462814943043826,
+   "z_attack_date_benign": 0.7047992228169105,
+   "z_baseline": -0.24079953403574245
+  },
+  {
+   "feature": "unique_destination_port_count",
+   "z_attack": 1.472191695170518,
+   "z_attack_date_benign": 1.8224228489402223,
+   "z_baseline": -0.2789640736780043
+  },
+  {
+   "feature": "duration_std",
+   "z_attack": -0.09438987875998575,
+   "z_attack_date_benign": -0.09492630528944232,
+   "z_baseline": -0.09333050780357777
+  },
+  {
+   "feature": "service_http_fraction",
+   "z_attack": 4.225407363912645,
+   "z_attack_date_benign": 42.37881242184822,
+   "z_baseline": -0.10856749497817662
+  },
+  {
+   "feature": "state_sf_fraction",
+   "z_attack": 3.058727215823433,
+   "z_attack_date_benign": 17.574361936126966,
+   "z_baseline": -0.42424511941216225
+  },
+  {
+   "feature": "state_other_fraction",
+   "z_attack": -5.332287133182898,
+   "z_attack_date_benign": -5.24790222228169,
+   "z_baseline": 0.23598026008680945
+  }
+ ],
+ "group_alert_rate_ab1": {
+  "apr04_benign": 0.004246284501061571,
+  "attack": 0.9403487911216806,
+  "attack_date_benign": 0.9262295081967213,
+  "baseline_benign": 0.010021786492374727
+ },
+ "group_feature_medians": {
+  "apr04_benign": {
+   "connection_count": 67.0,
+   "duration_max": 7.235995,
+   "duration_mean": 0.128595944444,
+   "duration_std": 0.894533266045,
+   "originator_bytes_sum": 2023.0,
+   "originator_packets_sum": 36.0,
+   "protocol_icmp_fraction": 0.032967032967,
+   "protocol_other_fraction": 0.0,
+   "protocol_tcp_fraction": 0.666666666667,
+   "protocol_udp_fraction": 0.28125,
+   "responder_bytes_sum": 1280.0,
+   "responder_packets_sum": 12.0,
+   "service_dns_fraction": 0.212121212121,
+   "service_http_fraction": 0.0,
+   "service_other_fraction": 0.784615384615,
+   "service_ssh_fraction": 0.0,
+   "service_ssl_fraction": 0.0,
+   "state_other_fraction": 0.808219178082,
+   "state_rej_fraction": 0.0,
+   "state_rsto_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_s0_fraction": 0.172413793103,
+   "state_sf_fraction": 0.0,
+   "unique_destination_count": 9.0,
+   "unique_destination_port_count": 8.0
+  },
+  "attack": {
+   "connection_count": 2217.0,
+   "duration_max": 73.776907,
+   "duration_mean": 0.29537157068099995,
+   "duration_std": 1.867323642789,
+   "originator_bytes_sum": 124416.5,
+   "originator_packets_sum": 11381.0,
+   "protocol_icmp_fraction": 0.0,
+   "protocol_other_fraction": 0.0,
+   "protocol_tcp_fraction": 0.964412811388,
+   "protocol_udp_fraction": 0.035469287877,
+   "responder_bytes_sum": 581172.0,
+   "responder_packets_sum": 7174.5,
+   "service_dns_fraction": 0.02427184466,
+   "service_http_fraction": 0.035100039424500004,
+   "service_other_fraction": 0.8781407695545,
+   "service_ssh_fraction": 0.0,
+   "service_ssl_fraction": 0.0,
+   "state_other_fraction": 0.0008392795505,
+   "state_rej_fraction": 0.055362835363000004,
+   "state_rsto_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_s0_fraction": 0.025998969637999997,
+   "state_sf_fraction": 0.0921876518385,
+   "unique_destination_count": 13.0,
+   "unique_destination_port_count": 12.0
+  },
+  "attack_date_benign": {
+   "connection_count": 77.0,
+   "duration_max": 11.005802500000001,
+   "duration_mean": 0.41487817572450003,
+   "duration_std": 1.432837021149,
+   "originator_bytes_sum": 29287.0,
+   "originator_packets_sum": 340.5,
+   "protocol_icmp_fraction": 0.0116963064295,
+   "protocol_other_fraction": 0.0,
+   "protocol_tcp_fraction": 0.4087809036655,
+   "protocol_udp_fraction": 0.5793287566745,
+   "responder_bytes_sum": 199695.0,
+   "responder_packets_sum": 301.5,
+   "service_dns_fraction": 0.17157275021,
+   "service_http_fraction": 0.344097222222,
+   "service_other_fraction": 0.4585784313725,
+   "service_ssh_fraction": 0.0,
+   "service_ssl_fraction": 0.0,
+   "state_other_fraction": 0.012579113924000001,
+   "state_rej_fraction": 0.0168428470755,
+   "state_rsto_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_s0_fraction": 0.44227941176450003,
+   "state_sf_fraction": 0.476388888889,
+   "unique_destination_count": 15.0,
+   "unique_destination_port_count": 13.0
+  },
+  "baseline_benign": {
+   "connection_count": 64.0,
+   "duration_max": 13.516877,
+   "duration_mean": 0.506998416667,
+   "duration_std": 2.725376857233,
+   "originator_bytes_sum": 2288.0,
+   "originator_packets_sum": 40.0,
+   "protocol_icmp_fraction": 0.019607843137,
+   "protocol_other_fraction": 0.0,
+   "protocol_tcp_fraction": 0.630136986301,
+   "protocol_udp_fraction": 0.339622641509,
+   "responder_bytes_sum": 1248.0,
+   "responder_packets_sum": 10.0,
+   "service_dns_fraction": 0.222222222222,
+   "service_http_fraction": 0.0,
+   "service_other_fraction": 0.774774774775,
+   "service_ssh_fraction": 0.0,
+   "service_ssl_fraction": 0.0,
+   "state_other_fraction": 0.775510204082,
+   "state_rej_fraction": 0.0,
+   "state_rsto_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_s0_fraction": 0.205882352941,
+   "state_sf_fraction": 0.0,
+   "unique_destination_count": 8.0,
+   "unique_destination_port_count": 7.0
+  }
+ },
+ "group_sizes": {
+  "apr04_benign": 471,
+  "attack": 5046,
+  "attack_date_benign": 122,
+  "baseline_benign": 2295
+ },
+ "source_files": {
+  "apr04_benign": {
+   "Network_dataset_1.csv": 471
+  },
+  "attack_date_benign": {
+   "Network_dataset_12.csv": 5,
+   "Network_dataset_18.csv": 1,
+   "Network_dataset_22.csv": 85,
+   "Network_dataset_23.csv": 30,
+   "Network_dataset_7.csv": 1
+  }
+ },
+ "status": "post-hoc diagnostic, not part of protocol v1",
+ "threshold_ab1": 0.9999590516090393
+}
