@@ -20,7 +20,7 @@ attested through that demonstration.
 The formal extensions provide submission receipts, inventory accounting,
 committed-input coverage, append-only semantic review, multiround derivation,
 structural blast-radius queries and explicitly defined counterfactual replay.
-A separately versioned witnessed profile composes an actual selected M2Ã¢â‚¬â€œM8 path.
+A separately versioned witnessed profile composes an actual selected M2–M8 path.
 Experimental defenses remain distinct profiles with their own evidence.
 
 | Topic | Maintained guide |
@@ -52,7 +52,7 @@ runs the full test suite; `make test-formal` and `make test-groups` select relev
 subsets. `make validate` retains the package/lint/test/fixture workflow. The small
 fixture is an artifact-contract check, not a reference training campaign.
 
-Dataset downloads, M2Ã¢â‚¬â€œM3 reconstruction and profile-specific runtime commands
+Dataset downloads, M2–M3 reconstruction and profile-specific runtime commands
 are documented in [Reproducibility](docs/guide/REPRODUCIBILITY.md). Existing output
 paths are protected. Neither `make` nor the documentation checks launch attack
 campaigns, acquire timestamps or modify the manuscript implicitly.

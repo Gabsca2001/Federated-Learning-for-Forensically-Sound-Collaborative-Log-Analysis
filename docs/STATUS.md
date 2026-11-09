@@ -8,7 +8,7 @@ protocols and reports describe their own releases; their historical "pending",
 
 | Area | Current scope | Evidence entry |
 | --- | --- | --- |
-| M2ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œM8 integration | Shared contracts and a representative witnessed path through real M7 products and M8 recovery; profiles remain explicit | [System model](SYSTEM_MODEL.md), [selected-chain validation](UNIFIED_CHAIN_VALIDATION.md) |
+| M2 to M8 integration | Shared contracts and a representative witnessed path through real M7 products and M8 recovery; profiles remain explicit | [System model](SYSTEM_MODEL.md), [selected-chain validation](UNIFIED_CHAIN_VALIDATION.md) |
 | Formal derivation | Provenance, decision dependency, effective weights and semantic review are distinct; manual proofs remain conditional | [Theorems](FORMAL_MODEL_THEOREMS.md), [final correspondence](../results/revision-final-formal-correspondence-v2/README.md) |
 | Input and submission coverage | Committed occurrence outcomes, receipt-relative inventory checks and separately witnessed eligibility | [Coverage](INGESTION_COVERAGE.md), [receipts](SUBMISSION_EVIDENCE.md), [external TSA](../results/revision-external-tsa-v2/README.md) |
 | Multiround investigation | Authenticated checkpoint/product graph, structural blast radius, direct interventions and genuine corrected-parent retraining | [Graph](MULTIROUND_DERIVATION.md), [replay](COUNTERFACTUAL_REPLAY.md) |
