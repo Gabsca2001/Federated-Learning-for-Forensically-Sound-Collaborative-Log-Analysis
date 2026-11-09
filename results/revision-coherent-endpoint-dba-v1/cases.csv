@@ -1,0 +1,13 @@
+history,seed,method,mode,complete,committed_rounds,availability_pause,observed_peak_full_asr,observed_peak_worst_asr,round15_full_asr,round15_worst_asr,retained_parent_worst_asr,effective_paired_rounds,maximum_observed_paired_harm,maximum_observed_paired_clean_f1_loss
+s6116104-coherent_fedavg-clean,6116104,coherent_fedavg,clean,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116104-coherent_fltrust-clean,6116104,coherent_fltrust,clean,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116105-coherent_fedavg-clean,6116105,coherent_fedavg,clean,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116105-coherent_fltrust-clean,6116105,coherent_fltrust,clean,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116104-coherent_fedavg-distributed,6116104,coherent_fedavg,distributed,True,15,False,0.17484131563762262,0.35429890363531447,0.17484131563762262,0.3346797461050202,,"[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",0.35429890363531447,0.04905497063235109
+s6116104-coherent_fltrust-distributed,6116104,coherent_fltrust,distributed,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116105-coherent_fedavg-distributed,6116105,coherent_fedavg,distributed,True,15,False,1.0,1.0,1.0,1.0,,"[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",1.0,0.04833560253640545
+s6116105-coherent_fltrust-distributed,6116105,coherent_fltrust,distributed,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116104-coherent_fedavg-complete-trigger,6116104,coherent_fedavg,complete-trigger,True,15,False,0.9440276976341604,0.9440276976341604,0.9434506635891518,0.9434506635891518,,"[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",0.9440276976341604,0.04990311968326622
+s6116104-coherent_fltrust-complete-trigger,6116104,coherent_fltrust,complete-trigger,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0
+s6116105-coherent_fedavg-complete-trigger,6116105,coherent_fedavg,complete-trigger,True,15,False,1.0,1.0,1.0,1.0,,"[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",1.0,0.012870301244881643
+s6116105-coherent_fltrust-complete-trigger,6116105,coherent_fltrust,complete-trigger,True,15,False,0.0,0.0,0.0,0.0,,[],0.0,0.0

@@ -1,0 +1,34 @@
+{
+  "name": "ToN-IoT-final-pre-test-update-v1",
+  "created_utc": "2026-11-09T10:03:33.989439+00:00",
+  "source_selection_sha256": "6f02b1e424dcab09f83295140dc3df6ae49c76ec3e3d438105fb24bc52b668e7",
+  "selected_families": {
+    "federated": "fedavg-legacy-source-standard",
+    "centralized-reference": "central-logistic-target-log1p",
+    "source-score-control": "frozen-score"
+  },
+  "federated_rounds": 9,
+  "round_budget_selection": "Median primary-view round of the validation-selected family, frozen before final fitting.",
+  "train_windows": 7141,
+  "retired_validation_windows": 1080,
+  "test_windows": 718,
+  "role_change": "Old corrected validation becomes training; no independent validation is claimed after this update.",
+  "modes": [
+    "uniform",
+    "recency-48h"
+  ],
+  "primary_mode": "recency-48h",
+  "recency": "Every pre-test window is retained; weight = 2**(-age_days/2) from its window end to the test boundary.",
+  "weights": "Weighted global sqrt-balanced class weights and normalized weighted local cross-entropy; sample-count FedAvg.",
+  "primary_decision": "New binary-head argmax (strict attack probability > .5), fixed without post-refit calibration.",
+  "transferred_threshold": "Diagnostic only: calibrate a train-only fixed-round control on the old validation before adding it to fitting, then transfer unchanged.",
+  "preprocessing": "Reuse parent train-fitted transforms unchanged; no test or pooled-scaler fitting.",
+  "test_scope": "Previously observed date. Exploratory pre-test adaptation, not fresh blind generalization or repair of the old frozen model.",
+  "neural": "Original 128/64/32 encoder, two-output head, Adam .001, two local epochs, 15 IID clients, seeds 341593/342593/343593.",
+  "centralized": "The validation-selected logistic/log1p reference is refitted separately with both weighting rules; not a federated defense.",
+  "runner_sha256": "d6e10b5766793b616740629bf5168b4a53f1b28cc579d948c1259ad8f5b54fd6",
+  "parent_protocol_sha256": "99c4fb8d2855dee9e295573563759b5740fc518f20c8065bf21e0c55e7c4420d",
+  "all_test_results_reported": true,
+  "operational_readiness_claimed": false,
+  "manuscript_changed": false
+}

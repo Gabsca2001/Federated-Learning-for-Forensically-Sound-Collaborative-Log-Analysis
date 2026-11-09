@@ -1,0 +1,20 @@
+{
+  "primary_fltrust_complete": 4,
+  "primary_fltrust_paused": 2,
+  "linked_recovery_branches_complete": 2,
+  "eventual_completed_fltrust_histories_with_explicit_links": 6,
+  "committed_rounds_per_completed_history": 15,
+  "maximum_fixed_endpoint_clean_f1_loss_points": 1.1220654914039674,
+  "root_expansion": {
+    "old_rows": 48,
+    "new_rows": 60,
+    "additional_rows": 12,
+    "maximum_expansions": 1
+  },
+  "original_primary_all_guards_pass": false,
+  "linked_recovery_qualifies": true,
+  "interpretation": "Clean availability and utility only; post-hoc linked recovery on both failures, not six independent confirmations or original six-of-six primary success.",
+  "new_attack_evaluation": false,
+  "fresh_TPM_attestation": false,
+  "production_gradient_adapter_validated": false
+}

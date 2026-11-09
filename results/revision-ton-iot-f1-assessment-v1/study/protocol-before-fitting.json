@@ -1,0 +1,56 @@
+{
+  "name": "ToN-IoT-validation-selected-F1-diagnostic-v1",
+  "created_utc": "2026-11-09T09:52:50.791467+00:00",
+  "primary_objective": "Validation macro-F1 with benign and attack F1 both reported; test never used for choosing candidates, thresholds or seed.",
+  "f1_goal": "macro-F1 >= .85 and both class F1 >= .80",
+  "low_alert_goal": "FPR <= .10 and attack recall >= .90, reported separately.",
+  "candidates": "18 parent federated checkpoints, 12 new regularized federated runs, 16 centralized references and 2 frozen-source score controls; 48 total.",
+  "threshold_rule": "Strict score > threshold; maximize corrected validation macro-F1, ties fewer false positives then higher threshold.",
+  "federated_selection": "Choose family by mean calibrated validation macro-F1 across three seeds in the occurrence view; report all seeds and both views.",
+  "central_selection": "Choose reference family by calibrated validation macro-F1 in the occurrence view, separately from federated candidates.",
+  "new_federated": {
+    "profiles": [
+      "small encoder [64,32]/embedding16/dropout .1/AdamW decay .001",
+      "linear 25-to-2/AdamW decay .01"
+    ],
+    "mode": "target-log1p",
+    "seeds": [
+      341593,
+      342593,
+      343593
+    ],
+    "rounds": 30,
+    "clients": 15,
+    "local_epochs": 2,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "checkpoint": "Maximum uncalibrated validation macro-F1, earliest tie; threshold fit after checkpoint selection."
+  },
+  "centralized": {
+    "modes": [
+      "target-standard",
+      "target-log1p"
+    ],
+    "seed": 341593,
+    "models": {
+      "logistic": "C=1, lbfgs, max_iter=3000",
+      "svm": "RBF C=10, gamma=scale, expit(margin) ranking score",
+      "histogram": "150 rounds, learning_rate=.05, 15 leaves, l2=1, early_stopping=False",
+      "extra_trees": "256 trees, min leaf=2, max_features=1.0, one CPU thread"
+    }
+  },
+  "train_weights": "Parent training-only global sqrt-balanced weights; same training and corrected-validation rows.",
+  "existing_test_scope": "The same 718-window date has been observed before. Exploratory follow-up, not a new blind test. All choices close before this study evaluates it.",
+  "scope": "Honest-client numerical IID federated training and separate centralized references. No TPM or Byzantine campaign.",
+  "parent_protocol_sha256": "99c4fb8d2855dee9e295573563759b5740fc518f20c8065bf21e0c55e7c4420d",
+  "corrected_selection_sha256": "e8d001a68eb5a174a0b215fa3d17faa64f9a959b777c1264623cf1d1b46740e3",
+  "source_scaler_sha256": "70b0471a62214bac0a2a872f5c9662d61e596c8efe829aef4fe414a8075523ce",
+  "source_model_sha256": "39075d9cbf7c45248c475ae3ddfb66f0e032d55cc210eba2a9e97c19e3d594e5",
+  "runner_sha256": "bfa924c7b6d1abb024110fd8700b0d3bd8516ae1f5e4ade2081daad5dfdf9be3",
+  "calibration_module_sha256": "ee2d692e26c2ac77dcf2c4b3e604a6ef6c6ff35dda1f21e2f5c2aa37ddafec20",
+  "python": "3.12.3",
+  "torch": "2.14.0+cu130",
+  "sklearn": "1.9.1",
+  "numpy": "2.5.3",
+  "manuscript_changed": false
+}

@@ -1,0 +1,60 @@
+{
+  "added_package_files": {
+    "src/fl_forensics/group_calibration_v2.py": "e442d9fc7cdde02169b8c4322d2340fbeb92f5769ac988fda129545c43d66e3b",
+    "src/fl_forensics/remediation_validation.py": "caf8f94a9ff18a6891d1ca553b51803cf677ffa426afbf9eeacd2d1ff3dbeab1"
+  },
+  "artifact_closures": {
+    "revision-clean-reconstruction-v1": {
+      "artifact_count": 1548,
+      "closure_sha256": "b11998028281e376d792f5ff06b792a2f66dce7d976c4d9d98e8e1cd7b2e86bd",
+      "path": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-clean-reconstruction-v1"
+    },
+    "revision-conditioned-groups-v2-fixed-serialization": {
+      "artifact_count": 1747,
+      "closure_sha256": "12f8710f28313c30f0c1082faf341abf9be2be91565a6a2da447625c747f3f79",
+      "path": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-conditioned-groups-v2-fixed-serialization"
+    },
+    "revision-forensic-selected-remediation-v1": {
+      "artifact_count": 842,
+      "closure_sha256": "6eb25996d37437af0949f8886d7c98ac48712aee5a52e130c3538a178cc2b1c4",
+      "path": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-forensic-selected-remediation-v1"
+    },
+    "revision-same-base-execution-audit-v1": {
+      "artifact_count": 908,
+      "closure_sha256": "2ed2c7c3385175ffb7b85eb61333e03f52b051f0a2a14b39e7a1a636e29f9fc2",
+      "path": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-same-base-execution-audit-v1"
+    },
+    "revision-selected-group-remediation-v2": {
+      "artifact_count": 902,
+      "closure_sha256": "9fb258c708f3791425cd93d2f77de7c01db221b8751f37efb41a938f51a0d0c4",
+      "path": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-selected-group-remediation-v2"
+    }
+  },
+  "current_implementation_sha256": "5ae1ab8b212b258a14a2800a2230aebe9d0af7793778e3e686066472b46cc77d",
+  "git_index_unchanged": true,
+  "new_aggregated_rounds": 300,
+  "new_local_training_calls": 5010,
+  "previous_package_files_unchanged": 106,
+  "prior_signed_case_unchanged": true,
+  "qualifications": {
+    "fresh_TPM_attestation_performed": false,
+    "independent_timestamp_verified": false,
+    "intentional_collusion_proved": false,
+    "matched_clean_reconstruction_verified": true,
+    "privileged_profile_requires_original_unmodified_client_snapshots": true,
+    "privileged_same_base_execution_deviations_match_experimental_membership": true,
+    "privileged_selected_group_clean_reference_replay_verified": true,
+    "update_only_automatic_exclusion_validated": false,
+    "update_only_full_group_recovery_validated": false,
+    "update_only_pilot_evaluated": true
+  },
+  "status": "verified",
+  "tests": {
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "561",
+    "time": "192.469"
+  },
+  "thesis_source_files_unchanged": 22
+}

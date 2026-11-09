@@ -1,0 +1,244 @@
+{
+  "selected_primary_detector": "knn",
+  "primary_budget": 0.01,
+  "groups": {
+    "classifier": {
+      "configurations": 3,
+      "native": {
+        "macro_f1": 0.9078941921347381,
+        "benign_f1": 0.9687033215373967,
+        "attack_f1": 0.8470850627320795,
+        "attack_recall": 0.7780713342140025,
+        "false_positive_rate": 0.013389288569144684
+      },
+      "common": {
+        "macro_f1": 0.6583033168628791,
+        "false_positive_rate": 0.15555555555555556
+      },
+      "mitm_native_detected": [
+        2,
+        7,
+        0
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        2,
+        6,
+        0
+      ],
+      "mitm_benign_only_coincidences": [
+        23,
+        21,
+        20
+      ]
+    },
+    "knn-standalone-01pct": {
+      "configurations": 1,
+      "native": {
+        "macro_f1": 0.9175723540322133,
+        "benign_f1": 0.9718662542347916,
+        "attack_f1": 0.863278453829635,
+        "attack_recall": 0.7965653896961691,
+        "false_positive_rate": 0.011091127098321343
+      },
+      "common": {
+        "macro_f1": 0.678104931540046,
+        "false_positive_rate": 0.13333333333333333
+      },
+      "mitm_native_detected": [
+        17
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        16
+      ],
+      "mitm_benign_only_coincidences": [
+        16
+      ]
+    },
+    "knn-combined-01pct": {
+      "configurations": 3,
+      "native": {
+        "macro_f1": 0.9085944635500917,
+        "benign_f1": 0.9682061290019671,
+        "attack_f1": 0.8489827980982163,
+        "attack_recall": 0.7983267283135183,
+        "false_positive_rate": 0.018685051958433254
+      },
+      "common": {
+        "macro_f1": 0.6811791855990629,
+        "false_positive_rate": 0.20000000000000004
+      },
+      "mitm_native_detected": [
+        18,
+        20,
+        17
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        17,
+        19,
+        16
+      ],
+      "mitm_benign_only_coincidences": [
+        23,
+        23,
+        22
+      ]
+    },
+    "knn-standalone-05pct": {
+      "configurations": 1,
+      "native": {
+        "macro_f1": 0.8912158381493649,
+        "benign_f1": 0.9602391629297459,
+        "attack_f1": 0.8221925133689839,
+        "attack_recall": 0.8124174372523117,
+        "false_positive_rate": 0.03717026378896882
+      },
+      "common": {
+        "macro_f1": 0.6874378109452737,
+        "false_positive_rate": 0.3333333333333333
+      },
+      "mitm_native_detected": [
+        28
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        26
+      ],
+      "mitm_benign_only_coincidences": [
+        30
+      ]
+    },
+    "knn-combined-05pct": {
+      "configurations": 3,
+      "native": {
+        "macro_f1": 0.8902770786669855,
+        "benign_f1": 0.9598245387453433,
+        "attack_f1": 0.8207296185886274,
+        "attack_recall": 0.8124174372523117,
+        "false_positive_rate": 0.03796962430055955
+      },
+      "common": {
+        "macro_f1": 0.6874378109452737,
+        "false_positive_rate": 0.3333333333333333
+      },
+      "mitm_native_detected": [
+        28,
+        28,
+        28
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        26,
+        26,
+        26
+      ],
+      "mitm_benign_only_coincidences": [
+        30,
+        30,
+        30
+      ]
+    },
+    "isolation-standalone-01pct": {
+      "configurations": 1,
+      "native": {
+        "macro_f1": 0.4694770133246428,
+        "benign_f1": 0.8848999725952316,
+        "attack_f1": 0.05405405405405406,
+        "attack_recall": 0.031704095112285335,
+        "false_positive_rate": 0.03207434052757794
+      },
+      "common": {
+        "macro_f1": 0.12641321139044964,
+        "false_positive_rate": 0.4
+      },
+      "mitm_native_detected": [
+        24
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        24
+      ],
+      "mitm_benign_only_coincidences": [
+        31
+      ]
+    },
+    "isolation-combined-01pct": {
+      "configurations": 3,
+      "native": {
+        "macro_f1": 0.8900177433743416,
+        "benign_f1": 0.9599799461344128,
+        "attack_f1": 0.8200555406142703,
+        "attack_recall": 0.8066930867459269,
+        "false_positive_rate": 0.03647082334132694
+      },
+      "common": {
+        "macro_f1": 0.669879823699147,
+        "false_positive_rate": 0.4000000000000001
+      },
+      "mitm_native_detected": [
+        24,
+        26,
+        24
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        24,
+        24,
+        24
+      ],
+      "mitm_benign_only_coincidences": [
+        32,
+        32,
+        32
+      ]
+    },
+    "isolation-standalone-05pct": {
+      "configurations": 1,
+      "native": {
+        "macro_f1": 0.6240384885757716,
+        "benign_f1": 0.8786598689002185,
+        "attack_f1": 0.36941710825132473,
+        "attack_recall": 0.32232496697490093,
+        "false_positive_rate": 0.09592326139088729
+      },
+      "common": {
+        "macro_f1": 0.3430447032852122,
+        "false_positive_rate": 0.6666666666666666
+      },
+      "mitm_native_detected": [
+        61
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        52
+      ],
+      "mitm_benign_only_coincidences": [
+        33
+      ]
+    },
+    "isolation-combined-05pct": {
+      "configurations": 3,
+      "native": {
+        "macro_f1": 0.8424536819384857,
+        "benign_f1": 0.9333195200982937,
+        "attack_f1": 0.7515878437786778,
+        "attack_recall": 0.8599735799207396,
+        "false_positive_rate": 0.09722222222222222
+      },
+      "common": {
+        "macro_f1": 0.6620230779995675,
+        "false_positive_rate": 0.6666666666666666
+      },
+      "mitm_native_detected": [
+        61,
+        61,
+        61
+      ],
+      "mitm_attacked_host_supported_minutes": [
+        52,
+        52,
+        52
+      ],
+      "mitm_benign_only_coincidences": [
+        33,
+        33,
+        33
+      ]
+    }
+  },
+  "default_changed": false
+}

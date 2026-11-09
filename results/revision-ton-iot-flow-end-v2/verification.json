@@ -1,0 +1,16 @@
+{
+  "status": "verified",
+  "training_rows_changed": 0,
+  "corrected_validation_checkpoint_scores": 540,
+  "test_prediction_sets_recomputed": 18,
+  "selection_changes": 5,
+  "original_training_verification_sha256": "2df6bf0f32a6047f9f61c03762e825fcf9257619ecdfd3570d3bf800743a478a",
+  "original_replay_rounds": 30,
+  "original_replayed_local_updates": 450,
+  "original_global_checkpoints_unchanged": true,
+  "new_model_training_performed": false,
+  "temporal_bound_is_conservative": true,
+  "actual_packet_arrival_or_log_write_times_verified": false,
+  "test_was_previously_observed": true,
+  "qualification": "Corrected validation excludes windows that can extend beyond the observation deadline; it reuses unchanged training and test inputs and preserves the exploratory scope."
+}

@@ -1,0 +1,128 @@
+{
+  "benign_role_support_by_day": {
+    "train": {
+      "2019-04-02": 855,
+      "2019-04-03": 867
+    },
+    "validation": {
+      "2019-04-03": 559,
+      "2019-04-04": 6
+    },
+    "test": {
+      "2019-04-04": 456,
+      "2019-04-24": 1,
+      "2019-04-25": 5,
+      "2019-04-26": 1,
+      "2019-04-28": 85,
+      "2019-04-29": 30
+    }
+  },
+  "parent_results": [
+    {
+      "id": "occurrence-binary-balanced-s341593",
+      "benign_by_capture_day": {
+        "2019-04-04": {
+          "windows": 456,
+          "false_alerts": 1,
+          "false_positive_rate": 0.0021929824561403508
+        },
+        "2019-04-24": {
+          "windows": 1,
+          "false_alerts": 1,
+          "false_positive_rate": 1.0
+        },
+        "2019-04-25": {
+          "windows": 5,
+          "false_alerts": 5,
+          "false_positive_rate": 1.0
+        },
+        "2019-04-26": {
+          "windows": 1,
+          "false_alerts": 0,
+          "false_positive_rate": 0.0
+        },
+        "2019-04-28": {
+          "windows": 85,
+          "false_alerts": 84,
+          "false_positive_rate": 0.9882352941176471
+        },
+        "2019-04-29": {
+          "windows": 30,
+          "false_alerts": 29,
+          "false_positive_rate": 0.9666666666666667
+        }
+      }
+    },
+    {
+      "id": "occurrence-binary-balanced-s342593",
+      "benign_by_capture_day": {
+        "2019-04-04": {
+          "windows": 456,
+          "false_alerts": 0,
+          "false_positive_rate": 0.0
+        },
+        "2019-04-24": {
+          "windows": 1,
+          "false_alerts": 1,
+          "false_positive_rate": 1.0
+        },
+        "2019-04-25": {
+          "windows": 5,
+          "false_alerts": 5,
+          "false_positive_rate": 1.0
+        },
+        "2019-04-26": {
+          "windows": 1,
+          "false_alerts": 0,
+          "false_positive_rate": 0.0
+        },
+        "2019-04-28": {
+          "windows": 85,
+          "false_alerts": 82,
+          "false_positive_rate": 0.9647058823529412
+        },
+        "2019-04-29": {
+          "windows": 30,
+          "false_alerts": 22,
+          "false_positive_rate": 0.7333333333333333
+        }
+      }
+    },
+    {
+      "id": "occurrence-binary-balanced-s343593",
+      "benign_by_capture_day": {
+        "2019-04-04": {
+          "windows": 456,
+          "false_alerts": 0,
+          "false_positive_rate": 0.0
+        },
+        "2019-04-24": {
+          "windows": 1,
+          "false_alerts": 1,
+          "false_positive_rate": 1.0
+        },
+        "2019-04-25": {
+          "windows": 5,
+          "false_alerts": 5,
+          "false_positive_rate": 1.0
+        },
+        "2019-04-26": {
+          "windows": 1,
+          "false_alerts": 0,
+          "false_positive_rate": 0.0
+        },
+        "2019-04-28": {
+          "windows": 85,
+          "false_alerts": 84,
+          "false_positive_rate": 0.9882352941176471
+        },
+        "2019-04-29": {
+          "windows": 30,
+          "false_alerts": 28,
+          "false_positive_rate": 0.9333333333333333
+        }
+      }
+    }
+  ],
+  "interpretation": "Benign train/validation coverage is concentrated early in the capture schedule. Calendar separation is a confound even though dates are absent from predictor inputs. Per-day false alerts are descriptive, not a basis for changing test assignments."
+}

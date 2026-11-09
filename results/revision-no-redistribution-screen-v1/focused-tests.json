@@ -1,0 +1,9 @@
+{
+  "command": "python -m pytest tests/test_no_redistribution_aggregation.py tests/test_capped_final_aggregation.py -q",
+  "observed_result": "19 passed in 0.29s",
+  "new_tests": 8,
+  "existing_comparison_tests": 11,
+  "timing": "Executed before candidate inference. Subsequent runner-only path/hash fixes did not change the tested operator or test sources.",
+  "operator_sha256": "b28372e9df8e5bfb508117d13c8f64fbca26e2e8f3e54b12ff3b360a764349b2",
+  "new_tests_sha256": "0d4b5eea771007ae207bb07ef383e16b01cdaf27f3a648f760257b16b7bd6e7d"
+}

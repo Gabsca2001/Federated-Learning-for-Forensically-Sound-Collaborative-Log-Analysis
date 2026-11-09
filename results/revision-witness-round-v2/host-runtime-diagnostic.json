@@ -1,0 +1,19 @@
+{
+  "status": "failed",
+  "errors": [
+    "in-round contribution decision does not recompute: client01"
+  ],
+  "host_versions": {
+    "numpy": "2.5.3",
+    "torch": "2.14.0",
+    "flwr": "1.38.0",
+    "scikit-learn": "1.9.1"
+  },
+  "differences": [
+    {
+      "field": ".statistics.components[0].raw_value",
+      "recorded": 0.12465515702709776,
+      "host_recomputed": 0.12465515702709777
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "analyst_source_archive_sha256": "7a2888bcf3a5c1af69d5269d0e51c0d7453e4cfd80bb41f5284e2182d3b96c10",
+  "branch": "revision/derivation-protocol",
+  "changed_package_files": {
+    "src/fl_forensics/counterfactual_round.py": {
+      "after": "c51a3061b476c0fd552313e8ede848fa78140446364075e4fe1e97136e411592",
+      "before": "fb84b987143fa66cfe738d631fc14128ee96c7809b8ae6230836778ea6d093d6"
+    },
+    "src/fl_forensics/influence_diagnostics.py": {
+      "after": "bc6e2a1a78c3633df80ad5b34e6dd1e09e84c77481da62535570d8ca6b5b13ac",
+      "before": null
+    },
+    "src/fl_forensics/investigation_verifier.py": {
+      "after": "d8342779c1b05585659f2d8dd9a7ddb95e8adf5289f479ad06d1a41af0c70833",
+      "before": null
+    }
+  },
+  "current_implementation_sha256": "457382018f9c75793c75122417a357f32e53e79fb412825ca27d72ab8bca8338",
+  "fresh_TPM_attestation_performed": false,
+  "git_index_unchanged": true,
+  "historical_attested_implementation_sha256": "d38d32f853153b4436801f9402ae52ba336c92c507c949e868b77e1f3b9e6a75",
+  "new_replay_archive_scope": "New replay and frozen numerical implementation; original signed benchmark campaigns and input datasets remain at their recorded pinned repository locations. This archive is not a standalone historical input authentication package.",
+  "new_replay_archive_sha256": "b9f64a875cf971b16de8526e5d57abe4c933cbfd542231eb6be1213a0610e5b7",
+  "status": "verified",
+  "tests": {
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "546",
+    "time": "123.142"
+  },
+  "thesis_source_files_unchanged": 22
+}

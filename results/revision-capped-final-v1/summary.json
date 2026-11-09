@@ -1,0 +1,65 @@
+{
+  "profile": "explicit-capped-final-beta-study-v1",
+  "protocol_sha256": "13cb93e46e48eb4481a79979399a27f80b0d8b2e6a1c46fdcbe13844e78f8ddc",
+  "training_closure_sha256": "517ca65531038d94183713854096693c88d45d21099f03fda5bc3becd4da137a",
+  "numerical_audit_sha256": "cd2c7dd8eb7a10d6b138a12362819501eb11845b54bea0fb9b75999aad2d47cc",
+  "publication_contract_sha256": "3342dd4cb63f34a4e9c5d6fe07dffdd23b05fd221ce791d5eb25d8dbde645561",
+  "verifier_sha256": "1c955ef05a16a0bcdb267cd76afddb9efda2cf18d7c42ca011a8b320613b9f90",
+  "planned_cases": 108,
+  "complete_cases": 108,
+  "audit_totals": {
+    "rounds": 1620,
+    "queries": 1440,
+    "local_repeats": 216,
+    "cap_certificates": 810,
+    "known_original_rounds_reproduced": 45
+  },
+  "completed_by_method": {
+    "tpm_only": 27,
+    "robust_bounded": 27,
+    "capped_sample": 27,
+    "capped_robust": 27
+  },
+  "structural_guard_pass": true,
+  "guards": {
+    "validation": {
+      "defined_comparisons": 18,
+      "worse_comparisons": 6,
+      "strict_effective_control_benefits": 0,
+      "non_iid_effective_control_benefits": 0,
+      "clean_utility_checks": 54,
+      "clean_utility_failures": 2,
+      "clean_utility_failures_by_method": {
+        "robust_bounded": 2,
+        "capped_sample": 0,
+        "capped_robust": 0
+      },
+      "capped_robust_own_clean_utility_guard_pass": true,
+      "security_guard_pass": false,
+      "clean_utility_guard_pass": false
+    },
+    "test": {
+      "defined_comparisons": 18,
+      "worse_comparisons": 6,
+      "strict_effective_control_benefits": 0,
+      "non_iid_effective_control_benefits": 0,
+      "clean_utility_checks": 54,
+      "clean_utility_failures": 2,
+      "clean_utility_failures_by_method": {
+        "robust_bounded": 2,
+        "capped_sample": 0,
+        "capped_robust": 0
+      },
+      "capped_robust_own_clean_utility_guard_pass": true,
+      "security_guard_pass": false,
+      "clean_utility_guard_pass": false
+    }
+  },
+  "combined_predeclared_guards_pass": false,
+  "default_policy_changed": false,
+  "actual_admission_policy": "tpm_only",
+  "fresh_TPM_quotes": 0,
+  "test_split_sha256": "0c36c22e9d5738e3c320db6271acaab61ae35744eb0c44fa277c87514974f8ab",
+  "independent_dataset": false,
+  "scope": "Exploratory assigned histories on reused Data24; no universal robustness, malicious-client identification or automatic production promotion"
+}

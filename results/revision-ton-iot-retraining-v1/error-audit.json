@@ -1,0 +1,121 @@
+{
+  "scope": "Exploratory post-test diagnosis; no weights, transforms, thresholds or selections changed.",
+  "primary_false_positive_counts": [
+    9,
+    9,
+    9
+  ],
+  "false_positives_shared_by_all_seeds": 9,
+  "primary_false_negative_counts": [
+    71,
+    63,
+    66
+  ],
+  "false_negatives_shared_by_all_seeds": 62,
+  "exact_25_feature_groups_with_conflicting_observed_binary_labels": 0,
+  "non_embargo_windows_in_conflicting_feature_groups": 0,
+  "empirical_minimum_errors_for_one_deterministic_feature_only_rule_on_combined_observed_rows": 0,
+  "empirical_test_only_feature_collision_error_bound": 0,
+  "false_positive_feature_examples": [
+    {
+      "bucket": 25942350,
+      "capture_id": "2019-04-29",
+      "source_records": 189,
+      "feature_vector_sha256": "f1649cbee49f090c9959c7cd2307e66c7e3296e170578a359fb678eed98dd806",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942351,
+      "capture_id": "2019-04-29",
+      "source_records": 63,
+      "feature_vector_sha256": "65ab4b4d50f586580617e89060b6c9a809fa9d02263000efa1ffdc2628451b23",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942372,
+      "capture_id": "2019-04-29",
+      "source_records": 33,
+      "feature_vector_sha256": "24d4fd49b80bd54385e932ac762d8531a013db9da3ba2231c2d9b31ab4669f9f",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942373,
+      "capture_id": "2019-04-29",
+      "source_records": 29,
+      "feature_vector_sha256": "214808e8d7d3543a64ff2afafa99b1ddf1a6454a2065da3005165d9612346c07",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942374,
+      "capture_id": "2019-04-29",
+      "source_records": 57,
+      "feature_vector_sha256": "169eb86218d5dc1da07cfbeeb73116d753378679dad2cc02d0d9674663b85a4c",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942439,
+      "capture_id": "2019-04-29",
+      "source_records": 39,
+      "feature_vector_sha256": "e78c8e932615e014c4d2ec10f04ca14c24fc12022ff6e99be7f68eb38ef890df",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942444,
+      "capture_id": "2019-04-29",
+      "source_records": 501,
+      "feature_vector_sha256": "bc9a11c63ee4771f319e9004593a1de9555cd3e8f44097c9cf827fe546387638",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942445,
+      "capture_id": "2019-04-29",
+      "source_records": 146,
+      "feature_vector_sha256": "ebdc4a0c907fcbf7974ea983ebc08c711409beb54a984c553fdef9bbc0073495",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    },
+    {
+      "bucket": 25942476,
+      "capture_id": "2019-04-29",
+      "source_records": 204,
+      "feature_vector_sha256": "69459df8b29635873302730588cef5df340737cb8d696b7da7f74dc25956c051",
+      "same_feature_vector_labels": {
+        "benign": 1
+      },
+      "same_feature_vector_training_labels": {},
+      "false_positive_in_seed_count": 3
+    }
+  ],
+  "interpretation": "An identical feature vector with different observed labels prevents perfect separation of those observations by a deterministic rule using only these features. This does not prove that any particular false positive is unavoidable or give a population error bound."
+}

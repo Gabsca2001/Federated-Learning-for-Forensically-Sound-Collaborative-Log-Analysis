@@ -1,0 +1,228 @@
+{
+  "scope": "Fixed-context exploratory transfer on reused validation. Root seeds share a60-row pool and contexts inherit source histories; observations are not independent defended campaigns.",
+  "contexts": 64,
+  "distinct_seed_base_update_input_sets": 56,
+  "root_pool_rows": 60,
+  "evaluation_rows": 3163,
+  "root_configurations": [
+    {
+      "root_method": "sgd1",
+      "root_seed": 7110701,
+      "planned_contexts": 64,
+      "defined": 64,
+      "below_positive_quorum10": 6
+    },
+    {
+      "root_method": "sgd1",
+      "root_seed": 7110702,
+      "planned_contexts": 64,
+      "defined": 64,
+      "below_positive_quorum10": 7
+    },
+    {
+      "root_method": "sgd1",
+      "root_seed": 7110703,
+      "planned_contexts": 64,
+      "defined": 64,
+      "below_positive_quorum10": 15
+    },
+    {
+      "root_method": "adam10",
+      "root_seed": 7110701,
+      "planned_contexts": 64,
+      "defined": 64,
+      "below_positive_quorum10": 9
+    },
+    {
+      "root_method": "adam10",
+      "root_seed": 7110702,
+      "planned_contexts": 64,
+      "defined": 64,
+      "below_positive_quorum10": 4
+    },
+    {
+      "root_method": "adam10",
+      "root_seed": 7110703,
+      "planned_contexts": 64,
+      "defined": 64,
+      "below_positive_quorum10": 13
+    }
+  ],
+  "pooled_by_reference_method": {
+    "sgd1": {
+      "robust": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 18,
+        "higher_worst_asr": 18,
+        "equal_worst_asr": 72,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 0,
+        "worst_clean_f1_loss_points": 0.7561670979437496,
+        "positive_quorum10_active_comparisons": 100,
+        "positive_quorum10_lower_worst_asr": 18,
+        "positive_quorum10_higher_worst_asr": 13,
+        "positive_quorum10_equal_worst_asr": 69,
+        "positive_quorum10_clean_comparisons": 40,
+        "positive_quorum10_clean_losses_over_two_points": 0,
+        "mean_difference_points": 1.9020751853989017,
+        "largest_improvement_points": 13.906520484708595,
+        "largest_worsening_points": 30.698211194460466
+      },
+      "capped": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 39,
+        "higher_worst_asr": 0,
+        "equal_worst_asr": 69,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 9,
+        "worst_clean_f1_loss_points": 26.729878478497014,
+        "positive_quorum10_active_comparisons": 100,
+        "positive_quorum10_lower_worst_asr": 35,
+        "positive_quorum10_higher_worst_asr": 0,
+        "positive_quorum10_equal_worst_asr": 65,
+        "positive_quorum10_clean_comparisons": 40,
+        "positive_quorum10_clean_losses_over_two_points": 9,
+        "mean_difference_points": -6.01130559295591,
+        "largest_improvement_points": 52.22158107328332,
+        "largest_worsening_points": 0.0
+      },
+      "root_only": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 10,
+        "higher_worst_asr": 6,
+        "equal_worst_asr": 92,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 3,
+        "worst_clean_f1_loss_points": 6.030253838426214,
+        "positive_quorum10_active_comparisons": 100,
+        "positive_quorum10_lower_worst_asr": 10,
+        "positive_quorum10_higher_worst_asr": 3,
+        "positive_quorum10_equal_worst_asr": 87,
+        "positive_quorum10_clean_comparisons": 40,
+        "positive_quorum10_clean_losses_over_two_points": 3,
+        "mean_difference_points": 0.017097305037293606,
+        "largest_improvement_points": 1.4425851125216438,
+        "largest_worsening_points": 1.2117714945181768
+      },
+      "norm_matched_robust": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 3,
+        "higher_worst_asr": 2,
+        "equal_worst_asr": 103,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 0,
+        "worst_clean_f1_loss_points": 0.0,
+        "positive_quorum10_active_comparisons": 100,
+        "positive_quorum10_lower_worst_asr": 0,
+        "positive_quorum10_higher_worst_asr": 2,
+        "positive_quorum10_equal_worst_asr": 98,
+        "positive_quorum10_clean_comparisons": 40,
+        "positive_quorum10_clean_losses_over_two_points": 0,
+        "mean_difference_points": -0.0021371631296617827,
+        "largest_improvement_points": 0.17311021350259748,
+        "largest_worsening_points": 0.11540680900172795
+      },
+      "zero_score_observations": {
+        "manipulated_zero_score": 87,
+        "manipulated_observations": 324,
+        "unmodified_zero_score": 722,
+        "unmodified_observations": 2556
+      }
+    },
+    "adam10": {
+      "robust": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 20,
+        "higher_worst_asr": 10,
+        "equal_worst_asr": 78,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 36,
+        "worst_clean_f1_loss_points": 10.526697019345177,
+        "positive_quorum10_active_comparisons": 94,
+        "positive_quorum10_lower_worst_asr": 18,
+        "positive_quorum10_higher_worst_asr": 9,
+        "positive_quorum10_equal_worst_asr": 67,
+        "positive_quorum10_clean_comparisons": 41,
+        "positive_quorum10_clean_losses_over_two_points": 32,
+        "mean_difference_points": -0.48994464747494176,
+        "largest_improvement_points": 24.812463935372186,
+        "largest_worsening_points": 15.233698788228505
+      },
+      "capped": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 42,
+        "higher_worst_asr": 0,
+        "equal_worst_asr": 66,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 42,
+        "worst_clean_f1_loss_points": 11.26542604377918,
+        "positive_quorum10_active_comparisons": 94,
+        "positive_quorum10_lower_worst_asr": 34,
+        "positive_quorum10_higher_worst_asr": 0,
+        "positive_quorum10_equal_worst_asr": 60,
+        "positive_quorum10_clean_comparisons": 41,
+        "positive_quorum10_clean_losses_over_two_points": 35,
+        "mean_difference_points": -8.403325425829754,
+        "largest_improvement_points": 54.58742065781881,
+        "largest_worsening_points": 0.0
+      },
+      "root_only": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 0,
+        "higher_worst_asr": 24,
+        "equal_worst_asr": 84,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 0,
+        "worst_clean_f1_loss_points": 0.7320035800799207,
+        "positive_quorum10_active_comparisons": 94,
+        "positive_quorum10_lower_worst_asr": 0,
+        "positive_quorum10_higher_worst_asr": 23,
+        "positive_quorum10_equal_worst_asr": 71,
+        "positive_quorum10_clean_comparisons": 41,
+        "positive_quorum10_clean_losses_over_two_points": 0,
+        "mean_difference_points": 4.329892500694578,
+        "largest_improvement_points": -0.0,
+        "largest_worsening_points": 60.24235429890364
+      },
+      "norm_matched_robust": {
+        "active_comparisons": 108,
+        "lower_worst_asr": 18,
+        "higher_worst_asr": 9,
+        "equal_worst_asr": 81,
+        "clean_comparisons": 48,
+        "clean_losses_over_two_points": 42,
+        "worst_clean_f1_loss_points": 11.107440301894588,
+        "positive_quorum10_active_comparisons": 94,
+        "positive_quorum10_lower_worst_asr": 16,
+        "positive_quorum10_higher_worst_asr": 8,
+        "positive_quorum10_equal_worst_asr": 70,
+        "positive_quorum10_clean_comparisons": 41,
+        "positive_quorum10_clean_losses_over_two_points": 38,
+        "mean_difference_points": -1.1503280545404035,
+        "largest_improvement_points": 28.620888632429313,
+        "largest_worsening_points": 15.233698788228505
+      },
+      "zero_score_observations": {
+        "manipulated_zero_score": 165,
+        "manipulated_observations": 324,
+        "unmodified_zero_score": 590,
+        "unmodified_observations": 2556
+      }
+    }
+  },
+  "no_reference_or_parameter_selected": true,
+  "new_client_training": 0,
+  "new_defender_specific_attack_search": false,
+  "test_inference": false,
+  "current_defaults_changed": false,
+  "verification": {
+    "status": "verified",
+    "root_training_replays": 384,
+    "unique_parent_method_seed_root_fits": 294,
+    "exported_metric_sets_checked": 1280,
+    "selected_prediction_metric_sets_replayed": 40,
+    "input_references_rehashed": 1216,
+    "formula_and_metric_mutations_rejected": 2,
+    "scope": "Independent arithmetic, same numerical dependencies/root trainer and same classifier for selected repeats; not independent-implementation or general-security certification."
+  }
+}

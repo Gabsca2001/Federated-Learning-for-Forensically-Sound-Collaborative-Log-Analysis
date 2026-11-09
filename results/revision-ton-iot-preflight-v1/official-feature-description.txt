@@ -1,0 +1,69 @@
+Description of Network Features
+
+
+Service profile:  Connection activity 
+ID | Feature | Type | Description
+1 | ts | Time  | Timestamp of connection between flow identifiers  
+2 | src_ip | String  | Source IP addresses which originate endpoints’ IP addresses 
+3 | src_port | Number  | Source ports which Originate endpoint’s TCP/UDP ports 
+4 | dst_ip | String  | Destination IP addresses which respond to endpoint’s IP addresses 
+5 | dst_port | Number  | Destination ports which respond to endpoint’s TCP/UDP ports
+6 | proto | String  | Transport layer protocols of flow connections
+7 | service | String  | Dynamically detected protocols, such as DNS, HTTP and SSL
+8 | duration | Number  | The time of the packet connections, which is estimated by subtracting ‘time of last packet seen’ and ‘time of first packet seen’
+9 | src_bytes | Number  |  Source bytes which are originated from payload bytes of TCP sequence numbers 
+10 | dst_bytes | Number  |  Destination bytes which are responded payload bytes from TCP sequence numbers
+11 | conn_state | String  |  Various connection states, such as S0 (connection without replay), S1 (connection established), and REJ (connection attempt rejected)
+12 | missed_bytes | Number  | Number of missing bytes in content gaps 
+ |  |  | 
+Service profile:  Statistical activity 
+ID | Feature | Type | Description
+13 | src_pkts | Number | Number of original packets which is estimated from source systems
+14 | src_ip_bytes | Number | Number of original IP bytes which is the total length of IP header field of source systems
+15 | dst_pkts | Number | Number of destination packets which is estimated from destination systems
+16 | dst_ip_bytes | Number |  Number of destination IP bytes which is the total length of IP header field of destination systems
+ |  |  | 
+Service profile:  DNS activity 
+ID | Feature | Type | Description
+17 | dns_query | string |  Domain name subjects of the DNS queries
+18 | dns_qclass | Number | Values which specifies the DNS query classes 
+19 | dns_qtype | Number  | Value which specifies the DNS query types
+20 | dns_rcode | Number | Response code values in the DNS responses
+21 | dns_AA | Bool  | Authoritative answers of DNS, where T denotes server is authoritative for query 
+22 | dns_RD | Bool  | Recursion desired of DNS, where T denotes request recursive lookup of query
+23 | dns_RA | Bool   | Recursion available of DNS, where T denotes server supports recursive queries
+24 | dns_rejected | Bool  | DNS rejection, where the DNS queries are rejected by the server
+ |  |  | 
+Service profile:  SSL activity 
+ID | Feature | Type | Description
+25 | ssl_version | String  | SSL version which is offered by the server 
+26 | ssl_cipher | String  | SSL cipher suite which the server chose
+27 | ssl_resumed | Bool  | SSL flag indicates the session that can be used to initiate new connections, where T refers to the SSL connection is initiated 
+28 | ssl_established | Bool  |  SSL flag indicates establishing connections between two parties, where T refers to establishing the connection 
+29 | ssl_subject | String  |  Subject of the X.509 cert offered by the server
+30 | ssl_issuer | String  |  Trusted owner/originator of SLL and digital certificate (certificate authority)
+ |  |  | 
+Service profile:  HTTP activity 
+ID | Feature | Type | Description
+31 | http_trans_depth | Number  |  Pipelined depth into the HTTP connection
+32 | http_method | String  |  HTTP request methods such as GET, POST and HEAD
+33 | http_uri | String  |  URIs used in the HTTP request 
+35 | http_version | String  |  The HTTP versions utilised such as V1.1
+36 | http_request_body_len | Number | Actual uncompressed content sizes of the data transferred from the HTTP client
+37 | http_response_body_len | Number | Actual uncompressed content sizes of the data transferred from the HTTP server
+38 | http_status_code | Number | Status codes returned by the HTTP server
+39 | http_user_agent | Number | Values of the User-Agent header in the HTTP protocol  
+40 | http_orig_mime_types | String  | Ordered vectors of mime types from source system in the HTTP protocol  
+41 | http_resp_mime_types | String  | Ordered vectors of mime types from destination system in the HTTP protocol  
+ |  |  | 
+Service profile:  Violation activity 
+ID | Feature | Type | Description
+42 | weird_name | String  | Names of anomalies/violations related to protocols that happened 
+43 | weird_addl | String  |  Additional information is associated to protocol anomalies/violations
+44 | weird_notice | bool  |  It indicates if the violation/anomaly was turned into a notice
+ |  |  | 
+Service profile:  Data labelling
+ID | Feature | Type | Description
+45 | label | Number  | Tag normal and attack records, where 0 indicates normal and 1 indicates attacks 
+46 | type | String  | Tag attack categories, such as normal, DoS, DDoS and backdoor attacks, and normal records
+

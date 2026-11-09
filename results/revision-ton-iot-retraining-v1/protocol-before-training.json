@@ -1,0 +1,102 @@
+{
+  "name": "ToN-IoT-target-domain-FedAvg-diagnostic-v1",
+  "created_utc": "2026-11-09T08:51:45.268918+00:00",
+  "primary_view": "occurrence",
+  "primary_preprocessing": "target-standard",
+  "views": [
+    "occurrence",
+    "exact-projection"
+  ],
+  "modes": [
+    "source-standard",
+    "target-standard",
+    "target-log1p"
+  ],
+  "seeds": [
+    341593,
+    342593,
+    343593
+  ],
+  "input_dataset_sha256": {
+    "occurrence": "57ebec4e6fc6d087b5da527421ce32b08382e9666993b8fa7a9556b9592e3c2c",
+    "exact-projection": "97b4da805134fb24dbeb3dabaab477d5d2164548cb448e4b34d1c41c9741605c"
+  },
+  "prior_transfer_results_sha256": "cc5c19434133fa7015c9ec5e04d3070cece2a5ba69154f59fae25167567190dd",
+  "source_scaler_sha256": "70b0471a62214bac0a2a872f5c9662d61e596c8efe829aef4fe414a8075523ce",
+  "split": "Train through 27 April 2019, validation on 28 April and test on 29 April UTC; remove the hour preceding each next split boundary.",
+  "train_rows": 6061,
+  "validation_rows": 1095,
+  "test_rows": 718,
+  "preprocessing_fit": "Only target training inputs; source-standard reuses the original Data24 training-only scaler.",
+  "architecture": {
+    "input_features": 25,
+    "hidden_layers": [
+      128,
+      64
+    ],
+    "embedding_size": 32,
+    "outputs": 2,
+    "dropout": 0.0
+  },
+  "training": {
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "optimizer": "Adam reset each client/round",
+    "aggregation": "Existing Flower FedAvg aggregate; sample-count weights",
+    "clients": 15,
+    "client_partition": "Fixed seed-341593 stratified IID round-robin",
+    "class_weighting": "global-sqrt-balanced-training-only",
+    "device": "CPU"
+  },
+  "selection": "Maximum binary validation macro-F1 over 30 rounds, earliest round on ties; each seed retained; target-standard remains primary.",
+  "evaluation": "Close all checkpoint selections before target test evaluation; report all 18 runs and all failures. No test-driven regime or seed selection.",
+  "binary_prediction": "Argmax of the new two-output head; no tuned threshold.",
+  "previously_observed_test": "The date was part of the earlier frozen-model transfer. This is an exploratory follow-up with target-fitting/selection isolation, not a new blind external test.",
+  "isolation_limits": "Day/time disjoint with a one-hour boundary purge; hosts and attack infrastructure may recur. Only 30 benign test windows; repeated seeds are not new test populations.",
+  "profile": "Numerical clean-client IID FedAvg diagnostic; attack-labelled traffic is supervised task data, not Byzantine update poisoning. No TPM admission or DBA replay.",
+  "storage": "Compressed global checkpoints only; local tensor digests and seeds retained for reproduction. No raw-data copies or local tensor archive.",
+  "source_model_difference": "New models train from scratch with the same encoder architecture and a two-class head; this is not fine-tuning the six-class source classifier.",
+  "prepared_inputs": {
+    "occurrence-source-standard": {
+      "transform.json": "a3075893377dd3cad545532143b5fb560a66feb64e3ed08934a6c17ce45db0f3",
+      "train-validation.npz": "bd86d087bf6ddd30d3f96b40d02d10273307fe41a49e3c9479889f2454b2b5c5",
+      "test.npz": "e1c0bbd2e8c2ddc97dd616c5a5613b487d889c81765a73c60356251fc31732a5"
+    },
+    "occurrence-target-standard": {
+      "transform.json": "98b9e2b0f65279c13983523c8371f82a1e878ac3ecaf59bb3229766fb5e74465",
+      "train-validation.npz": "416bd8ca0f7e34b42cdd7e7d0a7343fd24ee24c11a4674684704752a1fd27b5e",
+      "test.npz": "76cb17c6dea0ce88d8a89fe194dd25a7ec084d11f9b7db17cc56bbcfd3d6cd2f"
+    },
+    "occurrence-target-log1p": {
+      "transform.json": "109763b1d0786e092c27478cf90132cfa72eba87ffb645f2d6e950d896cd4f55",
+      "train-validation.npz": "3695d04b6a3361bc3acda431b29e900843144deaf08105c4469510636e92dd47",
+      "test.npz": "cf3c8a22f6e0c9dce74e127d9ac1663ecd31ce2cdda25fe08b107be21f3478e1"
+    },
+    "exact-projection-source-standard": {
+      "transform.json": "a3075893377dd3cad545532143b5fb560a66feb64e3ed08934a6c17ce45db0f3",
+      "train-validation.npz": "a8fe5df41c750eb598cb0314bbc7bd6028a6886352e50f5b4cd33dd2326ba1fd",
+      "test.npz": "08589748ea4663bbc6d57b0ed76a066684ae1d112f60c1cc980ad9fa66ddf3d4"
+    },
+    "exact-projection-target-standard": {
+      "transform.json": "44125b926fa6fbb09c80baa2ad63e5c28f2da938a33e928670c281ff1e60a88d",
+      "train-validation.npz": "572920fca56b42153c46c4d6aaecb65e13ab08da061827856ae652ba9256e39a",
+      "test.npz": "f083a51981e186c51865739a283d28e393ddb928d754f8e2ffc6bf0e758fcc80"
+    },
+    "exact-projection-target-log1p": {
+      "transform.json": "a8dbeedd5d59b7003e593bf99e1a5dfa68d4dd1d67939557b791ae688acfded4",
+      "train-validation.npz": "6ff48e92d68a8d001e8b8772fcc166bb493e046f052b35ae45f758527e661d36",
+      "test.npz": "096450d8b7dbf16e5d5dfa61210076fcaf9bc8bc993155eef2500958d2827eb7"
+    }
+  },
+  "runner_sha256": "76e7ba9296af778065a3046d581f8eee7f4f88a3b03417bc5f68aaf2f7221363",
+  "module_sha256": "7ba75423a281e2eaba404a382db7507d14e806429796dbd23e20e6f84a77bfc7",
+  "implementation_sha256": {
+    "federated_model.py": "ae79d6c602c5f499dd6c7af9891089b2af146dd65f842a6d8558562845110de2",
+    "class_weighting.py": "a7d877ca682768a7fe1473a2b4c2830569b125da4c958ef3feb8330cc2096ff3",
+    "robust_preprocessing.py": "3e61f1483bc61c0772164e1ad4b3ed490200b451c9e91406c30d5ce3317f3da7"
+  },
+  "split_partition_sha256": "b79a7d15387496fcb6a0fde58cb2e01d3c8bf6058309e0fe3aa4ca84ac94075e",
+  "manuscript_changed": false
+}

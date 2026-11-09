@@ -1,0 +1,29 @@
+{
+  "profile": "posthoc-capped-coefficient-redistribution-v1",
+  "selection": "All eighteen reserved attacked capped_robust histories, all15 rounds; post-hoc diagnostic after the complete frozen evaluation",
+  "rows": 270,
+  "actually_manipulated_active_rounds": 180,
+  "active_rounds_with_increased_attacker_identity_coefficient_share": 90,
+  "largest_increase_example": {
+    "name": "reserved-non-iid-s6116105-capped_robust-complete-trigger",
+    "cohort": "non-iid",
+    "seed": 6116105,
+    "mode": "complete-trigger",
+    "round": 1,
+    "attack_window": true,
+    "actually_manipulated_updates": 3,
+    "proposal_attacker_identity_share_fraction": "48416719976899310/399999999999999999",
+    "final_attacker_identity_share_fraction": "96833439953798620/450966361957098789",
+    "proposal_attacker_identity_share": 0.12104179994224827,
+    "final_attacker_identity_share": 0.2147243078919721,
+    "share_increase_fraction": "5633021305213859317271070823421930/60128848260946505049677879347633737",
+    "share_increase": 0.09368250794972384,
+    "largest_proposal_identity": "client06",
+    "largest_proposal_identity_is_declared_attacker": false,
+    "source_gate_state_sha256": "6abd8e5fd86c91fd227b399fe571cac81fa287cab5fb37879e78352660b0baa1"
+  },
+  "interpretation": "Upper-capping a large robust coefficient redistributes positive weight to unsaturated clients. This can increase the coefficient share of admitted attacker identities despite the one-third group ceiling. It does not resurrect a zero proposal or a quarantined mass.",
+  "scope": "Shares apply to clipped updates on each recorded capped-history input. This is not an ASR counterfactual, not a retrained uncapped history, not an attribution of every outcome, and not a fitted threshold.",
+  "new_training_or_test_inference": false,
+  "primary_protocol_or_published_results_changed": false
+}

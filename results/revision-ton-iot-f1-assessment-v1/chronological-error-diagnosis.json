@@ -1,0 +1,17 @@
+{
+  "model": "refit-recency-48h-occurrence-s341593",
+  "threshold": 0.5,
+  "false_negatives": 76,
+  "false_negative_dominant_families": {
+    "mitm": 76
+  },
+  "test_attack_families": {
+    "backdoor": 586,
+    "mitm": 102
+  },
+  "missed_median_attack_row_fraction": 0.09639953542392567,
+  "detected_median_attack_row_fraction": 0.96,
+  "train_mitm_windows": 0,
+  "validation_mitm_windows": 0,
+  "interpretation": "All missed attacks in this declared chronological refit are previously unseen MITM; global minute aggregation can dilute low-density attacks. This diagnostic does not prove dilution is the sole cause."
+}

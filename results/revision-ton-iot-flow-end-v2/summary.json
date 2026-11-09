@@ -1,0 +1,231 @@
+{
+  "status": "flow-end-bounded-target-diagnostic-complete",
+  "train_windows": 6061,
+  "validation_windows": 1080,
+  "test_windows": 718,
+  "validation_benign": 85,
+  "validation_attack": 995,
+  "test_benign": 30,
+  "test_attack": 688,
+  "extra_validation_windows_excluded": 15,
+  "corrected_checkpoint_selections": 5,
+  "global_models_retrained_for_correction": 0,
+  "global_models_unchanged": true,
+  "primary_view": "occurrence",
+  "primary_preprocessing": "target-standard",
+  "primary_mean_balanced_accuracy": 0.8015503875968992,
+  "primary_false_positives_per_seed": [
+    9,
+    9,
+    9
+  ],
+  "primary_false_positive_rate": 0.3,
+  "aggregate": {
+    "occurrence": {
+      "source-standard": {
+        "accuracy": {
+          "mean": 0.8876508820798514,
+          "minimum": 0.8816155988857939,
+          "maximum": 0.8913649025069638
+        },
+        "balanced_accuracy": {
+          "mean": 0.7926033591731266,
+          "minimum": 0.7520348837209303,
+          "maximum": 0.8585271317829457
+        },
+        "attack_recall": {
+          "mean": 0.8963178294573644,
+          "minimum": 0.8837209302325582,
+          "maximum": 0.9040697674418605
+        },
+        "false_positive_rate": {
+          "mean": 0.3111111111111111,
+          "minimum": 0.16666666666666666,
+          "maximum": 0.4
+        },
+        "macro_f1": {
+          "mean": 0.637786073135252,
+          "minimum": 0.6283939804124532,
+          "maximum": 0.6525180060921798
+        },
+        "auroc": {
+          "mean": 0.7970607235142119,
+          "minimum": 0.7852470930232558,
+          "maximum": 0.8055232558139536
+        }
+      },
+      "target-standard": {
+        "accuracy": {
+          "mean": 0.8946146703806871,
+          "minimum": 0.8885793871866295,
+          "maximum": 0.8997214484679665
+        },
+        "balanced_accuracy": {
+          "mean": 0.8015503875968992,
+          "minimum": 0.7984011627906977,
+          "maximum": 0.8042151162790697
+        },
+        "attack_recall": {
+          "mean": 0.9031007751937985,
+          "minimum": 0.8968023255813954,
+          "maximum": 0.9084302325581395
+        },
+        "false_positive_rate": {
+          "mean": 0.3,
+          "minimum": 0.3,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6499084521004731,
+          "minimum": 0.6416897472365696,
+          "maximum": 0.6569790588422645
+        },
+        "auroc": {
+          "mean": 0.8167554909560724,
+          "minimum": 0.8150193798449613,
+          "maximum": 0.8200581395348837
+        }
+      },
+      "target-log1p": {
+        "accuracy": {
+          "mean": 0.8941504178272981,
+          "minimum": 0.8941504178272981,
+          "maximum": 0.8941504178272981
+        },
+        "balanced_accuracy": {
+          "mean": 0.8066214470284238,
+          "minimum": 0.8013081395348838,
+          "maximum": 0.8172480620155038
+        },
+        "attack_recall": {
+          "mean": 0.9021317829457365,
+          "minimum": 0.9011627906976745,
+          "maximum": 0.9026162790697675
+        },
+        "false_positive_rate": {
+          "mean": 0.28888888888888886,
+          "minimum": 0.26666666666666666,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6509090102785158,
+          "minimum": 0.6491345387207119,
+          "maximum": 0.6544579533941236
+        },
+        "auroc": {
+          "mean": 0.9059108527131783,
+          "minimum": 0.8964631782945736,
+          "maximum": 0.9116763565891473
+        }
+      }
+    },
+    "exact-projection": {
+      "source-standard": {
+        "accuracy": {
+          "mean": 0.8885793871866295,
+          "minimum": 0.8871866295264624,
+          "maximum": 0.8899721448467967
+        },
+        "balanced_accuracy": {
+          "mean": 0.7452680878552972,
+          "minimum": 0.7339147286821706,
+          "maximum": 0.7672480620155039
+        },
+        "attack_recall": {
+          "mean": 0.9016472868217055,
+          "minimum": 0.9011627906976745,
+          "maximum": 0.9026162790697675
+        },
+        "false_positive_rate": {
+          "mean": 0.4111111111111111,
+          "minimum": 0.36666666666666664,
+          "maximum": 0.43333333333333335
+        },
+        "macro_f1": {
+          "mean": 0.622826449605906,
+          "minimum": 0.6171674949807459,
+          "maximum": 0.632446232901123
+        },
+        "auroc": {
+          "mean": 0.8186854005167958,
+          "minimum": 0.7746366279069767,
+          "maximum": 0.8824612403100776
+        }
+      },
+      "target-standard": {
+        "accuracy": {
+          "mean": 0.8946146703806871,
+          "minimum": 0.8885793871866295,
+          "maximum": 0.8997214484679665
+        },
+        "balanced_accuracy": {
+          "mean": 0.8015503875968992,
+          "minimum": 0.7984011627906977,
+          "maximum": 0.8042151162790697
+        },
+        "attack_recall": {
+          "mean": 0.9031007751937985,
+          "minimum": 0.8968023255813954,
+          "maximum": 0.9084302325581395
+        },
+        "false_positive_rate": {
+          "mean": 0.3,
+          "minimum": 0.3,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6499084521004731,
+          "minimum": 0.6416897472365696,
+          "maximum": 0.6569790588422645
+        },
+        "auroc": {
+          "mean": 0.8170542635658915,
+          "minimum": 0.8155038759689922,
+          "maximum": 0.8197916666666667
+        }
+      },
+      "target-log1p": {
+        "accuracy": {
+          "mean": 0.8918291550603529,
+          "minimum": 0.8899721448467967,
+          "maximum": 0.8941504178272981
+        },
+        "balanced_accuracy": {
+          "mean": 0.8160368217054264,
+          "minimum": 0.7998546511627906,
+          "maximum": 0.8310077519379846
+        },
+        "attack_recall": {
+          "mean": 0.8987403100775194,
+          "minimum": 0.8953488372093024,
+          "maximum": 0.9011627906976745
+        },
+        "false_positive_rate": {
+          "mean": 0.26666666666666666,
+          "minimum": 0.23333333333333334,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6512310076764529,
+          "minimum": 0.6453647416413374,
+          "maximum": 0.6544579533941236
+        },
+        "auroc": {
+          "mean": 0.9100936692506459,
+          "minimum": 0.9087209302325582,
+          "maximum": 0.9119186046511627
+        }
+      }
+    }
+  },
+  "focused_tests_passed": 43,
+  "parent_global_checkpoints_checked": 540,
+  "parent_fresh_replay_rounds": 30,
+  "parent_replayed_client_updates": 450,
+  "corrected_validation_scores_computed": 540,
+  "corrected_selected_prediction_sets_recomputed": 18,
+  "actual_packet_or_log_write_timestamps_verified": false,
+  "new_blind_test_claimed": false,
+  "operational_readiness_claimed": false,
+  "manuscript_changed": false
+}

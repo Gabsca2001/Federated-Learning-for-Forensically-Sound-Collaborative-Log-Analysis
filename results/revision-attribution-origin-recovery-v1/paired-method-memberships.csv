@@ -1,0 +1,31 @@
+alias,seed,mode,family,method,selected_group,TP,FP,FN
+case-00,6122001,clean,unrestricted,v2,[],0,0,0
+case-00,6122001,clean,unrestricted,v3,"['client08', 'client09', 'client10']",0,3,0
+case-00,6122001,clean,unrestricted,v4,[],0,0,0
+case-01,6122001,distributed,unrestricted,v2,[],0,0,3
+case-01,6122001,distributed,unrestricted,v3,[],0,0,3
+case-01,6122001,distributed,unrestricted,v4,"['client02', 'client08', 'client15']",3,0,0
+case-02,6122001,complete-trigger,unrestricted,v2,[],0,0,3
+case-02,6122001,complete-trigger,unrestricted,v3,[],0,0,3
+case-02,6122001,complete-trigger,unrestricted,v4,"['client02', 'client08']",2,0,1
+case-03,6122001,distributed,relative-radius,v2,[],0,0,3
+case-03,6122001,distributed,relative-radius,v3,"['client03', 'client04', 'client14']",0,3,3
+case-03,6122001,distributed,relative-radius,v4,[],0,0,3
+case-04,6122001,complete-trigger,relative-radius,v2,[],0,0,3
+case-04,6122001,complete-trigger,relative-radius,v3,"['client03', 'client04', 'client14']",0,3,3
+case-04,6122001,complete-trigger,relative-radius,v4,[],0,0,3
+case-05,6123001,clean,unrestricted,v2,"['client04', 'client14']",0,2,0
+case-05,6123001,clean,unrestricted,v3,"['client01', 'client04', 'client14']",0,3,0
+case-05,6123001,clean,unrestricted,v4,[],0,0,0
+case-06,6123001,distributed,unrestricted,v2,"['client04', 'client14']",0,2,3
+case-06,6123001,distributed,unrestricted,v3,"['client01', 'client04', 'client14']",0,3,3
+case-06,6123001,distributed,unrestricted,v4,[],0,0,3
+case-07,6123001,complete-trigger,unrestricted,v2,"['client04', 'client14']",0,2,3
+case-07,6123001,complete-trigger,unrestricted,v3,"['client01', 'client04', 'client14']",0,3,3
+case-07,6123001,complete-trigger,unrestricted,v4,[],0,0,3
+case-08,6123001,distributed,relative-radius,v2,"['client04', 'client14']",0,2,3
+case-08,6123001,distributed,relative-radius,v3,"['client01', 'client04', 'client14']",0,3,3
+case-08,6123001,distributed,relative-radius,v4,"['client06', 'client07']",1,1,2
+case-09,6123001,complete-trigger,relative-radius,v2,"['client04', 'client14']",0,2,3
+case-09,6123001,complete-trigger,relative-radius,v3,"['client01', 'client04', 'client14']",0,3,3
+case-09,6123001,complete-trigger,relative-radius,v4,"['client06', 'client07']",1,1,2

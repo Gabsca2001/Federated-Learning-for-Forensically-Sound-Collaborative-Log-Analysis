@@ -1,0 +1,34 @@
+{
+  "host_lineage_rows_checked": 80172,
+  "all_source_occurrences_accounted": 22338152,
+  "all_7934_minute_binary_counts_reconstructed": true,
+  "same_time_roles_used": true,
+  "host_overlap": {
+    "test_units": 4093,
+    "test_units_with_training_host": 4076,
+    "test_unique_hosts": 36
+  },
+  "test_attack_dilution": {
+    "global": {
+      "backdoor": {
+        "windows": 586,
+        "median_attack_row_fraction": 0.9609756097560975
+      },
+      "mitm": {
+        "windows": 102,
+        "median_attack_row_fraction": 0.07619738751814223
+      }
+    },
+    "host": {
+      "backdoor": {
+        "windows": 627,
+        "median_attack_row_fraction": 0.9974937343358395
+      },
+      "mitm": {
+        "windows": 130,
+        "median_attack_row_fraction": 1.0
+      }
+    }
+  },
+  "limitations": "Address overlap is descriptive and not authenticated device identity. Source occurrence duplicates and physical-flow independence remain unproved."
+}

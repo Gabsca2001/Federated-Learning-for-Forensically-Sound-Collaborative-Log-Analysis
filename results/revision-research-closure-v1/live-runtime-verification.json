@@ -1,0 +1,37 @@
+{
+  "coefficient_mutations_rejected": 10,
+  "fixed_final_beta_removal_certificates": 146,
+  "robust_rounds": 10,
+  "round_count": 15,
+  "scope": "Actual retained originals to named transformation, exact checkpoint export and typed graph binding. Fixed-final-beta certificates include both export-rounding errors and 1e-12 allowance. No recomputed-weight, semantic malice or ASR guarantee. Fresh software TPMs are emulations on one host.",
+  "source": "1bfb5a16525f1c1427b5de09d4445bf309c7fd458172314abe1020d031aef81b",
+  "status": "verified",
+  "image_id": "sha256:d72dcf5659a9eee2abbbc5999bb825851e54c5f983c4986dc6625a421b503130",
+  "fresh_quote_executions": 225,
+  "distinct_quote_evidence_ids": 225,
+  "fresh_local_training_submissions": 225,
+  "endpoint_totals": {
+    "active": {
+      "benign_current_excluded": 0,
+      "currently_poisoned": 9,
+      "final_validation_full_trigger_asr": 0.0,
+      "intercepted": 4,
+      "peak_validation_full_trigger_asr": 0.0
+    },
+    "clean": {
+      "benign_current_excluded": 0,
+      "currently_poisoned": 0,
+      "final_validation_full_trigger_asr": 0.0,
+      "intercepted": 0,
+      "peak_validation_full_trigger_asr": 0.0
+    },
+    "control": {
+      "benign_current_excluded": 0,
+      "currently_poisoned": 9,
+      "final_validation_full_trigger_asr": 0.0,
+      "intercepted": 4,
+      "peak_validation_full_trigger_asr": 0.0
+    }
+  },
+  "claimed_scope": "Three five-round software-TPM mechanism histories. No general mitigation conclusion from an ineffective short attacked control."
+}

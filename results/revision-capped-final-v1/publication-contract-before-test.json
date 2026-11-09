@@ -1,0 +1,23 @@
+{
+  "profile": "capped-final-publication-semantics-v1",
+  "protocol_sha256": "13cb93e46e48eb4481a79979399a27f80b0d8b2e6a1c46fdcbe13844e78f8ddc",
+  "generation_or_threshold_changes": false,
+  "purpose": "Operationalize the frozen protocol using the existing severe-gate/gate-trajectory reporting definitions before new test inference.",
+  "primary_comparison": "reserved capped_robust versus robust_bounded, all six assignments and three attack modes; validation and test reported separately without choosing the favorable split",
+  "worst_trigger_asr": "maximum of complete-trigger and three component-trigger ASR at one round; non-target-label denominator",
+  "paired_peak_harm": "maximum over paired fixed rounds 1..15 of attacked worst-trigger ASR minus the same method's own clean worst-trigger ASR at that round; negative values are retained",
+  "effective_raw_control": "at some paired round, raw TPM-only worst-trigger ASR increase >=0.20 and clean-control macro-F1 minus attacked macro-F1 <=0.05; inherited historical reporting rule, evaluated on the same split",
+  "clean_utility": "all nine known/reserved clean assignments, alternatives versus raw TPM-only macro-F1 at rounds 10 and 15, validation and test separately; loss <=0.02",
+  "security_guard": "all 18 reserved capped_robust/robust_bounded comparisons defined, capped_robust no greater paired peak harm in every comparison, and strict benefit in at least two effective raw-control cases including non-IID; also report capped_sample and every ineffective control",
+  "continuity": "all clean histories complete 15 rounds; retained nominal admission mass >=4/5; capped methods normalized nonnegative beta, at least ten positive coefficients and top-three final share <=1/3; distinguish alpha and beta",
+  "failures": "every planned case and genuine terminal failure is reported; missing endpoints/undefined comparisons are null, never zero ASR",
+  "residuals": "fixed-round 10 and 15 parameter L2 and untriggered prediction differences against the same method's own clean history; differences do not alone establish harmful residual poisoning or restoration",
+  "timing": "raw FedAvg aggregation_seconds is its repeated actual computation; special methods use final_operator_seconds for the first uncached operator computation. Preserve raw fields. Inclusive/nested search, geometry and operator timings are not summed as disjoint costs. Shared host with two concurrent workers; historical retained timings disclosed.",
+  "qualification": "Finite exploratory assignments on previously observed Data24; no automatic default change, malicious-client classification guarantee, fresh TPM quote, physical TPM result, independent dataset or universal ASR guarantee.",
+  "recorded_at": "2026-11-06T17:28:23.360996+00:00",
+  "test_inference_started": false,
+  "reporting_reference_sha256": {
+    "scripts/report_severe_gate.py": "f8d6d967030460f46b9b4e3f461f547093fe7d54db0f49633db4ece974a1c4bd",
+    "scripts/report_gate_trajectories.py": "5676c098217ae66e2fa9616c29993f38353476e874457ff18450a3affc222cc8"
+  }
+}

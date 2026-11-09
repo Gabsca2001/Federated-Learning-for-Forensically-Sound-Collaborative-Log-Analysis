@@ -1,0 +1,108 @@
+{
+  "local_epochs": 10,
+  "batch_size": 128,
+  "learning_rate": 0.001,
+  "horizon": 15,
+  "effective_minimum_contributors": 10,
+  "inherited_training_helper_minimum_contributors": 8,
+  "quorum_precedence": "The active controller/operators use runtime_admission.minimum_contributors (10), not the inherited helper field (8).",
+  "attack_plan_template": {
+    "attack_rounds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "client_components": {
+      "client01": [
+        13
+      ],
+      "client06": [
+        17
+      ],
+      "client11": [
+        24
+      ]
+    },
+    "poisoned_fraction_decimal": "0.50",
+    "seed": 341593,
+    "target_label": "benign",
+    "trigger_values_decimal": {
+      "13": "12",
+      "17": "12",
+      "24": "12"
+    }
+  },
+  "actual_assignments_and_attackers": [
+    [
+      "iid",
+      6116101,
+      [
+        "client02",
+        "client08",
+        "client14"
+      ]
+    ],
+    [
+      "iid",
+      6116102,
+      [
+        "client03",
+        "client07",
+        "client12"
+      ]
+    ],
+    [
+      "iid",
+      6116103,
+      [
+        "client04",
+        "client09",
+        "client15"
+      ]
+    ],
+    [
+      "non-iid",
+      6116104,
+      [
+        "client01",
+        "client06",
+        "client13"
+      ]
+    ],
+    [
+      "non-iid",
+      6116105,
+      [
+        "client05",
+        "client10",
+        "client14"
+      ]
+    ],
+    [
+      "non-iid",
+      6116106,
+      [
+        "client02",
+        "client07",
+        "client11"
+      ]
+    ]
+  ],
+  "adaptive_alpha_budget": [
+    0,
+    0.25,
+    0.5,
+    1,
+    2,
+    4
+  ],
+  "device": "cpu",
+  "actual_admission": "tpm_only with prerequisite trust assumed passed in software"
+}

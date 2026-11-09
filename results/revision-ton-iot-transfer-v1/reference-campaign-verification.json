@@ -1,0 +1,195 @@
+{
+  "status": "verified",
+  "workspace": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/m5-secure-multiround-local-test-v1",
+  "campaign_id": "campaign-37248d7f432906748282bcf3",
+  "round_count": 30,
+  "selected_round": 11,
+  "accepted_contribution_count": 450,
+  "quarantined_contribution_count": 0,
+  "downweighted_contribution_count": 0,
+  "confusion_matrices": {
+    "validation": {
+      "labels": [
+        "benign",
+        "credential_access",
+        "exfiltration",
+        "initial_access",
+        "multi_tactic",
+        "reconnaissance"
+      ],
+      "values": [
+        [
+          1433,
+          4,
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          317,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          20,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          261,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          4,
+          0,
+          805,
+          32
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          64,
+          279
+        ]
+      ]
+    },
+    "test": {
+      "labels": [
+        "benign",
+        "credential_access",
+        "exfiltration",
+        "initial_access",
+        "multi_tactic",
+        "reconnaissance"
+      ],
+      "values": [
+        [
+          1435,
+          1,
+          0,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          641,
+          0,
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          22,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          489,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          15,
+          1,
+          1612,
+          43
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          124,
+          545
+        ]
+      ]
+    },
+    "temporal_holdout": {
+      "labels": [
+        "benign",
+        "credential_access",
+        "exfiltration",
+        "initial_access",
+        "multi_tactic",
+        "reconnaissance"
+      ],
+      "values": [
+        [
+          4302,
+          3,
+          0,
+          0,
+          15,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "client_confusion_matrix_count": 15,
+  "error_count": 0,
+  "errors": []
+}

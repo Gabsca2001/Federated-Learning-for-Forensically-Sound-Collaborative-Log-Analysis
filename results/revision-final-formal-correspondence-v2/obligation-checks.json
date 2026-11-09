@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "method": "finite exact-arithmetic examples, real policy calls, independent DAG dynamic programming, and authenticated retained artifacts",
+  "machine_checked_universal_proof": false,
+  "implementation_sha256": "d38d32f853153b4436801f9402ae52ba336c92c507c949e868b77e1f3b9e6a75",
+  "sealed_case_closure_sha256": "f265b12d1d331cdf913eb2c21eab4555684ed79550ab0fd6630bec07d5d6759c",
+  "counts": {
+    "finite_policy_boundary_instances": 3750,
+    "ideal_identity_and_bound_instances": 3900,
+    "frozen_metric_instances": 4650,
+    "undefined_normalization_instances": 1128,
+    "rescored_mass_vector_instances": 3780,
+    "sealed_radius_reports_verified": 3,
+    "sealed_counterfactual_metric_reports_checked": 4
+  },
+  "shortest_typed_witnesses_verified": 4135,
+  "source_graph_nodes": 1678,
+  "equal_local_models_hide_changed_coefficients_in_real_flower_backend": true,
+  "retained_counterfactual_metrics": [
+    {
+      "artifact": "counterfactuals/frozen_decisions",
+      "mode": "frozen_decisions",
+      "delta_K": {
+        "denominator": "3193",
+        "numerator": "237"
+      },
+      "J_K": 1,
+      "J_survivors": 0,
+      "model_bytes_equal": false,
+      "additional_coefficient_l1_delta_from_rescoring": {
+        "denominator": "1",
+        "numerator": "0"
+      }
+    },
+    {
+      "artifact": "counterfactuals/rescore_round",
+      "mode": "rescore_round",
+      "delta_K": {
+        "denominator": "3193",
+        "numerator": "237"
+      },
+      "J_K": 1,
+      "J_survivors": 0,
+      "model_bytes_equal": false,
+      "additional_coefficient_l1_delta_from_rescoring": {
+        "denominator": "1",
+        "numerator": "0"
+      }
+    },
+    {
+      "artifact": "postchecks/zero-weight-counterfactuals/frozen_decisions",
+      "mode": "frozen_decisions",
+      "delta_K": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "J_K": 1,
+      "J_survivors": 0,
+      "model_bytes_equal": true,
+      "additional_coefficient_l1_delta_from_rescoring": {
+        "denominator": "1",
+        "numerator": "0"
+      }
+    },
+    {
+      "artifact": "postchecks/zero-weight-counterfactuals/rescore_round",
+      "mode": "rescore_round",
+      "delta_K": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "J_K": 1,
+      "J_survivors": 0,
+      "model_bytes_equal": true,
+      "additional_coefficient_l1_delta_from_rescoring": {
+        "denominator": "1",
+        "numerator": "0"
+      }
+    }
+  ]
+}

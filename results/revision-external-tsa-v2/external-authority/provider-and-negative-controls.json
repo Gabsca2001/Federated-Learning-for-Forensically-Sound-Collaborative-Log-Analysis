@@ -1,0 +1,48 @@
+{
+  "status": "verified",
+  "current_provider_metadata": {
+    "current-policy.pdf": {
+      "url": "https://www.sectigo.com/uploads/files/eIDAS/Sectigo_eIDAS_TSPPS_v1.1.4.pdf",
+      "sha256": "f1a7f9e09b3139ba3c49382dbcc01889555e1511133c394231649944ed4ca2b6"
+    },
+    "official-ca-disclosure.html": {
+      "url": "https://secure.sectigo.com/products/PubliclyDisclosedSubCACerts",
+      "sha256": "2a87a461274201c47092413b4a0d8acf2af52e81143b9a94d3d89db925cad308"
+    }
+  },
+  "root_der_sha256": "f871f8976b4068d700d5f281084b4a29eaf4b8f35743330ba062fab46f58c2ed",
+  "positive_token_verified": true,
+  "negative_controls": {
+    "different-subject": {
+      "rejected": true,
+      "error": "TSA message imprint differs from registration/closure"
+    },
+    "different-policy": {
+      "rejected": true,
+      "error": "unexpected TSA policy"
+    },
+    "insufficient-accuracy-budget": {
+      "rejected": true,
+      "error": "TSA accuracy exceeds pinned policy"
+    },
+    "nonce-replay": {
+      "rejected": true,
+      "error": "openssl ts -verify -queryfile /tmp/tmpi0hs97u2/request.tsq -in /tmp/tmpi0hs97u2/response.tsr -CAfile /tmp/tmpi0hs97u2/trust-store.pem -untrusted /tmp/tmpi0hs97u2/tsa-certificates.pem failed: Using configuration from /usr/lib/ssl/openssl.cnf\nWarning: certificate from '/tmp/tmpi0hs97u2/tsa-certificates.pem' with subject '/C=ES/O=Sectigo (Europe) SL/CN=Sectigo Qualified Time Stamping Signer #3' is not a CA cert\n4097F8F83F790000:error:17800068:time stamp routines:ts_check_nonces:nonce mismatch:../crypto/ts/ts_rsp_verify.c:527:"
+    },
+    "tampered-token": {
+      "rejected": true,
+      "error": "openssl ts -verify -queryfile /tmp/tmp2_38m6ca/request.tsq -in /tmp/tmp2_38m6ca/response.tsr -CAfile /tmp/tmp2_38m6ca/trust-store.pem -untrusted /tmp/tmp2_38m6ca/tsa-certificates.pem failed: Using configuration from /usr/lib/ssl/openssl.cnf\nWarning: certificate from '/tmp/tmp2_38m6ca/tsa-certificates.pem' with subject '/C=ES/O=Sectigo (Europe) SL/CN=Sectigo Qualified Time Stamping Signer #3' is not a CA cert\n400753891E780000:error:02000068:rsa routines:ossl_rsa_verify:bad signature:../crypto/rsa/rsa_sign.c:430:\n400753891E780000:error:1C880004:Provider routines:rsa_verify:RSA lib:../providers/implementations/signature/rsa_sig.c:774:\n400753891E780000:error:06880006:asn1 encoding routines:ASN1_item_verify_ctx:EVP lib:../crypto/asn1/a_verify.c:217:\n400753891E780000:error:17800064:time stamp routines:ts_verify_cert:certificate verify error:../crypto/ts/ts_rsp_verify.c:190:Verify error:certificate signature failure"
+    },
+    "unrelated-authority": {
+      "rejected": true,
+      "error": "openssl ts -verify -queryfile /tmp/tmpdozna_lu/request.tsq -in /tmp/tmpdozna_lu/response.tsr -CAfile /tmp/tmpdozna_lu/trust-store.pem -untrusted /tmp/tmpdozna_lu/tsa-certificates.pem failed: Using configuration from /usr/lib/ssl/openssl.cnf\nWarning: certificate from '/tmp/tmpdozna_lu/tsa-certificates.pem' with subject '/C=ES/O=Sectigo (Europe) SL/CN=Sectigo Qualified Time Stamping Signer #3' is not a CA cert\n4047A8B1967C0000:error:17800064:time stamp routines:ts_verify_cert:certificate verify error:../crypto/ts/ts_rsp_verify.c:190:Verify error:unable to get local issuer certificate"
+    },
+    "unrelated-public-TSA-chain": {
+      "rejected": true,
+      "error": "openssl ts -verify -queryfile /tmp/tmpsk1vo9hm/request.tsq -in /tmp/tmpsk1vo9hm/response.tsr -CAfile /tmp/tmpsk1vo9hm/trust-store.pem -untrusted /tmp/tmpsk1vo9hm/tsa-certificates.pem failed: Using configuration from /usr/lib/ssl/openssl.cnf\nWarning: certificate from '/tmp/tmpsk1vo9hm/tsa-certificates.pem' with subject '/C=US/O=DigiCert, Inc./CN=DigiCert SHA256 RSA4096 Timestamp Responder 2026 1' is not a CA cert\n409790597E760000:error:17800064:time stamp routines:ts_verify_cert:certificate verify error:../crypto/ts/ts_rsp_verify.c:190:Verify error:unable to get local issuer certificate"
+    }
+  },
+  "core_verifier_changed": false,
+  "independent_witness_administration_demonstrated": false,
+  "institutional_acceptance": false
+}

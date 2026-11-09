@@ -1,0 +1,28 @@
+{
+  "capability": {
+    "network_disabled_by_launcher": true,
+    "numpy_version": "2.5.3",
+    "phase": "fit",
+    "python_version": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+    "raw_dataset_paths_unavailable": true
+  },
+  "code_sha256": {
+    "__init__.py": "256c5832638a12cc81dad4d41cfe7ded5d656b17bc889b11b3bdb343c7ee3725",
+    "state_conditioned_audit.py": "0e46cdaadb651e53681db31aec50c2ea0345c47614606051e3e4c0e36b5cc6af",
+    "state_conditioned_fusion.py": "2ebfd8587c42f75ece8a0ab3b3e91634fd4445ed98e50021db598ef6d39195de"
+  },
+  "files": {
+    "iid/conditioned-calibration.json": "2e871c5d3a5588f2c8d171363fba72fecfdbaba4e49fe81a3b12931a321f763d",
+    "iid/conditioned.npz": "6befb5f91c8d14eb19d69c63b697c48aa3dee6aab73df23a8fdd50e949e5dfa1",
+    "iid/fusion-calibration.json": "0b382969ca19e24723e7e9b8d2e0bf00d43e4f0523296c09a936a9de93a04020",
+    "iid/state-disabled-calibration.json": "4ad00b2f8b2f608652033fa7896a8fe3fdc270eeced25ce56440381a6652e529",
+    "iid/state-disabled.npz": "d7e5e0e9341eb5b96f69d67f2403c0d4805d0ca037252e549b158f1a6e7d2b27",
+    "non-iid/conditioned-calibration.json": "ba0d32968da303b0e2565d663fa62fad5eb7ce33b86d85758326b059ba456b7d",
+    "non-iid/conditioned.npz": "73e8820915a015eed08bd266890915a2cf048aeae87102097c0e68c672f63775",
+    "non-iid/fusion-calibration.json": "8b8c1ecda8b8fc69b4aa9c03391e8c93a02f68ad109aa8cacbfe641f17a66122",
+    "non-iid/state-disabled-calibration.json": "fd6855f9d51ec5df099916d3914892fb1a1386a8b4e5f5a1fd443c93ca0f4e0d",
+    "non-iid/state-disabled.npz": "270a77610cb725eadf1d1f895fc4a08e00de34730ebfc128672925d6d7960b66"
+  },
+  "fit_input_closure_sha256": "aa09445741a271c90acbf8319661d362671a435039e889cd90dcada22882bc16",
+  "profile": "observable-only-frozen-models-v1"
+}

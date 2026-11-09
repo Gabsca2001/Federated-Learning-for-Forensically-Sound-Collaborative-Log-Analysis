@@ -1,0 +1,20 @@
+{
+  "status": "verified",
+  "checks": {
+    "calibration_validation_thresholds_and_test_metric_sets": 48,
+    "additional_negative_control_checkpoint_hashes_checked": 468,
+    "refit_test_metric_sets": 16,
+    "known_family_centralized_references_freshly_refitted": 8
+  },
+  "known_family_exact_predictor_vector_repetitions": {
+    "occurrence": {
+      "test_vectors_seen_in_train": 0,
+      "test_vectors_seen_in_train_or_validation": 0
+    },
+    "exact-projection": {
+      "test_vectors_seen_in_train": 0,
+      "test_vectors_seen_in_train_or_validation": 0
+    }
+  },
+  "limitation": "Identical vectors and physical flow identity differ; same laboratory hosts and globally interleaved family dates prevent a deployment independence claim."
+}

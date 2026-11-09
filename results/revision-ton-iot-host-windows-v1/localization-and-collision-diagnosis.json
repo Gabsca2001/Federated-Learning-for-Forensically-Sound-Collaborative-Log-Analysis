@@ -1,0 +1,136 @@
+{
+  "status": "diagnostic_complete",
+  "localization": [
+    {
+      "id": "host-s341593",
+      "scope": "federated",
+      "family_minutes": {
+        "backdoor": {
+          "attack_minutes": 586,
+          "any_host_alert_minutes": 586,
+          "attacked_host_alert_minutes": 586,
+          "benign_host_only_alert_minutes": 0,
+          "any_host_alert_recall": 1.0,
+          "attacked_host_supported_recall": 1.0
+        },
+        "mitm": {
+          "attack_minutes": 102,
+          "any_host_alert_minutes": 25,
+          "attacked_host_alert_minutes": 2,
+          "benign_host_only_alert_minutes": 23,
+          "any_host_alert_recall": 0.24509803921568626,
+          "attacked_host_supported_recall": 0.0196078431372549
+        }
+      }
+    },
+    {
+      "id": "host-s342593",
+      "scope": "federated",
+      "family_minutes": {
+        "backdoor": {
+          "attack_minutes": 586,
+          "any_host_alert_minutes": 586,
+          "attacked_host_alert_minutes": 586,
+          "benign_host_only_alert_minutes": 0,
+          "any_host_alert_recall": 1.0,
+          "attacked_host_supported_recall": 1.0
+        },
+        "mitm": {
+          "attack_minutes": 102,
+          "any_host_alert_minutes": 27,
+          "attacked_host_alert_minutes": 6,
+          "benign_host_only_alert_minutes": 21,
+          "any_host_alert_recall": 0.2647058823529412,
+          "attacked_host_supported_recall": 0.058823529411764705
+        }
+      }
+    },
+    {
+      "id": "host-s343593",
+      "scope": "federated",
+      "family_minutes": {
+        "backdoor": {
+          "attack_minutes": 586,
+          "any_host_alert_minutes": 586,
+          "attacked_host_alert_minutes": 586,
+          "benign_host_only_alert_minutes": 0,
+          "any_host_alert_recall": 1.0,
+          "attacked_host_supported_recall": 1.0
+        },
+        "mitm": {
+          "attack_minutes": 102,
+          "any_host_alert_minutes": 20,
+          "attacked_host_alert_minutes": 0,
+          "benign_host_only_alert_minutes": 20,
+          "any_host_alert_recall": 0.19607843137254902,
+          "attacked_host_supported_recall": 0.0
+        }
+      }
+    },
+    {
+      "id": "central-extra-trees-host",
+      "scope": "centralized-reference",
+      "family_minutes": {
+        "backdoor": {
+          "attack_minutes": 586,
+          "any_host_alert_minutes": 586,
+          "attacked_host_alert_minutes": 586,
+          "benign_host_only_alert_minutes": 0,
+          "any_host_alert_recall": 1.0,
+          "attacked_host_supported_recall": 1.0
+        },
+        "mitm": {
+          "attack_minutes": 102,
+          "any_host_alert_minutes": 39,
+          "attacked_host_alert_minutes": 10,
+          "benign_host_only_alert_minutes": 29,
+          "any_host_alert_recall": 0.38235294117647056,
+          "attacked_host_supported_recall": 0.09803921568627451
+        }
+      }
+    },
+    {
+      "id": "central-histogram-host",
+      "scope": "centralized-reference",
+      "family_minutes": {
+        "backdoor": {
+          "attack_minutes": 586,
+          "any_host_alert_minutes": 586,
+          "attacked_host_alert_minutes": 586,
+          "benign_host_only_alert_minutes": 0,
+          "any_host_alert_recall": 1.0,
+          "attacked_host_supported_recall": 1.0
+        },
+        "mitm": {
+          "attack_minutes": 102,
+          "any_host_alert_minutes": 18,
+          "attacked_host_alert_minutes": 0,
+          "benign_host_only_alert_minutes": 18,
+          "any_host_alert_recall": 0.17647058823529413,
+          "attacked_host_supported_recall": 0.0
+        }
+      }
+    }
+  ],
+  "exact_feature_training_overlap": {
+    "backdoor": {
+      "windows": 627,
+      "exact_feature_vector_in_training_benign": 1,
+      "exact_feature_vector_in_training_attack": 0
+    },
+    "benign": {
+      "windows": 3336,
+      "exact_feature_vector_in_training_benign": 71,
+      "exact_feature_vector_in_training_attack": 14
+    },
+    "mitm": {
+      "windows": 130,
+      "exact_feature_vector_in_training_benign": 0,
+      "exact_feature_vector_in_training_attack": 0
+    }
+  },
+  "test_identical_feature_groups_with_opposite_labels": 0,
+  "minimum_test_errors_from_exact_opposite_label_groups": 0,
+  "interpretation": "An any-host alert in an attacked minute is not evidence that the attacked host unit was detected. Supported recall requires a positive host unit that also has an attack ground-truth label. This is still host/minute classification, not causal detection of individual attack records.",
+  "collision_scope": "Exact existing 25-field numeric vectors, with no rounding beyond the frozen window representation. These are descriptive collisions, not proof of a universal impossibility beyond this representation."
+}

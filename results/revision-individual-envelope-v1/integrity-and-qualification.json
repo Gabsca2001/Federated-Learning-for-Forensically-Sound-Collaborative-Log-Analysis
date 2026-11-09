@@ -1,0 +1,50 @@
+{
+  "added_package_files": {
+    "src/fl_forensics/client_envelope_policy.py": "26cea8e8a2624d3715f2eaceca189d7cef3650da64779e8338e27e768b2311be",
+    "src/fl_forensics/residual_geometry.py": "ea2c2878e96565526d8946a17f58bd9bcca92c44f1b41249278bd8f800a671a7"
+  },
+  "artifact_closure_sha256": "608ed58b2bb8f47ba2ec4c7610a9504ebd3320788c5247f6eb391fbb798b702f",
+  "artifact_root": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-geometry-detector-v1",
+  "current_implementation_sha256": "c1f236869b9cb410cde0d0311c545c54a69dd1a5fc95d2828174c2925cfa7d7b",
+  "git_index_unchanged": true,
+  "new_completed_FL_rounds": 540,
+  "new_local_training_calls": 8100,
+  "previous_signed_completion_preserved": true,
+  "qualifications": {
+    "all_pilot_criteria_pass": true,
+    "automatic_live_deployment_validated": false,
+    "experimental_acceptance": {
+      "active_envelope_final_macro_F1_within_0_02_of_prior": true,
+      "active_envelope_peak_ASR_not_worse_than_prior": true,
+      "no_active_quorum_failure": true,
+      "shadow_non_iid_recall_strictly_above_prior": true,
+      "zero_currently_clean_scheduled_attacker_envelope_proposals": true,
+      "zero_never_attacker_envelope_proposals": true
+    },
+    "final_test_set_used": false,
+    "fresh_TPM_attestation": false,
+    "future_frames_accessible_to_detector": false,
+    "geometry_only_filter_rejected": true,
+    "historical_checkpoints_automatically_repaired": false,
+    "permanent_bans": false,
+    "raw_rows_or_attack_labels_accessible_to_detector": false,
+    "reserved_outcomes_used_for_tuning": false,
+    "semantic_malice_proved": false,
+    "three_independently_trained_trajectories": true
+  },
+  "status": "verified",
+  "tests": {
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "631",
+    "time": "121.896"
+  },
+  "thesis_sources_unchanged": 22,
+  "unchanged_prior_package_files": 112,
+  "verification_counts": {
+    "aggregates": 540,
+    "policy_decisions": 1080,
+    "source_updates": 8100
+  }
+}

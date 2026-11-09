@@ -1,0 +1,23 @@
+{
+  "name": "ToN-IoT-benign-reference-novelty-probe-v1",
+  "created_utc": "2026-11-09T10:09:40.600296+00:00",
+  "motivation": "Previously observed false negatives concentrate in MITM, absent from training and validation. Probe benign-reference novelty without fitting any MITM test record.",
+  "detectors": [
+    "5-neighbor mean distance",
+    "IsolationForest 256 trees /256 samples",
+    "OneClassSVM RBF nu=.02 gamma=scale"
+  ],
+  "feature_views": [
+    "all 25 target-log1p inputs",
+    "15 protocol/service/state fractions"
+  ],
+  "fit": "Only original training rows with benign label; original training-only preprocessing reused.",
+  "threshold": "Strict anomaly score > maximum among the 85 corrected benign validation scores: zero empirical novelty false positives on calibration normals.",
+  "combination": "Validation-selected parent federated classifier OR benign-reference novelty flag.",
+  "family_selection": "Mean corrected-validation macro-F1 over three parent seeds in the occurrence view; stable lexical tie. All six probes, both views and all seeds reported.",
+  "parent_selected_family": "fedavg-legacy-source-standard",
+  "scope": "Post-test-motivated exploratory open-family probe, not a new blind test or conformal coverage guarantee.",
+  "runner_sha256": "f1091dba70948ee46acd3a9b6f4abe9f170f56f62fa856eeb1e66daa084f4f37",
+  "parent_closure_sha256": "6f02b1e424dcab09f83295140dc3df6ae49c76ec3e3d438105fb24bc52b668e7",
+  "test_used_for_fitting": false
+}

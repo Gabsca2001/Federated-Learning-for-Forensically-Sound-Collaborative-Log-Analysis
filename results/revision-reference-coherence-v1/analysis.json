@@ -1,0 +1,75 @@
+{
+  "status": "verified",
+  "clean_contexts": 16,
+  "metric_sets_checked": 528,
+  "finite_differences_checked": 16,
+  "client_gradient_replays": 30,
+  "root_gradient_replays": 12,
+  "root_optimizer_and_metric_replays": 6,
+  "record_mutations_rejected": 3,
+  "historical_adam_to_honest_descent_cosine": {
+    "minimum": -0.14859661580073147,
+    "mean": 0.032321986260156976,
+    "maximum": 0.2743325020656245
+  },
+  "pooled_to_local_risk_gradient_cosine": {
+    "minimum": 0.22700222762931935,
+    "mean": 0.8136262677730204,
+    "maximum": 0.9984013238072857
+  },
+  "root_gradient_to_local_risk_cosines": {
+    "inherited": {
+      "minimum": -0.7803085977003068,
+      "mean": 0.44625057835816767,
+      "maximum": 0.9647718544677959
+    },
+    "unweighted": {
+      "minimum": -0.7859214675646258,
+      "mean": 0.4542929319620139,
+      "maximum": 0.9815953287517707
+    },
+    "pooled_corrected": {
+      "minimum": -0.4492671318237621,
+      "mean": 0.6697864012629506,
+      "maximum": 0.9848430901010128
+    },
+    "local_mixture_corrected": {
+      "minimum": 0.38709412046266284,
+      "mean": 0.8079798982817082,
+      "maximum": 0.9901430286839826
+    }
+  },
+  "oracle_reference": {
+    "historical_adam": {
+      "contexts": 16,
+      "undefined": 0,
+      "below_positive_quorum10": 5,
+      "loss_over_two_points_against_matched_baseline": 10
+    },
+    "honest_fullbatch_gradient": {
+      "contexts": 16,
+      "undefined": 0,
+      "below_positive_quorum10": 4,
+      "loss_over_two_points_against_matched_baseline": 0
+    }
+  },
+  "corrected_root_fits": {
+    "pooled_corrected": {
+      "results": 48,
+      "below_positive_quorum10": 4,
+      "losses_over_two_points": {
+        "robust": 30,
+        "capped": 36
+      }
+    },
+    "local_mixture_corrected": {
+      "results": 48,
+      "below_positive_quorum10": 3,
+      "losses_over_two_points": {
+        "robust": 30,
+        "capped": 36
+      }
+    }
+  },
+  "scope": "Clean-only objective/direction decomposition. Private-data oracle controls and deterministic gradients are not operational server capabilities or stochastic Adam-training gradients."
+}

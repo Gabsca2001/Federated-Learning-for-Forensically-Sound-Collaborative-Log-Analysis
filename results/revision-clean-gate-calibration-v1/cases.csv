@@ -1,0 +1,73 @@
+case,cohort,seed,policy,mode,complete,completed_rounds,failure,peak_full_asr,observed_prefix_peak_full_asr,final_full_asr,peak_worst_trigger_asr,mean_attack_window_asr,final_clean_macro_f1,unmodified_quarantined,unmodified_downweighted,unmodified_observations,manipulated_quarantined,manipulated_downweighted,manipulated_exports
+iid-s2026110641-calibrated_gated-adaptive,iid,2026110641,calibrated_gated,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9324605807203521,3,4,195,0,4,30
+iid-s2026110641-calibrated_gated-clean,iid,2026110641,calibrated_gated,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9330220993913096,10,9,225,0,0,0
+iid-s2026110641-calibrated_gated-complete-trigger,iid,2026110641,calibrated_gated,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.932283156278794,2,3,195,30,0,30
+iid-s2026110641-calibrated_gated-distributed,iid,2026110641,calibrated_gated,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.932283156278794,2,3,195,30,0,30
+iid-s2026110641-gated_composite-adaptive,iid,2026110641,gated_composite,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9542752265728401,14,111,195,0,24,30
+iid-s2026110641-gated_composite-clean,iid,2026110641,gated_composite,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9539279909523327,19,124,225,0,0,0
+iid-s2026110641-gated_composite-complete-trigger,iid,2026110641,gated_composite,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9241728676233719,9,119,195,30,0,30
+iid-s2026110641-gated_composite-distributed,iid,2026110641,gated_composite,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9535995084904189,10,119,195,29,1,30
+iid-s2026110641-tpm_only-adaptive,iid,2026110641,tpm_only,adaptive,True,15,,1.0,1.0,0.9997140406062339,1.0,0.9947097512153275,0.9363015924930451,0,0,195,0,0,30
+iid-s2026110641-tpm_only-clean,iid,2026110641,tpm_only,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9322684688202134,0,0,225,0,0,0
+iid-s2026110641-tpm_only-complete-trigger,iid,2026110641,tpm_only,complete-trigger,True,15,,0.9885616242493566,0.9885616242493566,0.38776093794681155,0.9885616242493566,0.5012868172719473,0.9191646368901593,0,0,195,0,0,30
+iid-s2026110641-tpm_only-distributed,iid,2026110641,tpm_only,distributed,True,15,,0.6605661995996569,0.6605661995996569,0.0,0.6605661995996569,0.1791249642550758,0.9345748459422115,0,0,195,0,0,30
+iid-s2026110642-calibrated_gated-adaptive,iid,2026110642,calibrated_gated,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9144352618173605,0,0,195,0,2,30
+iid-s2026110642-calibrated_gated-clean,iid,2026110642,calibrated_gated,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9226338365824001,0,0,225,0,0,0
+iid-s2026110642-calibrated_gated-complete-trigger,iid,2026110642,calibrated_gated,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9305292727899274,0,0,195,30,0,30
+iid-s2026110642-calibrated_gated-distributed,iid,2026110642,calibrated_gated,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9305292727899274,0,0,195,30,0,30
+iid-s2026110642-gated_composite-adaptive,iid,2026110642,gated_composite,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9524040727346961,1,57,195,0,29,30
+iid-s2026110642-gated_composite-clean,iid,2026110642,gated_composite,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9521391813480607,5,136,225,0,0,0
+iid-s2026110642-gated_composite-complete-trigger,iid,2026110642,gated_composite,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9349627098585042,4,68,195,15,15,30
+iid-s2026110642-gated_composite-distributed,iid,2026110642,gated_composite,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9524040727346961,1,45,195,21,9,30
+iid-s2026110642-tpm_only-adaptive,iid,2026110642,tpm_only,adaptive,True,15,,1.0,1.0,0.9997140406062339,1.0,0.9959965684872748,0.930507326780729,0,0,195,0,0,30
+iid-s2026110642-tpm_only-clean,iid,2026110642,tpm_only,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9226338365824001,0,0,225,0,0,0
+iid-s2026110642-tpm_only-complete-trigger,iid,2026110642,tpm_only,complete-trigger,True,15,,0.9845581927366314,0.9845581927366314,0.5255933657420646,0.9845581927366314,0.5384043465827852,0.9160186990779046,0,0,195,0,0,30
+iid-s2026110642-tpm_only-distributed,iid,2026110642,tpm_only,distributed,True,15,,0.6537031741492708,0.6537031741492708,0.0,0.6537031741492708,0.17583643122676582,0.9194109334962023,0,0,195,0,0,30
+iid-s2026110643-calibrated_gated-adaptive,iid,2026110643,calibrated_gated,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9159376011864305,4,1,195,0,6,30
+iid-s2026110643-calibrated_gated-clean,iid,2026110643,calibrated_gated,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9145101530337657,4,4,225,0,0,0
+iid-s2026110643-calibrated_gated-complete-trigger,iid,2026110643,calibrated_gated,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9189841993299716,3,2,195,30,0,30
+iid-s2026110643-calibrated_gated-distributed,iid,2026110643,calibrated_gated,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9189841993299716,3,2,195,30,0,30
+iid-s2026110643-gated_composite-adaptive,iid,2026110643,gated_composite,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9306355727326898,17,71,198,1,26,27
+iid-s2026110643-gated_composite-clean,iid,2026110643,gated_composite,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9419926430348061,28,75,225,0,0,0
+iid-s2026110643-gated_composite-complete-trigger,iid,2026110643,gated_composite,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9375513810106066,10,72,195,27,3,30
+iid-s2026110643-gated_composite-distributed,iid,2026110643,gated_composite,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9306355727326898,10,71,195,30,0,30
+iid-s2026110643-tpm_only-adaptive,iid,2026110643,tpm_only,adaptive,True,15,,1.0,1.0,0.9997140406062339,1.0,0.9946239633971976,0.874419241899789,0,0,195,0,0,30
+iid-s2026110643-tpm_only-clean,iid,2026110643,tpm_only,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9049524627796526,0,0,225,0,0,0
+iid-s2026110643-tpm_only-complete-trigger,iid,2026110643,tpm_only,complete-trigger,True,15,,0.9505290248784672,0.9505290248784672,0.5061481269659708,0.9505290248784672,0.47034601086645694,0.9046993184043566,0,0,195,0,0,30
+iid-s2026110643-tpm_only-distributed,iid,2026110643,tpm_only,distributed,True,15,,0.6028024020589077,0.6028024020589077,0.0,0.6028024020589077,0.17941092364884187,0.912263364414791,0,0,195,0,0,30
+non-iid-s2026110644-calibrated_gated-adaptive,non-iid,2026110644,calibrated_gated,adaptive,True,15,,0.04432370603374321,0.04432370603374321,0.0,0.04432370603374321,0.0044895624821275374,0.9356143265447012,0,0,195,0,4,30
+non-iid-s2026110644-calibrated_gated-clean,non-iid,2026110644,calibrated_gated,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9409456997450271,0,0,225,0,0,0
+non-iid-s2026110644-calibrated_gated-complete-trigger,non-iid,2026110644,calibrated_gated,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9398528540696542,0,0,195,1,0,30
+non-iid-s2026110644-calibrated_gated-distributed,non-iid,2026110644,calibrated_gated,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9406854315104779,0,0,195,1,0,30
+non-iid-s2026110644-gated_composite-adaptive,non-iid,2026110644,gated_composite,adaptive,False,14,"{'classification': 'quorum', 'reason': 'minimum ten contributors not reached', 'round': 15}",,0.0,,,0.0,,52,112,183,0,22,27
+non-iid-s2026110644-gated_composite-clean,non-iid,2026110644,gated_composite,clean,False,7,"{'classification': 'quorum', 'reason': 'minimum ten contributors not reached', 'round': 8}",,0.0,,,,,27,72,105,0,0,0
+non-iid-s2026110644-gated_composite-complete-trigger,non-iid,2026110644,gated_composite,complete-trigger,False,1,"{'classification': 'quorum', 'reason': 'minimum ten contributors not reached', 'round': 2}",,0.0,,,,,4,8,12,1,2,3
+non-iid-s2026110644-gated_composite-distributed,non-iid,2026110644,gated_composite,distributed,False,12,"{'classification': 'quorum', 'reason': 'minimum ten contributors not reached', 'round': 13}",,0.0,,,0.0,,37,101,150,10,18,30
+non-iid-s2026110644-tpm_only-adaptive,non-iid,2026110644,tpm_only,adaptive,True,15,,0.6228195596225335,0.6228195596225335,0.0,0.6248212753788962,0.21527023162710895,0.94211303782969,0,0,195,0,0,30
+non-iid-s2026110644-tpm_only-clean,non-iid,2026110644,tpm_only,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9409456997450271,0,0,225,0,0,0
+non-iid-s2026110644-tpm_only-complete-trigger,non-iid,2026110644,tpm_only,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.940779679619907,0,0,195,0,0,30
+non-iid-s2026110644-tpm_only-distributed,non-iid,2026110644,tpm_only,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.940859648229757,0,0,195,0,0,30
+non-iid-s2026110645-calibrated_gated-adaptive,non-iid,2026110645,calibrated_gated,adaptive,True,15,,0.9994280812124678,0.9994280812124678,0.24678295682013154,0.9994280812124678,0.7802402058907635,0.7844283190461052,0,1,195,2,3,30
+non-iid-s2026110645-calibrated_gated-clean,non-iid,2026110645,calibrated_gated,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9510398656916652,2,0,225,0,0,0
+non-iid-s2026110645-calibrated_gated-complete-trigger,non-iid,2026110645,calibrated_gated,complete-trigger,True,15,,0.9979982842436375,0.9979982842436375,0.28510151558478697,0.9979982842436375,0.5535601944523878,0.9365092800705174,1,2,195,0,0,30
+non-iid-s2026110645-calibrated_gated-distributed,non-iid,2026110645,calibrated_gated,distributed,True,15,,0.8730340291678582,0.8730340291678582,0.0,0.9714040606233915,0.23774663997712325,0.9366817959351534,2,0,195,0,0,30
+non-iid-s2026110645-gated_composite-adaptive,non-iid,2026110645,gated_composite,adaptive,False,10,"{'classification': 'quorum', 'reason': 'minimum ten contributors not reached', 'round': 11}",,0.0,,,0.0,,27,67,120,0,20,30
+non-iid-s2026110645-gated_composite-clean,non-iid,2026110645,gated_composite,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9431584614376951,49,135,225,0,0,0
+non-iid-s2026110645-gated_composite-complete-trigger,non-iid,2026110645,gated_composite,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.8554701441526623,36,137,195,30,0,30
+non-iid-s2026110645-gated_composite-distributed,non-iid,2026110645,gated_composite,distributed,False,6,"{'classification': 'quorum', 'reason': 'minimum ten contributors not reached', 'round': 7}",,0.0,,,,,8,58,72,18,0,18
+non-iid-s2026110645-tpm_only-adaptive,non-iid,2026110645,tpm_only,adaptive,True,15,,1.0,1.0,0.0,1.0,0.982613668859022,0.7676696083035178,0,0,195,0,0,30
+non-iid-s2026110645-tpm_only-clean,non-iid,2026110645,tpm_only,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9490683498200513,0,0,225,0,0,0
+non-iid-s2026110645-tpm_only-complete-trigger,non-iid,2026110645,tpm_only,complete-trigger,True,15,,0.9299399485273091,0.9299399485273091,0.15527595081498427,0.9299399485273091,0.48970546182442093,0.9336065487127301,0,0,195,0,0,30
+non-iid-s2026110645-tpm_only-distributed,non-iid,2026110645,tpm_only,distributed,True,15,,0.3543036888761796,0.3543036888761796,0.0,0.6033743208464398,0.10634829854160709,0.9400489476537762,0,0,195,0,0,30
+non-iid-s2026110646-calibrated_gated-adaptive,non-iid,2026110646,calibrated_gated,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.9571175013750423,0,0,195,0,2,30
+non-iid-s2026110646-calibrated_gated-clean,non-iid,2026110646,calibrated_gated,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9591893687807187,0,0,225,0,0,0
+non-iid-s2026110646-calibrated_gated-complete-trigger,non-iid,2026110646,calibrated_gated,complete-trigger,True,15,,0.42293394338004003,0.42293394338004003,0.0,0.42293394338004003,0.08504432370603374,0.9596195040445168,0,0,195,0,0,30
+non-iid-s2026110646-calibrated_gated-distributed,non-iid,2026110646,calibrated_gated,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.957145840570465,0,0,195,2,3,30
+non-iid-s2026110646-gated_composite-adaptive,non-iid,2026110646,gated_composite,adaptive,True,15,,0.0,0.0,0.0,0.0,0.0,0.959616934413321,41,116,201,5,14,24
+non-iid-s2026110646-gated_composite-clean,non-iid,2026110646,gated_composite,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9711300236495001,46,132,225,0,0,0
+non-iid-s2026110646-gated_composite-complete-trigger,non-iid,2026110646,gated_composite,complete-trigger,True,15,,0.0,0.0,0.0,0.0,0.0,0.9627386688799767,34,127,195,19,11,30
+non-iid-s2026110646-gated_composite-distributed,non-iid,2026110646,gated_composite,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.97114634336367,34,126,195,19,11,30
+non-iid-s2026110646-tpm_only-adaptive,non-iid,2026110646,tpm_only,adaptive,True,15,,0.99342293394338,0.99342293394338,0.0,0.99342293394338,0.8311695739205033,0.959520621176097,0,0,195,0,0,30
+non-iid-s2026110646-tpm_only-clean,non-iid,2026110646,tpm_only,clean,True,15,,0.0,0.0,0.0,0.0,0.0,0.9591893687807187,0,0,225,0,0,0
+non-iid-s2026110646-tpm_only-complete-trigger,non-iid,2026110646,tpm_only,complete-trigger,True,15,,0.42293394338004003,0.42293394338004003,0.0,0.42293394338004003,0.08504432370603374,0.9596195040445168,0,0,195,0,0,30
+non-iid-s2026110646-tpm_only-distributed,non-iid,2026110646,tpm_only,distributed,True,15,,0.0,0.0,0.0,0.0,0.0,0.9587486284365981,0,0,195,0,0,30

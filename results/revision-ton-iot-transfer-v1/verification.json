@@ -1,0 +1,29 @@
+{
+  "status": "verified",
+  "transfer_results_sha256": "cc5c19434133fa7015c9ec5e04d3070cece2a5ba69154f59fae25167567190dd",
+  "profiles": [
+    {
+      "profile": "occurrence",
+      "windows_checked": 7934,
+      "all_feature_invariants_checked": true,
+      "predictions_recomputed_with_established_function": true,
+      "batch_size": 257,
+      "all_model_classes_and_binary_confusions_match": true
+    },
+    {
+      "profile": "exact-projection",
+      "windows_checked": 7934,
+      "all_feature_invariants_checked": true,
+      "predictions_recomputed_with_established_function": true,
+      "batch_size": 257,
+      "all_model_classes_and_binary_confusions_match": true
+    }
+  ],
+  "independent_source_window_spot_checks": 11,
+  "source_records_in_spot_checks": 3988,
+  "full_source_rebuild": false,
+  "reference_checkpoint_verification": "verified",
+  "new_TPM_attestation_performed": false,
+  "physical_connection_identity_proved": false,
+  "qualification": "All predictions freshly recomputed; full-source byte/count checks and bounded source-feature rebuild are separate evidence scopes."
+}

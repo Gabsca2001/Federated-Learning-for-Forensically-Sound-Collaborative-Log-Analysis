@@ -1,0 +1,4581 @@
+{
+  "status": "novelty_probe_complete",
+  "selected_family": "oneclass-full",
+  "results": [
+    {
+      "view": "occurrence",
+      "family": "knn-full",
+      "seed": 341593,
+      "parent_id": "legacy-occurrence-source-standard-s341593",
+      "threshold": 6.104822635650635,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              70,
+              15
+            ],
+            [
+              21,
+              974
+            ]
+          ]
+        },
+        "accuracy": 0.9666666666666667,
+        "attack_precision": 0.9848331648129424,
+        "attack_recall": 0.978894472361809,
+        "attack_f1": 0.9818548387096774,
+        "benign_specificity": 0.8235294117647058,
+        "false_positive_rate": 0.17647058823529413,
+        "balanced_accuracy": 0.9012119420632574,
+        "macro_f1": 0.8886546920821115,
+        "false_positive_rate_wilson95": [
+          0.10996363561495573,
+          0.2709560303823717
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9012119420632575,
+        "average_precision": 0.9834921856784202,
+        "benign_f1": 0.7954545454545454,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 2
+    },
+    {
+      "view": "occurrence",
+      "family": "knn-full",
+      "seed": 342593,
+      "parent_id": "legacy-occurrence-source-standard-s342593",
+      "threshold": 6.104822635650635,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              78,
+              7
+            ],
+            [
+              27,
+              968
+            ]
+          ]
+        },
+        "accuracy": 0.9685185185185186,
+        "attack_precision": 0.9928205128205129,
+        "attack_recall": 0.9728643216080402,
+        "attack_f1": 0.9827411167512691,
+        "benign_specificity": 0.9176470588235294,
+        "false_positive_rate": 0.08235294117647059,
+        "balanced_accuracy": 0.9452556902157847,
+        "macro_f1": 0.9018968741651082,
+        "false_positive_rate_wilson95": [
+          0.040463723499160636,
+          0.16035984533375294
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9452556902157847,
+        "average_precision": 0.9908796546836748,
+        "benign_f1": 0.8210526315789474,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              78,
+              610
+            ]
+          ]
+        },
+        "accuracy": 0.8844011142061281,
+        "attack_precision": 0.991869918699187,
+        "attack_recall": 0.8866279069767442,
+        "attack_f1": 0.9363008442056792,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8599806201550388,
+        "macro_f1": 0.6561203469148696,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8599806201550387,
+        "average_precision": 0.9880546475024898,
+        "benign_f1": 0.37593984962406013,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "knn-full",
+      "seed": 343593,
+      "parent_id": "legacy-occurrence-source-standard-s343593",
+      "threshold": 6.104822635650635,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              18,
+              977
+            ]
+          ]
+        },
+        "accuracy": 0.9675925925925926,
+        "attack_precision": 0.9828973843058351,
+        "attack_recall": 0.9819095477386934,
+        "attack_f1": 0.9824032176973353,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8909547738693467,
+        "macro_f1": 0.888862427562118,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8909547738693468,
+        "average_precision": 0.981782992763954,
+        "benign_f1": 0.7953216374269005,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9796238244514106,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.942684766214178,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7375484496124031,
+        "macro_f1": 0.6258878376525435,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7375484496124031,
+        "average_precision": 0.9776636312564182,
+        "benign_f1": 0.3090909090909091,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "isolation-full",
+      "seed": 341593,
+      "parent_id": "legacy-occurrence-source-standard-s341593",
+      "threshold": 0.7597738434774357,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              70,
+              15
+            ],
+            [
+              21,
+              974
+            ]
+          ]
+        },
+        "accuracy": 0.9666666666666667,
+        "attack_precision": 0.9848331648129424,
+        "attack_recall": 0.978894472361809,
+        "attack_f1": 0.9818548387096774,
+        "benign_specificity": 0.8235294117647058,
+        "false_positive_rate": 0.17647058823529413,
+        "balanced_accuracy": 0.9012119420632574,
+        "macro_f1": 0.8886546920821115,
+        "false_positive_rate_wilson95": [
+          0.10996363561495573,
+          0.2709560303823717
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9012119420632575,
+        "average_precision": 0.9834921856784202,
+        "benign_f1": 0.7954545454545454,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              67,
+              621
+            ]
+          ]
+        },
+        "accuracy": 0.8913649025069638,
+        "attack_precision": 0.9825949367088608,
+        "attack_recall": 0.9026162790697675,
+        "attack_f1": 0.9409090909090909,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7679748062015503,
+        "macro_f1": 0.6342476489028213,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7679748062015503,
+        "average_precision": 0.9802209488361433,
+        "benign_f1": 0.3275862068965517,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              688,
+              0
+            ]
+          ]
+        },
+        "accuracy": 0.04178272980501393,
+        "attack_precision": null,
+        "attack_recall": 0.0,
+        "attack_f1": 0.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.040106951871657755,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5,
+        "average_precision": 0.958217270194986,
+        "benign_f1": 0.08021390374331551,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 0
+    },
+    {
+      "view": "occurrence",
+      "family": "isolation-full",
+      "seed": 342593,
+      "parent_id": "legacy-occurrence-source-standard-s342593",
+      "threshold": 0.7597738434774357,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              78,
+              7
+            ],
+            [
+              27,
+              968
+            ]
+          ]
+        },
+        "accuracy": 0.9685185185185186,
+        "attack_precision": 0.9928205128205129,
+        "attack_recall": 0.9728643216080402,
+        "attack_f1": 0.9827411167512691,
+        "benign_specificity": 0.9176470588235294,
+        "false_positive_rate": 0.08235294117647059,
+        "balanced_accuracy": 0.9452556902157847,
+        "macro_f1": 0.9018968741651082,
+        "false_positive_rate_wilson95": [
+          0.040463723499160636,
+          0.16035984533375294
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9452556902157847,
+        "average_precision": 0.9908796546836748,
+        "benign_f1": 0.8210526315789474,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              81,
+              607
+            ]
+          ]
+        },
+        "accuracy": 0.8802228412256268,
+        "attack_precision": 0.9918300653594772,
+        "attack_recall": 0.8822674418604651,
+        "attack_f1": 0.9338461538461539,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8578003875968992,
+        "macro_f1": 0.6507466063348417,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8578003875968994,
+        "average_precision": 0.9878727449985414,
+        "benign_f1": 0.36764705882352944,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              688,
+              0
+            ]
+          ]
+        },
+        "accuracy": 0.04178272980501393,
+        "attack_precision": null,
+        "attack_recall": 0.0,
+        "attack_f1": 0.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.040106951871657755,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5,
+        "average_precision": 0.958217270194986,
+        "benign_f1": 0.08021390374331551,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 0
+    },
+    {
+      "view": "occurrence",
+      "family": "isolation-full",
+      "seed": 343593,
+      "parent_id": "legacy-occurrence-source-standard-s343593",
+      "threshold": 0.7597738434774357,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              18,
+              977
+            ]
+          ]
+        },
+        "accuracy": 0.9675925925925926,
+        "attack_precision": 0.9828973843058351,
+        "attack_recall": 0.9819095477386934,
+        "attack_f1": 0.9824032176973353,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8909547738693467,
+        "macro_f1": 0.888862427562118,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8909547738693468,
+        "average_precision": 0.981782992763954,
+        "benign_f1": 0.7953216374269005,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              66,
+              622
+            ]
+          ]
+        },
+        "accuracy": 0.8899721448467967,
+        "attack_precision": 0.9795275590551181,
+        "attack_recall": 0.9040697674418605,
+        "attack_f1": 0.9402872260015117,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7353682170542636,
+        "macro_f1": 0.6205860908768621,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7353682170542636,
+        "average_precision": 0.9774832580888845,
+        "benign_f1": 0.3008849557522124,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              688,
+              0
+            ]
+          ]
+        },
+        "accuracy": 0.04178272980501393,
+        "attack_precision": null,
+        "attack_recall": 0.0,
+        "attack_f1": 0.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.040106951871657755,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5,
+        "average_precision": 0.958217270194986,
+        "benign_f1": 0.08021390374331551,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 0
+    },
+    {
+      "view": "occurrence",
+      "family": "oneclass-full",
+      "seed": 341593,
+      "parent_id": "legacy-occurrence-source-standard-s341593",
+      "threshold": 5.923192923925213,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              70,
+              15
+            ],
+            [
+              21,
+              974
+            ]
+          ]
+        },
+        "accuracy": 0.9666666666666667,
+        "attack_precision": 0.9848331648129424,
+        "attack_recall": 0.978894472361809,
+        "attack_f1": 0.9818548387096774,
+        "benign_specificity": 0.8235294117647058,
+        "false_positive_rate": 0.17647058823529413,
+        "balanced_accuracy": 0.9012119420632574,
+        "macro_f1": 0.8886546920821115,
+        "false_positive_rate_wilson95": [
+          0.10996363561495573,
+          0.2709560303823717
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9012119420632575,
+        "average_precision": 0.9834921856784202,
+        "benign_f1": 0.7954545454545454,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": true,
+      "novelty_new_test_flags": 2
+    },
+    {
+      "view": "occurrence",
+      "family": "oneclass-full",
+      "seed": 342593,
+      "parent_id": "legacy-occurrence-source-standard-s342593",
+      "threshold": 5.923192923925213,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              78,
+              7
+            ],
+            [
+              27,
+              968
+            ]
+          ]
+        },
+        "accuracy": 0.9685185185185186,
+        "attack_precision": 0.9928205128205129,
+        "attack_recall": 0.9728643216080402,
+        "attack_f1": 0.9827411167512691,
+        "benign_specificity": 0.9176470588235294,
+        "false_positive_rate": 0.08235294117647059,
+        "balanced_accuracy": 0.9452556902157847,
+        "macro_f1": 0.9018968741651082,
+        "false_positive_rate_wilson95": [
+          0.040463723499160636,
+          0.16035984533375294
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9452556902157847,
+        "average_precision": 0.9908796546836748,
+        "benign_f1": 0.8210526315789474,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              78,
+              610
+            ]
+          ]
+        },
+        "accuracy": 0.8844011142061281,
+        "attack_precision": 0.991869918699187,
+        "attack_recall": 0.8866279069767442,
+        "attack_f1": 0.9363008442056792,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8599806201550388,
+        "macro_f1": 0.6561203469148696,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8599806201550387,
+        "average_precision": 0.9880546475024898,
+        "benign_f1": 0.37593984962406013,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": true,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "oneclass-full",
+      "seed": 343593,
+      "parent_id": "legacy-occurrence-source-standard-s343593",
+      "threshold": 5.923192923925213,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              18,
+              977
+            ]
+          ]
+        },
+        "accuracy": 0.9675925925925926,
+        "attack_precision": 0.9828973843058351,
+        "attack_recall": 0.9819095477386934,
+        "attack_f1": 0.9824032176973353,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8909547738693467,
+        "macro_f1": 0.888862427562118,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8909547738693468,
+        "average_precision": 0.981782992763954,
+        "benign_f1": 0.7953216374269005,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9796238244514106,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.942684766214178,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7375484496124031,
+        "macro_f1": 0.6258878376525435,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7375484496124031,
+        "average_precision": 0.9776636312564182,
+        "benign_f1": 0.3090909090909091,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": true,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "knn-fractions",
+      "seed": 341593,
+      "parent_id": "legacy-occurrence-source-standard-s341593",
+      "threshold": 5.47853395160442,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              70,
+              15
+            ],
+            [
+              21,
+              974
+            ]
+          ]
+        },
+        "accuracy": 0.9666666666666667,
+        "attack_precision": 0.9848331648129424,
+        "attack_recall": 0.978894472361809,
+        "attack_f1": 0.9818548387096774,
+        "benign_specificity": 0.8235294117647058,
+        "false_positive_rate": 0.17647058823529413,
+        "balanced_accuracy": 0.9012119420632574,
+        "macro_f1": 0.8886546920821115,
+        "false_positive_rate_wilson95": [
+          0.10996363561495573,
+          0.2709560303823717
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9012119420632575,
+        "average_precision": 0.9834921856784202,
+        "benign_f1": 0.7954545454545454,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 2
+    },
+    {
+      "view": "occurrence",
+      "family": "knn-fractions",
+      "seed": 342593,
+      "parent_id": "legacy-occurrence-source-standard-s342593",
+      "threshold": 5.47853395160442,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              78,
+              7
+            ],
+            [
+              27,
+              968
+            ]
+          ]
+        },
+        "accuracy": 0.9685185185185186,
+        "attack_precision": 0.9928205128205129,
+        "attack_recall": 0.9728643216080402,
+        "attack_f1": 0.9827411167512691,
+        "benign_specificity": 0.9176470588235294,
+        "false_positive_rate": 0.08235294117647059,
+        "balanced_accuracy": 0.9452556902157847,
+        "macro_f1": 0.9018968741651082,
+        "false_positive_rate_wilson95": [
+          0.040463723499160636,
+          0.16035984533375294
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9452556902157847,
+        "average_precision": 0.9908796546836748,
+        "benign_f1": 0.8210526315789474,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              78,
+              610
+            ]
+          ]
+        },
+        "accuracy": 0.8844011142061281,
+        "attack_precision": 0.991869918699187,
+        "attack_recall": 0.8866279069767442,
+        "attack_f1": 0.9363008442056792,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8599806201550388,
+        "macro_f1": 0.6561203469148696,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8599806201550387,
+        "average_precision": 0.9880546475024898,
+        "benign_f1": 0.37593984962406013,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "knn-fractions",
+      "seed": 343593,
+      "parent_id": "legacy-occurrence-source-standard-s343593",
+      "threshold": 5.47853395160442,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              18,
+              977
+            ]
+          ]
+        },
+        "accuracy": 0.9675925925925926,
+        "attack_precision": 0.9828973843058351,
+        "attack_recall": 0.9819095477386934,
+        "attack_f1": 0.9824032176973353,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8909547738693467,
+        "macro_f1": 0.888862427562118,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8909547738693468,
+        "average_precision": 0.981782992763954,
+        "benign_f1": 0.7953216374269005,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9796238244514106,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.942684766214178,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7375484496124031,
+        "macro_f1": 0.6258878376525435,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7375484496124031,
+        "average_precision": 0.9776636312564182,
+        "benign_f1": 0.3090909090909091,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "isolation-fractions",
+      "seed": 341593,
+      "parent_id": "legacy-occurrence-source-standard-s341593",
+      "threshold": 0.7743795355674609,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              70,
+              15
+            ],
+            [
+              21,
+              974
+            ]
+          ]
+        },
+        "accuracy": 0.9666666666666667,
+        "attack_precision": 0.9848331648129424,
+        "attack_recall": 0.978894472361809,
+        "attack_f1": 0.9818548387096774,
+        "benign_specificity": 0.8235294117647058,
+        "false_positive_rate": 0.17647058823529413,
+        "balanced_accuracy": 0.9012119420632574,
+        "macro_f1": 0.8886546920821115,
+        "false_positive_rate_wilson95": [
+          0.10996363561495573,
+          0.2709560303823717
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9012119420632575,
+        "average_precision": 0.9834921856784202,
+        "benign_f1": 0.7954545454545454,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8955431754874652,
+        "attack_precision": 0.9826771653543307,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9433106575963719,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7701550387596898,
+        "macro_f1": 0.63979692171854,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7701550387596898,
+        "average_precision": 0.9804018262697405,
+        "benign_f1": 0.336283185840708,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              684,
+              4
+            ]
+          ]
+        },
+        "accuracy": 0.04735376044568245,
+        "attack_precision": 1.0,
+        "attack_recall": 0.005813953488372093,
+        "attack_f1": 0.011560693641618497,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.502906976744186,
+        "macro_f1": 0.046102927465970535,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.502906976744186,
+        "average_precision": 0.9584601930426896,
+        "benign_f1": 0.08064516129032258,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "isolation-fractions",
+      "seed": 342593,
+      "parent_id": "legacy-occurrence-source-standard-s342593",
+      "threshold": 0.7743795355674609,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              78,
+              7
+            ],
+            [
+              27,
+              968
+            ]
+          ]
+        },
+        "accuracy": 0.9685185185185186,
+        "attack_precision": 0.9928205128205129,
+        "attack_recall": 0.9728643216080402,
+        "attack_f1": 0.9827411167512691,
+        "benign_specificity": 0.9176470588235294,
+        "false_positive_rate": 0.08235294117647059,
+        "balanced_accuracy": 0.9452556902157847,
+        "macro_f1": 0.9018968741651082,
+        "false_positive_rate_wilson95": [
+          0.040463723499160636,
+          0.16035984533375294
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9452556902157847,
+        "average_precision": 0.9908796546836748,
+        "benign_f1": 0.8210526315789474,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              78,
+              610
+            ]
+          ]
+        },
+        "accuracy": 0.8844011142061281,
+        "attack_precision": 0.991869918699187,
+        "attack_recall": 0.8866279069767442,
+        "attack_f1": 0.9363008442056792,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8599806201550388,
+        "macro_f1": 0.6561203469148696,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8599806201550387,
+        "average_precision": 0.9880546475024898,
+        "benign_f1": 0.37593984962406013,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              684,
+              4
+            ]
+          ]
+        },
+        "accuracy": 0.04735376044568245,
+        "attack_precision": 1.0,
+        "attack_recall": 0.005813953488372093,
+        "attack_f1": 0.011560693641618497,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.502906976744186,
+        "macro_f1": 0.046102927465970535,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.502906976744186,
+        "average_precision": 0.9584601930426896,
+        "benign_f1": 0.08064516129032258,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "isolation-fractions",
+      "seed": 343593,
+      "parent_id": "legacy-occurrence-source-standard-s343593",
+      "threshold": 0.7743795355674609,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              18,
+              977
+            ]
+          ]
+        },
+        "accuracy": 0.9675925925925926,
+        "attack_precision": 0.9828973843058351,
+        "attack_recall": 0.9819095477386934,
+        "attack_f1": 0.9824032176973353,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8909547738693467,
+        "macro_f1": 0.888862427562118,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8909547738693468,
+        "average_precision": 0.981782992763954,
+        "benign_f1": 0.7953216374269005,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9796238244514106,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.942684766214178,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7375484496124031,
+        "macro_f1": 0.6258878376525435,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7375484496124031,
+        "average_precision": 0.9776636312564182,
+        "benign_f1": 0.3090909090909091,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              684,
+              4
+            ]
+          ]
+        },
+        "accuracy": 0.04735376044568245,
+        "attack_precision": 1.0,
+        "attack_recall": 0.005813953488372093,
+        "attack_f1": 0.011560693641618497,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.502906976744186,
+        "macro_f1": 0.046102927465970535,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.502906976744186,
+        "average_precision": 0.9584601930426896,
+        "benign_f1": 0.08064516129032258,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "oneclass-fractions",
+      "seed": 341593,
+      "parent_id": "legacy-occurrence-source-standard-s341593",
+      "threshold": 7.798163578175115,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              70,
+              15
+            ],
+            [
+              21,
+              974
+            ]
+          ]
+        },
+        "accuracy": 0.9666666666666667,
+        "attack_precision": 0.9848331648129424,
+        "attack_recall": 0.978894472361809,
+        "attack_f1": 0.9818548387096774,
+        "benign_specificity": 0.8235294117647058,
+        "false_positive_rate": 0.17647058823529413,
+        "balanced_accuracy": 0.9012119420632574,
+        "macro_f1": 0.8886546920821115,
+        "false_positive_rate_wilson95": [
+          0.10996363561495573,
+          0.2709560303823717
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9012119420632575,
+        "average_precision": 0.9834921856784202,
+        "benign_f1": 0.7954545454545454,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.04874651810584958,
+        "attack_precision": 0.8571428571428571,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.017266187050359712,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4876937984496124,
+        "macro_f1": 0.04776939581937689,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.4876937984496124,
+        "average_precision": 0.9573358072904616,
+        "benign_f1": 0.07827260458839407,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 2
+    },
+    {
+      "view": "occurrence",
+      "family": "oneclass-fractions",
+      "seed": 342593,
+      "parent_id": "legacy-occurrence-source-standard-s342593",
+      "threshold": 7.798163578175115,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              78,
+              7
+            ],
+            [
+              27,
+              968
+            ]
+          ]
+        },
+        "accuracy": 0.9685185185185186,
+        "attack_precision": 0.9928205128205129,
+        "attack_recall": 0.9728643216080402,
+        "attack_f1": 0.9827411167512691,
+        "benign_specificity": 0.9176470588235294,
+        "false_positive_rate": 0.08235294117647059,
+        "balanced_accuracy": 0.9452556902157847,
+        "macro_f1": 0.9018968741651082,
+        "false_positive_rate_wilson95": [
+          0.040463723499160636,
+          0.16035984533375294
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9452556902157847,
+        "average_precision": 0.9908796546836748,
+        "benign_f1": 0.8210526315789474,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              78,
+              610
+            ]
+          ]
+        },
+        "accuracy": 0.8844011142061281,
+        "attack_precision": 0.991869918699187,
+        "attack_recall": 0.8866279069767442,
+        "attack_f1": 0.9363008442056792,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8599806201550388,
+        "macro_f1": 0.6561203469148696,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8599806201550387,
+        "average_precision": 0.9880546475024898,
+        "benign_f1": 0.37593984962406013,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.04874651810584958,
+        "attack_precision": 0.8571428571428571,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.017266187050359712,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4876937984496124,
+        "macro_f1": 0.04776939581937689,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.4876937984496124,
+        "average_precision": 0.9573358072904616,
+        "benign_f1": 0.07827260458839407,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "occurrence",
+      "family": "oneclass-fractions",
+      "seed": 343593,
+      "parent_id": "legacy-occurrence-source-standard-s343593",
+      "threshold": 7.798163578175115,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              18,
+              977
+            ]
+          ]
+        },
+        "accuracy": 0.9675925925925926,
+        "attack_precision": 0.9828973843058351,
+        "attack_recall": 0.9819095477386934,
+        "attack_f1": 0.9824032176973353,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8909547738693467,
+        "macro_f1": 0.888862427562118,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8909547738693468,
+        "average_precision": 0.981782992763954,
+        "benign_f1": 0.7953216374269005,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9796238244514106,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.942684766214178,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7375484496124031,
+        "macro_f1": 0.6258878376525435,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7375484496124031,
+        "average_precision": 0.9776636312564182,
+        "benign_f1": 0.3090909090909091,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.04874651810584958,
+        "attack_precision": 0.8571428571428571,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.017266187050359712,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4876937984496124,
+        "macro_f1": 0.04776939581937689,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.4876937984496124,
+        "average_precision": 0.9573358072904616,
+        "benign_f1": 0.07827260458839407,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "knn-full",
+      "seed": 341593,
+      "parent_id": "legacy-exact-projection-source-standard-s341593",
+      "threshold": 5.989874744415284,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.9703703703703703,
+        "attack_precision": 0.9829488465396189,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9839357429718876,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.892462311557789,
+        "macro_f1": 0.8967297762478486,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8924623115577891,
+        "average_precision": 0.9820194111088151,
+        "benign_f1": 0.8095238095238095,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "knn-full",
+      "seed": 342593,
+      "parent_id": "legacy-exact-projection-source-standard-s342593",
+      "threshold": 5.989874744415284,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              74,
+              11
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.975925925925926,
+        "attack_precision": 0.9889001009081736,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9869083585095669,
+        "benign_specificity": 0.8705882352941177,
+        "false_positive_rate": 0.12941176470588237,
+        "balanced_accuracy": 0.9277564292048478,
+        "macro_f1": 0.9187415355766225,
+        "false_positive_rate_wilson95": [
+          0.07382352798125273,
+          0.21704808943386777
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9277564292048478,
+        "average_precision": 0.9878809480748287,
+        "benign_f1": 0.8505747126436781,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              83,
+              605
+            ]
+          ]
+        },
+        "accuracy": 0.8774373259052924,
+        "attack_precision": 0.9918032786885246,
+        "attack_recall": 0.8793604651162791,
+        "attack_f1": 0.9322033898305084,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8563468992248062,
+        "macro_f1": 0.6472611152051093,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8563468992248062,
+        "average_precision": 0.9877514782452634,
+        "benign_f1": 0.36231884057971014,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "knn-full",
+      "seed": 343593,
+      "parent_id": "legacy-exact-projection-source-standard-s343593",
+      "threshold": 5.989874744415284,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              11,
+              984
+            ]
+          ]
+        },
+        "accuracy": 0.9740740740740741,
+        "attack_precision": 0.983016983016983,
+        "attack_recall": 0.9889447236180905,
+        "attack_f1": 0.9859719438877755,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8944723618090453,
+        "macro_f1": 0.9076201182853512,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8944723618090452,
+        "average_precision": 0.9823346437668047,
+        "benign_f1": 0.8292682926829268,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9811320754716981,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9425981873111783,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7534883720930232,
+        "macro_f1": 0.6320133793698749,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7534883720930232,
+        "average_precision": 0.9790004656785156,
+        "benign_f1": 0.32142857142857145,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "isolation-full",
+      "seed": 341593,
+      "parent_id": "legacy-exact-projection-source-standard-s341593",
+      "threshold": 0.7714207964061165,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.9703703703703703,
+        "attack_precision": 0.9829488465396189,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9839357429718876,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.892462311557789,
+        "macro_f1": 0.8967297762478486,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8924623115577891,
+        "average_precision": 0.9820194111088151,
+        "benign_f1": 0.8095238095238095,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              68,
+              620
+            ]
+          ]
+        },
+        "accuracy": 0.8899721448467967,
+        "attack_precision": 0.9825673534072901,
+        "attack_recall": 0.9011627906976745,
+        "attack_f1": 0.9401061410159212,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7672480620155039,
+        "macro_f1": 0.632446232901123,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7672480620155038,
+        "average_precision": 0.9801606591363066,
+        "benign_f1": 0.3247863247863248,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              688,
+              0
+            ]
+          ]
+        },
+        "accuracy": 0.04178272980501393,
+        "attack_precision": null,
+        "attack_recall": 0.0,
+        "attack_f1": 0.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.040106951871657755,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5,
+        "average_precision": 0.958217270194986,
+        "benign_f1": 0.08021390374331551,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 0
+    },
+    {
+      "view": "exact-projection",
+      "family": "isolation-full",
+      "seed": 342593,
+      "parent_id": "legacy-exact-projection-source-standard-s342593",
+      "threshold": 0.7714207964061165,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              74,
+              11
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.975925925925926,
+        "attack_precision": 0.9889001009081736,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9869083585095669,
+        "benign_specificity": 0.8705882352941177,
+        "false_positive_rate": 0.12941176470588237,
+        "balanced_accuracy": 0.9277564292048478,
+        "macro_f1": 0.9187415355766225,
+        "false_positive_rate_wilson95": [
+          0.07382352798125273,
+          0.21704808943386777
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9277564292048478,
+        "average_precision": 0.9878809480748287,
+        "benign_f1": 0.8505747126436781,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              87,
+              601
+            ]
+          ]
+        },
+        "accuracy": 0.871866295264624,
+        "attack_precision": 0.9917491749174917,
+        "attack_recall": 0.873546511627907,
+        "attack_f1": 0.9289026275115919,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8534399224806202,
+        "macro_f1": 0.640507651783965,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8534399224806202,
+        "average_precision": 0.9875089485935702,
+        "benign_f1": 0.352112676056338,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              688,
+              0
+            ]
+          ]
+        },
+        "accuracy": 0.04178272980501393,
+        "attack_precision": null,
+        "attack_recall": 0.0,
+        "attack_f1": 0.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.040106951871657755,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5,
+        "average_precision": 0.958217270194986,
+        "benign_f1": 0.08021390374331551,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 0
+    },
+    {
+      "view": "exact-projection",
+      "family": "isolation-full",
+      "seed": 343593,
+      "parent_id": "legacy-exact-projection-source-standard-s343593",
+      "threshold": 0.7714207964061165,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              11,
+              984
+            ]
+          ]
+        },
+        "accuracy": 0.9740740740740741,
+        "attack_precision": 0.983016983016983,
+        "attack_recall": 0.9889447236180905,
+        "attack_f1": 0.9859719438877755,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8944723618090453,
+        "macro_f1": 0.9076201182853512,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8944723618090452,
+        "average_precision": 0.9823346437668047,
+        "benign_f1": 0.8292682926829268,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              67,
+              621
+            ]
+          ]
+        },
+        "accuracy": 0.8899721448467967,
+        "attack_precision": 0.981042654028436,
+        "attack_recall": 0.9026162790697675,
+        "attack_f1": 0.9401968205904617,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7513081395348837,
+        "macro_f1": 0.6266201494256657,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7513081395348837,
+        "average_precision": 0.9788198332190738,
+        "benign_f1": 0.3130434782608696,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              688,
+              0
+            ]
+          ]
+        },
+        "accuracy": 0.04178272980501393,
+        "attack_precision": null,
+        "attack_recall": 0.0,
+        "attack_f1": 0.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.040106951871657755,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5,
+        "average_precision": 0.958217270194986,
+        "benign_f1": 0.08021390374331551,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 0
+    },
+    {
+      "view": "exact-projection",
+      "family": "oneclass-full",
+      "seed": 341593,
+      "parent_id": "legacy-exact-projection-source-standard-s341593",
+      "threshold": 5.59497425012797,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.9703703703703703,
+        "attack_precision": 0.9829488465396189,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9839357429718876,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.892462311557789,
+        "macro_f1": 0.8967297762478486,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8924623115577891,
+        "average_precision": 0.9820194111088151,
+        "benign_f1": 0.8095238095238095,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              680,
+              8
+            ]
+          ]
+        },
+        "accuracy": 0.05153203342618384,
+        "attack_precision": 0.8888888888888888,
+        "attack_recall": 0.011627906976744186,
+        "attack_f1": 0.02295552367288379,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.48914728682170544,
+        "macro_f1": 0.050719981051597515,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48914728682170544,
+        "average_precision": 0.9574111262263104,
+        "benign_f1": 0.07848443843031123,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": true,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "oneclass-full",
+      "seed": 342593,
+      "parent_id": "legacy-exact-projection-source-standard-s342593",
+      "threshold": 5.59497425012797,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              74,
+              11
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.975925925925926,
+        "attack_precision": 0.9889001009081736,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9869083585095669,
+        "benign_specificity": 0.8705882352941177,
+        "false_positive_rate": 0.12941176470588237,
+        "balanced_accuracy": 0.9277564292048478,
+        "macro_f1": 0.9187415355766225,
+        "false_positive_rate_wilson95": [
+          0.07382352798125273,
+          0.21704808943386777
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9277564292048478,
+        "average_precision": 0.9878809480748287,
+        "benign_f1": 0.8505747126436781,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              83,
+              605
+            ]
+          ]
+        },
+        "accuracy": 0.8774373259052924,
+        "attack_precision": 0.9918032786885246,
+        "attack_recall": 0.8793604651162791,
+        "attack_f1": 0.9322033898305084,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8563468992248062,
+        "macro_f1": 0.6472611152051093,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8563468992248062,
+        "average_precision": 0.9877514782452634,
+        "benign_f1": 0.36231884057971014,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              680,
+              8
+            ]
+          ]
+        },
+        "accuracy": 0.05153203342618384,
+        "attack_precision": 0.8888888888888888,
+        "attack_recall": 0.011627906976744186,
+        "attack_f1": 0.02295552367288379,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.48914728682170544,
+        "macro_f1": 0.050719981051597515,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48914728682170544,
+        "average_precision": 0.9574111262263104,
+        "benign_f1": 0.07848443843031123,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": true,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "oneclass-full",
+      "seed": 343593,
+      "parent_id": "legacy-exact-projection-source-standard-s343593",
+      "threshold": 5.59497425012797,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              11,
+              984
+            ]
+          ]
+        },
+        "accuracy": 0.9740740740740741,
+        "attack_precision": 0.983016983016983,
+        "attack_recall": 0.9889447236180905,
+        "attack_f1": 0.9859719438877755,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8944723618090453,
+        "macro_f1": 0.9076201182853512,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8944723618090452,
+        "average_precision": 0.9823346437668047,
+        "benign_f1": 0.8292682926829268,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9811320754716981,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9425981873111783,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7534883720930232,
+        "macro_f1": 0.6320133793698749,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7534883720930232,
+        "average_precision": 0.9790004656785156,
+        "benign_f1": 0.32142857142857145,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              680,
+              8
+            ]
+          ]
+        },
+        "accuracy": 0.05153203342618384,
+        "attack_precision": 0.8888888888888888,
+        "attack_recall": 0.011627906976744186,
+        "attack_f1": 0.02295552367288379,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.48914728682170544,
+        "macro_f1": 0.050719981051597515,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48914728682170544,
+        "average_precision": 0.9574111262263104,
+        "benign_f1": 0.07848443843031123,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": true,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "knn-fractions",
+      "seed": 341593,
+      "parent_id": "legacy-exact-projection-source-standard-s341593",
+      "threshold": 5.510374228217315,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.9703703703703703,
+        "attack_precision": 0.9829488465396189,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9839357429718876,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.892462311557789,
+        "macro_f1": 0.8967297762478486,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8924623115577891,
+        "average_precision": 0.9820194111088151,
+        "benign_f1": 0.8095238095238095,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "knn-fractions",
+      "seed": 342593,
+      "parent_id": "legacy-exact-projection-source-standard-s342593",
+      "threshold": 5.510374228217315,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              74,
+              11
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.975925925925926,
+        "attack_precision": 0.9889001009081736,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9869083585095669,
+        "benign_specificity": 0.8705882352941177,
+        "false_positive_rate": 0.12941176470588237,
+        "balanced_accuracy": 0.9277564292048478,
+        "macro_f1": 0.9187415355766225,
+        "false_positive_rate_wilson95": [
+          0.07382352798125273,
+          0.21704808943386777
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9277564292048478,
+        "average_precision": 0.9878809480748287,
+        "benign_f1": 0.8505747126436781,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              83,
+              605
+            ]
+          ]
+        },
+        "accuracy": 0.8774373259052924,
+        "attack_precision": 0.9918032786885246,
+        "attack_recall": 0.8793604651162791,
+        "attack_f1": 0.9322033898305084,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8563468992248062,
+        "macro_f1": 0.6472611152051093,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8563468992248062,
+        "average_precision": 0.9877514782452634,
+        "benign_f1": 0.36231884057971014,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "knn-fractions",
+      "seed": 343593,
+      "parent_id": "legacy-exact-projection-source-standard-s343593",
+      "threshold": 5.510374228217315,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              11,
+              984
+            ]
+          ]
+        },
+        "accuracy": 0.9740740740740741,
+        "attack_precision": 0.983016983016983,
+        "attack_recall": 0.9889447236180905,
+        "attack_f1": 0.9859719438877755,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8944723618090453,
+        "macro_f1": 0.9076201182853512,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8944723618090452,
+        "average_precision": 0.9823346437668047,
+        "benign_f1": 0.8292682926829268,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9811320754716981,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9425981873111783,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7534883720930232,
+        "macro_f1": 0.6320133793698749,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7534883720930232,
+        "average_precision": 0.9790004656785156,
+        "benign_f1": 0.32142857142857145,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              681,
+              7
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 0.875,
+        "attack_recall": 0.010174418604651164,
+        "attack_f1": 0.020114942528735632,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4884205426356589,
+        "macro_f1": 0.04924666045355701,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.48842054263565887,
+        "average_precision": 0.9573705828528859,
+        "benign_f1": 0.07837837837837838,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "isolation-fractions",
+      "seed": 341593,
+      "parent_id": "legacy-exact-projection-source-standard-s341593",
+      "threshold": 0.776124411946365,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.9703703703703703,
+        "attack_precision": 0.9829488465396189,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9839357429718876,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.892462311557789,
+        "macro_f1": 0.8967297762478486,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8924623115577891,
+        "average_precision": 0.9820194111088151,
+        "benign_f1": 0.8095238095238095,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8955431754874652,
+        "attack_precision": 0.9826771653543307,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9433106575963719,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7701550387596898,
+        "macro_f1": 0.63979692171854,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7701550387596898,
+        "average_precision": 0.9804018262697405,
+        "benign_f1": 0.336283185840708,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 1.0,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.01729106628242075,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5043604651162791,
+        "macro_f1": 0.04907679998757156,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5043604651162791,
+        "average_precision": 0.9585816544665414,
+        "benign_f1": 0.08086253369272237,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "isolation-fractions",
+      "seed": 342593,
+      "parent_id": "legacy-exact-projection-source-standard-s342593",
+      "threshold": 0.776124411946365,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              74,
+              11
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.975925925925926,
+        "attack_precision": 0.9889001009081736,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9869083585095669,
+        "benign_specificity": 0.8705882352941177,
+        "false_positive_rate": 0.12941176470588237,
+        "balanced_accuracy": 0.9277564292048478,
+        "macro_f1": 0.9187415355766225,
+        "false_positive_rate_wilson95": [
+          0.07382352798125273,
+          0.21704808943386777
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9277564292048478,
+        "average_precision": 0.9878809480748287,
+        "benign_f1": 0.8505747126436781,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              83,
+              605
+            ]
+          ]
+        },
+        "accuracy": 0.8774373259052924,
+        "attack_precision": 0.9918032786885246,
+        "attack_recall": 0.8793604651162791,
+        "attack_f1": 0.9322033898305084,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8563468992248062,
+        "macro_f1": 0.6472611152051093,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8563468992248062,
+        "average_precision": 0.9877514782452634,
+        "benign_f1": 0.36231884057971014,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 1.0,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.01729106628242075,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5043604651162791,
+        "macro_f1": 0.04907679998757156,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5043604651162791,
+        "average_precision": 0.9585816544665414,
+        "benign_f1": 0.08086253369272237,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "isolation-fractions",
+      "seed": 343593,
+      "parent_id": "legacy-exact-projection-source-standard-s343593",
+      "threshold": 0.776124411946365,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              11,
+              984
+            ]
+          ]
+        },
+        "accuracy": 0.9740740740740741,
+        "attack_precision": 0.983016983016983,
+        "attack_recall": 0.9889447236180905,
+        "attack_f1": 0.9859719438877755,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8944723618090453,
+        "macro_f1": 0.9076201182853512,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8944723618090452,
+        "average_precision": 0.9823346437668047,
+        "benign_f1": 0.8292682926829268,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8955431754874652,
+        "attack_precision": 0.9811616954474097,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.9433962264150944,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7542151162790698,
+        "macro_f1": 0.6338602753697093,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7542151162790697,
+        "average_precision": 0.9790606797629581,
+        "benign_f1": 0.32432432432432434,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              30,
+              0
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.05013927576601671,
+        "attack_precision": 1.0,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.01729106628242075,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.5043604651162791,
+        "macro_f1": 0.04907679998757156,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.11351339317396876
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.5043604651162791,
+        "average_precision": 0.9585816544665414,
+        "benign_f1": 0.08086253369272237,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "oneclass-fractions",
+      "seed": 341593,
+      "parent_id": "legacy-exact-projection-source-standard-s341593",
+      "threshold": 7.556074139649509,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.9703703703703703,
+        "attack_precision": 0.9829488465396189,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9839357429718876,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.892462311557789,
+        "macro_f1": 0.8967297762478486,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8924623115577891,
+        "average_precision": 0.9820194111088151,
+        "benign_f1": 0.8095238095238095,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              65,
+              623
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9826498422712934,
+        "attack_recall": 0.9055232558139535,
+        "attack_f1": 0.9425113464447806,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7694282945736435,
+        "macro_f1": 0.637922339889057,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7694282945736435,
+        "average_precision": 0.980341532409433,
+        "benign_f1": 0.3333333333333333,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.04874651810584958,
+        "attack_precision": 0.8571428571428571,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.017266187050359712,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4876937984496124,
+        "macro_f1": 0.04776939581937689,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.4876937984496124,
+        "average_precision": 0.9573358072904616,
+        "benign_f1": 0.07827260458839407,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    },
+    {
+      "view": "exact-projection",
+      "family": "oneclass-fractions",
+      "seed": 342593,
+      "parent_id": "legacy-exact-projection-source-standard-s342593",
+      "threshold": 7.556074139649509,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              74,
+              11
+            ],
+            [
+              15,
+              980
+            ]
+          ]
+        },
+        "accuracy": 0.975925925925926,
+        "attack_precision": 0.9889001009081736,
+        "attack_recall": 0.9849246231155779,
+        "attack_f1": 0.9869083585095669,
+        "benign_specificity": 0.8705882352941177,
+        "false_positive_rate": 0.12941176470588237,
+        "balanced_accuracy": 0.9277564292048478,
+        "macro_f1": 0.9187415355766225,
+        "false_positive_rate_wilson95": [
+          0.07382352798125273,
+          0.21704808943386777
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9277564292048478,
+        "average_precision": 0.9878809480748287,
+        "benign_f1": 0.8505747126436781,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              25,
+              5
+            ],
+            [
+              83,
+              605
+            ]
+          ]
+        },
+        "accuracy": 0.8774373259052924,
+        "attack_precision": 0.9918032786885246,
+        "attack_recall": 0.8793604651162791,
+        "attack_f1": 0.9322033898305084,
+        "benign_specificity": 0.8333333333333334,
+        "false_positive_rate": 0.16666666666666666,
+        "balanced_accuracy": 0.8563468992248062,
+        "macro_f1": 0.6472611152051093,
+        "false_positive_rate_wilson95": [
+          0.0733654237184855,
+          0.3356435050641603
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8563468992248062,
+        "average_precision": 0.9877514782452634,
+        "benign_f1": 0.36231884057971014,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.04874651810584958,
+        "attack_precision": 0.8571428571428571,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.017266187050359712,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4876937984496124,
+        "macro_f1": 0.04776939581937689,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.4876937984496124,
+        "average_precision": 0.9573358072904616,
+        "benign_f1": 0.07827260458839407,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 4
+    },
+    {
+      "view": "exact-projection",
+      "family": "oneclass-fractions",
+      "seed": 343593,
+      "parent_id": "legacy-exact-projection-source-standard-s343593",
+      "threshold": 7.556074139649509,
+      "validation": {
+        "rows": 1080,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              68,
+              17
+            ],
+            [
+              11,
+              984
+            ]
+          ]
+        },
+        "accuracy": 0.9740740740740741,
+        "attack_precision": 0.983016983016983,
+        "attack_recall": 0.9889447236180905,
+        "attack_f1": 0.9859719438877755,
+        "benign_specificity": 0.8,
+        "false_positive_rate": 0.2,
+        "balanced_accuracy": 0.8944723618090453,
+        "macro_f1": 0.9076201182853512,
+        "false_positive_rate_wilson95": [
+          0.12878998144012688,
+          0.29715370884830405
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8944723618090452,
+        "average_precision": 0.9823346437668047,
+        "benign_f1": 0.8292682926829268,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_validation_false_positives": 0,
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9811320754716981,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9425981873111783,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7534883720930232,
+        "macro_f1": 0.6320133793698749,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7534883720930232,
+        "average_precision": 0.9790004656785156,
+        "benign_f1": 0.32142857142857145,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "novelty_alone": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              29,
+              1
+            ],
+            [
+              682,
+              6
+            ]
+          ]
+        },
+        "accuracy": 0.04874651810584958,
+        "attack_precision": 0.8571428571428571,
+        "attack_recall": 0.00872093023255814,
+        "attack_f1": 0.017266187050359712,
+        "benign_specificity": 0.9666666666666667,
+        "false_positive_rate": 0.03333333333333333,
+        "balanced_accuracy": 0.4876937984496124,
+        "macro_f1": 0.04776939581937689,
+        "false_positive_rate_wilson95": [
+          0.005908590381612455,
+          0.16670390991409173
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.4876937984496124,
+        "average_precision": 0.9573358072904616,
+        "benign_f1": 0.07827260458839407,
+        "threshold": 0.5,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false
+      },
+      "selected": false,
+      "novelty_new_test_flags": 3
+    }
+  ],
+  "protocol_sha256": "d836b9fb1e88ecfbaced3e1c00c94a52f96d3086442b8aaf741693a252b4eca9",
+  "closure_sha256": "3ba7f541b86e8fe0040aa4c8786f5a73de285cfb7091d3b257d7b65d2d828bdc",
+  "blind_test_claimed": false
+}

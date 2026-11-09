@@ -1,0 +1,208 @@
+{
+  "certificates": [
+    {
+      "cohort": "iid",
+      "constraints_incompatible": false,
+      "largest_nominal_subset": [
+        "client01",
+        "client02",
+        "client03"
+      ],
+      "manifest_sha256": "e0f58e9f10bf12e2047a237ba155e1412f718730feeb84f842317cc3d8e84ded",
+      "maximum_group_share": "1/3",
+      "minimum_required_retention": "4/5",
+      "nominal_counts": {
+        "client01": 474,
+        "client02": 473,
+        "client03": 473,
+        "client04": 473,
+        "client05": 473,
+        "client06": 473,
+        "client07": 473,
+        "client08": 473,
+        "client09": 473,
+        "client10": 473,
+        "client11": 473,
+        "client12": 473,
+        "client13": 473,
+        "client14": 473,
+        "client15": 473
+      },
+      "nominal_share": "355/1774",
+      "retention_upper_bound_at_group_cap": "1",
+      "seed": 2026110731,
+      "unavoidable_share_lower_bound_at_retention_floor": "1/7096"
+    },
+    {
+      "cohort": "iid",
+      "constraints_incompatible": false,
+      "largest_nominal_subset": [
+        "client01",
+        "client02",
+        "client03"
+      ],
+      "manifest_sha256": "5ec5293f8b14425b84ad66c27f1e30bc64230c407c6cb13cf3a06d14131727c9",
+      "maximum_group_share": "1/3",
+      "minimum_required_retention": "4/5",
+      "nominal_counts": {
+        "client01": 474,
+        "client02": 473,
+        "client03": 473,
+        "client04": 473,
+        "client05": 473,
+        "client06": 473,
+        "client07": 473,
+        "client08": 473,
+        "client09": 473,
+        "client10": 473,
+        "client11": 473,
+        "client12": 473,
+        "client13": 473,
+        "client14": 473,
+        "client15": 473
+      },
+      "nominal_share": "355/1774",
+      "retention_upper_bound_at_group_cap": "1",
+      "seed": 2026110732,
+      "unavoidable_share_lower_bound_at_retention_floor": "1/7096"
+    },
+    {
+      "cohort": "iid",
+      "constraints_incompatible": false,
+      "largest_nominal_subset": [
+        "client01",
+        "client02",
+        "client03"
+      ],
+      "manifest_sha256": "7b1c701e971fee6f38af9a55b858fac33b7349b9cdd89b0e9fb80c8c78b33e66",
+      "maximum_group_share": "1/3",
+      "minimum_required_retention": "4/5",
+      "nominal_counts": {
+        "client01": 474,
+        "client02": 473,
+        "client03": 473,
+        "client04": 473,
+        "client05": 473,
+        "client06": 473,
+        "client07": 473,
+        "client08": 473,
+        "client09": 473,
+        "client10": 473,
+        "client11": 473,
+        "client12": 473,
+        "client13": 473,
+        "client14": 473,
+        "client15": 473
+      },
+      "nominal_share": "355/1774",
+      "retention_upper_bound_at_group_cap": "1",
+      "seed": 2026110733,
+      "unavoidable_share_lower_bound_at_retention_floor": "1/7096"
+    },
+    {
+      "cohort": "non-iid",
+      "constraints_incompatible": true,
+      "largest_nominal_subset": [
+        "client06",
+        "client04",
+        "client13"
+      ],
+      "manifest_sha256": "3c73fa7a551f604c430b2e8ec78075ee4ab26559c7d0932ce17ae8291ccf3cad",
+      "maximum_group_share": "1/3",
+      "minimum_required_retention": "4/5",
+      "nominal_counts": {
+        "client01": 547,
+        "client02": 233,
+        "client03": 250,
+        "client04": 922,
+        "client05": 141,
+        "client06": 2278,
+        "client07": 385,
+        "client08": 136,
+        "client09": 272,
+        "client10": 616,
+        "client11": 214,
+        "client12": 270,
+        "client13": 714,
+        "client14": 37,
+        "client15": 81
+      },
+      "nominal_share": "1957/3548",
+      "retention_upper_bound_at_group_cap": "4773/7096",
+      "seed": 2026110734,
+      "unavoidable_share_lower_bound_at_retention_floor": "6237/14192"
+    },
+    {
+      "cohort": "non-iid",
+      "constraints_incompatible": true,
+      "largest_nominal_subset": [
+        "client07",
+        "client08",
+        "client14"
+      ],
+      "manifest_sha256": "321bcd36a42e9f8c16d018c1e887f83c54af4f3072de55147d30edc271a019ac",
+      "maximum_group_share": "1/3",
+      "minimum_required_retention": "4/5",
+      "nominal_counts": {
+        "client01": 509,
+        "client02": 294,
+        "client03": 54,
+        "client04": 386,
+        "client05": 216,
+        "client06": 402,
+        "client07": 2127,
+        "client08": 1086,
+        "client09": 294,
+        "client10": 202,
+        "client11": 134,
+        "client12": 245,
+        "client13": 124,
+        "client14": 662,
+        "client15": 361
+      },
+      "nominal_share": "3875/7096",
+      "retention_upper_bound_at_group_cap": "9663/14192",
+      "seed": 2026110735,
+      "unavoidable_share_lower_bound_at_retention_floor": "12279/28384"
+    },
+    {
+      "cohort": "non-iid",
+      "constraints_incompatible": true,
+      "largest_nominal_subset": [
+        "client09",
+        "client14",
+        "client03"
+      ],
+      "manifest_sha256": "b1ef4aa30130c7ef973f12140ef18b9f1e0418282659da704db2ed8ca04ae32f",
+      "maximum_group_share": "1/3",
+      "minimum_required_retention": "4/5",
+      "nominal_counts": {
+        "client01": 501,
+        "client02": 86,
+        "client03": 789,
+        "client04": 105,
+        "client05": 648,
+        "client06": 468,
+        "client07": 435,
+        "client08": 52,
+        "client09": 2086,
+        "client10": 83,
+        "client11": 312,
+        "client12": 209,
+        "client13": 208,
+        "client14": 973,
+        "client15": 141
+      },
+      "nominal_share": "481/887",
+      "retention_upper_bound_at_group_cap": "609/887",
+      "seed": 2026110736,
+      "unavoidable_share_lower_bound_at_retention_floor": "759/1774"
+    }
+  ],
+  "new_attack_evaluation": false,
+  "new_fitting": false,
+  "profile": "admission-mass-feasibility-v1",
+  "script_sha256": "0c663b727637f139470c0a240e45f511878089ab2539b430a7b86890f39c7b9c",
+  "status": "verified_exact_necessary_condition",
+  "theorem_scope": "Original masses satisfy0<=m_i<=n_i and final coefficients equal m_i/sum(m). No claim for separately transformed beta or ASR."
+}

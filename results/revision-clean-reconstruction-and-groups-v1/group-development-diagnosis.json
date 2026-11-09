@@ -1,0 +1,310 @@
+{
+  "cases": [
+    {
+      "campaign_alarm": false,
+      "candidate_groups": [],
+      "fn": 0,
+      "fp": 0,
+      "mode": "clean",
+      "precision": null,
+      "recall": null,
+      "seed": 341593,
+      "tp": 0,
+      "true_attacker_pair_diagnostics": []
+    },
+    {
+      "campaign_alarm": false,
+      "candidate_groups": [],
+      "fn": 3,
+      "fp": 0,
+      "mode": "distributed",
+      "precision": null,
+      "recall": 0.0,
+      "seed": 341593,
+      "tp": 0,
+      "true_attacker_pair_diagnostics": [
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client01",
+            "client06"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.28912937585781473,
+          "score": 0.6723664103768406,
+          "score_threshold": 0.649002634269956,
+          "temporal_indicator_correlation": 0.72927648115647,
+          "tensor_deviation_profile_correlation": 0.9986933741162367,
+          "thresholds": {
+            "median_centered_cosine": 0.2970439406844438,
+            "temporal_indicator_correlation": 0.4813267672040788,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        },
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client01",
+            "client11"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.22477852397905193,
+          "score": 0.7071346431079127,
+          "score_threshold": 0.649002634269956,
+          "temporal_indicator_correlation": 0.8971326231396347,
+          "tensor_deviation_profile_correlation": 0.9994927822050519,
+          "thresholds": {
+            "median_centered_cosine": 0.2970439406844438,
+            "temporal_indicator_correlation": 0.4813267672040788,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        },
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client06",
+            "client11"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.20353288020894963,
+          "score": 0.6521901955443309,
+          "score_threshold": 0.649002634269956,
+          "temporal_indicator_correlation": 0.7538453971264849,
+          "tensor_deviation_profile_correlation": 0.9991923092975583,
+          "thresholds": {
+            "median_centered_cosine": 0.2970439406844438,
+            "temporal_indicator_correlation": 0.4813267672040788,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "campaign_alarm": true,
+      "candidate_groups": [
+        [
+          "client02",
+          "client11"
+        ],
+        [
+          "client04",
+          "client13"
+        ]
+      ],
+      "fn": 0,
+      "fp": 4,
+      "mode": "clean",
+      "precision": 0.0,
+      "recall": null,
+      "seed": 342593,
+      "tp": 0,
+      "true_attacker_pair_diagnostics": []
+    },
+    {
+      "campaign_alarm": false,
+      "candidate_groups": [],
+      "fn": 3,
+      "fp": 0,
+      "mode": "distributed",
+      "precision": null,
+      "recall": 0.0,
+      "seed": 342593,
+      "tp": 0,
+      "true_attacker_pair_diagnostics": [
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client01",
+            "client06"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.2975623542859852,
+          "score": 0.7180641372095294,
+          "score_threshold": 0.6235035832317443,
+          "temporal_indicator_correlation": 0.8578923788885928,
+          "tensor_deviation_profile_correlation": 0.9987376784540105,
+          "thresholds": {
+            "median_centered_cosine": 0.30126436707203885,
+            "temporal_indicator_correlation": 0.46156218742087624,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        },
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client01",
+            "client11"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.2316958160345342,
+          "score": 0.6844517366794202,
+          "score_threshold": 0.6235035832317443,
+          "temporal_indicator_correlation": 0.8221817900456898,
+          "tensor_deviation_profile_correlation": 0.9994776039580364,
+          "thresholds": {
+            "median_centered_cosine": 0.30126436707203885,
+            "temporal_indicator_correlation": 0.46156218742087624,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        },
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client06",
+            "client11"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.21822692631180116,
+          "score": 0.6572402225624222,
+          "score_threshold": 0.6235035832317443,
+          "temporal_indicator_correlation": 0.7539529008385231,
+          "tensor_deviation_profile_correlation": 0.9995408405369426,
+          "thresholds": {
+            "median_centered_cosine": 0.30126436707203885,
+            "temporal_indicator_correlation": 0.46156218742087624,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "campaign_alarm": true,
+      "candidate_groups": [
+        [
+          "client04",
+          "client13"
+        ]
+      ],
+      "fn": 0,
+      "fp": 2,
+      "mode": "clean",
+      "precision": 0.0,
+      "recall": null,
+      "seed": 343593,
+      "tp": 0,
+      "true_attacker_pair_diagnostics": []
+    },
+    {
+      "campaign_alarm": true,
+      "candidate_groups": [
+        [
+          "client01",
+          "client06"
+        ],
+        [
+          "client04",
+          "client13"
+        ]
+      ],
+      "fn": 1,
+      "fp": 2,
+      "mode": "distributed",
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "seed": 343593,
+      "tp": 2,
+      "true_attacker_pair_diagnostics": [
+        {
+          "candidate_edge": true,
+          "clients": [
+            "client01",
+            "client06"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "median_centered_cosine",
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.29384218812440766,
+          "score": 0.6815650415942561,
+          "score_threshold": 0.6498577389218967,
+          "temporal_indicator_correlation": 0.7523645326561175,
+          "tensor_deviation_profile_correlation": 0.9984884040022433,
+          "thresholds": {
+            "median_centered_cosine": 0.2931599775170039,
+            "temporal_indicator_correlation": 0.48541745645727186,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        },
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client01",
+            "client11"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.23092940967041714,
+          "score": 0.6870456471984049,
+          "score_threshold": 0.6498577389218967,
+          "temporal_indicator_correlation": 0.8310568209844996,
+          "tensor_deviation_profile_correlation": 0.9991507109402976,
+          "thresholds": {
+            "median_centered_cosine": 0.2931599775170039,
+            "temporal_indicator_correlation": 0.48541745645727186,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        },
+        {
+          "candidate_edge": false,
+          "clients": [
+            "client06",
+            "client11"
+          ],
+          "defined_round_cosines": 10,
+          "defined_temporal_indicators": 5,
+          "defined_tensor_profiles": 10,
+          "exceeded_features": [
+            "temporal_indicator_correlation"
+          ],
+          "median_centered_cosine": 0.21783724919345246,
+          "score": 0.6278414909573559,
+          "score_threshold": 0.6498577389218967,
+          "temporal_indicator_correlation": 0.666264266010557,
+          "tensor_deviation_profile_correlation": 0.9994229576680581,
+          "thresholds": {
+            "median_centered_cosine": 0.2931599775170039,
+            "temporal_indicator_correlation": 0.48541745645727186,
+            "tensor_deviation_profile_correlation": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}

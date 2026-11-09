@@ -1,0 +1,43 @@
+{
+  "added_package_files": {
+    "src/fl_forensics/state_conditioned_audit.py": "0e46cdaadb651e53681db31aec50c2ea0345c47614606051e3e4c0e36b5cc6af",
+    "src/fl_forensics/state_conditioned_fusion.py": "2ebfd8587c42f75ece8a0ab3b3e91634fd4445ed98e50021db598ef6d39195de"
+  },
+  "artifact_roots": {
+    "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-state-conditioned-development-v1": "769acc94d050557cc23070b8a1d63dce0a91961e046d1cb56c6ce20c09d85af7",
+    "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-state-conditioned-heldout-v1": "815ad0dea39d82860acde8310734a2e8945522c142fc29d1d909c88208623fbe"
+  },
+  "conditional_clean_contexts": 164,
+  "current_implementation_sha256": "fc023d1ed8ab8499a161246fe22dbba060bd055496cd25cf95023efd1e5d2013",
+  "git_index_unchanged": true,
+  "new_autoregressive_aggregation_rounds": 310,
+  "new_local_training_calls": 6710,
+  "old_signed_completion_preserved": true,
+  "prior_package_files_unchanged": 108,
+  "qualification": {
+    "IID_and_non_IID_evaluated_with_separate_clean_references": true,
+    "all_methods_retained_no_posthoc_cohort_winner_selection": true,
+    "automatic_live_exclusion_validated": false,
+    "complete_update_only_colluding_group_identification_validated": false,
+    "detector_fit_calibration_and_inference_without_original_client_rows": true,
+    "final_test_used": false,
+    "fresh_TPM_attestation_performed": false,
+    "heldout_attacker_assignments_changed": true,
+    "heldout_models_frozen_before_case_generation": true,
+    "intentional_collusion_proved": false,
+    "matched_clean_replay_equal_cases": 5,
+    "primary_false_client_occurrences_in_attacked_cases": 3,
+    "primary_missed_poisoning_client_occurrences": 1,
+    "primary_true_poisoning_client_occurrences": 17,
+    "replayed_attacked_cases": 6
+  },
+  "status": "verified",
+  "tests": {
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "578",
+    "time": "192.666"
+  },
+  "thesis_source_files_unchanged": 22
+}

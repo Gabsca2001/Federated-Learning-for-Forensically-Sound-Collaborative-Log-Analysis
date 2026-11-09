@@ -1,0 +1,788 @@
+{
+  "membership": [
+    {
+      "method": "v2",
+      "attacked_cases": 6,
+      "selected_TP": 8,
+      "selected_FP": 3,
+      "selected_FN": 10,
+      "clean_cases_with_a_candidate": 1,
+      "clean_cases": 6,
+      "clean_selected_members": 2,
+      "candidate_pool_TP": 13,
+      "candidate_pool_FP": 16
+    },
+    {
+      "method": "v3",
+      "attacked_cases": 6,
+      "selected_TP": 9,
+      "selected_FP": 6,
+      "selected_FN": 9,
+      "clean_cases_with_a_candidate": 1,
+      "clean_cases": 6,
+      "clean_selected_members": 3,
+      "candidate_pool_TP": 14,
+      "candidate_pool_FP": 48
+    }
+  ],
+  "individual_cases": [
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-000",
+      "cohort": "iid",
+      "method": "v2",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-000",
+      "cohort": "iid",
+      "method": "v3",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 3,
+      "FP": 0,
+      "R10_ASR": 0.6029164329781268,
+      "TP": 0,
+      "alias": "case-002",
+      "cohort": "iid",
+      "method": "v2",
+      "mode": "distributed",
+      "pool_FN": 3,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 3,
+      "FP": 0,
+      "R10_ASR": 0.6029164329781268,
+      "TP": 0,
+      "alias": "case-002",
+      "cohort": "iid",
+      "method": "v3",
+      "mode": "distributed",
+      "pool_FN": 3,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-003",
+      "cohort": "iid",
+      "method": "v2",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-003",
+      "cohort": "iid",
+      "method": "v3",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 1,
+      "FP": 1,
+      "R10_ASR": 0.5765563656758272,
+      "TP": 2,
+      "alias": "case-005",
+      "cohort": "iid",
+      "method": "v2",
+      "mode": "distributed",
+      "pool_FN": 1,
+      "pool_FP": 1,
+      "pool_TP": 2,
+      "selected_group": [
+        "client04",
+        "client08",
+        "client14"
+      ]
+    },
+    {
+      "FN": 1,
+      "FP": 1,
+      "R10_ASR": 0.5765563656758272,
+      "TP": 2,
+      "alias": "case-005",
+      "cohort": "iid",
+      "method": "v3",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 9,
+      "pool_TP": 3,
+      "selected_group": [
+        "client04",
+        "client08",
+        "client14"
+      ]
+    },
+    {
+      "FN": 1,
+      "FP": 0,
+      "R10_ASR": 0.6163768928771733,
+      "TP": 2,
+      "alias": "case-008",
+      "cohort": "iid",
+      "method": "v2",
+      "mode": "distributed",
+      "pool_FN": 1,
+      "pool_FP": 2,
+      "pool_TP": 2,
+      "selected_group": [
+        "client07",
+        "client12"
+      ]
+    },
+    {
+      "FN": 1,
+      "FP": 1,
+      "R10_ASR": 0.6163768928771733,
+      "TP": 2,
+      "alias": "case-008",
+      "cohort": "iid",
+      "method": "v3",
+      "mode": "distributed",
+      "pool_FN": 1,
+      "pool_FP": 3,
+      "pool_TP": 2,
+      "selected_group": [
+        "client04",
+        "client07",
+        "client12"
+      ]
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-010",
+      "cohort": "iid",
+      "method": "v2",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-010",
+      "cohort": "iid",
+      "method": "v3",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 2,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-001",
+      "cohort": "non-iid",
+      "method": "v2",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 3,
+      "pool_TP": 0,
+      "selected_group": [
+        "client01",
+        "client06"
+      ]
+    },
+    {
+      "FN": 0,
+      "FP": 3,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-001",
+      "cohort": "non-iid",
+      "method": "v3",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 13,
+      "pool_TP": 0,
+      "selected_group": [
+        "client01",
+        "client02",
+        "client06"
+      ]
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-004",
+      "cohort": "non-iid",
+      "method": "v2",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-004",
+      "cohort": "non-iid",
+      "method": "v3",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 1,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 2,
+      "alias": "case-006",
+      "cohort": "non-iid",
+      "method": "v2",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 3,
+      "pool_TP": 3,
+      "selected_group": [
+        "client01",
+        "client06"
+      ]
+    },
+    {
+      "FN": 2,
+      "FP": 2,
+      "R10_ASR": 0.0,
+      "TP": 1,
+      "alias": "case-006",
+      "cohort": "non-iid",
+      "method": "v3",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 12,
+      "pool_TP": 3,
+      "selected_group": [
+        "client02",
+        "client04",
+        "client12"
+      ]
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-007",
+      "cohort": "non-iid",
+      "method": "v2",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 0,
+      "FP": 0,
+      "R10_ASR": 0.0,
+      "TP": 0,
+      "alias": "case-007",
+      "cohort": "non-iid",
+      "method": "v3",
+      "mode": "clean",
+      "pool_FN": 0,
+      "pool_FP": 0,
+      "pool_TP": 0,
+      "selected_group": []
+    },
+    {
+      "FN": 2,
+      "FP": 1,
+      "R10_ASR": 0.9943914750420639,
+      "TP": 1,
+      "alias": "case-009",
+      "cohort": "non-iid",
+      "method": "v2",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 6,
+      "pool_TP": 3,
+      "selected_group": [
+        "client06",
+        "client15"
+      ]
+    },
+    {
+      "FN": 1,
+      "FP": 1,
+      "R10_ASR": 0.9943914750420639,
+      "TP": 2,
+      "alias": "case-009",
+      "cohort": "non-iid",
+      "method": "v3",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 12,
+      "pool_TP": 3,
+      "selected_group": [
+        "client06",
+        "client07",
+        "client15"
+      ]
+    },
+    {
+      "FN": 2,
+      "FP": 1,
+      "R10_ASR": 0.0,
+      "TP": 1,
+      "alias": "case-011",
+      "cohort": "non-iid",
+      "method": "v2",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 4,
+      "pool_TP": 3,
+      "selected_group": [
+        "client04",
+        "client08"
+      ]
+    },
+    {
+      "FN": 1,
+      "FP": 1,
+      "R10_ASR": 0.0,
+      "TP": 2,
+      "alias": "case-011",
+      "cohort": "non-iid",
+      "method": "v3",
+      "mode": "distributed",
+      "pool_FN": 0,
+      "pool_FP": 12,
+      "pool_TP": 3,
+      "selected_group": [
+        "client02",
+        "client12",
+        "client13"
+      ]
+    }
+  ],
+  "joint_effects": [
+    {
+      "alias": "case-005",
+      "task": {
+        "attackers": [
+          "client01",
+          "client08",
+          "client14"
+        ],
+        "cohort": "iid",
+        "mode": "distributed",
+        "seed": 2026110432
+      },
+      "removed": [
+        "client04",
+        "client08",
+        "client14"
+      ],
+      "roles": [
+        "v2-joint",
+        "v3-joint"
+      ],
+      "source_R10_full_ASR": 0.5765563656758272,
+      "removed_R10_full_ASR": 0.005047672462142457,
+      "final_full_ASR": 0.0,
+      "individual_R10_full_ASR": {
+        "client04": 0.6174985978687605,
+        "client08": 0.44924284913067863,
+        "client14": 0.41615255187885586
+      },
+      "benign_control_R10_ASR_range": [
+        0.7375210319685923,
+        0.759394279304543
+      ]
+    },
+    {
+      "alias": "case-008",
+      "task": {
+        "attackers": [
+          "client03",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "mode": "distributed",
+        "seed": 2026110431
+      },
+      "removed": [
+        "client07",
+        "client12"
+      ],
+      "roles": [
+        "v2-joint"
+      ],
+      "source_R10_full_ASR": 0.6163768928771733,
+      "removed_R10_full_ASR": 0.022994952327537857,
+      "final_full_ASR": 0.0,
+      "individual_R10_full_ASR": {
+        "client07": 0.4699943914750421,
+        "client12": 0.4548513740886147
+      },
+      "benign_control_R10_ASR_range": [
+        0.7397644419517667,
+        0.7459338194054963
+      ]
+    },
+    {
+      "alias": "case-008",
+      "task": {
+        "attackers": [
+          "client03",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "mode": "distributed",
+        "seed": 2026110431
+      },
+      "removed": [
+        "client04",
+        "client07",
+        "client12"
+      ],
+      "roles": [
+        "v3-joint"
+      ],
+      "source_R10_full_ASR": 0.6163768928771733,
+      "removed_R10_full_ASR": 0.15984296130117778,
+      "final_full_ASR": 0.0,
+      "individual_R10_full_ASR": {
+        "client07": 0.4699943914750421,
+        "client12": 0.4548513740886147,
+        "client04": 0.702187324733595
+      },
+      "benign_control_R10_ASR_range": [
+        0.7795849691531127,
+        0.8137969713965227
+      ]
+    },
+    {
+      "alias": "case-001",
+      "task": {
+        "attackers": [
+          "client04",
+          "client07",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "mode": "clean",
+        "seed": 2026110435
+      },
+      "removed": [
+        "client01",
+        "client06"
+      ],
+      "roles": [
+        "v2-joint",
+        "v2-benign-control",
+        "v2-mass-matched-control"
+      ],
+      "source_R10_full_ASR": 0.0,
+      "removed_R10_full_ASR": 0.0,
+      "final_full_ASR": null,
+      "individual_R10_full_ASR": {
+        "client01": 0.0,
+        "client06": 0.0
+      },
+      "benign_control_R10_ASR_range": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "alias": "case-001",
+      "task": {
+        "attackers": [
+          "client04",
+          "client07",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "mode": "clean",
+        "seed": 2026110435
+      },
+      "removed": [
+        "client01",
+        "client02",
+        "client06"
+      ],
+      "roles": [
+        "v3-joint",
+        "v3-benign-control",
+        "v3-mass-matched-control"
+      ],
+      "source_R10_full_ASR": 0.0,
+      "removed_R10_full_ASR": 0.0,
+      "final_full_ASR": null,
+      "individual_R10_full_ASR": {
+        "client01": 0.0,
+        "client06": 0.0,
+        "client02": 0.0
+      },
+      "benign_control_R10_ASR_range": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "alias": "case-006",
+      "task": {
+        "attackers": [
+          "client01",
+          "client06",
+          "client12"
+        ],
+        "cohort": "non-iid",
+        "mode": "distributed",
+        "seed": 2026110436
+      },
+      "removed": [
+        "client01",
+        "client06"
+      ],
+      "roles": [
+        "v2-joint"
+      ],
+      "source_R10_full_ASR": 0.0,
+      "removed_R10_full_ASR": 0.0,
+      "final_full_ASR": null,
+      "individual_R10_full_ASR": {
+        "client01": 0.0,
+        "client06": 0.0
+      },
+      "benign_control_R10_ASR_range": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "alias": "case-006",
+      "task": {
+        "attackers": [
+          "client01",
+          "client06",
+          "client12"
+        ],
+        "cohort": "non-iid",
+        "mode": "distributed",
+        "seed": 2026110436
+      },
+      "removed": [
+        "client02",
+        "client04",
+        "client12"
+      ],
+      "roles": [
+        "v3-joint"
+      ],
+      "source_R10_full_ASR": 0.0,
+      "removed_R10_full_ASR": 0.0,
+      "final_full_ASR": null,
+      "individual_R10_full_ASR": {
+        "client02": 0.0,
+        "client04": 0.0,
+        "client12": 0.0
+      },
+      "benign_control_R10_ASR_range": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "alias": "case-009",
+      "task": {
+        "attackers": [
+          "client04",
+          "client07",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "mode": "distributed",
+        "seed": 2026110435
+      },
+      "removed": [
+        "client06",
+        "client15"
+      ],
+      "roles": [
+        "v2-joint"
+      ],
+      "source_R10_full_ASR": 0.9943914750420639,
+      "removed_R10_full_ASR": 0.9820527201346047,
+      "final_full_ASR": 0.16545148625911385,
+      "individual_R10_full_ASR": {
+        "client06": 0.9943914750420639,
+        "client15": 0.9826135726303982
+      },
+      "benign_control_R10_ASR_range": [
+        0.9938306225462703,
+        0.9977565900168256
+      ]
+    },
+    {
+      "alias": "case-009",
+      "task": {
+        "attackers": [
+          "client04",
+          "client07",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "mode": "distributed",
+        "seed": 2026110435
+      },
+      "removed": [
+        "client06",
+        "client07",
+        "client15"
+      ],
+      "roles": [
+        "v3-joint"
+      ],
+      "source_R10_full_ASR": 0.9943914750420639,
+      "removed_R10_full_ASR": 0.9366236679753225,
+      "final_full_ASR": 0.14638250140213124,
+      "individual_R10_full_ASR": {
+        "client06": 0.9943914750420639,
+        "client15": 0.9826135726303982,
+        "client07": 0.9792484576556366
+      },
+      "benign_control_R10_ASR_range": [
+        0.9943914750420639,
+        0.9994391475042064
+      ]
+    },
+    {
+      "alias": "case-011",
+      "task": {
+        "attackers": [
+          "client02",
+          "client08",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "mode": "distributed",
+        "seed": 2026110434
+      },
+      "removed": [
+        "client04",
+        "client08"
+      ],
+      "roles": [
+        "v2-joint"
+      ],
+      "source_R10_full_ASR": 0.0,
+      "removed_R10_full_ASR": 0.0,
+      "final_full_ASR": null,
+      "individual_R10_full_ASR": {
+        "client04": 0.0,
+        "client08": 0.0
+      },
+      "benign_control_R10_ASR_range": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "alias": "case-011",
+      "task": {
+        "attackers": [
+          "client02",
+          "client08",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "mode": "distributed",
+        "seed": 2026110434
+      },
+      "removed": [
+        "client02",
+        "client12",
+        "client13"
+      ],
+      "roles": [
+        "v3-joint"
+      ],
+      "source_R10_full_ASR": 0.0,
+      "removed_R10_full_ASR": 0.0,
+      "final_full_ASR": null,
+      "individual_R10_full_ASR": {
+        "client02": 0.0,
+        "client12": 0.0,
+        "client13": 0.0
+      },
+      "benign_control_R10_ASR_range": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "counts": {
+    "continuation_branches": 23,
+    "direct_outputs": 106,
+    "training_calls": 1725,
+    "training_repeats": 690
+  },
+  "verification": {
+    "counts": {
+      "continuation_aggregates": 115,
+      "continuation_branches": 23,
+      "continuation_training_calls_repeated": 1725,
+      "direct_outputs": 106,
+      "selection_cases": 12,
+      "source_training_calls_repeated": 540
+    },
+    "scope": "Every V3 selection, direct removal and corrected-base future repeated using the same implementation. Source local training repeated at rounds1/10/15, not every source round. No new TPM quotes or external implementation audit.",
+    "status": "verified"
+  },
+  "decision": "Do not promote V3 as uniformly superior or authorize automatic exclusion. It increases selected true members from8to9/18 but also selected false members from3to6; both flag one of six new clean histories."
+}

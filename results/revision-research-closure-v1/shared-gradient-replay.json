@@ -1,0 +1,13 @@
+{
+  "status": "verified",
+  "counts": {
+    "contexts": 120,
+    "failed_outputs": 0,
+    "outputs": 840,
+    "repeated_aggregations": 840
+  },
+  "numerical_files_exactly_equal": 1801,
+  "original_manifest_sha256": "fb21363454ce3591328c825e86fd8864dc8f81f1023e35198ac621295b0f5a46",
+  "replay_manifest_sha256": "e98e7edba63e83cf3c81f5875a20336e8eacf5f3afd22b8fbddd77a80e257dcf",
+  "scope": "A separate complete execution from the same frozen source inputs using the same numerical implementation. Every model, result, calibration/decision and derived-input record compared byte-for-byte; independent software keys and controller metadata excluded. No new training or TPM Quotes."
+}

@@ -1,0 +1,77 @@
+{
+  "analyst_module_sha256": "d8342779c1b05585659f2d8dd9a7ddb95e8adf5289f479ad06d1a41af0c70833",
+  "cases": [
+    {
+      "case": "positive-weight",
+      "counterfactuals_recomputed": 2,
+      "diagnostics": {
+        "additional_policy_model_l2": 0.0,
+        "definition_profile": "separated-removal-policy-model-effects-v1",
+        "direct_removal_model_l2": 0.09535767631081718,
+        "interpretation": "Original Delta/J remain separate. Policy TV excludes removal-only renormalization; zero TV does not exclude statistical-score drift. Model L2 scalars are not additive. No semantic or causal multiround conclusion follows from these round-local diagnostics alone.",
+        "policy_comparison_defined": true,
+        "policy_comparison_undefined_reason": null,
+        "removed_original_weight": {
+          "denominator": "6386",
+          "numerator": "237"
+        },
+        "removed_submission_ids": [
+          "submission-b21a10786bb936270baa884c6bf119601be8892adeb19bb4ebbdcbf3e4a9aa36"
+        ],
+        "survivor_action_change_fraction": {
+          "denominator": "1",
+          "numerator": "0"
+        },
+        "survivor_action_changed": false,
+        "survivor_action_changes": [],
+        "survivor_policy_total_variation": {
+          "denominator": "1",
+          "numerator": "0"
+        },
+        "total_model_l2": 0.09535767631081718,
+        "vector_decomposition_residual_l2": 0.0
+      },
+      "rounds_verified": 20,
+      "selected_reviews_verified": true,
+      "status": "verified"
+    },
+    {
+      "case": "zero-weight",
+      "counterfactuals_recomputed": 2,
+      "diagnostics": {
+        "additional_policy_model_l2": 0.0,
+        "definition_profile": "separated-removal-policy-model-effects-v1",
+        "direct_removal_model_l2": 0.0,
+        "interpretation": "Original Delta/J remain separate. Policy TV excludes removal-only renormalization; zero TV does not exclude statistical-score drift. Model L2 scalars are not additive. No semantic or causal multiround conclusion follows from these round-local diagnostics alone.",
+        "policy_comparison_defined": true,
+        "policy_comparison_undefined_reason": null,
+        "removed_original_weight": {
+          "denominator": "1",
+          "numerator": "0"
+        },
+        "removed_submission_ids": [
+          "submission-4aa36c65c175c130cb21bd0bf1bac31b0d5b0b68afb6b22538a8b3af1292c940"
+        ],
+        "survivor_action_change_fraction": {
+          "denominator": "1",
+          "numerator": "0"
+        },
+        "survivor_action_changed": false,
+        "survivor_action_changes": [],
+        "survivor_policy_total_variation": {
+          "denominator": "1",
+          "numerator": "0"
+        },
+        "total_model_l2": 0.0,
+        "vector_decomposition_residual_l2": 0.0
+      },
+      "rounds_verified": 20,
+      "selected_reviews_verified": true,
+      "status": "verified"
+    }
+  ],
+  "diagnostic_module_sha256": "bc6e2a1a78c3633df80ad5b34e6dd1e09e84c77481da62535570d8ca6b5b13ac",
+  "historical_runtime_implementation_sha256": "d38d32f853153b4436801f9402ae52ba336c92c507c949e868b77e1f3b9e6a75",
+  "new_attestation_performed": false,
+  "status": "verified"
+}

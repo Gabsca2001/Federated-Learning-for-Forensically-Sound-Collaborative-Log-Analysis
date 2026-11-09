@@ -1,0 +1,119 @@
+{
+  "case": {
+    "attack_rounds": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "attackers": [
+      "client01",
+      "client08",
+      "client12"
+    ],
+    "branch": "shadow-FedAvg",
+    "cohort": "iid",
+    "mode": "distributed",
+    "seed": 463593,
+    "stream": "stream-012"
+  },
+  "events": [
+    {
+      "client": "client12",
+      "client_limits": [
+        0.7707873258818206,
+        0.7437924270244923
+      ],
+      "current_training_poisoned": false,
+      "persistence_record": {
+        "action": "quarantine_current_round",
+        "baseline_confirmed_proposal": false,
+        "bounded_persistence_proposal": true,
+        "client_envelope_confirmed_proposal": false,
+        "client_envelope_current_high": true,
+        "client_envelope_current_minimum_excess": 0.012153249707140157,
+        "client_envelope_episode_peak_excess": 1.1320549576090908,
+        "client_envelope_non_receding": false,
+        "client_envelope_retreat_detected": true,
+        "consecutive_client_envelope_high_rounds": 9,
+        "consecutive_current_high_rounds": 0,
+        "consecutive_supported_exceedances": {
+          "conditioned": 10,
+          "state-disabled": 9
+        },
+        "cumulative_evidence": {
+          "conditioned": 106.75698170513964,
+          "state-disabled": 135.7432921653851
+        },
+        "current_high_in_both_views": false,
+        "instantaneous_proposal": false,
+        "mandatory_gate_passed": true,
+        "pre_policy_weight": {
+          "denominator": "15",
+          "numerator": "1"
+        },
+        "quarantine_authorized_by_cumulative_evidence": false,
+        "quarantine_evidence_sources": [],
+        "quarantine_transition": "continued",
+        "review_priority": 0.7664465128632738,
+        "semantic_malice_proved": false,
+        "sequential_proposal": true,
+        "standardized_risk": {
+          "conditioned": 4.0896256253918954,
+          "state-disabled": 3.672330043717279
+        },
+        "view_disagreement": false
+      },
+      "qualification": "The current update is unmodified but starts from the attacked shared state. This is an intervention error relative to currently poisoned updates, not proof that the update has no inherited numerical effect.",
+      "retreat_record": {
+        "action": "review_required",
+        "baseline_confirmed_proposal": false,
+        "client_envelope_confirmed_proposal": false,
+        "client_envelope_current_high": true,
+        "client_envelope_current_minimum_excess": 0.012153249707140157,
+        "client_envelope_episode_peak_excess": 1.1320549576090908,
+        "client_envelope_non_receding": false,
+        "client_envelope_retreat_detected": true,
+        "consecutive_current_high_rounds": 0,
+        "consecutive_supported_exceedances": {
+          "conditioned": 10,
+          "state-disabled": 9
+        },
+        "cumulative_evidence": {
+          "conditioned": 106.75698170513964,
+          "state-disabled": 135.7432921653851
+        },
+        "current_high_in_both_views": false,
+        "instantaneous_proposal": false,
+        "mandatory_gate_passed": true,
+        "pre_policy_weight": {
+          "denominator": "15",
+          "numerator": "1"
+        },
+        "quarantine_authorized_by_cumulative_evidence": false,
+        "quarantine_evidence_sources": [],
+        "quarantine_transition": "released",
+        "review_priority": 0.7664465128632738,
+        "semantic_malice_proved": false,
+        "sequential_proposal": true,
+        "standardized_risk": {
+          "conditioned": 4.0896256253918954,
+          "state-disabled": 3.672330043717279
+        },
+        "view_disagreement": false
+      },
+      "risk": [
+        0.8186864373337214,
+        0.7559456767316325
+      ],
+      "round": 15
+    }
+  ],
+  "interpretation": "Persistent current residual excess can also describe a clean local optimization response to an already contaminated shared model. A finite confirmation bound eliminates peak suppression, but cannot itself identify current poisoning or coordinated intent.",
+  "profile": "development-negative-result-diagnosis-v1",
+  "promotion": "Rejected by the predeclared criterion; old retreat head remains the live integration candidate."
+}

@@ -1,0 +1,845 @@
+{
+  "planned_cases": 32,
+  "complete_trajectories": 25,
+  "numerical_failure_cases": 7,
+  "counts": {
+    "full_gradient_evaluations": 6546,
+    "gradient_repeats": 855,
+    "queries": 1970,
+    "rounds": 390
+  },
+  "verification": {
+    "counts": {
+      "adversarial_local_models_retrained": 591,
+      "candidate_queries": 2170,
+      "cases": 32,
+      "selected_aggregates": 390,
+      "terminal_failures_replayed": 7,
+      "true_clean_gradients_recomputed": 5955
+    },
+    "interpretation": "Separate driver, same implementation. Every saved query and selected aggregate reconstructed; all true clean gradients and all three used forged-gradient endpoints regenerated. No external/independent implementation audit or fresh TPM quote.",
+    "source": "b6533003dc83d5baab2033e5b89d522bdf720629b1051049cbeec3cff0b34b6b",
+    "status": "verified"
+  },
+  "cases": [
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "gradient_fedavg",
+        "mode": "clean",
+        "name": "iid-gradient_fedavg-clean",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9484830040528274,
+      "observed_max_clean_F1_loss": 0.0,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq2",
+        "mode": "clean",
+        "name": "iid-literal_eq2-clean",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.06897965879265092,
+      "observed_max_clean_F1_loss": 0.9164209363766262,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq3",
+        "mode": "clean",
+        "name": "iid-literal_eq3-clean",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9484830040528274,
+      "observed_max_clean_F1_loss": 0.0,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "clean",
+        "name": "iid-normalized_eq2_adaptation-clean",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9484830040528274,
+      "observed_max_clean_F1_loss": 0.0,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "gradient_fedavg",
+        "mode": "clean",
+        "name": "non-iid-gradient_fedavg-clean",
+        "seed": 2026110424
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.948826047194204,
+      "observed_max_clean_F1_loss": 0.0,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq2",
+        "mode": "clean",
+        "name": "non-iid-literal_eq2-clean",
+        "seed": 2026110424
+      },
+      "completed_rounds": 4,
+      "terminal_failure": {
+        "queries_sha256": "bf67a7f2eb3c8e9cc9ee86be4376203b5858f0cfd52d1258af11bb732861aeaa",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 5
+      },
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.21445905134729715,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq3",
+        "mode": "clean",
+        "name": "non-iid-literal_eq3-clean",
+        "seed": 2026110424
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9381811470180228,
+      "observed_max_clean_F1_loss": 0.010644900176181249,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "clean",
+        "name": "non-iid-normalized_eq2_adaptation-clean",
+        "seed": 2026110424
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.948826047194204,
+      "observed_max_clean_F1_loss": 0.0006422386178779327,
+      "selective_attack_effective": null,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "gradient_fedavg",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110421-gradient_fedavg-attack",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9642846596686558,
+      "observed_max_clean_F1_loss": 0.016354286142049035,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq2",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110421-literal_eq2-attack",
+        "seed": 2026110421
+      },
+      "completed_rounds": 1,
+      "terminal_failure": {
+        "queries_sha256": "ac759ea3011eb7956948c3286a4e91d42b1210ba0fc10e5f759a1c87d3cc47d7",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 2
+      },
+      "peak_full_ASR": 0.9994391475042064,
+      "peak_worst_ASR": 0.9994391475042064,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.020073533087766382,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq3",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110421-literal_eq3-attack",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.910556472278718,
+      "observed_max_clean_F1_loss": 0.0498891390305124,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client07",
+          "client12"
+        ],
+        "cohort": "iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110421-normalized_eq2_adaptation-attack",
+        "seed": 2026110421
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9104175467822332,
+      "observed_max_clean_F1_loss": 0.0498891390305124,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client08",
+          "client15"
+        ],
+        "cohort": "iid",
+        "method": "gradient_fedavg",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110422-gradient_fedavg-attack",
+        "seed": 2026110422
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9541600589283342,
+      "observed_max_clean_F1_loss": 0.045608286007377874,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client08",
+          "client15"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq2",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110422-literal_eq2-attack",
+        "seed": 2026110422
+      },
+      "completed_rounds": 1,
+      "terminal_failure": {
+        "queries_sha256": "ac759ea3011eb7956948c3286a4e91d42b1210ba0fc10e5f759a1c87d3cc47d7",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 2
+      },
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.03875019329516416,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client08",
+          "client15"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq3",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110422-literal_eq3-attack",
+        "seed": 2026110422
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9463890576756082,
+      "observed_max_clean_F1_loss": 0.03584989827925322,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client08",
+          "client15"
+        ],
+        "cohort": "iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110422-normalized_eq2_adaptation-attack",
+        "seed": 2026110422
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9463890576756082,
+      "observed_max_clean_F1_loss": 0.03584989827925322,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client01",
+          "client09",
+          "client14"
+        ],
+        "cohort": "iid",
+        "method": "gradient_fedavg",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110423-gradient_fedavg-attack",
+        "seed": 2026110423
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9646146418407019,
+      "observed_max_clean_F1_loss": 0.00725686183538643,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client01",
+          "client09",
+          "client14"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq2",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110423-literal_eq2-attack",
+        "seed": 2026110423
+      },
+      "completed_rounds": 1,
+      "terminal_failure": {
+        "queries_sha256": "ac759ea3011eb7956948c3286a4e91d42b1210ba0fc10e5f759a1c87d3cc47d7",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 2
+      },
+      "peak_full_ASR": 0.9994391475042064,
+      "peak_worst_ASR": 0.9994391475042064,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.025543470137398994,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client01",
+          "client09",
+          "client14"
+        ],
+        "cohort": "iid",
+        "method": "literal_eq3",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110423-literal_eq3-attack",
+        "seed": 2026110423
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9530416043029367,
+      "observed_max_clean_F1_loss": 0.022629888911623652,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client01",
+          "client09",
+          "client14"
+        ],
+        "cohort": "iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "adaptive-gradient",
+        "name": "iid-2026110423-normalized_eq2_adaptation-attack",
+        "seed": 2026110423
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 1.0,
+      "peak_worst_ASR": 1.0,
+      "final_full_ASR": 1.0,
+      "final_worst_ASR": 1.0,
+      "final_macro_F1": 0.9616512271533457,
+      "observed_max_clean_F1_loss": 0.022629888911623652,
+      "selective_attack_effective": true,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "gradient_fedavg",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110424-gradient_fedavg-attack",
+        "seed": 2026110424
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9218910273792978,
+      "observed_max_clean_F1_loss": 0.04852557202416652,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq2",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110424-literal_eq2-attack",
+        "seed": 2026110424
+      },
+      "completed_rounds": 3,
+      "terminal_failure": {
+        "queries_sha256": "ac759ea3011eb7956948c3286a4e91d42b1210ba0fc10e5f759a1c87d3cc47d7",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 4
+      },
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.17869275665825735,
+      "selective_attack_effective": false,
+      "search_failed_rounds": [
+        2,
+        3
+      ]
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq3",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110424-literal_eq3-attack",
+        "seed": 2026110424
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.8811780771396741,
+      "observed_max_clean_F1_loss": 0.06802202629416998,
+      "selective_attack_effective": false,
+      "search_failed_rounds": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "task": {
+        "attackers": [
+          "client02",
+          "client06",
+          "client13"
+        ],
+        "cohort": "non-iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110424-normalized_eq2_adaptation-attack",
+        "seed": 2026110424
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9295545573350292,
+      "observed_max_clean_F1_loss": 0.042739689299589156,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client04",
+          "client09",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "method": "gradient_fedavg",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110425-gradient_fedavg-attack",
+        "seed": 2026110425
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9255207725064066,
+      "observed_max_clean_F1_loss": 0.04790242686251911,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client04",
+          "client09",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq2",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110425-literal_eq2-attack",
+        "seed": 2026110425
+      },
+      "completed_rounds": 4,
+      "terminal_failure": {
+        "queries_sha256": "ac759ea3011eb7956948c3286a4e91d42b1210ba0fc10e5f759a1c87d3cc47d7",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 5
+      },
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.21445905134729715,
+      "selective_attack_effective": false,
+      "search_failed_rounds": [
+        3,
+        4
+      ]
+    },
+    {
+      "task": {
+        "attackers": [
+          "client04",
+          "client09",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq3",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110425-literal_eq3-attack",
+        "seed": 2026110425
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.8817588230378295,
+      "observed_max_clean_F1_loss": 0.06706722415637456,
+      "selective_attack_effective": false,
+      "search_failed_rounds": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "task": {
+        "attackers": [
+          "client04",
+          "client09",
+          "client15"
+        ],
+        "cohort": "non-iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110425-normalized_eq2_adaptation-attack",
+        "seed": 2026110425
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9414912888152124,
+      "observed_max_clean_F1_loss": 0.036665953949777674,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client07",
+          "client11"
+        ],
+        "cohort": "non-iid",
+        "method": "gradient_fedavg",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110426-gradient_fedavg-attack",
+        "seed": 2026110426
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.14638250140213124,
+      "peak_worst_ASR": 0.14638250140213124,
+      "final_full_ASR": 0.14638250140213124,
+      "final_worst_ASR": 0.14638250140213124,
+      "final_macro_F1": 0.9309141909520595,
+      "observed_max_clean_F1_loss": 0.02444628962863271,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client07",
+          "client11"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq2",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110426-literal_eq2-attack",
+        "seed": 2026110426
+      },
+      "completed_rounds": 1,
+      "terminal_failure": {
+        "queries_sha256": "ac759ea3011eb7956948c3286a4e91d42b1210ba0fc10e5f759a1c87d3cc47d7",
+        "reason": "No finite candidate under the literal declared recurrence.",
+        "round": 2
+      },
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": null,
+      "final_worst_ASR": null,
+      "final_macro_F1": null,
+      "observed_max_clean_F1_loss": 0.010454636058177758,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client07",
+          "client11"
+        ],
+        "cohort": "non-iid",
+        "method": "literal_eq3",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110426-literal_eq3-attack",
+        "seed": 2026110426
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.15086932136848008,
+      "peak_worst_ASR": 0.15086932136848008,
+      "final_full_ASR": 0.15086932136848008,
+      "final_worst_ASR": 0.15086932136848008,
+      "final_macro_F1": 0.9356022696245873,
+      "observed_max_clean_F1_loss": 0.01322377756961679,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    },
+    {
+      "task": {
+        "attackers": [
+          "client03",
+          "client07",
+          "client11"
+        ],
+        "cohort": "non-iid",
+        "method": "normalized_eq2_adaptation",
+        "mode": "adaptive-gradient",
+        "name": "non-iid-2026110426-normalized_eq2_adaptation-attack",
+        "seed": 2026110426
+      },
+      "completed_rounds": 15,
+      "terminal_failure": null,
+      "peak_full_ASR": 0.0,
+      "peak_worst_ASR": 0.0,
+      "final_full_ASR": 0.0,
+      "final_worst_ASR": 0.0,
+      "final_macro_F1": 0.9309141909520595,
+      "observed_max_clean_F1_loss": 0.02444628962863271,
+      "selective_attack_effective": false,
+      "search_failed_rounds": []
+    }
+  ],
+  "scope": "One full honest gradient/current global base. Explicit malicious gradient-forgery exports. Separate from the ten-epoch honest-Adam DBA benchmark; no full FedXLog reproduction or malicious-client classifier."
+}

@@ -1,0 +1,29 @@
+alias,seed,mode,family,schedule,method,selected_group,TP,FP,FN,individual_TP,individual_FP,individual_FN,candidate_sizes,effective_raw_control
+case-00,6124001,clean,unrestricted,persistent,v4,[],0,0,0,0,0,0,[],False
+case-00,6124001,clean,unrestricted,persistent,v5,[],0,0,0,0,0,0,[],False
+case-01,6124001,distributed,unrestricted,persistent,v4,"['client03', 'client04', 'client07', 'client14']",1,3,2,1,3,2,[4],False
+case-01,6124001,distributed,unrestricted,persistent,v5,[],0,0,3,0,0,3,[],False
+case-02,6124001,complete-trigger,unrestricted,persistent,v4,"['client01', 'client03', 'client04', 'client09', 'client14']",3,2,0,3,2,0,[5],True
+case-02,6124001,complete-trigger,unrestricted,persistent,v5,"['client01', 'client09', 'client14']",3,0,0,3,0,0,[3],True
+case-03,6124001,distributed,relative-radius,persistent,v4,"['client01', 'client14']",2,0,1,2,0,1,[2],False
+case-03,6124001,distributed,relative-radius,persistent,v5,"['client01', 'client14']",2,0,1,2,0,1,[2],False
+case-04,6124001,complete-trigger,relative-radius,persistent,v4,"['client01', 'client14']",2,0,1,2,0,1,[2],False
+case-04,6124001,complete-trigger,relative-radius,persistent,v5,"['client01', 'client14']",2,0,1,2,0,1,[2],False
+case-05,6124001,distributed,unrestricted,intermittent,v4,"['client03', 'client04', 'client07', 'client14']",1,3,2,1,3,2,[4],False
+case-05,6124001,distributed,unrestricted,intermittent,v5,[],0,0,3,0,0,3,[],False
+case-06,6124001,complete-trigger,unrestricted,intermittent,v4,"['client01', 'client09', 'client14']",3,0,0,3,2,0,"[3, 3]",True
+case-06,6124001,complete-trigger,unrestricted,intermittent,v5,"['client01', 'client09', 'client14']",3,0,0,3,0,0,[3],True
+case-07,6125001,clean,unrestricted,persistent,v4,[],0,0,0,0,0,0,[],False
+case-07,6125001,clean,unrestricted,persistent,v5,[],0,0,0,0,0,0,[],False
+case-08,6125001,distributed,unrestricted,persistent,v4,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-08,6125001,distributed,unrestricted,persistent,v5,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-09,6125001,complete-trigger,unrestricted,persistent,v4,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-09,6125001,complete-trigger,unrestricted,persistent,v5,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-10,6125001,distributed,relative-radius,persistent,v4,[],0,0,3,1,0,2,[],False
+case-10,6125001,distributed,relative-radius,persistent,v5,[],0,0,3,1,0,2,[],False
+case-11,6125001,complete-trigger,relative-radius,persistent,v4,[],0,0,3,1,0,2,[],False
+case-11,6125001,complete-trigger,relative-radius,persistent,v5,[],0,0,3,1,0,2,[],False
+case-12,6125001,distributed,unrestricted,intermittent,v4,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-12,6125001,distributed,unrestricted,intermittent,v5,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-13,6125001,complete-trigger,unrestricted,intermittent,v4,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True
+case-13,6125001,complete-trigger,unrestricted,intermittent,v5,"['client04', 'client08', 'client12']",3,0,0,3,0,0,[3],True

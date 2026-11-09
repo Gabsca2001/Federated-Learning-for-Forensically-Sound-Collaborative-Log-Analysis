@@ -1,0 +1,1498 @@
+{
+  "all_new_local_models_byte_equal_to_reference": 1260,
+  "cases": [
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "clean-matched-group",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": true,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 341593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "repair-all-poisoning",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": true,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 341593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "negative-control-partial-removal",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": false,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 341593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "clean-matched-group",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": true,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 342593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "repair-all-poisoning",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": true,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 342593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "negative-control-partial-removal",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": false,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 342593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "clean-matched-group",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": true,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 343593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "repair-all-poisoning",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": true,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": true,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": true,
+              "local_training_records": true,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 343593
+    },
+    {
+      "authenticated_artifact_payloads_verified": true,
+      "branch": "negative-control-partial-removal",
+      "comparison": {
+        "ASR_used_for_acceptance": false,
+        "commitment_trajectories_equal": false,
+        "compared_rounds": 15,
+        "interpretation": "Equality of complete normalized committed histories under the declared intervention. Caller must authenticate the artifacts. Cleanliness of the reference and warm prefix is an explicit external assumption.",
+        "profile": "exact-replay-history-comparison-v1",
+        "rounds": [
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": true,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 1
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 2
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 3
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 4
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 5
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 6
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 7
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 8
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 9
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 10
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 11
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 12
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 13
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 14
+          },
+          {
+            "equal": false,
+            "matches": {
+              "base_model_sha256": false,
+              "global_model_sha256": false,
+              "local_training_records": false,
+              "selected_clients": true
+            },
+            "round_number": 15
+          }
+        ],
+        "source_payload_authentication_performed_by_this_function": false
+      },
+      "seed": 343593
+    }
+  ],
+  "fresh_TPM_attestation_performed": false,
+  "new_global_models_byte_equal_to_reference": 90,
+  "new_local_training_calls": 1260,
+  "new_reconstruction_closure_sha256": "b11998028281e376d792f5ff06b792a2f66dce7d976c4d9d98e8e1cd7b2e86bd",
+  "new_rounds": 90,
+  "profile": "authenticated-clean-reconstruction-contracts-v1",
+  "source_input_assumption": "Initial warm checkpoint and the supplied committed snapshots are assumed clean. This certifies an explicit experimental reference, not unknown real-world input cleanliness.",
+  "status": "verified"
+}

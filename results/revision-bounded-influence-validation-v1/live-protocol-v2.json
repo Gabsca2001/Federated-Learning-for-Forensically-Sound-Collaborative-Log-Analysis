@@ -1,0 +1,66 @@
+{
+  "attack_plan": {
+    "plan": {
+      "attack_rounds": [
+        1,
+        2,
+        3
+      ],
+      "client_components": {
+        "client03": [
+          13
+        ],
+        "client08": [
+          17
+        ],
+        "client12": [
+          24
+        ]
+      },
+      "poisoned_fraction_decimal": "0.50",
+      "seed": 591593,
+      "target_label": "benign",
+      "trigger_values_decimal": {
+        "13": "12",
+        "17": "12",
+        "24": "12"
+      }
+    },
+    "profile": "bound-dba-training-v1"
+  },
+  "base_model_sha256": "39075d9cbf7c45248c475ae3ddfb66f0e032d55cc210eba2a9e97c19e3d594e5",
+  "bound_reference_sha256": "8d4862479955c5b5e2a7bb9e52d7624f9868539b14c6244ddc63161c664f4458",
+  "branches": [
+    "clean",
+    "control",
+    "active"
+  ],
+  "branches_semantics": {
+    "active": "declared DBA with original head and containment",
+    "clean": "unmodified training with containment",
+    "control": "declared DBA with original head, no containment"
+  },
+  "case_role": "Known-seed runtime replication, three attack rounds plus two unmodified continuations. Enforced original head control versus bounded head. Mechanism validation; not a held-out statistical efficacy claim.",
+  "config_files": {
+    "config/active.yaml": "c0d5deb0a876e41e128a0e971e788dbb0a911f19a57d72f43bf64d76dff949c2",
+    "config/audit_only.yaml": "f0370390b5f5da457f753d9cd0f12e2210f6c220a2efcaf2d5cc73a45ae7ceaf",
+    "config/clean.yaml": "82a2d901b9bab8a8da33d7cf6aa9b927730572de600ba597aae9acb8812d6963",
+    "config/control.yaml": "0b8d775e7b27dcde50134975dc949a207a750426b3161c48d466bd799cd4bd48",
+    "config/dba-plan.json": "f3bac7424a7942f11c380ce0d1899b2b6e10ac5d65fa2be032c5d4fcd534884a",
+    "config/enforce.yaml": "66cb6933af8276f1abec8d6eaee73ae6c8c5dd768e0b1ae220ca1a58d49d25fd",
+    "config/federation.yaml": "409f1030b324f10977128eabd1c4dd479266f6e4fa976d28f0d79e32db0b004f",
+    "config/observable-assets/bounds.json": "8d4862479955c5b5e2a7bb9e52d7624f9868539b14c6244ddc63161c664f4458",
+    "config/observable-assets/calibration.json": "821cb2495fe3678fdc5556334a4f467aa762fac24deb137c28124a47850d1659",
+    "config/observable-assets/conditioned.npz": "73e8820915a015eed08bd266890915a2cf048aeae87102097c0e68c672f63775",
+    "config/observable-assets/envelope.json": "6fb475f91179046598adaf5112621389450a7a2949fc435f58b2ecf45972fbc0",
+    "config/observable-assets/state-disabled.npz": "270a77610cb725eadf1d1f895fc4a08e00de34730ebfc128672925d6d7960b66"
+  },
+  "implementation_sha256": "4b58e1590179dbaa37c8e9760b94bd57549db6c3a228e95f00ee2def26012bbb",
+  "profile": "live-bounded-integration-v2",
+  "refinement": "Numeric input indices are zero-padded. The derived report and actual runtime pre-export aggregates must match bit-for-bit before a checkpoint is created. Previous live-v1 partial evidence is retained, with no validity relabeling.",
+  "rounds": 5,
+  "runner_sha256": "08d1fe8523b264b3ba5c9dd643983a756e5b6e517c382f6cef12c5fd5bcf4668",
+  "source_implementation_sha256": "4b58e1590179dbaa37c8e9760b94bd57549db6c3a228e95f00ee2def26012bbb",
+  "training_seed": 591593,
+  "verification": "Fresh swtpm Quotes and signed originals; original and derived objects distinct, clipping factors and original references in authenticated round graph; complete numerical and campaign verification."
+}

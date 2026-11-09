@@ -1,0 +1,1142 @@
+[
+  {
+    "round": 1,
+    "validation_macro_f1": 0.5888399412628487,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            13,
+            72
+          ],
+          [
+            19,
+            976
+          ]
+        ]
+      },
+      "accuracy": 0.9157407407407407,
+      "attack_precision": 0.9312977099236641,
+      "attack_recall": 0.9809045226130654,
+      "attack_f1": 0.9554576603034752,
+      "benign_specificity": 0.15294117647058825,
+      "false_positive_rate": 0.8470588235294118,
+      "balanced_accuracy": 0.5669228495418268,
+      "macro_f1": 0.5888399412628487,
+      "false_positive_rate_wilson95": [
+        0.7557181632390801,
+        0.9083861950546959
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "671995b0b9267c141b203e4ba433386a31ab5730ed0e0018f3bc23cae349cead",
+    "checkpoint_sha256": "1aebf298d63679ac78c80027c7e3680f56de99adffe828cf25434d949d3edd10"
+  },
+  {
+    "round": 2,
+    "validation_macro_f1": 0.728900336726225,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            59,
+            26
+          ],
+          [
+            85,
+            910
+          ]
+        ]
+      },
+      "accuracy": 0.8972222222222223,
+      "attack_precision": 0.9722222222222222,
+      "attack_recall": 0.914572864321608,
+      "attack_f1": 0.9425168306576903,
+      "benign_specificity": 0.6941176470588235,
+      "false_positive_rate": 0.3058823529411765,
+      "balanced_accuracy": 0.8043452556902158,
+      "macro_f1": 0.728900336726225,
+      "false_positive_rate_wilson95": [
+        0.21809384837683818,
+        0.41045795122155826
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "ff8001efc417972777fe126e7581e0310091c6a57c688f1ed3d8387206dace27",
+    "checkpoint_sha256": "741782114e54ba2d937bb9ed1db8d249c0c7638ac9f963507f08d240e45cbdda"
+  },
+  {
+    "round": 3,
+    "validation_macro_f1": 0.7522746387338481,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            69,
+            16
+          ],
+          [
+            92,
+            903
+          ]
+        ]
+      },
+      "accuracy": 0.9,
+      "attack_precision": 0.9825897714907508,
+      "attack_recall": 0.907537688442211,
+      "attack_f1": 0.9435736677115988,
+      "benign_specificity": 0.8117647058823529,
+      "false_positive_rate": 0.18823529411764706,
+      "balanced_accuracy": 0.859651197162282,
+      "macro_f1": 0.7522746387338481,
+      "false_positive_rate_wilson95": [
+        0.1193214344488493,
+        0.2841102436940299
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "7af11f87fad9657de00db5afcc1364efd0cceada984bd141f8c7e2f7f4fef441",
+    "checkpoint_sha256": "96154ce9b4df75fcca04a9c42c6ba1b193a08edd3b8c58807b69ac724c87c453"
+  },
+  {
+    "round": 4,
+    "validation_macro_f1": 0.766397124887691,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            74,
+            11
+          ],
+          [
+            93,
+            902
+          ]
+        ]
+      },
+      "accuracy": 0.9037037037037037,
+      "attack_precision": 0.9879518072289156,
+      "attack_recall": 0.9065326633165829,
+      "attack_f1": 0.9454926624737946,
+      "benign_specificity": 0.8705882352941177,
+      "false_positive_rate": 0.12941176470588237,
+      "balanced_accuracy": 0.8885604493053503,
+      "macro_f1": 0.766397124887691,
+      "false_positive_rate_wilson95": [
+        0.07382352798125273,
+        0.21704808943386777
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "b86cc5cfc806b2c97ea79aa5f53444b85eba4b11b7963d43a8df516f35c88acc",
+    "checkpoint_sha256": "03a91a0efa119f91ed99d888403fac32541e610cc89b6aafee9c18bb334aa20b"
+  },
+  {
+    "round": 5,
+    "validation_macro_f1": 0.7602513089005236,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            72,
+            13
+          ],
+          [
+            93,
+            902
+          ]
+        ]
+      },
+      "accuracy": 0.9018518518518519,
+      "attack_precision": 0.985792349726776,
+      "attack_recall": 0.9065326633165829,
+      "attack_f1": 0.9445026178010472,
+      "benign_specificity": 0.8470588235294118,
+      "false_positive_rate": 0.15294117647058825,
+      "balanced_accuracy": 0.8767957434229974,
+      "macro_f1": 0.7602513089005236,
+      "false_positive_rate_wilson95": [
+        0.09161380494530419,
+        0.2442818367609198
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "082e8d69986fbc33003e9a37b75a0618ad049f0c31f0cd56b668faf4fe7cacbc",
+    "checkpoint_sha256": "97ca3d32fe0aaad6401f2b2f4e56cf2767f6f7ebe6c9acf6760ae4175f3a259d"
+  },
+  {
+    "round": 6,
+    "validation_macro_f1": 0.7392330805551581,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            62,
+            23
+          ],
+          [
+            85,
+            910
+          ]
+        ]
+      },
+      "accuracy": 0.9,
+      "attack_precision": 0.9753483386923901,
+      "attack_recall": 0.914572864321608,
+      "attack_f1": 0.9439834024896265,
+      "benign_specificity": 0.7294117647058823,
+      "false_positive_rate": 0.27058823529411763,
+      "balanced_accuracy": 0.8219923145137451,
+      "macro_f1": 0.7392330805551581,
+      "false_positive_rate_wilson95": [
+        0.18759616662487055,
+        0.37341959653687073
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "ae7b426e4d1a4b3a95d793b24d1b833cdf4d8049788363b0b6fc87d35c307818",
+    "checkpoint_sha256": "b8c65fa064b9fa877432b11a6164ec292247de2ecacfac68090f0a4c3be55161"
+  },
+  {
+    "round": 7,
+    "validation_macro_f1": 0.6887912087912088,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            46,
+            39
+          ],
+          [
+            79,
+            916
+          ]
+        ]
+      },
+      "accuracy": 0.8907407407407407,
+      "attack_precision": 0.9591623036649215,
+      "attack_recall": 0.9206030150753769,
+      "attack_f1": 0.9394871794871795,
+      "benign_specificity": 0.5411764705882353,
+      "false_positive_rate": 0.4588235294117647,
+      "balanced_accuracy": 0.7308897428318061,
+      "macro_f1": 0.6887912087912088,
+      "false_positive_rate_wilson95": [
+        0.3569713181901941,
+        0.5642366393003748
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "f7d85ae0ca5bdc9b138daa56513ae94573c8ca88c5277bfe64fc1d2f276e3658",
+    "checkpoint_sha256": "e975bba1affcfa07fc126cb918aac67929575e2be5d425cb45d053a531328e71"
+  },
+  {
+    "round": 8,
+    "validation_macro_f1": 0.630516592541909,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            30,
+            55
+          ],
+          [
+            70,
+            925
+          ]
+        ]
+      },
+      "accuracy": 0.8842592592592593,
+      "attack_precision": 0.9438775510204082,
+      "attack_recall": 0.9296482412060302,
+      "attack_f1": 0.9367088607594937,
+      "benign_specificity": 0.35294117647058826,
+      "false_positive_rate": 0.6470588235294118,
+      "balanced_accuracy": 0.6412947088383092,
+      "macro_f1": 0.630516592541909,
+      "false_positive_rate_wilson95": [
+        0.5411250053311214,
+        0.7402751464882753
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "c717b0d92f92e51844098ec60730ba98776fd8b844faf08358eb354f099f84a6",
+    "checkpoint_sha256": "f99b3dd83852a8625d7a3578b916846bd8ce192e03a9042ceab2093e4507cdd6"
+  },
+  {
+    "round": 9,
+    "validation_macro_f1": 0.590378661586092,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            21,
+            64
+          ],
+          [
+            65,
+            930
+          ]
+        ]
+      },
+      "accuracy": 0.8805555555555555,
+      "attack_precision": 0.9356136820925554,
+      "attack_recall": 0.9346733668341709,
+      "attack_f1": 0.9351432880844646,
+      "benign_specificity": 0.24705882352941178,
+      "false_positive_rate": 0.7529411764705882,
+      "balanced_accuracy": 0.5908660951817913,
+      "macro_f1": 0.590378661586092,
+      "false_positive_rate_wilson95": [
+        0.6516544727451419,
+        0.8323537883842203
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "a9172bb096a16b41397686e10469d2ef82d70872a66d65250cb47a819b7745c8",
+    "checkpoint_sha256": "71971a8ff9ba65f0da799ad3de869c45bfb3332507192eb9e7fc34dfe6750474"
+  },
+  {
+    "round": 10,
+    "validation_macro_f1": 0.5767600820232399,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            18,
+            67
+          ],
+          [
+            62,
+            933
+          ]
+        ]
+      },
+      "accuracy": 0.8805555555555555,
+      "attack_precision": 0.933,
+      "attack_recall": 0.9376884422110553,
+      "attack_f1": 0.9353383458646617,
+      "benign_specificity": 0.21176470588235294,
+      "false_positive_rate": 0.788235294117647,
+      "balanced_accuracy": 0.5747265740467041,
+      "macro_f1": 0.5767600820232399,
+      "false_positive_rate_wilson95": [
+        0.689906657554083,
+        0.8616376400119344
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "465b9b62840a02eb427ba943e4ad7a1b5a72ffab4b7d2b12f65a9df0be217d63",
+    "checkpoint_sha256": "5d4d846b1c00a1f004fc4e592318905825695833a8c9af1bf4c1097f8b99f602"
+  },
+  {
+    "round": 11,
+    "validation_macro_f1": 0.5604013186717582,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            15,
+            70
+          ],
+          [
+            61,
+            934
+          ]
+        ]
+      },
+      "accuracy": 0.8787037037037037,
+      "attack_precision": 0.9302788844621513,
+      "attack_recall": 0.9386934673366835,
+      "attack_f1": 0.9344672336168084,
+      "benign_specificity": 0.17647058823529413,
+      "false_positive_rate": 0.8235294117647058,
+      "balanced_accuracy": 0.5575820277859888,
+      "macro_f1": 0.5604013186717582,
+      "false_positive_rate_wilson95": [
+        0.7290439696176283,
+        0.8900363643850442
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "5f5a95382059566c5c935dfd104969b87ef58e391dd835369f7d4e2902e95886",
+    "checkpoint_sha256": "d66c41f719e16dd1050a5e915ee09ec758b858e7f25669ecd0f137a1bacaa899"
+  },
+  {
+    "round": 12,
+    "validation_macro_f1": 0.555820895522388,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            13,
+            72
+          ],
+          [
+            52,
+            943
+          ]
+        ]
+      },
+      "accuracy": 0.8851851851851852,
+      "attack_precision": 0.929064039408867,
+      "attack_recall": 0.9477386934673366,
+      "attack_f1": 0.9383084577114428,
+      "benign_specificity": 0.15294117647058825,
+      "false_positive_rate": 0.8470588235294118,
+      "balanced_accuracy": 0.5503399349689624,
+      "macro_f1": 0.555820895522388,
+      "false_positive_rate_wilson95": [
+        0.7557181632390801,
+        0.9083861950546959
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "06e614110203ea3a8c874b2dee50ebdc144211c000a226cbcc893b1a0da50d42",
+    "checkpoint_sha256": "6a84579ac5c789bc66b44dad6ebc21a7a604856a270e838f2956fc78e606a63f"
+  },
+  {
+    "round": 13,
+    "validation_macro_f1": 0.551081237263907,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            12,
+            73
+          ],
+          [
+            50,
+            945
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9282907662082515,
+      "attack_recall": 0.949748743718593,
+      "attack_f1": 0.9388971684053651,
+      "benign_specificity": 0.1411764705882353,
+      "false_positive_rate": 0.8588235294117647,
+      "balanced_accuracy": 0.5454626071534141,
+      "macro_f1": 0.551081237263907,
+      "false_positive_rate_wilson95": [
+        0.7692586997665947,
+        0.9173576706727329
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "76bd6adff81a0fbdeafcfb3b24fa47539ee1436245c6b682a96f4d43a4846a9d",
+    "checkpoint_sha256": "8e8a6c597854db04be9012bb2e2b00e007f9af1f5a5d7e6f5ec614a725d59de7"
+  },
+  {
+    "round": 14,
+    "validation_macro_f1": 0.551081237263907,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            12,
+            73
+          ],
+          [
+            50,
+            945
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9282907662082515,
+      "attack_recall": 0.949748743718593,
+      "attack_f1": 0.9388971684053651,
+      "benign_specificity": 0.1411764705882353,
+      "false_positive_rate": 0.8588235294117647,
+      "balanced_accuracy": 0.5454626071534141,
+      "macro_f1": 0.551081237263907,
+      "false_positive_rate_wilson95": [
+        0.7692586997665947,
+        0.9173576706727329
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "34b06f511e7c3922bfd3329377baa82447733a65015ce0cb0c62afd090598f70",
+    "checkpoint_sha256": "6564f816d1f5dfeb4b9bb4c3894fa1bfb3ab2c74c06b413c4475c7bf61bd4805"
+  },
+  {
+    "round": 15,
+    "validation_macro_f1": 0.5527338067938735,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            12,
+            73
+          ],
+          [
+            48,
+            947
+          ]
+        ]
+      },
+      "accuracy": 0.887962962962963,
+      "attack_precision": 0.9284313725490196,
+      "attack_recall": 0.9517587939698492,
+      "attack_f1": 0.9399503722084367,
+      "benign_specificity": 0.1411764705882353,
+      "false_positive_rate": 0.8588235294117647,
+      "balanced_accuracy": 0.5464676322790423,
+      "macro_f1": 0.5527338067938735,
+      "false_positive_rate_wilson95": [
+        0.7692586997665947,
+        0.9173576706727329
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "e1fc1f9769b93994f1168d346ae0efe5a910299cb8f7c25b4aa50da2ab2f092d",
+    "checkpoint_sha256": "f5d692dda7f1e3c946382e1030f1dd45035884b17a8b27561302d2a33b7f6321"
+  },
+  {
+    "round": 16,
+    "validation_macro_f1": 0.551081237263907,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            12,
+            73
+          ],
+          [
+            50,
+            945
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9282907662082515,
+      "attack_recall": 0.949748743718593,
+      "attack_f1": 0.9388971684053651,
+      "benign_specificity": 0.1411764705882353,
+      "false_positive_rate": 0.8588235294117647,
+      "balanced_accuracy": 0.5454626071534141,
+      "macro_f1": 0.551081237263907,
+      "false_positive_rate_wilson95": [
+        0.7692586997665947,
+        0.9173576706727329
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "9f5d94b3a1be48bccc4f6babc114804f9f20b64bde22e4bc09e31d15cbb401ed",
+    "checkpoint_sha256": "3f9671ec3a520ce8f4e464beb40cb61246b19d32bacc828619b209208dd779ba"
+  },
+  {
+    "round": 17,
+    "validation_macro_f1": 0.5453409771541029,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            11,
+            74
+          ],
+          [
+            49,
+            946
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9274509803921569,
+      "attack_recall": 0.9507537688442211,
+      "attack_f1": 0.9389578163771712,
+      "benign_specificity": 0.12941176470588237,
+      "false_positive_rate": 0.8705882352941177,
+      "balanced_accuracy": 0.5400827667750517,
+      "macro_f1": 0.5453409771541029,
+      "false_positive_rate_wilson95": [
+        0.7829519105661322,
+        0.9261764720187473
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "656551f8224a857e6f9ce45ba182ac44edcb3c43c8d81597ff09bc58fac5af19",
+    "checkpoint_sha256": "2b44852a6a1dbe644462ad937adcba1585a859f96076cd64d228b9faee8204dc"
+  },
+  {
+    "round": 18,
+    "validation_macro_f1": 0.54773238040732,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            11,
+            74
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8888888888888888,
+      "attack_precision": 0.927663734115347,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9405351833498513,
+      "benign_specificity": 0.12941176470588237,
+      "false_positive_rate": 0.8705882352941177,
+      "balanced_accuracy": 0.541590304463494,
+      "macro_f1": 0.54773238040732,
+      "false_positive_rate_wilson95": [
+        0.7829519105661322,
+        0.9261764720187473
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "aec7ef38e3f717e218493078bce6572f6bd76b7011028c7193c6fd3808c5afda",
+    "checkpoint_sha256": "3eea0048071f6c8ffc865a94bf80b576f7de7903e0874921d6ce9091c0e31d8b"
+  },
+  {
+    "round": 19,
+    "validation_macro_f1": 0.54773238040732,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            11,
+            74
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8888888888888888,
+      "attack_precision": 0.927663734115347,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9405351833498513,
+      "benign_specificity": 0.12941176470588237,
+      "false_positive_rate": 0.8705882352941177,
+      "balanced_accuracy": 0.541590304463494,
+      "macro_f1": 0.54773238040732,
+      "false_positive_rate_wilson95": [
+        0.7829519105661322,
+        0.9261764720187473
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "01e629dfbce108300f9d31aa4f9639b7c462ef98f4ea8900928d42025ca807af",
+    "checkpoint_sha256": "8c227c27cabdb8adc5b4aed9530049a8e0d204e91b2c106b52c84f8719883d16"
+  },
+  {
+    "round": 20,
+    "validation_macro_f1": 0.540194586747442,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            10,
+            75
+          ],
+          [
+            47,
+            948
+          ]
+        ]
+      },
+      "accuracy": 0.8870370370370371,
+      "attack_precision": 0.9266862170087976,
+      "attack_recall": 0.9527638190954774,
+      "attack_f1": 0.9395441030723488,
+      "benign_specificity": 0.11764705882352941,
+      "false_positive_rate": 0.8823529411764706,
+      "balanced_accuracy": 0.5352054389595033,
+      "macro_f1": 0.540194586747442,
+      "false_positive_rate_wilson95": [
+        0.7968139704759628,
+        0.9348264242544683
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "3af01378f4b752515d4e7cfdb50fb4a9e3977023652697e85897ba036a78ae79",
+    "checkpoint_sha256": "ebd91418aac23a3168f781459b074b7256266b99ee0c1c214610bd3c64c0c5ba"
+  },
+  {
+    "round": 21,
+    "validation_macro_f1": 0.54773238040732,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            11,
+            74
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8888888888888888,
+      "attack_precision": 0.927663734115347,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9405351833498513,
+      "benign_specificity": 0.12941176470588237,
+      "false_positive_rate": 0.8705882352941177,
+      "balanced_accuracy": 0.541590304463494,
+      "macro_f1": 0.54773238040732,
+      "false_positive_rate_wilson95": [
+        0.7829519105661322,
+        0.9261764720187473
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "24f3f301f0e451f3b11f3c8d274e80470bddbb309baff2fb4029e8f3662a0e65",
+    "checkpoint_sha256": "5074f3ab583957f79ea5c3aa060f3ddd52ddbe1c886c7053147e7fb90284a0e8"
+  },
+  {
+    "round": 22,
+    "validation_macro_f1": 0.5409566564446271,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            10,
+            75
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.887962962962963,
+      "attack_precision": 0.9267578125,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9400693412580485,
+      "benign_specificity": 0.11764705882352941,
+      "false_positive_rate": 0.8823529411764706,
+      "balanced_accuracy": 0.5357079515223174,
+      "macro_f1": 0.5409566564446271,
+      "false_positive_rate_wilson95": [
+        0.7968139704759628,
+        0.9348264242544683
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "26932233b93ebe50b706426c3efacad82b7ace560aa91bb5b67724c2472041c0",
+    "checkpoint_sha256": "f73339edb792c32b9bcfcfe82527ae918ffdeb82bb072b72bac8b886aea5497f"
+  },
+  {
+    "round": 23,
+    "validation_macro_f1": 0.5409566564446271,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            10,
+            75
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.887962962962963,
+      "attack_precision": 0.9267578125,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9400693412580485,
+      "benign_specificity": 0.11764705882352941,
+      "false_positive_rate": 0.8823529411764706,
+      "balanced_accuracy": 0.5357079515223174,
+      "macro_f1": 0.5409566564446271,
+      "false_positive_rate_wilson95": [
+        0.7968139704759628,
+        0.9348264242544683
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "7d5bd4de00e735ab54527498a4040554b9dc09e8045fad11f90db926778faddf",
+    "checkpoint_sha256": "f0116ebca3e0dbe16882e2cad4af59517f072fc8d73fd4c5511fd5d3887aa337"
+  },
+  {
+    "round": 24,
+    "validation_macro_f1": 0.540194586747442,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            10,
+            75
+          ],
+          [
+            47,
+            948
+          ]
+        ]
+      },
+      "accuracy": 0.8870370370370371,
+      "attack_precision": 0.9266862170087976,
+      "attack_recall": 0.9527638190954774,
+      "attack_f1": 0.9395441030723488,
+      "benign_specificity": 0.11764705882352941,
+      "false_positive_rate": 0.8823529411764706,
+      "balanced_accuracy": 0.5352054389595033,
+      "macro_f1": 0.540194586747442,
+      "false_positive_rate_wilson95": [
+        0.7968139704759628,
+        0.9348264242544683
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "7d89a255fe9f1893e935e49eac7762a9859ddd415218f0d6e9ba7f8d2fc2e3af",
+    "checkpoint_sha256": "43e8caea5dc32bc3182ab44dd76413d02cebaba5872a605d93563aa0041dc3bb"
+  },
+  {
+    "round": 25,
+    "validation_macro_f1": 0.5271234768741168,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            8,
+            77
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9249512670565302,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9391390400791687,
+      "benign_specificity": 0.09411764705882353,
+      "false_positive_rate": 0.9058823529411765,
+      "balanced_accuracy": 0.5239432456399645,
+      "macro_f1": 0.5271234768741168,
+      "false_positive_rate_wilson95": [
+        0.8251294803137523,
+        0.9515349387077823
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "51142bd803cccc0c442185b992d11cc2ae9b29a9a924e73947098790748a20dd",
+    "checkpoint_sha256": "126d2c31b7c3b924f6830440ed76eb288a11a6205f551816ff9b5073b2aef208"
+  },
+  {
+    "round": 26,
+    "validation_macro_f1": 0.5271234768741168,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            8,
+            77
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9249512670565302,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9391390400791687,
+      "benign_specificity": 0.09411764705882353,
+      "false_positive_rate": 0.9058823529411765,
+      "balanced_accuracy": 0.5239432456399645,
+      "macro_f1": 0.5271234768741168,
+      "false_positive_rate_wilson95": [
+        0.8251294803137523,
+        0.9515349387077823
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "f44644198a51fa03bd5747a73cdccd1ca094abf83be0f9760683dbecc320c42d",
+    "checkpoint_sha256": "5da0be449be9bc4be84b877280a665456140152b868d845ac0dad66b8b1521c9"
+  },
+  {
+    "round": 27,
+    "validation_macro_f1": 0.5271234768741168,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            8,
+            77
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9249512670565302,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9391390400791687,
+      "benign_specificity": 0.09411764705882353,
+      "false_positive_rate": 0.9058823529411765,
+      "balanced_accuracy": 0.5239432456399645,
+      "macro_f1": 0.5271234768741168,
+      "false_positive_rate_wilson95": [
+        0.8251294803137523,
+        0.9515349387077823
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "b5ac3b05f0a31c08f6234b8ea8cd058690c9b474406f8b2810f6e700486e94ff",
+    "checkpoint_sha256": "14b7d9411da0ccf6aa6ac534fabfc523cb95dd3b96f7fb6b65006c129b1da423"
+  },
+  {
+    "round": 28,
+    "validation_macro_f1": 0.5271234768741168,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            8,
+            77
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9249512670565302,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9391390400791687,
+      "benign_specificity": 0.09411764705882353,
+      "false_positive_rate": 0.9058823529411765,
+      "balanced_accuracy": 0.5239432456399645,
+      "macro_f1": 0.5271234768741168,
+      "false_positive_rate_wilson95": [
+        0.8251294803137523,
+        0.9515349387077823
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "9ea1afce98bbeee87fef707f72da0754cd12e65828c0659ba2cbfb8b75860cd7",
+    "checkpoint_sha256": "ed71ebfdd1146ad89b2a1e683c0eb99b7e9f130ba9bcab77320d62759203acbc"
+  },
+  {
+    "round": 29,
+    "validation_macro_f1": 0.5264497878359264,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            8,
+            77
+          ],
+          [
+            47,
+            948
+          ]
+        ]
+      },
+      "accuracy": 0.8851851851851852,
+      "attack_precision": 0.9248780487804878,
+      "attack_recall": 0.9527638190954774,
+      "attack_f1": 0.9386138613861386,
+      "benign_specificity": 0.09411764705882353,
+      "false_positive_rate": 0.9058823529411765,
+      "balanced_accuracy": 0.5234407330771504,
+      "macro_f1": 0.5264497878359264,
+      "false_positive_rate_wilson95": [
+        0.8251294803137523,
+        0.9515349387077823
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "915618ba07fe1e52448a722638f2b7248168040fc1a3457504848810fde7fa0e",
+    "checkpoint_sha256": "3e43c450047dcc77213507e6762aebbc19eb75e0ca70528949aef90db1763bbe"
+  },
+  {
+    "round": 30,
+    "validation_macro_f1": 0.5271234768741168,
+    "validation": {
+      "rows": 1080,
+      "confusion_matrix": {
+        "labels": [
+          "benign",
+          "attack"
+        ],
+        "values": [
+          [
+            8,
+            77
+          ],
+          [
+            46,
+            949
+          ]
+        ]
+      },
+      "accuracy": 0.8861111111111111,
+      "attack_precision": 0.9249512670565302,
+      "attack_recall": 0.9537688442211055,
+      "attack_f1": 0.9391390400791687,
+      "benign_specificity": 0.09411764705882353,
+      "false_positive_rate": 0.9058823529411765,
+      "balanced_accuracy": 0.5239432456399645,
+      "macro_f1": 0.5271234768741168,
+      "false_positive_rate_wilson95": [
+        0.8251294803137523,
+        0.9515349387077823
+      ],
+      "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled."
+    },
+    "tensor_sha256": "5288441e4f18cf6a4e0cf079d84584ae3fdbf0d131138a1b70ea1a15bf2fd3c2",
+    "checkpoint_sha256": "02a07d8bff25abd5b5d99a966cc13e36a49e85f8ea8aa5944575a2dfafcf576f"
+  }
+]

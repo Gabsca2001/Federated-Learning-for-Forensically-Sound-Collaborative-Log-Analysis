@@ -1,0 +1,7 @@
+{
+  "before_source_sha256": "623c2a9913d2cdc92a13a0e5cd4b67c697a3c2a4e03bf4996b6aa86e15e32f33",
+  "correction": "Zero-pad numerical keys and enforce bitwise report/runtime aggregate agreement before checkpoint creation.",
+  "old_trial_is_not_the_final_live_evidence": true,
+  "old_trial_preserved": true,
+  "reason": "Stringified numerical indices sorted lexically, differing from numeric/client order with more than ten clients. This could change float64 accumulation and the pre-export digest."
+}

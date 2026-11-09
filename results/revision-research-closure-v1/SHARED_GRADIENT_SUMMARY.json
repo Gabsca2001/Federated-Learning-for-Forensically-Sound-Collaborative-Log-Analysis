@@ -1,0 +1,584 @@
+{
+  "counts": {
+    "contexts": 120,
+    "failed_outputs": 0,
+    "outputs": 840,
+    "repeated_aggregations": 840
+  },
+  "verification": {
+    "status": "verified",
+    "counts": {
+      "contexts": 120,
+      "failed_outputs": 0,
+      "outputs": 840,
+      "repeated_aggregations": 840
+    },
+    "numerical_files_exactly_equal": 1801,
+    "original_manifest_sha256": "fb21363454ce3591328c825e86fd8864dc8f81f1023e35198ac621295b0f5a46",
+    "replay_manifest_sha256": "e98e7edba63e83cf3c81f5875a20336e8eacf5f3afd22b8fbddd77a80e257dcf",
+    "scope": "A separate complete execution from the same frozen source inputs using the same numerical implementation. Every model, result, calibration/decision and derived-input record compared byte-for-byte; independent software keys and controller metadata excluded. No new training or TPM Quotes."
+  },
+  "rows": [
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "flame",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9609059882097425,
+      "clean_macro_F1_min": 0.9119506296959882,
+      "clean_macro_F1_max": 0.967219354442609,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": 90,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": 198,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "gated_composite",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9609059882097425,
+      "clean_macro_F1_min": 0.9119506296959882,
+      "clean_macro_F1_max": 0.967219354442609,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": 90,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": 0,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "gradient_fedavg",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9609059882097425,
+      "clean_macro_F1_min": 0.9028747180454495,
+      "clean_macro_F1_max": 0.967219354442609,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "literal_eq2",
+      "contexts": 45,
+      "clean_accuracy_min": 0.4467887061743717,
+      "clean_macro_F1_min": 0.1029380227321467,
+      "clean_macro_F1_max": 0.9646146418407019,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "literal_eq3",
+      "contexts": 45,
+      "clean_accuracy_min": 0.4467887061743717,
+      "clean_macro_F1_min": 0.1029380227321467,
+      "clean_macro_F1_max": 0.9646146418407019,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "normalized_eq2_adaptation",
+      "contexts": 45,
+      "clean_accuracy_min": 0.4467887061743717,
+      "clean_macro_F1_min": 0.1029380227321467,
+      "clean_macro_F1_max": 0.9646146418407019,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "adaptive-gradient",
+      "method": "weidetect",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9609059882097425,
+      "clean_macro_F1_min": 0.9119506296959882,
+      "clean_macro_F1_max": 0.9670246777330908,
+      "peak_conditional_full_ASR": 1.0,
+      "peak_conditional_worst_ASR": 1.0,
+      "R15_full_ASR": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "manipulated_denominator": 90,
+      "manipulated_excluded": 69,
+      "unmodified_denominator": 585,
+      "unmodified_excluded": 66,
+      "degenerate_WeiDetect_fits": 16
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "flame",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9664908470369221,
+      "clean_macro_F1_min": 0.9483333731727267,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": 0,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": 90,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "gated_composite",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9664908470369221,
+      "clean_macro_F1_min": 0.9483333731727267,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": 0,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": 0,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "gradient_fedavg",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9664908470369221,
+      "clean_macro_F1_min": 0.9483333731727267,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "literal_eq2",
+      "contexts": 15,
+      "clean_accuracy_min": 0.4011790257524046,
+      "clean_macro_F1_min": 0.389058096076296,
+      "clean_macro_F1_max": 0.9448637784645698,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "literal_eq3",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9668011169717654,
+      "clean_macro_F1_min": 0.9484830040528274,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "normalized_eq2_adaptation",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9668011169717654,
+      "clean_macro_F1_min": 0.9484830040528274,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "iid",
+      "mode": "clean",
+      "method": "weidetect",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9664908470369221,
+      "clean_macro_F1_min": 0.9483333731727267,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": 0,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": 45,
+      "degenerate_WeiDetect_fits": 15
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "flame",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9515978901644431,
+      "clean_macro_F1_min": 0.9009236203316849,
+      "clean_macro_F1_max": 0.9483333731727267,
+      "peak_conditional_full_ASR": 0.14638250140213124,
+      "peak_conditional_worst_ASR": 0.14638250140213124,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": 78,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": 194,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "gated_composite",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9515978901644431,
+      "clean_macro_F1_min": 0.9084721771355806,
+      "clean_macro_F1_max": 0.9483333731727267,
+      "peak_conditional_full_ASR": 0.14638250140213124,
+      "peak_conditional_worst_ASR": 0.14638250140213124,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": 72,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": 1,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "gradient_fedavg",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9515978901644431,
+      "clean_macro_F1_min": 0.9003004751700375,
+      "clean_macro_F1_max": 0.9408477758764725,
+      "peak_conditional_full_ASR": 0.14638250140213124,
+      "peak_conditional_worst_ASR": 0.14638250140213124,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "literal_eq2",
+      "contexts": 45,
+      "clean_accuracy_min": 0.7874650946323302,
+      "clean_macro_F1_min": 0.45109399004228923,
+      "clean_macro_F1_max": 0.9314949441165451,
+      "peak_conditional_full_ASR": 0.9932697700504767,
+      "peak_conditional_worst_ASR": 0.9977565900168256,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "literal_eq3",
+      "contexts": 45,
+      "clean_accuracy_min": 0.8591374495811356,
+      "clean_macro_F1_min": 0.783182104509713,
+      "clean_macro_F1_max": 0.9309141909520595,
+      "peak_conditional_full_ASR": 0.9927089175546832,
+      "peak_conditional_worst_ASR": 0.9927089175546832,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "normalized_eq2_adaptation",
+      "contexts": 45,
+      "clean_accuracy_min": 0.7874650946323302,
+      "clean_macro_F1_min": 0.4511535429897963,
+      "clean_macro_F1_max": 0.9309141909520595,
+      "peak_conditional_full_ASR": 0.9915872125630959,
+      "peak_conditional_worst_ASR": 0.9960740325294447,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "adaptive-gradient",
+      "method": "weidetect",
+      "contexts": 45,
+      "clean_accuracy_min": 0.9515978901644431,
+      "clean_macro_F1_min": 0.8806384967383458,
+      "clean_macro_F1_max": 0.9484830040528274,
+      "peak_conditional_full_ASR": 0.14638250140213124,
+      "peak_conditional_worst_ASR": 0.14638250140213124,
+      "R15_full_ASR": [
+        0.0,
+        0.0,
+        0.14638250140213124
+      ],
+      "manipulated_denominator": 78,
+      "manipulated_excluded": 32,
+      "unmodified_denominator": 597,
+      "unmodified_excluded": 103,
+      "degenerate_WeiDetect_fits": 32
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "flame",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9661805771020788,
+      "clean_macro_F1_min": 0.9481838085763261,
+      "clean_macro_F1_max": 0.948826047194204,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": 0,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": 75,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "gated_composite",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9661805771020788,
+      "clean_macro_F1_min": 0.9481838085763261,
+      "clean_macro_F1_max": 0.948826047194204,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": 0,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": 0,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "gradient_fedavg",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9661805771020788,
+      "clean_macro_F1_min": 0.9481838085763261,
+      "clean_macro_F1_max": 0.948826047194204,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "literal_eq2",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9658703071672355,
+      "clean_macro_F1_min": 0.9385018243329388,
+      "clean_macro_F1_max": 0.9390829530035533,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "literal_eq3",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9661805771020788,
+      "clean_macro_F1_min": 0.9481838085763261,
+      "clean_macro_F1_max": 0.948826047194204,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "normalized_eq2_adaptation",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9661805771020788,
+      "clean_macro_F1_min": 0.9481838085763261,
+      "clean_macro_F1_max": 0.948826047194204,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": null,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": null,
+      "degenerate_WeiDetect_fits": 0
+    },
+    {
+      "cohort": "non-iid",
+      "mode": "clean",
+      "method": "weidetect",
+      "contexts": 15,
+      "clean_accuracy_min": 0.9661805771020788,
+      "clean_macro_F1_min": 0.9481838085763261,
+      "clean_macro_F1_max": 0.948826047194204,
+      "peak_conditional_full_ASR": 0.0,
+      "peak_conditional_worst_ASR": 0.0,
+      "R15_full_ASR": [
+        0.0
+      ],
+      "manipulated_denominator": 0,
+      "manipulated_excluded": 0,
+      "unmodified_denominator": 225,
+      "unmodified_excluded": 45,
+      "degenerate_WeiDetect_fits": 15
+    }
+  ],
+  "scope": "Conditional current-round outputs on common gradient-FedAvg histories; no independently evolving defender trajectories, no defender-adaptive optimization, no new test fold or TPM attestation. Honest derivatives and malicious gradient-forgery exports are distinguished. A zero exclusion count for non-classifiers is undefined, not perfect detection. WeiDetect neutral-CDF tied rankings are declared extensions, not successful fitted distributions."
+}

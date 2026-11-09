@@ -1,0 +1,8 @@
+{
+  "status": "stopped-owned-idle-engine",
+  "pid": 415825,
+  "verified_cmdline": "/usr/bin/dockerd --host unix:///run/revision-dba-engine.sock --data-root /home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-dba-isolated-runtime-v1/data --exec-root /run/revision-dba-engine --pidfile /home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-dba-isolated-runtime-v1/engine.pid --containerd-namespace revision-dba-v1 --containerd-plugins-namespace revision-dba-plugins-v1 --bridge none --iptables=false --ip6tables=false --ip-forward=false ",
+  "evidence_data_retained": "/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/artifacts/revision-dba-isolated-runtime-v1/data",
+  "other_engines_modified": false,
+  "scope": "Only this task-owned isolated daemon was terminated after all owned training and verification containers had exited. Images, stopped emulators, TPM states, keys and evidence remain local."
+}

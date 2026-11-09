@@ -1,0 +1,19 @@
+{
+  "name": "ToN-IoT-source-host-minute-representation-v1",
+  "created_utc": "2026-11-09T11:27:31.077206+00:00",
+  "source_index_sha256": "657aa65a9c37896c3ba0817dc8816dff93ad9bdc5f3d75f4cf9188d3c2dcf98b",
+  "preflight_sha256": "ad1cdcd1fa4abb010b56ea26f4a13864b67c5a91d62a6a07da3c7e53d60c2a1b",
+  "source_profile": "Every valid official CSV occurrence; no physical-flow deduplication claim.",
+  "grouping": "Canonical source IP and UTC minute, globally across all 23 source files; address is aggregation metadata only.",
+  "features": "Same 25 original aggregates, computed separately per source host; any constituent attack labels its host/minute attacked.",
+  "reject_policy": "Exactly the source-bound measurement/address-invalid occurrences identified in the complete preflight; all category conventions unchanged.",
+  "duplicate_boundary": "Primary occurrence view only; exact-projection sensitivity from earlier global studies does not validate this new grouping.",
+  "split_intention": "Use the unchanged corrected chronological parent minute inventories (6061 train,1080 validation,718 test), assigning all hosts of a minute together.",
+  "model_plan": "Before fitting: fixed 30 rounds,15 numerical IID clients,2 local epochs,batch256,Adam .001,MLP128/64/32; training cap30000 units per profile chosen from training only; three seeds,log1p scaler fitted on train; global-minute control and host-minute models, selected on common pooled validation macro-F1.",
+  "common_evaluation": "Max host score and any host true attack reconstruct the original global minute; report host-level and common-minute metrics separately.",
+  "source_driver_sha256": "56032d4d4c0ac119453daddfa3c63db72dd1f7180479d2c997bb1153d1530d1a",
+  "host_module_sha256": "7a02bd6b80e81192ac6418250e2afded99d07c8bb17aaf5eae340adda2b3e136",
+  "old_window_module_sha256": "9f7eba610a2e397dde633af1405c3a28879bf1360c80ea672f006d3cd898d84b",
+  "storage": "No raw copies or new duplicate index; compact host aggregates, metadata and at most selected model tensors; preserve at least six GiB free.",
+  "limitations": "New representation, not unchanged Data24 model transfer; dates already examined, exploratory chronological assessment; no host-disjoint/TPM/Byzantine claim."
+}

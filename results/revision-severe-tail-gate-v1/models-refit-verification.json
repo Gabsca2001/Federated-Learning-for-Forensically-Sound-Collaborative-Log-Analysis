@@ -1,0 +1,67 @@
+{
+  "attack_results_accessed": false,
+  "calibration_observations": 1800,
+  "checker_sha256": "638b04995f773e56f8601a83a58f0c3fdbd45d791e2b5017e96cc09adcd8db3a",
+  "checks": [
+    {
+      "candidate": "max_tail",
+      "cohort": "iid",
+      "count_intervention_rate": 0.09888888888888889,
+      "count_quarantine_rate": 0.024444444444444446,
+      "empirical_lower_bound": 0.9375,
+      "empirical_mass_retained": 0.9383126644118752,
+      "mass_intervention_rate": 0.09892192784667418,
+      "mass_quarantine_rate": 0.02445274332957535,
+      "maximum_quarantine_threshold": 1.294646485030171,
+      "model_sha256": "21d269f1726c9d2af2188ec560a4df371aeb6deaa66287f477c8cccb3adfc2dd",
+      "observations": 900,
+      "per_component_noncompensation_checked": true
+    },
+    {
+      "candidate": "max_tail",
+      "cohort": "non-iid",
+      "count_intervention_rate": 0.06888888888888889,
+      "count_quarantine_rate": 0.024444444444444446,
+      "empirical_lower_bound": 0.9375,
+      "empirical_mass_retained": 0.9382104941751221,
+      "mass_intervention_rate": 0.09873167981961668,
+      "mass_quarantine_rate": 0.024847331830139045,
+      "maximum_quarantine_threshold": 1.2256157228571605,
+      "model_sha256": "21d269f1726c9d2af2188ec560a4df371aeb6deaa66287f477c8cccb3adfc2dd",
+      "observations": 900,
+      "per_component_noncompensation_checked": true
+    },
+    {
+      "candidate": "max_tail_conservative",
+      "cohort": "iid",
+      "count_intervention_rate": 0.04888888888888889,
+      "count_quarantine_rate": 0.008888888888888889,
+      "empirical_lower_bound": 0.97,
+      "empirical_mass_retained": 0.9710987410747839,
+      "mass_intervention_rate": 0.04891253288237505,
+      "mass_quarantine_rate": 0.00888998496805712,
+      "maximum_quarantine_threshold": 1.3841126882722805,
+      "model_sha256": "98cc3222c40545ecdd6380c1ea72534506cb7044e964b31cdf949786b0e2651e",
+      "observations": 900,
+      "per_component_noncompensation_checked": true
+    },
+    {
+      "candidate": "max_tail_conservative",
+      "cohort": "non-iid",
+      "count_intervention_rate": 0.035555555555555556,
+      "count_quarantine_rate": 0.01,
+      "empirical_lower_bound": 0.97,
+      "empirical_mass_retained": 0.973456877113867,
+      "mass_intervention_rate": 0.049323562570462234,
+      "mass_quarantine_rate": 0.003762683201803833,
+      "maximum_quarantine_threshold": 1.3755183676419305,
+      "model_sha256": "98cc3222c40545ecdd6380c1ea72534506cb7044e964b31cdf949786b0e2651e",
+      "observations": 900,
+      "per_component_noncompensation_checked": true
+    }
+  ],
+  "fit_observations": 1800,
+  "models_independently_refitted": 3,
+  "status": "verified",
+  "test_accessed": false
+}

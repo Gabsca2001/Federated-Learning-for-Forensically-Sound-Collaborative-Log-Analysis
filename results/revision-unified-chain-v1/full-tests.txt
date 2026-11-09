@@ -1,0 +1,22 @@
+........................................................................ [  9%]
+........................................................................ [ 18%]
+........................................................................ [ 27%]
+........................................................................ [ 37%]
+........................................................................ [ 46%]
+........................................................................ [ 55%]
+........................................................................ [ 65%]
+........................................................................ [ 74%]
+........................................................................ [ 83%]
+........................................................................ [ 93%]
+.....................................................                    [100%]
+=============================== warnings summary ===============================
+tests/test_byzantine_experiment.py::ByzantineExperimentTests::test_backdoor_comparison_records_triggered_asr_and_lineage
+  /home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/.venv/lib/python3.12/site-packages/typer/__init__.py:24: DeprecationWarning: 'click.utils.get_binary_stream' is deprecated and will be removed in Click 9.0.
+    from click.utils import get_binary_stream as get_binary_stream
+
+tests/test_byzantine_experiment.py::ByzantineExperimentTests::test_backdoor_comparison_records_triggered_asr_and_lineage
+  /home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis/.venv/lib/python3.12/site-packages/typer/__init__.py:25: DeprecationWarning: 'click.utils.get_text_stream' is deprecated and will be removed in Click 9.0.
+    from click.utils import get_text_stream as get_text_stream
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+773 passed, 2 warnings in 212.74s (0:03:32)

@@ -1,0 +1,988 @@
+{
+  "status": "target_retraining_evaluated",
+  "protocol_sha256": "99c4fb8d2855dee9e295573563759b5740fc518f20c8065bf21e0c55e7c4420d",
+  "training_closure_sha256": "5eab239b8c0a1eb8fc64538aaf56919e5cca873f7ac9d965a21d7027d7119e89",
+  "results": [
+    {
+      "status": "trained",
+      "run_id": "occurrence-source-standard-s341593",
+      "view": "occurrence",
+      "mode": "source-standard",
+      "seed": 341593,
+      "selected_round": 27,
+      "selected_validation_macro_f1": 0.870254807258283,
+      "tensor_sha256": "6bf1cd27a9496e1107577c498e5e8b6eeb080ece9a0fc2b22bfd78a0d38db526",
+      "checkpoint_sha256": "dc4d3096a70a1e7ec6b1c34cfe30318f5ccaa40bc0b7955b09b10cd03cb6ea57",
+      "completed_rounds": 30,
+      "training_seconds": 8.68473917899999,
+      "history_sha256": "3d81d2d2830d81e34ae3454cc5ab86cb749cc9b1df9c9aed4a084188f7713c17",
+      "selection_sha256": "39d18394116596d1c84a8cc210d31e58a9d939a0ec2f55be9f16f5a0184fc214",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              19,
+              11
+            ],
+            [
+              67,
+              621
+            ]
+          ]
+        },
+        "accuracy": 0.8913649025069638,
+        "attack_precision": 0.9825949367088608,
+        "attack_recall": 0.9026162790697675,
+        "attack_f1": 0.9409090909090909,
+        "benign_specificity": 0.6333333333333333,
+        "false_positive_rate": 0.36666666666666664,
+        "balanced_accuracy": 0.7679748062015503,
+        "macro_f1": 0.6342476489028213,
+        "false_positive_rate_wilson95": [
+          0.21873920806100708,
+          0.5448643634520511
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8007751937984496,
+        "average_precision": 0.9743090135424548
+      },
+      "prediction_file_sha256": "2fdd0b9b5453dd4b0e37b09d066bc6f29d8f3c340dcd4ace20621988e8e22c8c"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-source-standard-s342593",
+      "view": "occurrence",
+      "mode": "source-standard",
+      "seed": 342593,
+      "selected_round": 27,
+      "selected_validation_macro_f1": 0.871339280852637,
+      "tensor_sha256": "83a83b3ead0d5670183389b2125d50d558019e9fb7670b02a6dd2b0ee9dfaf83",
+      "checkpoint_sha256": "6dd5b5895b1d29e1378b009dd4e6ff878cf8227b880d583c38cb04e37db42d7d",
+      "completed_rounds": 30,
+      "training_seconds": 7.203270069999988,
+      "history_sha256": "b6823faa9995558c224ba482e8440fd5a0cd08b22c6d6d0825de0acbc7a32513",
+      "selection_sha256": "46a7ef8a9884a01c803bb58e07ef7f2948d62d2a76dce50b09fe4da74a366ca4",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              16,
+              14
+            ],
+            [
+              61,
+              627
+            ]
+          ]
+        },
+        "accuracy": 0.8955431754874652,
+        "attack_precision": 0.9781591263650546,
+        "attack_recall": 0.9113372093023255,
+        "attack_f1": 0.9435665914221218,
+        "benign_specificity": 0.5333333333333333,
+        "false_positive_rate": 0.4666666666666667,
+        "balanced_accuracy": 0.7223352713178295,
+        "macro_f1": 0.6213160059914348,
+        "false_positive_rate_wilson95": [
+          0.30232388907699753,
+          0.638577003801267
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7727713178294574,
+        "average_precision": 0.9691762538433231
+      },
+      "prediction_file_sha256": "3a599b815298d99e7d05f3cf7b07e64f8ea59d93b129d35142b9421f821ed118"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-source-standard-s343593",
+      "view": "occurrence",
+      "mode": "source-standard",
+      "seed": 343593,
+      "selected_round": 6,
+      "selected_validation_macro_f1": 0.8678504971919809,
+      "tensor_sha256": "37b8ce3d09d3428fbe523e9776e827b969e4a2fed19761fd49e1af6efb352b65",
+      "checkpoint_sha256": "e638813845c16d4810f798a65bb8dbb6129dfd939feb56eb0bc933e54ddcb749",
+      "completed_rounds": 30,
+      "training_seconds": 6.698310637999995,
+      "history_sha256": "275549b7c26be03108e30fc7aaa66205587ea4b9d636ddb36d821e747c9c13ac",
+      "selection_sha256": "3dfaa9aed72008e90d2089a0079d3b7a31851a2546a0ab652e15215a87b94eb4",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              13,
+              17
+            ],
+            [
+              60,
+              628
+            ]
+          ]
+        },
+        "accuracy": 0.8927576601671309,
+        "attack_precision": 0.9736434108527132,
+        "attack_recall": 0.9127906976744186,
+        "attack_f1": 0.9422355588897224,
+        "benign_specificity": 0.43333333333333335,
+        "false_positive_rate": 0.5666666666666667,
+        "balanced_accuracy": 0.673062015503876,
+        "macro_f1": 0.597331371677871,
+        "false_positive_rate_wilson95": [
+          0.3919730700081361,
+          0.7262251442353347
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7916182170542636,
+        "average_precision": 0.9729831968782331
+      },
+      "prediction_file_sha256": "b71746e1e5358e095779f3603a5e06f92d4cb85f2c23964de6eeae2899826cc4"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-target-standard-s341593",
+      "view": "occurrence",
+      "mode": "target-standard",
+      "seed": 341593,
+      "selected_round": 4,
+      "selected_validation_macro_f1": 0.763760841112086,
+      "tensor_sha256": "e165e078190eca38e144f7e48efa37db907fddf575c015d454d92e721625f8e6",
+      "checkpoint_sha256": "0022abfa976cdc890318fadcd4fb6c04713c3bf93ab2c4279d94cd6e663c9ebe",
+      "completed_rounds": 30,
+      "training_seconds": 6.732582876999999,
+      "history_sha256": "5fdec45f2ae79a51f4f53719cfd89f0113b48465736073b50ee03a15984df0d5",
+      "selection_sha256": "60a6c046bf714ad147a078b9b22a90c180b098f25312ea329a3d49a81ce7fdb2",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              71,
+              617
+            ]
+          ]
+        },
+        "accuracy": 0.8885793871866295,
+        "attack_precision": 0.9856230031948882,
+        "attack_recall": 0.8968023255813954,
+        "attack_f1": 0.939117199391172,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.7984011627906977,
+        "macro_f1": 0.6416897472365696,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8150193798449613,
+        "average_precision": 0.9727912446479265
+      },
+      "prediction_file_sha256": "33d8beb9caee2f2d9ad1d1bff593863f7aa5cf74e3749ef19b239ec965d15034"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-target-standard-s342593",
+      "view": "occurrence",
+      "mode": "target-standard",
+      "seed": 342593,
+      "selected_round": 6,
+      "selected_validation_macro_f1": 0.750061188739072,
+      "tensor_sha256": "37e095a5a6fabf8795e0f6c506bbf89f6aafbb77338a4299cbb252b4cb6b1127",
+      "checkpoint_sha256": "f1d0e2ab23a5d728251650b9665d793511806b1f3e55a17d605928e97c8ae52b",
+      "completed_rounds": 30,
+      "training_seconds": 6.437772566999996,
+      "history_sha256": "4d78c350d1ab838a2f30be99e46f080b44d15abbff154731bfd4157be374ef0f",
+      "selection_sha256": "b0fc28c21676c51d834d8717fa50b5294dd0466eb67d43cc16355a473933ae28",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8997214484679665,
+        "attack_precision": 0.9858044164037855,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.9455370650529501,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.8042151162790697,
+        "macro_f1": 0.6569790588422645,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8151889534883722,
+        "average_precision": 0.9732927970971458
+      },
+      "prediction_file_sha256": "f986b286e5c0a829d8a9372ab731e7c3ecbec303577a4fe4a70e9967a9ec62b4"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-target-standard-s343593",
+      "view": "occurrence",
+      "mode": "target-standard",
+      "seed": 343593,
+      "selected_round": 3,
+      "selected_validation_macro_f1": 0.7651958762886597,
+      "tensor_sha256": "76e58b447e715bc6fa119f10f92a1db3e33eb31bbbed89458fde56d6d51a61f0",
+      "checkpoint_sha256": "20b1e765d410a902d0a6f2cdff5b6a3d1dde62f67b4bf55e3fe619ea1f128054",
+      "completed_rounds": 30,
+      "training_seconds": 6.613772268000005,
+      "history_sha256": "2102311a91bd2e26baa627dcf44df38455a53186f9b79a622381c394c4d94318",
+      "selection_sha256": "94ff360fcda120f7506c6d1d5c6bd05b11ea120efd425c598a26f19cf46688c3",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              66,
+              622
+            ]
+          ]
+        },
+        "accuracy": 0.8955431754874652,
+        "attack_precision": 0.9857369255150554,
+        "attack_recall": 0.9040697674418605,
+        "attack_f1": 0.9431387414708112,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.8020348837209302,
+        "macro_f1": 0.6510565502225851,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8200581395348837,
+        "average_precision": 0.9736781404376418
+      },
+      "prediction_file_sha256": "191cc8aba79ff64f5e6e920de8fc694d6d391169d0f70f13631693916eedb09c"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-target-log1p-s341593",
+      "view": "occurrence",
+      "mode": "target-log1p",
+      "seed": 341593,
+      "selected_round": 5,
+      "selected_validation_macro_f1": 0.76044629183986,
+      "tensor_sha256": "1325436904c928f090cf6e2f634d06b3e1ba3fbbfbc8651e629377826f70b983",
+      "checkpoint_sha256": "0e476e8dbdc519301b062c989dc2a6b18de89130dd8a6a6df6b67f21f67a6a74",
+      "completed_rounds": 30,
+      "training_seconds": 6.420638663000005,
+      "history_sha256": "8789c388df48d960b2aae681821681a0a38470e822e891302945fa8a8ec47438",
+      "selection_sha256": "d430ffd9267d5f0d78ac7ccf352ffa71fe14e48ebad681ffa12c45fcc76da02e",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              67,
+              621
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9857142857142858,
+        "attack_recall": 0.9026162790697675,
+        "attack_f1": 0.9423368740515933,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.8013081395348838,
+        "macro_f1": 0.6491345387207119,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9095930232558139,
+        "average_precision": 0.9893104747262771
+      },
+      "prediction_file_sha256": "87f02028497b7564dd471b12a54fd0c0301bda78866349da45d92990199efce9"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-target-log1p-s342593",
+      "view": "occurrence",
+      "mode": "target-log1p",
+      "seed": 342593,
+      "selected_round": 6,
+      "selected_validation_macro_f1": 0.8404005181104917,
+      "tensor_sha256": "a4d39faa577c8fec07678688b6e7d9e2161ec950691571f814832145cec47c21",
+      "checkpoint_sha256": "2ce64c01a5d0f30bcc08617bf4cfcfb5d0bdd94a0bcfc51886a3223536f565b6",
+      "completed_rounds": 30,
+      "training_seconds": 6.3891193569999984,
+      "history_sha256": "65b22ce127473650ed72c20f4304727de4358f528911b22b147d2d8cd01093f2",
+      "selection_sha256": "7098eb70897556ce17c7224e3f27468826e2331ebf10963d5cba88e846422949",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              67,
+              621
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9857142857142858,
+        "attack_recall": 0.9026162790697675,
+        "attack_f1": 0.9423368740515933,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.8013081395348838,
+        "macro_f1": 0.6491345387207119,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9116763565891473,
+        "average_precision": 0.9894053844428216
+      },
+      "prediction_file_sha256": "1357bd32b855da3b50c65782246e9ff1ef66c5e199aeb3506d91844552ff6cb5"
+    },
+    {
+      "status": "trained",
+      "run_id": "occurrence-target-log1p-s343593",
+      "view": "occurrence",
+      "mode": "target-log1p",
+      "seed": 343593,
+      "selected_round": 3,
+      "selected_validation_macro_f1": 0.7653863498625681,
+      "tensor_sha256": "23b291a025c89a06a5a9802dca159af74eda792ff89efbe4b37a0efbf60ec18e",
+      "checkpoint_sha256": "3d5de1b6e3f647c001e45739ea8dca37b9a4bb5dad4f6e83c1a667d2e10304f0",
+      "completed_rounds": 30,
+      "training_seconds": 6.69124103599998,
+      "history_sha256": "e010a26047856d762145d6046aaae0bf7455877cadfcac44bf65ac7246d41258",
+      "selection_sha256": "e5e488a39ea7489eee129dc00c677cc0d4ad4d9aab0daed9a9776ea6c5dff6ee",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              22,
+              8
+            ],
+            [
+              68,
+              620
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9872611464968153,
+        "attack_recall": 0.9011627906976745,
+        "attack_f1": 0.9422492401215805,
+        "benign_specificity": 0.7333333333333333,
+        "false_positive_rate": 0.26666666666666666,
+        "balanced_accuracy": 0.8172480620155038,
+        "macro_f1": 0.6544579533941236,
+        "false_positive_rate_wilson95": [
+          0.14182663319596317,
+          0.4444796169518888
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8964631782945736,
+        "average_precision": 0.9895353908990335
+      },
+      "prediction_file_sha256": "7db1952b4e3560b8babb73b1724ae6442dbf83271d1071039868e270342e5c94"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-source-standard-s341593",
+      "view": "exact-projection",
+      "mode": "source-standard",
+      "seed": 341593,
+      "selected_round": 23,
+      "selected_validation_macro_f1": 0.8800767224818775,
+      "tensor_sha256": "07c0646ecb1371d3f92a2c5441c586decff14bcbb985992e1e486c55528ddc91",
+      "checkpoint_sha256": "d77c062af16fa342ffae39701027fbe4e256e164e0b2a7b560630f5bdff77433",
+      "completed_rounds": 30,
+      "training_seconds": 6.627205035000003,
+      "history_sha256": "483b35e5abff633163a7f3c4000b9e8c2e027dfd64aabb8ada0af1b2d4d104f5",
+      "selection_sha256": "a4638c45a32d5a140ed4bed0a205c2041b63440693598a5e4579a60d3e867710",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              18,
+              12
+            ],
+            [
+              64,
+              624
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9811320754716981,
+        "attack_recall": 0.9069767441860465,
+        "attack_f1": 0.9425981873111783,
+        "benign_specificity": 0.6,
+        "false_positive_rate": 0.4,
+        "balanced_accuracy": 0.7534883720930232,
+        "macro_f1": 0.6320133793698749,
+        "false_positive_rate_wilson95": [
+          0.24590628116801852,
+          0.5767963974667752
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8012839147286821,
+        "average_precision": 0.9730994844016843
+      },
+      "prediction_file_sha256": "c57f02d036f2e9769ea5b8bd07e576b467617a840486883c13fbb888176a2c84"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-source-standard-s342593",
+      "view": "exact-projection",
+      "mode": "source-standard",
+      "seed": 342593,
+      "selected_round": 27,
+      "selected_validation_macro_f1": 0.8813786601629634,
+      "tensor_sha256": "b5a18b9775b2584deb4ac1241d9dab7e0f169c37c0b4bd78938e48d6fe3a70db",
+      "checkpoint_sha256": "63024a0604bdb9d28e7020d631a8c50d680720d7947047baaceb54e54842f893",
+      "completed_rounds": 30,
+      "training_seconds": 6.647291311000004,
+      "history_sha256": "f761bbac0faadcea5558d529484302fb9dff301d063fc70350d3d23d2b83af73",
+      "selection_sha256": "13675e3bf02b006f3bdcd49bdfeded24aa3c721e1c16bbf2623b039b3bd5bdc0",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              16,
+              14
+            ],
+            [
+              62,
+              626
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.978125,
+        "attack_recall": 0.9098837209302325,
+        "attack_f1": 0.9427710843373494,
+        "benign_specificity": 0.5333333333333333,
+        "false_positive_rate": 0.4666666666666667,
+        "balanced_accuracy": 0.7216085271317829,
+        "macro_f1": 0.6195336903168228,
+        "false_positive_rate_wilson95": [
+          0.30232388907699753,
+          0.638577003801267
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7758478682170543,
+        "average_precision": 0.9689855265722023
+      },
+      "prediction_file_sha256": "dd86642f9b6a7c3591eca3e984b096da31bb46398eb79fff636312573fd9bc68"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-source-standard-s343593",
+      "view": "exact-projection",
+      "mode": "source-standard",
+      "seed": 343593,
+      "selected_round": 29,
+      "selected_validation_macro_f1": 0.8738101274575334,
+      "tensor_sha256": "a257d54bb9579cbe0a03a72a86670a6d7cdcafbad276ad81579bb0e00434ec93",
+      "checkpoint_sha256": "23ca5fb80d43d1bb429484c116f103ea98c895a906948bfd11c0ff1ea9affad3",
+      "completed_rounds": 30,
+      "training_seconds": 7.026909281999991,
+      "history_sha256": "8d1ce8f5b98aef35770f056ca8efc29de4bcaa57e12a5cd02b551acdd12096ad",
+      "selection_sha256": "bf9b047a32c60300557dba581c0529612b9b5c26c5030e8f070145f8c0f1ff00",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              17,
+              13
+            ],
+            [
+              67,
+              621
+            ]
+          ]
+        },
+        "accuracy": 0.8885793871866295,
+        "attack_precision": 0.9794952681388013,
+        "attack_recall": 0.9026162790697675,
+        "attack_f1": 0.9394856278366112,
+        "benign_specificity": 0.5666666666666667,
+        "false_positive_rate": 0.43333333333333335,
+        "balanced_accuracy": 0.7346414728682171,
+        "macro_f1": 0.6188656209358494,
+        "false_positive_rate_wilson95": [
+          0.2737748557646652,
+          0.6080269299918639
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.7746366279069767,
+        "average_precision": 0.9697454065089977
+      },
+      "prediction_file_sha256": "36aacb6bb1816ab3378bc0e46a0de4ba6d9ee97909b445edb9c85eb873b023f1"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-target-standard-s341593",
+      "view": "exact-projection",
+      "mode": "target-standard",
+      "seed": 341593,
+      "selected_round": 4,
+      "selected_validation_macro_f1": 0.7653863498625681,
+      "tensor_sha256": "b86cc5cfc806b2c97ea79aa5f53444b85eba4b11b7963d43a8df516f35c88acc",
+      "checkpoint_sha256": "03a91a0efa119f91ed99d888403fac32541e610cc89b6aafee9c18bb334aa20b",
+      "completed_rounds": 30,
+      "training_seconds": 6.35440621699999,
+      "history_sha256": "69705c438298c9e866fc46faf758183614f94345655eb0fca7b514c349690638",
+      "selection_sha256": "99db14004994c4f8f51894ca813dabedbc79089da8aab645b716b868772e72b7",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              71,
+              617
+            ]
+          ]
+        },
+        "accuracy": 0.8885793871866295,
+        "attack_precision": 0.9856230031948882,
+        "attack_recall": 0.8968023255813954,
+        "attack_f1": 0.939117199391172,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.7984011627906977,
+        "macro_f1": 0.6416897472365696,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8155038759689922,
+        "average_precision": 0.9728135968931823
+      },
+      "prediction_file_sha256": "428713084c070c15138d9788ca8ac9d896764d85c103217e2533bcf464258c4c"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-target-standard-s342593",
+      "view": "exact-projection",
+      "mode": "target-standard",
+      "seed": 342593,
+      "selected_round": 6,
+      "selected_validation_macro_f1": 0.7222748764553705,
+      "tensor_sha256": "007a347bc163dd8182c96489f66f8a1a78e21bf56fe7437faf7cb4a52b8fadc3",
+      "checkpoint_sha256": "2b7a85d4108d6d6d029de37fcd6dc143053025375c762140d74e593a98383dac",
+      "completed_rounds": 30,
+      "training_seconds": 6.511985695000021,
+      "history_sha256": "a7d19e43e846a86214b85d085bd8a2635ae994920810c1e50d0f8295d024a896",
+      "selection_sha256": "4652f4f3bf75fd1219c3d03ecf3dbd6217af590a30bca0c3bdda805d979c9365",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              63,
+              625
+            ]
+          ]
+        },
+        "accuracy": 0.8997214484679665,
+        "attack_precision": 0.9858044164037855,
+        "attack_recall": 0.9084302325581395,
+        "attack_f1": 0.9455370650529501,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.8042151162790697,
+        "macro_f1": 0.6569790588422645,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8158672480620156,
+        "average_precision": 0.9733159147788175
+      },
+      "prediction_file_sha256": "fdf82e00f3b85532be56fa82de41255789d76797c0eb2c7971d7d225482e488a"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-target-standard-s343593",
+      "view": "exact-projection",
+      "mode": "target-standard",
+      "seed": 343593,
+      "selected_round": 3,
+      "selected_validation_macro_f1": 0.763760841112086,
+      "tensor_sha256": "103dc0c886de0c5fa5b7e2981de6be3a1a0a3e6f0197ad66707aa8197f60b54d",
+      "checkpoint_sha256": "6f475f480fe38368244df53f3d000129ed3c13ab423468b05dbbc43432d18d02",
+      "completed_rounds": 30,
+      "training_seconds": 6.493183458999994,
+      "history_sha256": "40065eeec0f0bba4085e35a6172e46575e1b994f6e822f1865b97aac53567456",
+      "selection_sha256": "b19c96d2e3d90e52949c851fc26889b4fa9c6b18a534bc35ec007912336f1de9",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              66,
+              622
+            ]
+          ]
+        },
+        "accuracy": 0.8955431754874652,
+        "attack_precision": 0.9857369255150554,
+        "attack_recall": 0.9040697674418605,
+        "attack_f1": 0.9431387414708112,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.8020348837209302,
+        "macro_f1": 0.6510565502225851,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.8197916666666667,
+        "average_precision": 0.9732966737217494
+      },
+      "prediction_file_sha256": "444680584a2f2730c762f487cd22e58e25df68ffd8222925b71b4f89b8422380"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-target-log1p-s341593",
+      "view": "exact-projection",
+      "mode": "target-log1p",
+      "seed": 341593,
+      "selected_round": 4,
+      "selected_validation_macro_f1": 0.7544516793462012,
+      "tensor_sha256": "e8605586f4c45a11a8b7aa55ff133a2d5d822d0eb95f9f049f000e523dc2f07f",
+      "checkpoint_sha256": "d932c0660d837e94559a8e5a39e25e400a7c810f0c8b214f83396ec062433cb2",
+      "completed_rounds": 30,
+      "training_seconds": 6.595252486999982,
+      "history_sha256": "d1134ac91e25a66cd07324f590c35af8a580121e8a4412fd024e99933821ec58",
+      "selection_sha256": "4e2cff120e2f139967aadc329f534f2f107e42ab8d349debacf6e1a03e0eddab",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              23,
+              7
+            ],
+            [
+              72,
+              616
+            ]
+          ]
+        },
+        "accuracy": 0.8899721448467967,
+        "attack_precision": 0.9887640449438202,
+        "attack_recall": 0.8953488372093024,
+        "attack_f1": 0.9397406559877955,
+        "benign_specificity": 0.7666666666666667,
+        "false_positive_rate": 0.23333333333333334,
+        "balanced_accuracy": 0.8310077519379846,
+        "macro_f1": 0.6538703279938978,
+        "false_positive_rate_wilson95": [
+          0.11792388144489496,
+          0.40928326158122164
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.909641472868217,
+        "average_precision": 0.9893119873959737
+      },
+      "prediction_file_sha256": "8d3acf44b723be842544d322f6f633403f431ed483ff76718af15d210dbf3fb6"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-target-log1p-s342593",
+      "view": "exact-projection",
+      "mode": "target-log1p",
+      "seed": 342593,
+      "selected_round": 6,
+      "selected_validation_macro_f1": 0.8338679613333911,
+      "tensor_sha256": "1a2920c50596aafd650b11d513dda5b7bbbe307658cae7a52c52cf347fd75766",
+      "checkpoint_sha256": "253a30a010dde623acd0ab792f67e21c49362ce152e51570eb34f9db412e0262",
+      "completed_rounds": 30,
+      "training_seconds": 6.533814946000007,
+      "history_sha256": "25b48920b1943b4e6c53f9651d487723f8816a8e5228b42c5c154ede20ff6567",
+      "selection_sha256": "e5df856b6bbb9cfb6076ceb7b3cc1696b566c34479eec4553d15c1da2c981452",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              22,
+              8
+            ],
+            [
+              68,
+              620
+            ]
+          ]
+        },
+        "accuracy": 0.8941504178272981,
+        "attack_precision": 0.9872611464968153,
+        "attack_recall": 0.9011627906976745,
+        "attack_f1": 0.9422492401215805,
+        "benign_specificity": 0.7333333333333333,
+        "false_positive_rate": 0.26666666666666666,
+        "balanced_accuracy": 0.8172480620155038,
+        "macro_f1": 0.6544579533941236,
+        "false_positive_rate_wilson95": [
+          0.14182663319596317,
+          0.4444796169518888
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9119186046511627,
+        "average_precision": 0.989417170874037
+      },
+      "prediction_file_sha256": "03a233cae85191a78fbfd1f87e46d036f2993189b0632398a468ad9f6821d552"
+    },
+    {
+      "status": "trained",
+      "run_id": "exact-projection-target-log1p-s343593",
+      "view": "exact-projection",
+      "mode": "target-log1p",
+      "seed": 343593,
+      "selected_round": 3,
+      "selected_validation_macro_f1": 0.7668190083050764,
+      "tensor_sha256": "a4ee6ad07c82e00309dd653432d703cef9a119c04be137014e45325653858441",
+      "checkpoint_sha256": "b6cebc34c259a3d38f74b32c8a34f9e883f3513e7b15f7ae9b92383dd4448e18",
+      "completed_rounds": 30,
+      "training_seconds": 6.681234451000023,
+      "history_sha256": "15bfe06fc38dab2f4aadf92fb6bea678c05983769dde30d1ed57f3470f684989",
+      "selection_sha256": "8a4cdcd9df86fea55d0d6eaa492f8d91f23f9d97326579d324017baf9fb9d064",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              21,
+              9
+            ],
+            [
+              69,
+              619
+            ]
+          ]
+        },
+        "accuracy": 0.8913649025069638,
+        "attack_precision": 0.9856687898089171,
+        "attack_recall": 0.8997093023255814,
+        "attack_f1": 0.9407294832826748,
+        "benign_specificity": 0.7,
+        "false_positive_rate": 0.3,
+        "balanced_accuracy": 0.7998546511627906,
+        "macro_f1": 0.6453647416413374,
+        "false_positive_rate_wilson95": [
+          0.16664748268243793,
+          0.47875787458714947
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9087209302325582,
+        "average_precision": 0.9900745268870597
+      },
+      "prediction_file_sha256": "d003629049ac2679a55cb2b1aa88bffd5e3708492a40b6819cacf6c0547deb6b"
+    }
+  ],
+  "frozen_source_baselines": [
+    {
+      "view": "occurrence",
+      "scope": "Frozen six-class source model restricted to the same target test date",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              0,
+              30
+            ],
+            [
+              0,
+              688
+            ]
+          ]
+        },
+        "accuracy": 0.958217270194986,
+        "attack_precision": 0.958217270194986,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9786628733997155,
+        "benign_specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.48933143669985774,
+        "false_positive_rate_wilson95": [
+          0.8864866068260312,
+          0.9999999999999999
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.6817587209302325,
+        "average_precision": 0.9735380092841281
+      }
+    },
+    {
+      "view": "exact-projection",
+      "scope": "Frozen six-class source model restricted to the same target test date",
+      "test": {
+        "rows": 718,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              0,
+              30
+            ],
+            [
+              0,
+              688
+            ]
+          ]
+        },
+        "accuracy": 0.958217270194986,
+        "attack_precision": 0.958217270194986,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9786628733997155,
+        "benign_specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "balanced_accuracy": 0.5,
+        "macro_f1": 0.48933143669985774,
+        "false_positive_rate_wilson95": [
+          0.8864866068260312,
+          0.9999999999999999
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.6817587209302325,
+        "average_precision": 0.9735380092841281
+      }
+    }
+  ],
+  "target_test_used_for_fitting_or_selection": false,
+  "blind_external_test_claimed": false,
+  "new_TPM_or_DBA_campaign": false
+}

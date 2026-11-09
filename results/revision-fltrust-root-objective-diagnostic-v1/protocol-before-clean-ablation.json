@@ -1,0 +1,22 @@
+{
+  "source_protocol_sha256": "e5e0889c1f1c042de4c62270cf43053e595f9a45d6dbff5db6521c800b731be6",
+  "script_sha256": "1da5c3701859ac07770bf1f4d53a5224c17eb9c6a1c4eb96c7c4866a495cab42",
+  "source_locks": {
+    "scripts/capped_final_aggregation.py": "e79dae489a70629042baee05d7175ed783cdc37587085b19d132475367c1803e",
+    "scripts/fltrust_screen_aggregation.py": "652fe1bfe117e14724e9a18ec29e78269333bce1fc824ff2302fdb563d1329ec",
+    "scripts/no_redistribution_aggregation.py": "b28372e9df8e5bfb508117d13c8f64fbca26e2e8f3e54b12ff3b360a764349b2",
+    "scripts/revision_dba_experiment.py": "2d47138a83a9020c2dfc6b05343e3fe66b25c437ede417b75c8bfad4d4a444c0",
+    "scripts/revision_fltrust_screen.py": "42f31f07d56a45685f409dcbcf6b8aa4488044b9776ffe348436963c651b930c",
+    "scripts/revision_study_data.py": "be8c353ba069e0d20500d0fd228a45d8d04276c285b4c10ac2ffc4c4aa8aa3ef",
+    "tests/test_fltrust_screen_aggregation.py": "e4f3f98cadb4c23e8929469169f329fb530d8ed628da1726eb7a1d224c3b099c"
+  },
+  "selection": "All four clean source histories, all originally selected rounds, all three original root draws. No new attacked rows or test predictions.",
+  "change": "Only root Adam loss weights change to one for all six classes; same48 rows,10 epochs,batch128,lr.001,seeds and original client updates.",
+  "reason": "Balanced root sampling plus inherited global class weights gives exfiltration31.8853% and multi_tactic5.0298% of nominal root loss weight, rather than16.6667% each.",
+  "interpretation": "Post-hoc diagnostic after the first exploratory screen; no independent confirmation or unseen-data claim.",
+  "continuation_rule": "Do not open new attack evaluation unless every clean context/draw retains at least ten positive-score contributors and loses at most2 percentage points F1 against both robust and capped same-input controls.",
+  "storage_before": {
+    "host_free_bytes": 14537060352,
+    "combined_result_allocation_bytes": 4292608
+  }
+}

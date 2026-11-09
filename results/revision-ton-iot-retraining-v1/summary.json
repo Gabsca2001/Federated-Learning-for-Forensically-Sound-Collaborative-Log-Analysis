@@ -1,0 +1,264 @@
+{
+  "status": "target-domain-diagnostic-complete-with-residual-errors",
+  "successful_runs": 18,
+  "numerical_failures": 0,
+  "primary_view": "occurrence",
+  "primary_mode": "target-standard",
+  "seeds": [
+    341593,
+    342593,
+    343593
+  ],
+  "aggregate": {
+    "occurrence": {
+      "source-standard": {
+        "accuracy": {
+          "mean": 0.89322191272052,
+          "minimum": 0.8913649025069638,
+          "maximum": 0.8955431754874652
+        },
+        "balanced_accuracy": {
+          "mean": 0.7211240310077519,
+          "minimum": 0.673062015503876,
+          "maximum": 0.7679748062015503
+        },
+        "attack_recall": {
+          "mean": 0.9089147286821705,
+          "minimum": 0.9026162790697675,
+          "maximum": 0.9127906976744186
+        },
+        "false_positive_rate": {
+          "mean": 0.4666666666666667,
+          "minimum": 0.36666666666666664,
+          "maximum": 0.5666666666666667
+        },
+        "macro_f1": {
+          "mean": 0.6176316755240423,
+          "minimum": 0.597331371677871,
+          "maximum": 0.6342476489028213
+        },
+        "auroc": {
+          "mean": 0.7883882428940568,
+          "minimum": 0.7727713178294574,
+          "maximum": 0.8007751937984496
+        },
+        "attack_f1": {
+          "mean": 0.9422370804069784,
+          "minimum": 0.9409090909090909,
+          "maximum": 0.9435665914221218
+        }
+      },
+      "target-standard": {
+        "accuracy": {
+          "mean": 0.8946146703806871,
+          "minimum": 0.8885793871866295,
+          "maximum": 0.8997214484679665
+        },
+        "balanced_accuracy": {
+          "mean": 0.8015503875968992,
+          "minimum": 0.7984011627906977,
+          "maximum": 0.8042151162790697
+        },
+        "attack_recall": {
+          "mean": 0.9031007751937985,
+          "minimum": 0.8968023255813954,
+          "maximum": 0.9084302325581395
+        },
+        "false_positive_rate": {
+          "mean": 0.3,
+          "minimum": 0.3,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6499084521004731,
+          "minimum": 0.6416897472365696,
+          "maximum": 0.6569790588422645
+        },
+        "auroc": {
+          "mean": 0.8167554909560724,
+          "minimum": 0.8150193798449613,
+          "maximum": 0.8200581395348837
+        },
+        "attack_f1": {
+          "mean": 0.9425976686383111,
+          "minimum": 0.939117199391172,
+          "maximum": 0.9455370650529501
+        }
+      },
+      "target-log1p": {
+        "accuracy": {
+          "mean": 0.8941504178272981,
+          "minimum": 0.8941504178272981,
+          "maximum": 0.8941504178272981
+        },
+        "balanced_accuracy": {
+          "mean": 0.8066214470284238,
+          "minimum": 0.8013081395348838,
+          "maximum": 0.8172480620155038
+        },
+        "attack_recall": {
+          "mean": 0.9021317829457365,
+          "minimum": 0.9011627906976745,
+          "maximum": 0.9026162790697675
+        },
+        "false_positive_rate": {
+          "mean": 0.28888888888888886,
+          "minimum": 0.26666666666666666,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6509090102785158,
+          "minimum": 0.6491345387207119,
+          "maximum": 0.6544579533941236
+        },
+        "auroc": {
+          "mean": 0.9059108527131783,
+          "minimum": 0.8964631782945736,
+          "maximum": 0.9116763565891473
+        },
+        "attack_f1": {
+          "mean": 0.9423076627415891,
+          "minimum": 0.9422492401215805,
+          "maximum": 0.9423368740515933
+        }
+      }
+    },
+    "exact-projection": {
+      "source-standard": {
+        "accuracy": {
+          "mean": 0.8922934076137419,
+          "minimum": 0.8885793871866295,
+          "maximum": 0.8941504178272981
+        },
+        "balanced_accuracy": {
+          "mean": 0.736579457364341,
+          "minimum": 0.7216085271317829,
+          "maximum": 0.7534883720930232
+        },
+        "attack_recall": {
+          "mean": 0.9064922480620154,
+          "minimum": 0.9026162790697675,
+          "maximum": 0.9098837209302325
+        },
+        "false_positive_rate": {
+          "mean": 0.43333333333333335,
+          "minimum": 0.4,
+          "maximum": 0.4666666666666667
+        },
+        "macro_f1": {
+          "mean": 0.6234708968741823,
+          "minimum": 0.6188656209358494,
+          "maximum": 0.6320133793698749
+        },
+        "auroc": {
+          "mean": 0.783922803617571,
+          "minimum": 0.7746366279069767,
+          "maximum": 0.8012839147286821
+        },
+        "attack_f1": {
+          "mean": 0.9416182998283796,
+          "minimum": 0.9394856278366112,
+          "maximum": 0.9427710843373494
+        }
+      },
+      "target-standard": {
+        "accuracy": {
+          "mean": 0.8946146703806871,
+          "minimum": 0.8885793871866295,
+          "maximum": 0.8997214484679665
+        },
+        "balanced_accuracy": {
+          "mean": 0.8015503875968992,
+          "minimum": 0.7984011627906977,
+          "maximum": 0.8042151162790697
+        },
+        "attack_recall": {
+          "mean": 0.9031007751937985,
+          "minimum": 0.8968023255813954,
+          "maximum": 0.9084302325581395
+        },
+        "false_positive_rate": {
+          "mean": 0.3,
+          "minimum": 0.3,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6499084521004731,
+          "minimum": 0.6416897472365696,
+          "maximum": 0.6569790588422645
+        },
+        "auroc": {
+          "mean": 0.8170542635658915,
+          "minimum": 0.8155038759689922,
+          "maximum": 0.8197916666666667
+        },
+        "attack_f1": {
+          "mean": 0.9425976686383111,
+          "minimum": 0.939117199391172,
+          "maximum": 0.9455370650529501
+        }
+      },
+      "target-log1p": {
+        "accuracy": {
+          "mean": 0.8918291550603529,
+          "minimum": 0.8899721448467967,
+          "maximum": 0.8941504178272981
+        },
+        "balanced_accuracy": {
+          "mean": 0.8160368217054264,
+          "minimum": 0.7998546511627906,
+          "maximum": 0.8310077519379846
+        },
+        "attack_recall": {
+          "mean": 0.8987403100775194,
+          "minimum": 0.8953488372093024,
+          "maximum": 0.9011627906976745
+        },
+        "false_positive_rate": {
+          "mean": 0.26666666666666666,
+          "minimum": 0.23333333333333334,
+          "maximum": 0.3
+        },
+        "macro_f1": {
+          "mean": 0.6512310076764529,
+          "minimum": 0.6453647416413374,
+          "maximum": 0.6544579533941236
+        },
+        "auroc": {
+          "mean": 0.9100936692506459,
+          "minimum": 0.9087209302325582,
+          "maximum": 0.9119186046511627
+        },
+        "attack_f1": {
+          "mean": 0.9409064597973503,
+          "minimum": 0.9397406559877955,
+          "maximum": 0.9422492401215805
+        }
+      }
+    }
+  },
+  "test_windows": 718,
+  "test_benign_windows": 30,
+  "test_attack_windows": 688,
+  "primary_false_positives_per_seed": [
+    9,
+    9,
+    9
+  ],
+  "primary_false_positive_wilson95": [
+    0.16664748268243793,
+    0.47875787458714947
+  ],
+  "validation_selection_closed_before_test": true,
+  "blind_external_test_claimed": false,
+  "global_checkpoints_verified": 540,
+  "selected_prediction_sets_recomputed": 18,
+  "freshly_replayed_training_histories": 1,
+  "replayed_rounds": 30,
+  "replayed_client_updates": 450,
+  "focused_tests_passed": 39,
+  "controlled_study_bytes": 33461499,
+  "total_recorded_training_seconds": 121.34272953799997,
+  "deployment_readiness_claimed": false,
+  "manuscript_modified": false
+}

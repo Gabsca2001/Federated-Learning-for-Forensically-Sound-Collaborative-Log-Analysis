@@ -1,0 +1,32 @@
+{
+  "status": "verified",
+  "cases": [
+    {
+      "mode": "custom-destination",
+      "counts": {
+        "full_gradient_evaluations": 18,
+        "gradient_repeats": 15,
+        "queries": 2,
+        "rounds": 1
+      },
+      "terminal_failure": null,
+      "gradient_endpoints_exactly_match_original": true
+    },
+    {
+      "mode": "forced-invalid-zero-fallback",
+      "counts": {
+        "full_gradient_evaluations": 18,
+        "gradient_repeats": 0,
+        "queries": 2,
+        "rounds": 0
+      },
+      "terminal_failure": {
+        "round": 1,
+        "reason": "No utility-admissible candidate and no finite zero-factor fallback.",
+        "queries_sha256": "120e8787b687b9077217fe3b78cd12fb847968fec2d0580bf05f5c1cc3712c8b"
+      },
+      "gradient_endpoints_exactly_match_original": true
+    }
+  ],
+  "scope": "Portable controller boundary checks, separate from preserved research campaigns. Harness explicitly limits horizon, scales and the second case's synthetic failure injection."
+}

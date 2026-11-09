@@ -1,0 +1,26 @@
+{
+  "scope": "Post-hoc clean-only objective diagnosis; no new attack inference or client training.",
+  "contexts": 16,
+  "root_configurations": 48,
+  "root_training_replays": 48,
+  "below_positive_quorum10": 6,
+  "unweighted_f1_higher_than_weighted": 37,
+  "unweighted_f1_lower_than_weighted": 3,
+  "comparisons": {
+    "robust": {
+      "losses_over_two_points": 34,
+      "worst_loss_points": 10.381706139554847
+    },
+    "capped": {
+      "losses_over_two_points": 40,
+      "worst_loss_points": 11.26542604377918
+    }
+  },
+  "all_clean_continuation_guards_pass": false,
+  "storage_after": {
+    "host_free_bytes": 14537056256,
+    "combined_result_allocation_bytes": 4296704
+  },
+  "new_attack_evaluation_performed": false,
+  "test_inference": false
+}

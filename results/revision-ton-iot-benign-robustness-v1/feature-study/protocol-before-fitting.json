@@ -1,0 +1,31 @@
+{
+  "name": "ToN-IoT-same-role-scale-reduced-features-v1",
+  "created_utc": "2026-11-09T11:09:26.432456+00:00",
+  "question": "Can existing-window scale-reduced features reduce false alarms without changing the known-family data assignment?",
+  "parent_protocol_sha256": "bb8e51d3a6d4a33448120d6c5aec2170810396672449e51a0b6bfb3d9d89abd4",
+  "parent_closure_sha256": "3e0478c6b61be33888dde60da3832f3df2b1425959dcaa2ef5dcafea633adbe9",
+  "roles_changed": false,
+  "views": [
+    "occurrence",
+    "exact-projection"
+  ],
+  "representations": [
+    "fractions",
+    "rates",
+    "augmented"
+  ],
+  "seeds": [
+    341593,
+    342593,
+    343593
+  ],
+  "features": "Fractions15; rates26 (15 fractions, three log durations and eight log intensity/uniqueness ratios); augmented33 (original25 with log first10 plus eight log rates). No labels, dates, IPs or IDs in predictors.",
+  "model": "15 numerical IID clients; binary-balanced weighted MLP128/64/32, Adam .001, 2 local epochs, batch128, 30 FedAvg rounds; training-only standard scaler.",
+  "selection": "Each round fits a validation-only macro-F1 threshold subject to per-family recall >=.8, then centers its unchanged validation decision gap. Checkpoint max validation macro-F1 then earliest. Representation chosen by mean primary-view validation macro-F1 across three seeds, with original25 parent as a candidate; ties prefer original25 then declared order.",
+  "controls": "Parent original25 federated scores retained, centralized Extra Trees256/minleaf2 and HistGB150/leaves15 references for each representation/view.",
+  "test": "Same already observed 1592 known-family windows; exploratory repeated-test extension. Global chronology and host independence remain absent. Original unseen-family chronological task is untouched.",
+  "storage": "Only selected new global tensors saved; every round tensor digest and validation history retained; raw CSVs not copied.",
+  "runner_sha256": "e6aabf0fa7fb7b3ce9079c49091b9300cc3eb42ebcd9009649907ebea982e606",
+  "feature_code_sha256": "1702ee7aa64ef11c8edfc561a4786c2dbcdcaf625e10bacb3fbba82a376e8e8e",
+  "margin_code_sha256": "5ca64075a44e2fed95f2d4863cdfe0d24defb8c542d46459d66cadbc3f60ea2a"
+}

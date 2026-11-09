@@ -1,0 +1,108 @@
+{
+  "scope": "Post-hoc same-input validation-only screening on two selected non-IID seeds. Maxima are over one-step interventions on frozen source histories, not defended trajectory peaks.",
+  "contexts": 240,
+  "distinct_seed_base_update_input_sets": 232,
+  "outputs": 960,
+  "input_files_rehashed": 4560,
+  "metric_and_coefficient_mutations_rejected": [
+    "hidden_client_renormalization",
+    "changed_trigger_metric",
+    "changed_clean_f1"
+  ],
+  "comparisons_on_actually_manipulated_rounds": {
+    "robust": {
+      "rows": 120,
+      "lower_worst_trigger_asr": 2,
+      "higher_worst_trigger_asr": 32,
+      "unchanged_worst_trigger_asr": 86,
+      "worst_clean_f1_loss_points": 0.691547609347376
+    },
+    "capped": {
+      "rows": 120,
+      "lower_worst_trigger_asr": 47,
+      "higher_worst_trigger_asr": 0,
+      "unchanged_worst_trigger_asr": 73,
+      "worst_clean_f1_loss_points": 17.27605799485663
+    },
+    "matched_step": {
+      "rows": 120,
+      "lower_worst_trigger_asr": 1,
+      "higher_worst_trigger_asr": 32,
+      "unchanged_worst_trigger_asr": 87,
+      "worst_clean_f1_loss_points": 1.3380218951594025
+    }
+  },
+  "clean_context_checks": {
+    "robust": {
+      "rows": 60,
+      "loss_over_two_points": 0,
+      "worst_clean_f1_loss_points": 0.4103030840611588
+    },
+    "capped": {
+      "rows": 60,
+      "loss_over_two_points": 16,
+      "worst_clean_f1_loss_points": 20.490215513454444
+    },
+    "matched_step": {
+      "rows": 60,
+      "loss_over_two_points": 0,
+      "worst_clean_f1_loss_points": 0.39714481403674284
+    }
+  },
+  "worst_clean_context_examples": {
+    "robust": {
+      "case": "reserved-non-iid-s6116105-robust_bounded-clean",
+      "source_operator": "robust_bounded",
+      "seed": 6116105,
+      "mode": "clean",
+      "round": 5,
+      "control": "robust",
+      "actually_manipulated": 0,
+      "worst_trigger_asr_difference": 0.0,
+      "full_trigger_asr_difference": 0.0,
+      "clean_f1_loss": 0.004103030840611588,
+      "control_clean_f1": 0.9321845270854627,
+      "candidate_clean_f1": 0.9280814962448511,
+      "source_base_clean_f1": 0.9275096451841222,
+      "checkpoint_retained": 0.21869501027714744
+    },
+    "capped": {
+      "case": "reserved-non-iid-s6116104-robust_bounded-clean",
+      "source_operator": "robust_bounded",
+      "seed": 6116104,
+      "mode": "clean",
+      "round": 5,
+      "control": "capped",
+      "actually_manipulated": 0,
+      "worst_trigger_asr_difference": 0.0,
+      "full_trigger_asr_difference": 0.0,
+      "clean_f1_loss": 0.20490215513454446,
+      "control_clean_f1": 0.8870819598618312,
+      "candidate_clean_f1": 0.6821798047272868,
+      "source_base_clean_f1": 0.6612391904002227,
+      "checkpoint_retained": 0.17537810320196995
+    },
+    "matched_step": {
+      "case": "reserved-non-iid-s6116104-capped_robust-clean",
+      "source_operator": "capped_robust",
+      "seed": 6116104,
+      "mode": "clean",
+      "round": 13,
+      "control": "matched_step",
+      "actually_manipulated": 0,
+      "worst_trigger_asr_difference": 0.0,
+      "full_trigger_asr_difference": 0.0,
+      "clean_f1_loss": 0.0039714481403674284,
+      "control_clean_f1": 0.9666538123137886,
+      "candidate_clean_f1": 0.9626823641734211,
+      "source_base_clean_f1": 0.9704558290575909,
+      "checkpoint_retained": 0.15667449830040855
+    }
+  },
+  "new_training_runs": 0,
+  "test_inference": false,
+  "new_defender_specific_attack_search": false,
+  "current_defaults_changed": false,
+  "checkpoint_inclusive_bound_not_client_normalized_bound": true,
+  "numerical_claim": "All240 source checkpoints/metrics were reconstructed in generation. This checker independently recomputes metric arithmetic and coefficient equations, not the classifier predictions."
+}
