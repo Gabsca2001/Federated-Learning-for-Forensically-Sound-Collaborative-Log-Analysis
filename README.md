@@ -5,6 +5,16 @@ learning, authenticated contribution admission, retrospective investigation and
 evidence preservation. The implementation distinguishes provenance, effective
 numerical influence and attributed semantic assessment.
 
+## What the repository demonstrates
+
+The central result is the architecture, not a detection score. Every round,
+admission decision, checkpoint and investigative product is signed, linked to
+its inputs and reproducible by an independent verifier. Successful and failed
+experiments are retained under the same verification contracts, so a negative
+predictive or defensive outcome remains attributable and reconstructible.
+Predictive and defensive findings are conditional on their declared protocols;
+the forensic properties hold under the stated cryptographic and input assumptions.
+
 The maintained documentation was consolidated on **9 November 2026**. The
 [documentation index](docs/README.md) is the main entry point; the
 [implementation status](docs/STATUS.md) records supported claims and open work.
@@ -25,6 +35,7 @@ Experimental defenses remain distinct profiles with their own evidence.
 
 | Topic | Maintained guide |
 | --- | --- |
+| Terms, stage identifiers and experimental vocabulary | [Glossary](docs/guide/GLOSSARY.md) |
 | Components and integration boundaries | [Framework](docs/guide/FRAMEWORK.md) |
 | TPM-only, statistics-only, sequential and gated-composite policies | [Admission and defenses](docs/guide/ADMISSION.md) |
 | DBA, literature comparisons, failed defenses and V5 groups | [Experimental findings](docs/guide/EXPERIMENTS.md) |
