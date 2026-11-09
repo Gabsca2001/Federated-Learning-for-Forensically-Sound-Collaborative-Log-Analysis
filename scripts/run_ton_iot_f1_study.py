@@ -30,7 +30,7 @@ from fl_forensics.federated_model import (
 from fl_forensics.ton_iot_calibration import fit_macro_threshold, metrics
 from fl_forensics.ton_iot_retraining import SEEDS, tensor_digest, verify_checkpoint
 
-R = Path("/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis")
+R = Path(__file__).resolve().parents[1]
 
 
 def load(path):

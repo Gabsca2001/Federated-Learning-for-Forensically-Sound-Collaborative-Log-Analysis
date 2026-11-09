@@ -1,7 +1,7 @@
 """Independent CSV/JSON accounting and report-inventory check."""
 from pathlib import Path
 import csv,json,hashlib,statistics
-root=Path('/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis')
+root=Path(__file__).resolve().parents[1]
 out=root/'results/revision-gate-trajectories-v1'
 s=json.loads((out/'summary.json').read_bytes())
 cases=list(csv.DictReader((out/'cases.csv').open()))

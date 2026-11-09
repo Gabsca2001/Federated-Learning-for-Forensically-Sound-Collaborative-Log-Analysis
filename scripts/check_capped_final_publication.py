@@ -9,7 +9,7 @@ import math
 import statistics
 import sys
 
-ROOT = Path('/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis')
+ROOT = Path(__file__).resolve().parents[1]
 LAB = ROOT / 'artifacts/revision-capped-final-v1'
 folder = Path(sys.argv[1])
 assert folder.resolve().is_relative_to(ROOT / 'results')

@@ -11,7 +11,7 @@ import sys
 import threading
 import time
 
-ROOT = Path('/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis')
+ROOT = Path(__file__).resolve().parents[1]
 LAB = ROOT / 'artifacts/revision-capped-final-v1'
 PYTHON = ROOT / '.venv/bin/python'
 JOB = ROOT / 'scripts/capped_final_job.py'

@@ -1,7 +1,7 @@
 import copy, json
 from datetime import UTC, datetime
 from pathlib import Path
-root=Path("/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis")
+root=Path(__file__).resolve().parents[1]
 seed=344593
 tag=f"m6-adaptive-untargeted-paired-s{seed}-v1"
 plan_path=root/f"configs/{tag}.json"

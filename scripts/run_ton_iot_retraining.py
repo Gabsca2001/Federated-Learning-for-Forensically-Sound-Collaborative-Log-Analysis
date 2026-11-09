@@ -36,7 +36,7 @@ from fl_forensics.ton_iot_retraining import (
     verify_checkpoint,
 )
 
-R = Path("/home/gio/projects/Federated-Learning-for-Forensically-Sound-Collaborative-Log-Analysis")
+R = Path(__file__).resolve().parents[1]
 
 
 def sha(path):
