@@ -1,0 +1,6 @@
+FROM revision-witness-round:20261105-v2
+COPY src /app/src
+COPY configs /app/configs
+COPY scripts /app/scripts
+COPY tests /app/tests
+COPY Dockerfile.revision-unified /app/Dockerfile.revision-unified

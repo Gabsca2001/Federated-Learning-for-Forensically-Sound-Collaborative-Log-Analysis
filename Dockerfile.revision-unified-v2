@@ -1,0 +1,6 @@
+FROM revision-unified-chain:20261105-v1
+COPY src /app/src
+COPY configs /app/configs
+COPY scripts /app/scripts
+COPY tests /app/tests
+COPY Dockerfile.revision-unified-v2 /app/Dockerfile.revision-unified-v2

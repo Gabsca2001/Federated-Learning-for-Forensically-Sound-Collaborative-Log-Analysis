@@ -33,7 +33,7 @@ class RealAttestationFailureError(RuntimeError):
 
 
 def _parse_time(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    return datetime.fromisoformat(value)
 
 
 def _utc(value: datetime) -> str:
@@ -251,6 +251,10 @@ def refresh_update_bundle_attestation(
             "submission": str(submission_workspace),
         }
 
+    if (submission_workspace / "submission-receipt.json").exists():
+        raise RealAttestationFailureError(
+            "cannot rebind a bundle after a submission receipt; preserve it as a new derivation"
+        )
     write_once(original_path, bundle_path.read_bytes())
     core = UpdateBundleCore.model_validate(
         {

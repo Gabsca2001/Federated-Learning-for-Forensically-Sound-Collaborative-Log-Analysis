@@ -7,6 +7,14 @@ SHELL := /bin/bash
 VENV ?= .venv
 PYTHON ?= $(VENV)/bin/python
 CLI ?= $(VENV)/bin/fl-forensics
+STUDY ?= results/revision-episodic-attribution-recovery-v1
+TON_IOT_INDEX ?=
+TON_IOT_OUTPUT ?= artifacts/ton-iot-preflight
+TON_IOT_PREFLIGHT ?=
+TON_IOT_PROTOCOL ?=
+TON_IOT_WINDOWS_OUTPUT ?= artifacts/ton-iot-windows
+TON_IOT_TRANSFER ?=
+TON_IOT_TARGET_WORKSPACE ?= artifacts/ton-iot-target-retraining
 
 DATA24_SOURCE ?= data/raw/uwf-zeekdata24/parquet
 M2_AUDIT ?= artifacts/m2-data24-parquet-audit.json
@@ -26,20 +34,49 @@ DEMO_WORKSPACE ?= artifacts/demo-output-make
 
 help:
 	@printf '%s\n' \
-	  'Minimal reproducibility entry points:' \
-	  '  make setup              Create .venv and install project extras' \
-	  '  make check              Check installed Python package and CLI' \
-	  '  make doctor             Also check Docker Compose and OpenSSL' \
-	  '  make test               Run pytest' \
-	  '  make lint               Run the documented Ruff error checks' \
-	  '  make smoke              Run and verify the M1 fixture demo' \
-	  '  make validate           Run tests, lint, and the M1 smoke demo' \
-	  '  make dataset-download  Download the documented Data24 Parquet source' \
-	  '  make m2                 Build and verify the canonical M2 artifacts' \
-	  '  make m3                 Build and verify IID/non-IID M3 baselines' \
-	  '  make foundation         Run M2 then M3 (requires source data already present)' \
+	  'Repository entry points (no campaign starts by default):' \
+	  '  make help              Show entry points and path variables' \
 	  '' \
-	  'Targets refuse to reuse existing output paths. Override path variables for a fresh run.'
+	  'Documentation and retained evidence:' \
+	  '  make docs-check        Check maintained docs, catalogues and retained Markdown' \
+	  '  make docs-index        Regenerate the two registered catalogue files' \
+	  '  make evidence-list     List all retained study directories' \
+	  '  make evidence-check    Check the selected stored flat checksum publication' \
+	  '                         Override STUDY=results/<registered-study>' \
+	  '' \
+	  'Environment and verification:' \
+	  '  make setup             Create .venv and install declared extras' \
+	  '  make check             Check package dependencies and CLI' \
+	  '  make doctor            Also check Docker Compose and OpenSSL' \
+	  '  make test-docs         Run repository-checker regression tests' \
+	  '  make test-formal       Run selected formal/coverage/review/replay tests' \
+	  '  make test-groups       Run selected retrospective/episode/diagnostic tests' \
+	  '  make test              Run the full pytest suite' \
+	  '  make lint              Run documented Ruff error checks' \
+	  '  make smoke             Generate and verify the small acquisition fixture' \
+	  '  make validate          Run package checks, tests, lint and fixture smoke' \
+	  '' \
+	  'Explicit data/foundation reconstruction:' \
+	  '  make dataset-download Download pinned Data24 into a fresh DATA24_SOURCE' \
+	  '  make dataset-verify   Check existing pinned source without download/write' \
+	  '  make test-ton-iot     Run focused ToN-IoT source, window and novelty checks' \
+	  '  make ton-iot-preflight Scan indexed official network CSVs without extraction' \
+	  '                         Requires TON_IOT_INDEX and fresh TON_IOT_OUTPUT' \
+	  '  make ton-iot-windows   Build declared occurrence and projection views' \
+	  '                         Requires index, preflight, protocol and fresh windows output' \
+	  '  make ton-iot-target-prepare  Freeze target splits and preprocessing' \
+	  '  make ton-iot-target-train    Train the fixed numerical FedAvg study' \
+	  '  make ton-iot-target-evaluate Evaluate after all checkpoint selections close' \
+	  '  make ton-iot-target-flow-select  Correct selection using connection-end bounds' \
+	  '  make ton-iot-f1-study  Run an explicit fresh validation-selected F1 assessment' \
+	  '  make m2                Build and verify M2 artifacts' \
+	  '  make m3                Build and verify IID/non-IID M3 baselines' \
+	  '  make foundation        Run M2 then M3 (controlled source must exist)' \
+	  '' \
+	  'Path variables: VENV, PYTHON, CLI, STUDY, DATA24_SOURCE, M2_AUDIT, M2_DATA,' \
+	  'M2_BASELINE, M3_IID_PARTITION, M3_NON_IID_PARTITION, M3_IID_RUN, M3_NON_IID_RUN,' \
+	  'DEMO_INPUT and DEMO_WORKSPACE. Generation targets refuse existing outputs.' \
+	  'M4-M8 and research campaign execution remains profile-specific; see docs/README.md.'
 
 setup:
 	if [[ ! -x "$(PYTHON)" ]]; then
@@ -69,7 +106,7 @@ test: check
 	"$(PYTHON)" -m pytest -q
 
 lint: check
-	"$(PYTHON)" -m ruff check --select E9,F63,F7,F82 src tests
+	"$(PYTHON)" -m ruff check --select E9,F63,F7,F82 src tests scripts/repository_audit.py
 
 validate: test lint smoke
 
@@ -94,7 +131,7 @@ guard-download:
 	fi
 
 dataset-download: check guard-download
-	"$(PYTHON)" scripts/download_uwf_zeekdata24_parquet.py
+	"$(PYTHON)" scripts/download_uwf_zeekdata24_parquet.py --output "$(DATA24_SOURCE)"
 
 guard-m2:
 	for path in "$(M2_AUDIT)" "$(M2_DATA)" "$(M2_BASELINE)"; do
@@ -152,3 +189,113 @@ guard-foundation:
 foundation: check guard-foundation
 	$(MAKE) m2
 	$(MAKE) m3
+
+# Maintained navigation checks are independent of numerical campaign execution.
+.PHONY: docs-check docs-index evidence-list evidence-check test-docs test-formal test-groups dataset-verify
+
+docs-check:
+	"$(PYTHON)" scripts/repository_audit.py docs
+
+docs-index:
+	"$(PYTHON)" scripts/repository_audit.py index
+
+evidence-list:
+	"$(PYTHON)" scripts/repository_audit.py list
+
+evidence-check:
+	"$(PYTHON)" scripts/repository_audit.py evidence --study "$(STUDY)"
+
+test-docs: check
+	"$(PYTHON)" -m pytest -q tests/test_repository_audit.py
+
+test-formal: check
+	"$(PYTHON)" -m pytest -q tests/test_round_derivation.py tests/test_submission_evidence.py tests/test_ingestion_coverage.py tests/test_campaign_derivation.py tests/test_review_ledger.py tests/test_counterfactual_round.py tests/test_retraining_replay.py
+
+test-groups: check
+	"$(PYTHON)" -m pytest -q tests/test_retrospective_anomaly_groups.py tests/test_episodic_attribution_groups.py tests/test_selector_diagnostic_math.py tests/test_endpoint_group_allocation_guard.py
+
+dataset-verify: check
+	"$(PYTHON)" scripts/download_uwf_zeekdata24_parquet.py --output "$(DATA24_SOURCE)" --verify-only
+
+.PHONY: test-ton-iot ton-iot-preflight
+
+test-ton-iot:
+	"$(PYTHON)" -m pytest -q tests/test_ton_iot.py tests/test_ton_iot_preflight.py tests/test_ton_iot_collection_preflight.py tests/test_ton_iot_windows.py tests/test_ton_iot_retraining.py tests/test_ton_iot_time_bounds.py tests/test_ton_iot_calibration.py tests/test_ton_iot_margin.py tests/test_ton_iot_traffic_features.py tests/test_ton_iot_host_windows.py tests/test_ton_iot_novelty.py tests/test_ton_iot_transfer_initialization.py
+
+ton-iot-preflight:
+	if [[ ! -f "$(TON_IOT_INDEX)" ]]; then
+	  printf 'Set TON_IOT_INDEX to the acquired official collection index.\n' >&2
+	  exit 2
+	fi
+	if [[ -e "$(TON_IOT_OUTPUT)" || -L "$(TON_IOT_OUTPUT)" ]]; then
+	  printf 'Refusing to reuse output: %s\nSet TON_IOT_OUTPUT to a new path.\n' "$(TON_IOT_OUTPUT)" >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/revision_ton_iot_collection_preflight.py --index "$(TON_IOT_INDEX)" --pipeline-root . --output "$(TON_IOT_OUTPUT)"
+
+.PHONY: ton-iot-windows
+
+ton-iot-windows:
+	for path in "$(TON_IOT_INDEX)" "$(TON_IOT_PREFLIGHT)" "$(TON_IOT_PROTOCOL)"; do
+	  if [[ ! -f "$$path" ]]; then
+	    printf 'Set TON_IOT_INDEX, TON_IOT_PREFLIGHT and TON_IOT_PROTOCOL to existing frozen inputs.\n' >&2
+	    exit 2
+	  fi
+	done
+	if [[ -e "$(TON_IOT_WINDOWS_OUTPUT)" || -L "$(TON_IOT_WINDOWS_OUTPUT)" ]]; then
+	  printf 'Refusing to reuse output: %s\n' "$(TON_IOT_WINDOWS_OUTPUT)" >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/prepare_ton_iot_windows.py --index "$(TON_IOT_INDEX)" --preflight "$(TON_IOT_PREFLIGHT)" --protocol "$(TON_IOT_PROTOCOL)" --output "$(TON_IOT_WINDOWS_OUTPUT)"
+
+.PHONY: ton-iot-target-prepare ton-iot-target-train ton-iot-target-evaluate
+
+ton-iot-target-prepare:
+	if [[ ! -f "$(TON_IOT_TRANSFER)/verification.json" ]]; then
+	  printf 'Set TON_IOT_TRANSFER to the verified frozen-transfer workspace.\n' >&2
+	  exit 2
+	fi
+	if [[ -e "$(TON_IOT_TARGET_WORKSPACE)" || -L "$(TON_IOT_TARGET_WORKSPACE)" ]]; then
+	  printf 'Refusing to reuse target workspace: %s\n' "$(TON_IOT_TARGET_WORKSPACE)" >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/run_ton_iot_retraining.py prepare --workspace "$(TON_IOT_TARGET_WORKSPACE)" --transfer "$(TON_IOT_TRANSFER)"
+
+ton-iot-target-train:
+	if [[ ! -f "$(TON_IOT_TARGET_WORKSPACE)/protocol-before-training.json" || -e "$(TON_IOT_TARGET_WORKSPACE)/runs" ]]; then
+	  printf 'A freshly prepared target workspace without existing runs is required.\n' >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/run_ton_iot_retraining.py train --workspace "$(TON_IOT_TARGET_WORKSPACE)" --transfer "$(TON_IOT_TRANSFER)"
+
+ton-iot-target-evaluate:
+	if [[ ! -f "$(TON_IOT_TARGET_WORKSPACE)/training-closure-before-test.json" || -e "$(TON_IOT_TARGET_WORKSPACE)/target-test-results.json" ]]; then
+	  printf 'All training selections must be closed and target evaluation must be fresh.\n' >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/run_ton_iot_retraining.py evaluate --workspace "$(TON_IOT_TARGET_WORKSPACE)" --transfer "$(TON_IOT_TRANSFER)"
+
+.PHONY: ton-iot-target-flow-select
+
+ton-iot-target-flow-select:
+	if [[ ! -f "$(TON_IOT_TARGET_WORKSPACE)/target-test-results.json" || ! -f "$(TON_IOT_TRANSFER)/verification.json" ]]; then
+	  printf 'A completed target study and verified transfer workspace are required.\n' >&2
+	  exit 2
+	fi
+	if [[ -e "$(TON_IOT_TARGET_WORKSPACE)/flow-end-selection-v2" || -L "$(TON_IOT_TARGET_WORKSPACE)/flow-end-selection-v2" ]]; then
+	  printf 'Refusing to overwrite the existing temporal correction.\n' >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/reselect_ton_iot_flow_end.py --workspace "$(TON_IOT_TARGET_WORKSPACE)" --transfer "$(TON_IOT_TRANSFER)"
+
+.PHONY: ton-iot-f1-study
+ton-iot-f1-study:
+	if [[ -z "$(TON_IOT_F1_WORKSPACE)" || -e "$(TON_IOT_F1_WORKSPACE)" || -L "$(TON_IOT_F1_WORKSPACE)" ]]; then
+	  printf 'Set TON_IOT_F1_WORKSPACE to a fresh assessment path.\n' >&2
+	  exit 2
+	fi
+	if [[ ! -f "$(TON_IOT_TARGET_WORKSPACE)/flow-end-selection-v2/verification.json" || ! -f "$(TON_IOT_TRANSFER)/windows/occurrence-windows.json" ]]; then
+	  printf 'Set verified TON_IOT_TARGET_WORKSPACE and TON_IOT_TRANSFER inputs.\n' >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/run_ton_iot_f1_study.py --workspace "$(TON_IOT_F1_WORKSPACE)" --parent "$(TON_IOT_TARGET_WORKSPACE)" --transfer "$(TON_IOT_TRANSFER)"

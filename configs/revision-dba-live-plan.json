@@ -1,0 +1,29 @@
+{
+  "profile": "bound-dba-training-v1",
+  "plan": {
+    "target_label": "benign",
+    "client_components": {
+      "client01": [
+        13
+      ],
+      "client06": [
+        17
+      ],
+      "client11": [
+        24
+      ]
+    },
+    "trigger_values_decimal": {
+      "13": "12",
+      "17": "12",
+      "24": "12"
+    },
+    "poisoned_fraction_decimal": "0.50",
+    "attack_rounds": [
+      1,
+      2,
+      3
+    ],
+    "seed": 341593
+  }
+}

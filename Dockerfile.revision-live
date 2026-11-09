@@ -1,0 +1,12 @@
+FROM python:3.12-slim-bookworm
+ENV DEBIAN_FRONTEND=noninteractive PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+RUN apt-get update && apt-get install -y --no-install-recommends swtpm swtpm-tools tpm2-tools libtss2-tcti-swtpm0 ca-certificates && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+RUN python -m pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch==2.14.0 && python -m pip install --no-cache-dir 'flwr==1.38.0' 'numpy==2.5.3' 'pydantic==2.13.5' 'cryptography==46.0.7' 'scikit-learn==1.9.1' 'PyYAML==6.0.3' 'pyarrow==25.0.1' 'pytest>=8,<9'
+COPY pyproject.toml README.md Dockerfile.m4 Dockerfile.m5 compose.m5.yaml Dockerfile.revision-live ./
+COPY src ./src
+COPY configs ./configs
+COPY scripts ./scripts
+RUN python -m pip install --no-deps .
+ENV PYTHONPATH=/app/src
+ENTRYPOINT ["python"]

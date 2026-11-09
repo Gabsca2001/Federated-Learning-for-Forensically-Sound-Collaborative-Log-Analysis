@@ -19,7 +19,9 @@ from .secure_round_models import SecureCheck
 
 class InRoundAdmissionContractCore(StrictModel):
     policy_id: str
-    primary_policy: Literal["gated_composite", "sequential"] = "gated_composite"
+    primary_policy: Literal["gated_composite", "sequential", "tpm_only", "observable_envelope"] = (
+        "gated_composite"
+    )
     policy_config_sha256: str = Field(pattern=HEX_256_PATTERN)
     calibration_source_admission_sha256: str = Field(pattern=HEX_256_PATTERN)
     calibration_semantics: Literal["verified-clean-development-reference"] = (
@@ -32,9 +34,7 @@ class InRoundAdmissionContractCore(StrictModel):
     thresholds: PolicyThresholds
     accepted_downweight_factor: float = Field(gt=0.0, lt=1.0)
     minimum_contributors: int = Field(gt=0)
-    validation_metric: Literal["macro_f1_all_model_classes"] = (
-        "macro_f1_all_model_classes"
-    )
+    validation_metric: Literal["macro_f1_all_model_classes"] = "macro_f1_all_model_classes"
     validation_split_sha256: str = Field(pattern=HEX_256_PATTERN)
     validation_row_count: int = Field(gt=0)
     implementation_sha256: str = Field(pattern=HEX_256_PATTERN)
@@ -42,9 +42,7 @@ class InRoundAdmissionContractCore(StrictModel):
 
 class InRoundAdmissionContract(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
-    artifact_type: Literal["in_round_admission_contract"] = (
-        "in_round_admission_contract"
-    )
+    artifact_type: Literal["in_round_admission_contract"] = "in_round_admission_contract"
     contract_id: str
     core: InRoundAdmissionContractCore
     core_digest: str = Field(pattern=HEX_256_PATTERN)
@@ -88,9 +86,7 @@ class InRoundContributionDecisionCore(StrictModel):
 
 class InRoundContributionDecision(StrictModel):
     schema_version: Literal["1.0"] = "1.0"
-    artifact_type: Literal["in_round_contribution_decision"] = (
-        "in_round_contribution_decision"
-    )
+    artifact_type: Literal["in_round_contribution_decision"] = "in_round_contribution_decision"
     decision_id: str
     core: InRoundContributionDecisionCore
     core_digest: str = Field(pattern=HEX_256_PATTERN)
@@ -118,9 +114,14 @@ class InRoundSecureCheckpointCore(StrictModel):
     round_number: int = Field(gt=0)
     previous_checkpoint_sha256: str = Field(pattern=HEX_256_PATTERN)
     base_model_sha256: str = Field(pattern=HEX_256_PATTERN)
-    aggregation_strategy: Literal["FedAvg-gated-composite", "FedAvg-sequential"] = (
-        "FedAvg-gated-composite"
-    )
+    aggregation_strategy: Literal[
+        "FedAvg-gated-composite",
+        "FedAvg-sequential",
+        "FedAvg-tpm-only",
+        "FedAvg-observable-envelope",
+        "BoundedDelta-FedAvg-observable-envelope",
+        "RobustBoundedDelta-GeometricMedian-observable-envelope",
+    ] = "FedAvg-gated-composite"
     required_client_count: int = Field(gt=0)
     minimum_contributors: int = Field(gt=0)
     evaluated_count: int = Field(ge=0)

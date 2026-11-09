@@ -1,0 +1,8 @@
+FROM revision-attested-chain:20261102-v4
+COPY src /app/src
+COPY configs /app/configs
+COPY scripts /app/scripts
+COPY Dockerfile.m4 /app/Dockerfile.m4
+ENV PYTHONPATH=/app/src:/app/scripts
+ENV OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 MKL_CBWR=COMPATIBLE
+COPY Dockerfile.revision-dba /app/Dockerfile.revision-dba

@@ -5,10 +5,11 @@ from __future__ import annotations
 import copy
 import math
 import secrets
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from .canonical import digest_object, sha256_bytes, sha256_file
 from .config import load_yaml
@@ -38,10 +39,10 @@ from .secure_round_models import (
     ContributionDecision,
     ContributionDecisionCore,
     RoundClientContract,
+    SecureCampaignManifest,
     SecureCheck,
     SecureCheckpoint,
     SecureCheckpointCore,
-    SecureCampaignManifest,
     SecureRoundContext,
     SecureRoundContextCore,
     UpdateBundle,
@@ -53,7 +54,6 @@ from .tpm_adapter import ESK_HANDLE, TPM2ToolsSigner
 from .trust import verify_enrollment_record, verify_result_signature
 from .trust_models import AttestationResultV2, EnrollmentRecord, RevocationRecord
 
-
 GENESIS_DIGEST = "0" * 64
 EXPECTED_CLIENTS = [f"client{index:02d}" for index in range(1, 16)]
 
@@ -63,7 +63,7 @@ class SecureRoundError(ValueError):
 
 
 def _parse_time(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    return datetime.fromisoformat(value)
 
 
 def _utc(value: datetime) -> str:
@@ -165,9 +165,7 @@ def _revoked(
         valid = (
             digest == record.core_digest
             and record.signature.key_id == public_key_id(authority_key)
-            and verify_digest_signature(
-                authority_key, digest, record.signature.value_b64
-            )
+            and verify_digest_signature(authority_key, digest, record.signature.value_b64)
         )
         if not valid:
             raise SecureRoundError(f"invalid revocation record signature: {path.name}")
@@ -246,6 +244,9 @@ def initialize_secure_round(
     in_round_admission_config_path: Path | None = None,
     disagreement_experiment_config_path: Path | None = None,
     real_attestation_failure_config_path: Path | None = None,
+    dba_training_config_path: Path | None = None,
+    initial_model_path: Path | None = None,
+    partition_config_path: Path | None = None,
     now: datetime | None = None,
 ) -> dict[str, Any]:
     """Create a signed round context after validating all 15 M4 attestations."""
@@ -257,25 +258,17 @@ def initialize_secure_round(
         submitted_files = list(submissions.rglob("*")) if submissions.is_dir() else []
         if protected or any(path.is_file() for path in submitted_files):
             raise FileExistsError(f"M5 workspace must be new and empty: {workspace}")
+    if initial_model_path is not None and round_number != 1:
+        raise SecureRoundError("an external initial model is permitted only at genesis")
     if round_number < 1:
         raise SecureRoundError("round number must be positive")
     if round_number == 1 and previous_round_workspace is not None:
         raise SecureRoundError("round 1 cannot reference a previous checkpoint")
     if round_number > 1 and (campaign_id is None or previous_round_workspace is None):
-        raise SecureRoundError(
-            "later rounds require a campaign id and previous round workspace"
-        )
-    if (
-        disagreement_experiment_config_path is not None
-        and in_round_admission_config_path is None
-    ):
-        raise SecureRoundError(
-            "the M6 disagreement experiment requires in-round admission"
-        )
-    if (
-        real_attestation_failure_config_path is not None
-        and in_round_admission_config_path is None
-    ):
+        raise SecureRoundError("later rounds require a campaign id and previous round workspace")
+    if disagreement_experiment_config_path is not None and in_round_admission_config_path is None:
+        raise SecureRoundError("the M6 disagreement experiment requires in-round admission")
+    if real_attestation_failure_config_path is not None and in_round_admission_config_path is None:
         raise SecureRoundError(
             "the real attestation-failure experiment requires in-round admission"
         )
@@ -308,8 +301,11 @@ def initialize_secure_round(
         raise SecureRoundError("M5 implementation currently requires FedAvg with Adam")
     if str(config["model"]["activation"]) != "relu":
         raise SecureRoundError("M5 implementation currently requires ReLU")
-    if manifest.get("partition_config_sha256") != config_digest:
-        raise SecureRoundError("partition manifest was created from a different federation config")
+    from .partition_training_binding import partition_training_binding
+
+    partition_training = partition_training_binding(
+        config, config_digest, manifest, partition_config_path
+    )
     if manifest.get("class_weighting") != training.get("class_weighting"):
         raise SecureRoundError("partition/training class-weighting contract mismatch")
     if (
@@ -336,16 +332,12 @@ def initialize_secure_round(
             or _revoked(trust_workspace, enrollment, authority_key, at=now)
         ):
             raise SecureRoundError(f"enrollment is not active: {client_id}")
-        result, result_path = _current_attestation(
-            trust_workspace, client_id, enrollment, now=now
-        )
+        result, result_path = _current_attestation(trust_workspace, client_id, enrollment, now=now)
         attested[client_id] = (enrollment, result, result_path)
         expiry_values.append(_parse_time(result.core.expires_at))
 
     requested_lifetime = int(secure_config["secure_round"]["context_lifetime_seconds"])
-    minimum_remaining = int(
-        secure_config["secure_round"]["minimum_attestation_remaining_seconds"]
-    )
+    minimum_remaining = int(secure_config["secure_round"]["minimum_attestation_remaining_seconds"])
     expires = min(now + timedelta(seconds=requested_lifetime), min(expiry_values))
     if expires <= now + timedelta(seconds=minimum_remaining):
         raise SecureRoundError("attestations expire too soon for an M5 round; issue fresh quotes")
@@ -360,6 +352,8 @@ def initialize_secure_round(
     write_once(public / "round-coordinator.public.pem", signer.public_pem())
     write_once(public / "partition-manifest.json", partition_manifest_path.read_bytes())
     write_once(public / "federation.yaml", config_path.read_bytes())
+    if partition_training is not None:
+        write_once(public / "partition-source-federation.yaml", partition_config_path.read_bytes())
 
     expected_model, expected_architecture = _new_model(manifest, config)
     if previous_round_workspace is None:
@@ -369,6 +363,18 @@ def initialize_secure_round(
             architecture=architecture,
             class_names=list(manifest["class_names"]),
         )
+        if initial_model_path is not None:
+            np = dependencies()[0]
+            initial = load_json(initial_model_path)
+            if (
+                initial.get("architecture") != base_export.get("architecture")
+                or initial.get("class_names") != base_export.get("class_names")
+                or tensor_schema(initial) != tensor_schema(base_export)
+            ):
+                raise SecureRoundError("initial model architecture or tensor schema mismatch")
+            if not all(np.isfinite(a).all() for a in arrays_from_export(initial, np=np)):
+                raise SecureRoundError("initial model has nonfinite tensors")
+            base_export = initial
         base_bytes = derived_json_bytes(base_export)
         previous_checkpoint_sha256 = GENESIS_DIGEST
     else:
@@ -376,24 +382,17 @@ def initialize_secure_round(
         previous_training_contract = load_json(
             previous_round_workspace / "public" / "training-contract.json"
         )
-        previous_checkpoint_path = (
-            previous_round_workspace / "checkpoint" / "manifest.json"
-        )
-        previous_model_path = (
-            previous_round_workspace / "checkpoint" / "global-model.json"
-        )
+        previous_checkpoint_path = previous_round_workspace / "checkpoint" / "manifest.json"
+        previous_model_path = previous_round_workspace / "checkpoint" / "global-model.json"
         previous_checkpoint_value = load_json(previous_checkpoint_path)
         composite_previous = (
-            previous_checkpoint_value.get("artifact_type")
-            == "in_round_secure_global_checkpoint"
+            previous_checkpoint_value.get("artifact_type") == "in_round_secure_global_checkpoint"
         )
         if composite_previous:
             from .in_round_admission import verify_in_round_signature
             from .in_round_admission_models import InRoundSecureCheckpoint
 
-            previous_checkpoint = InRoundSecureCheckpoint.model_validate(
-                previous_checkpoint_value
-            )
+            previous_checkpoint = InRoundSecureCheckpoint.model_validate(previous_checkpoint_value)
             previous_count_valid = (
                 previous_checkpoint.core.accepted_count
                 >= previous_checkpoint.core.minimum_contributors
@@ -402,9 +401,7 @@ def initialize_secure_round(
                 previous_checkpoint, signer.private_key.public_key()
             )
         else:
-            previous_checkpoint = SecureCheckpoint.model_validate(
-                previous_checkpoint_value
-            )
+            previous_checkpoint = SecureCheckpoint.model_validate(previous_checkpoint_value)
             previous_count_valid = (
                 previous_checkpoint.core.accepted_count == required_client_count
                 and previous_checkpoint.core.quarantined_count == 0
@@ -421,22 +418,15 @@ def initialize_secure_round(
             and previous_context.core.round_number == round_number - 1
             and previous_checkpoint.core.round_number == round_number - 1
             and previous_checkpoint.core.context_digest == previous_context.core_digest
-            and previous_checkpoint.core.required_client_count
-            == required_client_count
-            and composite_previous
-            == (in_round_admission_config_path is not None)
-            and (
-                "m6_disagreement_experiment" in previous_training_contract
-            )
+            and previous_checkpoint.core.required_client_count == required_client_count
+            and composite_previous == (in_round_admission_config_path is not None)
+            and ("m6_disagreement_experiment" in previous_training_contract)
             == (disagreement_experiment_config_path is not None)
-            and (
-                "m4_m6_real_attestation_failure" in previous_training_contract
-            )
+            and ("m4_m6_real_attestation_failure" in previous_training_contract)
             == (real_attestation_failure_config_path is not None)
             and previous_count_valid
             and previous_model_path.is_file()
-            and sha256_file(previous_model_path)
-            == previous_checkpoint.core.global_model_sha256
+            and sha256_file(previous_model_path) == previous_checkpoint.core.global_model_sha256
         )
         if not previous_valid:
             raise SecureRoundError(
@@ -445,13 +435,10 @@ def initialize_secure_round(
         base_bytes = previous_model_path.read_bytes()
         base_export = load_json(previous_model_path)
         architecture = base_export.get("architecture")
-        if (
-            architecture != expected_architecture
-            or base_export.get("class_names") != manifest.get("class_names")
+        if architecture != expected_architecture or base_export.get("class_names") != manifest.get(
+            "class_names"
         ):
-            raise SecureRoundError(
-                "previous checkpoint model architecture/class order changed"
-            )
+            raise SecureRoundError("previous checkpoint model architecture/class order changed")
         previous_checkpoint_sha256 = sha256_file(previous_checkpoint_path)
     base_digest = sha256_bytes(base_bytes)
     write_once(public / "base-model.json", base_bytes)
@@ -485,6 +472,18 @@ def initialize_secure_round(
         "class_weighting": str(training["class_weighting"]),
         "clients": public_clients,
     }
+    if partition_training is not None:
+        training_contract["partition_training_binding"] = partition_training
+    if dba_training_config_path is not None:
+        from .dba_training import build_dba_training_binding
+
+        training_contract["dba_training_experiment"] = build_dba_training_binding(
+            dba_training_config_path, training_contract
+        )
+    if previous_round_workspace is not None and previous_training_contract.get(
+        "dba_training_experiment"
+    ) != training_contract.get("dba_training_experiment"):
+        raise SecureRoundError("DBA training experiment changed within the campaign")
     in_round_contract = None
     if in_round_admission_config_path is not None:
         from .in_round_admission import install_in_round_contract
@@ -505,15 +504,9 @@ def initialize_secure_round(
             client_ids=EXPECTED_CLIENTS,
         )
         if previous_round_workspace is not None:
-            previous_binding = previous_training_contract[
-                "m6_disagreement_experiment"
-            ]
-            if previous_binding.get("config_sha256") != disagreement_binding.get(
-                "config_sha256"
-            ):
-                raise SecureRoundError(
-                    "M6 disagreement configuration changed within the campaign"
-                )
+            previous_binding = previous_training_contract["m6_disagreement_experiment"]
+            if previous_binding.get("config_sha256") != disagreement_binding.get("config_sha256"):
+                raise SecureRoundError("M6 disagreement configuration changed within the campaign")
         training_contract["m6_disagreement_experiment"] = disagreement_binding
     real_attestation_contract = None
     if real_attestation_failure_config_path is not None:
@@ -529,18 +522,14 @@ def initialize_secure_round(
             )
         )
         if previous_round_workspace is not None:
-            previous_binding = previous_training_contract[
-                "m4_m6_real_attestation_failure"
-            ]
+            previous_binding = previous_training_contract["m4_m6_real_attestation_failure"]
             if previous_binding.get("config_sha256") != real_attestation_binding.get(
                 "config_sha256"
             ):
                 raise SecureRoundError(
                     "real attestation-failure configuration changed within the campaign"
                 )
-        training_contract["m4_m6_real_attestation_failure"] = (
-            real_attestation_binding
-        )
+        training_contract["m4_m6_real_attestation_failure"] = real_attestation_binding
     contract_bytes = derived_json_bytes(training_contract)
     contract_digest = sha256_bytes(contract_bytes)
     write_once(public / "training-contract.json", contract_bytes)
@@ -592,14 +581,10 @@ def initialize_secure_round(
             in_round_contract.contract_id if in_round_contract is not None else None
         ),
         "m6_disagreement_contract_id": (
-            disagreement_contract.contract_id
-            if disagreement_contract is not None
-            else None
+            disagreement_contract.contract_id if disagreement_contract is not None else None
         ),
         "real_attestation_failure_contract_id": (
-            real_attestation_contract.contract_id
-            if real_attestation_contract is not None
-            else None
+            real_attestation_contract.contract_id if real_attestation_contract is not None else None
         ),
         "expires_at": context.core.expires_at,
         "workspace": str(workspace),
@@ -607,9 +592,7 @@ def initialize_secure_round(
 
 
 def _load_context(public_workspace: Path) -> SecureRoundContext:
-    context = SecureRoundContext.model_validate(
-        load_json(public_workspace / "round-context.json")
-    )
+    context = SecureRoundContext.model_validate(load_json(public_workspace / "round-context.json"))
     if not _verify_signed(context, _coordinator_public_key(public_workspace.parent)):
         raise SecureRoundError("invalid coordinator signature on round context")
     return context
@@ -639,6 +622,7 @@ def create_secure_update(
     tcti: str,
     client_id: str,
     now: datetime | None = None,
+    client_receipt_root: Path | None = None,
 ) -> dict[str, Any]:
     """Train one isolated client and sign its immutable Update Bundle with its ESK."""
 
@@ -662,12 +646,21 @@ def create_secure_update(
         )
         if not valid_retry:
             raise SecureRoundError("existing submission is not a valid idempotent retry")
+        receipt_result = _record_submission_receipt(
+            bundle_path=bundle_path,
+            context=context,
+            node_workspace=node_workspace,
+            client_receipt_root=client_receipt_root,
+            tcti=tcti,
+            now=now,
+        )
         return {
             "status": "submitted",
             "client_id": bundle.core.client_id,
             "bundle_id": bundle.bundle_id,
             "idempotent": True,
             "submission": str(submission_workspace),
+            **receipt_result,
         }
     now = now or datetime.now(UTC)
     context = _load_context(public_workspace)
@@ -697,6 +690,14 @@ def create_secure_update(
 
     training_contract = load_json(contract_path)
     base_export = load_json(base_path)
+    from .dba_training import prepare_dba_training_rows
+
+    rows, dba_training_record = prepare_dba_training_rows(
+        training=training_contract,
+        rows=rows,
+        client_id=client_id,
+        round_number=context.core.round_number,
+    )
     (
         np,
         torch,
@@ -713,8 +714,7 @@ def create_secure_update(
         rows=rows,
         class_names=list(training_contract["class_names"]),
         class_weights={
-            key: float(value)
-            for key, value in training_contract["global_class_weights"].items()
+            key: float(value) for key, value in training_contract["global_class_weights"].items()
         },
         epochs=context.core.local_epochs,
         batch_size=context.core.batch_size,
@@ -763,9 +763,9 @@ def create_secure_update(
         **metrics,
     }
     if disagreement_record is not None:
-        metrics_artifact["m6_disagreement_experiment"] = (
-            disagreement_record.model_dump(mode="json")
-        )
+        metrics_artifact["m6_disagreement_experiment"] = disagreement_record.model_dump(mode="json")
+    if dba_training_record is not None:
+        metrics_artifact["dba_training_experiment"] = dba_training_record
     metrics_bytes = derived_json_bytes(metrics_artifact)
     schema_digest = digest_object(tensor_schema(updated_export))
     signer = TPM2ToolsSigner(
@@ -805,6 +805,14 @@ def create_secure_update(
     write_once(submission_workspace / "update.json", update_bytes)
     write_once(submission_workspace / "metrics.json", metrics_bytes)
     write_json_once(bundle_path, bundle.model_dump(mode="json"))
+    receipt_result = _record_submission_receipt(
+        bundle_path=bundle_path,
+        context=context,
+        node_workspace=node_workspace,
+        client_receipt_root=client_receipt_root,
+        tcti=tcti,
+        now=now,
+    )
     return {
         "status": "submitted",
         "client_id": client_id,
@@ -812,6 +820,38 @@ def create_secure_update(
         "idempotent": False,
         "num_examples": len(rows),
         "submission": str(submission_workspace),
+        **receipt_result,
+    }
+
+
+def _record_submission_receipt(
+    *,
+    bundle_path: Path,
+    context: SecureRoundContext,
+    node_workspace: Path,
+    client_receipt_root: Path | None,
+    tcti: str,
+    now: datetime | None,
+) -> dict[str, Any]:
+    if client_receipt_root is None:
+        return {}
+    from .submission_evidence import ensure_submission_receipt
+
+    bundle = UpdateBundle.model_validate(load_json(bundle_path))
+    public_bytes = (node_workspace / "tpm-objects" / "esk.public.pem").read_bytes()
+    receipt = ensure_submission_receipt(
+        bundle_path=bundle_path,
+        context=context,
+        signer=TPM2ToolsSigner(key_context=ESK_HANDLE, public_key_pem=public_bytes, tcti=tcti),
+        client_public_key=load_public_key(public_bytes),
+        trust_level=bundle.signature.trust_level,
+        client_receipt_root=client_receipt_root,
+        submitted_at=now or datetime.now(UTC),
+    )
+    return {
+        "submission_id": receipt.core.submission_id,
+        "receipt_id": receipt.receipt_id,
+        "client_receipt": str(client_receipt_root / f"{receipt.core.submission_id}.json"),
     }
 
 
@@ -943,12 +983,8 @@ def _admission_checks(
         if post_training:
             generated_at = _parse_time(bundle.core.generated_at)
             eligible_results: list[tuple[datetime, AttestationResultV2, Path]] = []
-            for candidate_path in (trust_workspace / "results").glob(
-                "attestation-*.json"
-            ):
-                candidate = AttestationResultV2.model_validate(
-                    load_json(candidate_path)
-                )
+            for candidate_path in (trust_workspace / "results").glob("attestation-*.json"):
+                candidate = AttestationResultV2.model_validate(load_json(candidate_path))
                 evaluated_at = _parse_time(candidate.core.evaluated_at)
                 if (
                     candidate.core.client_id == bundle.core.client_id
@@ -961,8 +997,7 @@ def _admission_checks(
                 latest is not None
                 and latest[1].result_id == result.result_id
                 and sha256_file(latest[2]) == sha256_file(path)
-                and _parse_time(result.core.evaluated_at)
-                >= _parse_time(context.core.issued_at)
+                and _parse_time(result.core.evaluated_at) >= _parse_time(context.core.issued_at)
             )
         else:
             result_binding_valid = (
@@ -1234,13 +1269,19 @@ def admit_and_aggregate(
         for decision, decision_path in zip(decisions, decision_paths, strict=True):
             item = existing_inputs.get(decision.core.client_id)
             bundle_path = submissions_root / decision.core.client_id / "bundle.json"
-            retry_matches = retry_matches and item is not None and (
-                item.decision_sha256 == sha256_file(decision_path)
-                and item.bundle_sha256 == sha256_file(bundle_path)
+            retry_matches = (
+                retry_matches
+                and item is not None
+                and (
+                    item.decision_sha256 == sha256_file(decision_path)
+                    and item.bundle_sha256 == sha256_file(bundle_path)
+                )
             )
         model_path = workspace / "checkpoint" / "global-model.json"
-        retry_matches = retry_matches and model_path.is_file() and (
-            sha256_file(model_path) == existing.core.global_model_sha256
+        retry_matches = (
+            retry_matches
+            and model_path.is_file()
+            and (sha256_file(model_path) == existing.core.global_model_sha256)
         )
         if not retry_matches:
             raise SecureRoundError(
@@ -1371,20 +1412,15 @@ def verify_secure_round(
             context.core.federation_config_sha256
         ):
             errors.append("public federation configuration digest mismatch")
-        if (
-            checkpoint.core.accepted_count != len(EXPECTED_CLIENTS)
-            or len(checkpoint.core.accepted_inputs) != len(EXPECTED_CLIENTS)
-        ):
+        if checkpoint.core.accepted_count != len(EXPECTED_CLIENTS) or len(
+            checkpoint.core.accepted_inputs
+        ) != len(EXPECTED_CLIENTS):
             errors.append("checkpoint does not contain every required accepted input")
-        if (
-            checkpoint.core.quarantined_count != 0
-            or checkpoint.core.quarantined_decision_sha256
-        ):
+        if checkpoint.core.quarantined_count != 0 or checkpoint.core.quarantined_decision_sha256:
             errors.append("checkpoint contains quarantined contributions")
         input_client_ids = [item.client_id for item in checkpoint.core.accepted_inputs]
-        if (
-            input_client_ids != EXPECTED_CLIENTS
-            or len(set(input_client_ids)) != len(EXPECTED_CLIENTS)
+        if input_client_ids != EXPECTED_CLIENTS or len(set(input_client_ids)) != len(
+            EXPECTED_CLIENTS
         ):
             errors.append("checkpoint client inputs are incomplete, duplicated, or unordered")
         base = load_json(workspace / "public" / "base-model.json")
@@ -1445,9 +1481,7 @@ def verify_secure_round(
             )
             failed_checks = [check.name for check in independent_checks if not check.passed]
             if failed_checks:
-                errors.append(
-                    f"independent admission failed {item.client_id}: {failed_checks}"
-                )
+                errors.append(f"independent admission failed {item.client_id}: {failed_checks}")
             updates.append((arrays_from_export(update, np=np), item.num_examples))
         averaged = fedavg(updates, aggregate=aggregate) if updates else []
         if checkpoint.core.total_examples != sum(
@@ -1456,15 +1490,11 @@ def verify_secure_round(
             errors.append("checkpoint total example count mismatch")
         recomputed = copy.deepcopy(base)
         for parameter, array in zip(recomputed["parameters"], averaged, strict=True):
-            parameter["values"] = np.asarray(
-                array, dtype=np.dtype(parameter["dtype"])
-            ).tolist()
+            parameter["values"] = np.asarray(array, dtype=np.dtype(parameter["dtype"])).tolist()
         recomputed_digest = sha256_bytes(derived_json_bytes(recomputed))
         stored_model_path = workspace / "checkpoint" / "global-model.json"
         stored_digest = sha256_file(stored_model_path)
-        matches = (
-            recomputed_digest == checkpoint.core.global_model_sha256 == stored_digest
-        )
+        matches = recomputed_digest == checkpoint.core.global_model_sha256 == stored_digest
         if not matches:
             errors.append("stored checkpoint differs from independently recomputed FedAvg")
         if not (

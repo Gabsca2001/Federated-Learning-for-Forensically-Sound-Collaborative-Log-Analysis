@@ -21,13 +21,13 @@ from .campaign_accounting import (
     create_campaign_accounting,
     verify_campaign_accounting,
 )
+from .campaign_derivation_cli import add_campaign_graph_commands, run_campaign_graph_command
 from .central_baseline import train_central_baseline, verify_central_baseline
 from .composite_admission_artifact import (
     create_composite_admission_artifact,
     verify_composite_admission_artifact,
 )
 from .config import load_yaml
-from .disagreement_experiment import verify_disagreement_round
 from .contribution_explanation import (
     create_contribution_explanation_bundle,
     verify_contribution_explanation_bundle,
@@ -35,6 +35,7 @@ from .contribution_explanation import (
 from .dataset24 import prepare_dataset, write_audit
 from .dataset24 import verify_workspace as verify_m2_workspace
 from .demo import run_demo
+from .disagreement_experiment import verify_disagreement_round
 from .discovery_stress import create_discovery_stress, verify_discovery_stress
 from .explanation_bundle import create_explanation_bundle, verify_explanation_bundle
 from .external_generalization import (
@@ -46,9 +47,9 @@ from .external_generalization import (
 from .federated_partitioning import prepare_partitions, verify_partitions
 from .federated_training import run_federated_baseline, verify_federated_baseline
 from .final_preservation import verify_final_preservation
-from .investigation_report import (
-    create_investigation_report_bundle,
-    verify_investigation_report_bundle,
+from .in_round_admission import (
+    admit_and_aggregate_in_round,
+    verify_in_round_secure_round,
 )
 from .in_round_campaign_accounting import (
     create_in_round_campaign_accounting,
@@ -56,9 +57,10 @@ from .in_round_campaign_accounting import (
     is_in_round_accounting_workspace,
     verify_in_round_campaign_accounting,
 )
-from .in_round_admission import (
-    admit_and_aggregate_in_round,
-    verify_in_round_secure_round,
+from .ingestion_coverage_cli import add_ingestion_commands, run_ingestion_command
+from .investigation_report import (
+    create_investigation_report_bundle,
+    verify_investigation_report_bundle,
 )
 from .live_contribution_explanation import (
     create_live_contribution_explanation_bundle,
@@ -106,12 +108,13 @@ from .prototype_sensitivity_reporting import (
     generate_prototype_sensitivity_report,
     verify_prototype_sensitivity_report,
 )
-from .recovery import create_recovery_export, verify_recovery_export
 from .real_attestation_failure import (
     refresh_update_bundle_attestation,
     verify_real_attestation_failure_round,
 )
+from .recovery import create_recovery_export, verify_recovery_export
 from .reporting import generate_m3_report
+from .review_ledger_cli import add_review_commands, run_review_command
 from .runtime_overhead import (
     benchmark_tpm_esk_sign,
     verify_runtime_overhead_receipt,
@@ -123,6 +126,11 @@ from .secure_round import (
     initialize_secure_round,
     verify_secure_round,
 )
+from .submission_evidence_workspace import (
+    create_submission_inventory_workspace,
+    verify_submission_inventory_workspace,
+)
+from .submission_witness_cli import add_witness_commands, run_witness_command
 from .timestamp_anchor import (
     create_timestamp_anchor,
     verify_timestamp_anchor,
@@ -188,6 +196,13 @@ def _add_live_contribution_explanation_sources(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="fl-forensics")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    add_review_commands(subparsers)
+    add_campaign_graph_commands(subparsers)
+    add_ingestion_commands(subparsers)
+    add_witness_commands(subparsers)
+    from .unified_preservation import add_system_commands
+
+    add_system_commands(subparsers)
 
     demo = subparsers.add_parser("demo", help="run the phase-1 evidence vertical slice")
     demo.add_argument("--input", type=Path, required=True, help="Zeek JSONL file")
@@ -226,9 +241,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("data/raw/uwf-zeekdata24/csv"),
         help="Data24 CSV or Parquet root containing download_manifest.json",
     )
-    m2_prepare.add_argument(
-        "--output", type=Path, default=Path("artifacts/m2-data24")
-    )
+    m2_prepare.add_argument("--output", type=Path, default=Path("artifacts/m2-data24"))
     m2_prepare.add_argument(
         "--config",
         type=Path,
@@ -236,30 +249,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="preprocessing configuration; use configs/m2-parquet.yaml for the Parquet experiment",
     )
 
-    m2_verify = subparsers.add_parser(
-        "m2-verify", help="verify an M2 Data24 workspace read-only"
-    )
+    m2_verify = subparsers.add_parser("m2-verify", help="verify an M2 Data24 workspace read-only")
     m2_verify.add_argument("--workspace", type=Path, required=True)
 
     m2_train = subparsers.add_parser(
         "m2-train", help="train and evaluate the centralized MLP baseline"
     )
     m2_train.add_argument("--workspace", type=Path, required=True)
-    m2_train.add_argument(
-        "--output", type=Path, default=Path("artifacts/m2-data24-central")
-    )
-    m2_train.add_argument(
-        "--config", type=Path, default=Path("configs/base.yaml")
-    )
+    m2_train.add_argument("--output", type=Path, default=Path("artifacts/m2-data24-central"))
+    m2_train.add_argument("--config", type=Path, default=Path("configs/base.yaml"))
 
     m2_verify_baseline = subparsers.add_parser(
         "m2-verify-baseline",
         help="verify baseline outputs and their referenced M2 dataset inputs",
     )
     m2_verify_baseline.add_argument("--workspace", type=Path, required=True)
-    m2_verify_baseline.add_argument(
-        "--dataset-workspace", type=Path, required=True
-    )
+    m2_verify_baseline.add_argument("--dataset-workspace", type=Path, required=True)
 
     m3_partition = subparsers.add_parser(
         "m3-partition", help="prepare deterministic IID or non-IID Data24 client snapshots"
@@ -267,9 +272,7 @@ def build_parser() -> argparse.ArgumentParser:
     m3_partition.add_argument("--dataset-workspace", type=Path, required=True)
     m3_partition.add_argument("--output", type=Path, required=True)
     m3_partition.add_argument("--mode", choices=("iid", "non-iid"), required=True)
-    m3_partition.add_argument(
-        "--config", type=Path, default=Path("configs/federation.yaml")
-    )
+    m3_partition.add_argument("--config", type=Path, default=Path("configs/federation.yaml"))
 
     m3_verify_partitions = subparsers.add_parser(
         "m3-verify-partitions", help="verify M3 client snapshots and their M2 lineage"
@@ -283,9 +286,7 @@ def build_parser() -> argparse.ArgumentParser:
     m3_train.add_argument("--partition-workspace", type=Path, required=True)
     m3_train.add_argument("--dataset-workspace", type=Path, required=True)
     m3_train.add_argument("--output", type=Path, required=True)
-    m3_train.add_argument(
-        "--config", type=Path, default=Path("configs/federation.yaml")
-    )
+    m3_train.add_argument("--config", type=Path, default=Path("configs/federation.yaml"))
 
     m3_protean_train = subparsers.add_parser(
         "m3-protean-train",
@@ -294,9 +295,7 @@ def build_parser() -> argparse.ArgumentParser:
     m3_protean_train.add_argument("--partition-workspace", type=Path, required=True)
     m3_protean_train.add_argument("--dataset-workspace", type=Path, required=True)
     m3_protean_train.add_argument("--output", type=Path, required=True)
-    m3_protean_train.add_argument(
-        "--prototype-alignment-weight", type=float, required=True
-    )
+    m3_protean_train.add_argument("--prototype-alignment-weight", type=float, required=True)
     m3_protean_train.add_argument("--device", choices=("cpu", "cuda"))
     m3_protean_train.add_argument(
         "--config", type=Path, default=Path("configs/federation-protean.yaml")
@@ -337,9 +336,7 @@ def build_parser() -> argparse.ArgumentParser:
     m3_protean_verify_report.add_argument(
         "--candidate-workspace", action="append", type=Path, required=True
     )
-    m3_protean_verify_report.add_argument(
-        "--fedavg-workspace", type=Path, required=True
-    )
+    m3_protean_verify_report.add_argument("--fedavg-workspace", type=Path, required=True)
     m3_protean_verify_report.add_argument("--workspace", type=Path, required=True)
     m3_protean_verify_report.add_argument(
         "--config", type=Path, default=Path("configs/federation-protean.yaml")
@@ -349,9 +346,7 @@ def build_parser() -> argparse.ArgumentParser:
         "m3-protean-lock",
         help="freeze paper-faithful and operational endpoints before test access",
     )
-    m3_protean_lock.add_argument(
-        "--candidate-workspace", action="append", type=Path, required=True
-    )
+    m3_protean_lock.add_argument("--candidate-workspace", action="append", type=Path, required=True)
     m3_protean_lock.add_argument("--fedavg-workspace", type=Path, required=True)
     m3_protean_lock.add_argument("--report-workspace", type=Path, required=True)
     m3_protean_lock.add_argument("--output", type=Path, required=True)
@@ -366,12 +361,8 @@ def build_parser() -> argparse.ArgumentParser:
     m3_protean_verify_lock.add_argument(
         "--candidate-workspace", action="append", type=Path, required=True
     )
-    m3_protean_verify_lock.add_argument(
-        "--fedavg-workspace", type=Path, required=True
-    )
-    m3_protean_verify_lock.add_argument(
-        "--report-workspace", type=Path, required=True
-    )
+    m3_protean_verify_lock.add_argument("--fedavg-workspace", type=Path, required=True)
+    m3_protean_verify_lock.add_argument("--report-workspace", type=Path, required=True)
     m3_protean_verify_lock.add_argument("--workspace", type=Path, required=True)
     m3_protean_verify_lock.add_argument(
         "--config", type=Path, default=Path("configs/federation-protean.yaml")
@@ -386,12 +377,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     m3_protean_finalize.add_argument("--fedavg-workspace", type=Path, required=True)
     m3_protean_finalize.add_argument("--report-workspace", type=Path, required=True)
-    m3_protean_finalize.add_argument(
-        "--selection-lock-workspace", type=Path, required=True
-    )
-    m3_protean_finalize.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m3_protean_finalize.add_argument("--selection-lock-workspace", type=Path, required=True)
+    m3_protean_finalize.add_argument("--partition-workspace", type=Path, required=True)
     m3_protean_finalize.add_argument("--dataset-workspace", type=Path, required=True)
     m3_protean_finalize.add_argument("--output", type=Path, required=True)
     m3_protean_finalize.add_argument(
@@ -405,21 +392,11 @@ def build_parser() -> argparse.ArgumentParser:
     m3_protean_verify_final.add_argument(
         "--candidate-workspace", action="append", type=Path, required=True
     )
-    m3_protean_verify_final.add_argument(
-        "--fedavg-workspace", type=Path, required=True
-    )
-    m3_protean_verify_final.add_argument(
-        "--report-workspace", type=Path, required=True
-    )
-    m3_protean_verify_final.add_argument(
-        "--selection-lock-workspace", type=Path, required=True
-    )
-    m3_protean_verify_final.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
-    m3_protean_verify_final.add_argument(
-        "--dataset-workspace", type=Path, required=True
-    )
+    m3_protean_verify_final.add_argument("--fedavg-workspace", type=Path, required=True)
+    m3_protean_verify_final.add_argument("--report-workspace", type=Path, required=True)
+    m3_protean_verify_final.add_argument("--selection-lock-workspace", type=Path, required=True)
+    m3_protean_verify_final.add_argument("--partition-workspace", type=Path, required=True)
+    m3_protean_verify_final.add_argument("--dataset-workspace", type=Path, required=True)
     m3_protean_verify_final.add_argument("--workspace", type=Path, required=True)
     m3_protean_verify_final.add_argument(
         "--config", type=Path, default=Path("configs/federation-protean.yaml")
@@ -454,18 +431,14 @@ def build_parser() -> argparse.ArgumentParser:
     m3_multiseed.add_argument("--runs-workspace", type=Path, required=True)
     m3_multiseed.add_argument("--dataset-workspace", type=Path, required=True)
     m3_multiseed.add_argument("--output", type=Path, required=True)
-    m3_multiseed.add_argument(
-        "--config", type=Path, default=Path("configs/m3-multiseed.yaml")
-    )
+    m3_multiseed.add_argument("--config", type=Path, default=Path("configs/m3-multiseed.yaml"))
 
     m3_verify_multiseed = subparsers.add_parser(
         "m3-verify-multiseed",
         help="recompute the M3 multi-seed statistics from verified source runs",
     )
     m3_verify_multiseed.add_argument("--runs-workspace", type=Path, required=True)
-    m3_verify_multiseed.add_argument(
-        "--dataset-workspace", type=Path, required=True
-    )
+    m3_verify_multiseed.add_argument("--dataset-workspace", type=Path, required=True)
     m3_verify_multiseed.add_argument("--workspace", type=Path, required=True)
     m3_verify_multiseed.add_argument(
         "--config", type=Path, default=Path("configs/m3-multiseed.yaml")
@@ -546,25 +519,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="recompute the Discovery window-alignment sensitivity experiment",
     )
     m5_verify_discovery_stress.add_argument("--workspace", type=Path, required=True)
-    m5_verify_discovery_stress.add_argument(
-        "--primary-workspace", type=Path, required=True
-    )
-    m5_verify_discovery_stress.add_argument(
-        "--external-workspace", type=Path, required=True
-    )
+    m5_verify_discovery_stress.add_argument("--primary-workspace", type=Path, required=True)
+    m5_verify_discovery_stress.add_argument("--external-workspace", type=Path, required=True)
     m5_verify_discovery_stress.add_argument("--input", type=Path, required=True)
-    m5_verify_discovery_stress.add_argument(
-        "--campaign-workspace", type=Path, required=True
-    )
-    m5_verify_discovery_stress.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m5_verify_discovery_stress.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
-    m5_verify_discovery_stress.add_argument(
-        "--dataset-workspace", type=Path, required=True
-    )
+    m5_verify_discovery_stress.add_argument("--campaign-workspace", type=Path, required=True)
+    m5_verify_discovery_stress.add_argument("--trust-workspace", type=Path, required=True)
+    m5_verify_discovery_stress.add_argument("--partition-workspace", type=Path, required=True)
+    m5_verify_discovery_stress.add_argument("--dataset-workspace", type=Path, required=True)
     m5_verify_discovery_stress.add_argument(
         "--primary-config",
         type=Path,
@@ -578,35 +539,23 @@ def build_parser() -> argparse.ArgumentParser:
         "m4-verify-deployment",
         help="verify the one-to-one 15 client/swtpm Compose topology",
     )
-    m4_deployment.add_argument(
-        "--compose", type=Path, default=Path("compose.m4.yaml")
-    )
-    m4_deployment.add_argument(
-        "--clients", type=Path, default=Path("configs/clients.yaml")
-    )
+    m4_deployment.add_argument("--compose", type=Path, default=Path("compose.m4.yaml"))
+    m4_deployment.add_argument("--clients", type=Path, default=Path("configs/clients.yaml"))
 
     m4_init = subparsers.add_parser(
         "m4-init", help="initialize M4 authorities, PKI, and approved PCR baseline"
     )
-    m4_init.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
+    m4_init.add_argument("--workspace", type=Path, default=Path("artifacts/m4-trust"))
     m4_init.add_argument("--project-root", type=Path, default=Path("."))
-    m4_init.add_argument(
-        "--config", type=Path, default=Path("configs/trust.yaml")
-    )
-    m4_init.add_argument(
-        "--clients", type=Path, default=Path("configs/clients.yaml")
-    )
+    m4_init.add_argument("--config", type=Path, default=Path("configs/trust.yaml"))
+    m4_init.add_argument("--clients", type=Path, default=Path("configs/clients.yaml"))
 
     m4_provision = subparsers.add_parser(
         "m4-tpm-provision", help="provision EK/AK/ESK and create a signed enrollment request"
     )
     m4_provision.add_argument("--workspace", type=Path, required=True)
     m4_provision.add_argument("--project-root", type=Path, required=True)
-    m4_provision.add_argument(
-        "--config", type=Path, default=Path("configs/trust.yaml")
-    )
+    m4_provision.add_argument("--config", type=Path, default=Path("configs/trust.yaml"))
     m4_provision.add_argument("--client-id", required=True)
     m4_provision.add_argument("--node-id", required=True)
     m4_provision.add_argument("--tpm-instance", required=True)
@@ -616,31 +565,17 @@ def build_parser() -> argparse.ArgumentParser:
     m4_enroll = subparsers.add_parser(
         "m4-enroll", help="validate and sign all M4 enrollment requests"
     )
-    m4_enroll.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
-    m4_enroll.add_argument(
-        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
-    )
-    m4_enroll.add_argument(
-        "--config", type=Path, default=Path("configs/trust.yaml")
-    )
-    m4_enroll.add_argument(
-        "--clients", type=Path, default=Path("configs/clients.yaml")
-    )
+    m4_enroll.add_argument("--workspace", type=Path, default=Path("artifacts/m4-trust"))
+    m4_enroll.add_argument("--node-root", type=Path, default=Path("artifacts/m4-nodes"))
+    m4_enroll.add_argument("--config", type=Path, default=Path("configs/trust.yaml"))
+    m4_enroll.add_argument("--clients", type=Path, default=Path("configs/clients.yaml"))
 
     m4_challenge = subparsers.add_parser(
         "m4-challenge", help="issue signed, short-lived, one-use attestation challenges"
     )
-    m4_challenge.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
-    m4_challenge.add_argument(
-        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
-    )
-    m4_challenge.add_argument(
-        "--config", type=Path, default=Path("configs/trust.yaml")
-    )
+    m4_challenge.add_argument("--workspace", type=Path, default=Path("artifacts/m4-trust"))
+    m4_challenge.add_argument("--node-root", type=Path, default=Path("artifacts/m4-nodes"))
+    m4_challenge.add_argument("--config", type=Path, default=Path("configs/trust.yaml"))
     m4_challenge.add_argument(
         "--client-id",
         action="append",
@@ -669,29 +604,17 @@ def build_parser() -> argparse.ArgumentParser:
         "m4-verify-attestations",
         help="verify and preserve all Quote appraisal results",
     )
-    m4_verify.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
-    m4_verify.add_argument(
-        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
-    )
+    m4_verify.add_argument("--workspace", type=Path, default=Path("artifacts/m4-trust"))
+    m4_verify.add_argument("--node-root", type=Path, default=Path("artifacts/m4-nodes"))
 
     m4_mtls = subparsers.add_parser(
         "m4-mtls-test", help="exercise TLS 1.3 mutual authentication for all enrolled clients"
     )
-    m4_mtls.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
-    m4_mtls.add_argument(
-        "--node-root", type=Path, default=Path("artifacts/m4-nodes")
-    )
+    m4_mtls.add_argument("--workspace", type=Path, default=Path("artifacts/m4-trust"))
+    m4_mtls.add_argument("--node-root", type=Path, default=Path("artifacts/m4-nodes"))
 
-    m4_revoke = subparsers.add_parser(
-        "m4-revoke", help="append a signed enrollment revocation"
-    )
-    m4_revoke.add_argument(
-        "--workspace", type=Path, default=Path("artifacts/m4-trust")
-    )
+    m4_revoke = subparsers.add_parser("m4-revoke", help="append a signed enrollment revocation")
+    m4_revoke.add_argument("--workspace", type=Path, default=Path("artifacts/m4-trust"))
     m4_revoke.add_argument("--client-id", required=True)
     m4_revoke.add_argument("--reason", required=True)
 
@@ -706,12 +629,8 @@ def build_parser() -> argparse.ArgumentParser:
     m5_init.add_argument("--workspace", type=Path, required=True)
     m5_init.add_argument("--trust-workspace", type=Path, required=True)
     m5_init.add_argument("--partition-manifest", type=Path, required=True)
-    m5_init.add_argument(
-        "--config", type=Path, default=Path("configs/federation.yaml")
-    )
-    m5_init.add_argument(
-        "--secure-config", type=Path, default=Path("configs/secure-round.yaml")
-    )
+    m5_init.add_argument("--config", type=Path, default=Path("configs/federation.yaml"))
+    m5_init.add_argument("--secure-config", type=Path, default=Path("configs/secure-round.yaml"))
     m5_init.add_argument(
         "--coordinator-workspace",
         type=Path,
@@ -750,6 +669,23 @@ def build_parser() -> argparse.ArgumentParser:
     m5_client.add_argument("--submission-workspace", type=Path, required=True)
     m5_client.add_argument("--client-id", required=True)
     m5_client.add_argument("--tcti", required=True)
+    m5_client.add_argument(
+        "--client-receipt-root",
+        type=Path,
+        help="enable signed submission receipts and keep a separate client-side copy",
+    )
+
+    for command_name in ("m5-input-inventory", "m5-input-inventory-verify"):
+        inventory_command = subparsers.add_parser(
+            command_name, help="account for supplied client receipts, not final admission"
+        )
+        inventory_command.add_argument("--workspace", type=Path, required=True)
+        inventory_command.add_argument("--trust-workspace", type=Path, required=True)
+        inventory_command.add_argument("--client-receipts", type=Path, required=True)
+        inventory_command.add_argument("--submissions", type=Path, required=True)
+        inventory_command.add_argument("--inventory", type=Path, required=True)
+        if command_name == "m5-input-inventory":
+            inventory_command.add_argument("--coordinator-workspace", type=Path)
 
     m5_refresh_attestation = subparsers.add_parser(
         "m5-refresh-bundle-attestation",
@@ -757,12 +693,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     m5_refresh_attestation.add_argument("--public-workspace", type=Path, required=True)
     m5_refresh_attestation.add_argument("--node-workspace", type=Path, required=True)
-    m5_refresh_attestation.add_argument(
-        "--submission-workspace", type=Path, required=True
-    )
-    m5_refresh_attestation.add_argument(
-        "--attestation-result", type=Path, required=True
-    )
+    m5_refresh_attestation.add_argument("--submission-workspace", type=Path, required=True)
+    m5_refresh_attestation.add_argument("--attestation-result", type=Path, required=True)
     m5_refresh_attestation.add_argument("--client-id", required=True)
     m5_refresh_attestation.add_argument("--tcti", required=True)
 
@@ -792,14 +724,14 @@ def build_parser() -> argparse.ArgumentParser:
     m5_composite_aggregate.add_argument("--workspace", type=Path, required=True)
     m5_composite_aggregate.add_argument("--trust-workspace", type=Path, required=True)
     m5_composite_aggregate.add_argument("--submissions", type=Path, required=True)
-    m5_composite_aggregate.add_argument(
-        "--validation-split", type=Path, required=True
-    )
+    m5_composite_aggregate.add_argument("--validation-split", type=Path, required=True)
     m5_composite_aggregate.add_argument(
         "--coordinator-workspace",
         type=Path,
         help="shared campaign workspace containing the coordinator authority",
     )
+    m5_composite_aggregate.add_argument("--input-inventory", type=Path)
+    m5_composite_aggregate.add_argument("--client-receipts", type=Path)
 
     m5_composite_verify = subparsers.add_parser(
         "m5-verify-composite-round",
@@ -809,6 +741,18 @@ def build_parser() -> argparse.ArgumentParser:
     m5_composite_verify.add_argument("--trust-workspace", type=Path, required=True)
     m5_composite_verify.add_argument("--submissions", type=Path, required=True)
     m5_composite_verify.add_argument("--validation-split", type=Path, required=True)
+    m5_composite_verify.add_argument("--client-receipts", type=Path)
+    m5_composite_verify.add_argument("--require-derivation", action="store_true")
+
+    m5_derivation_verify = subparsers.add_parser(
+        "m5-verify-round-derivation",
+        help="require receipt-bound decisions, scoring, coefficients and derivation manifest",
+    )
+    m5_derivation_verify.add_argument("--workspace", type=Path, required=True)
+    m5_derivation_verify.add_argument("--trust-workspace", type=Path, required=True)
+    m5_derivation_verify.add_argument("--submissions", type=Path, required=True)
+    m5_derivation_verify.add_argument("--validation-split", type=Path, required=True)
+    m5_derivation_verify.add_argument("--client-receipts", type=Path, required=True)
 
     m5_finalize = subparsers.add_parser(
         "m5-finalize-campaign",
@@ -819,6 +763,7 @@ def build_parser() -> argparse.ArgumentParser:
     m5_finalize.add_argument("--partition-manifest", type=Path, required=True)
     m5_finalize.add_argument("--server-evaluation", type=Path, required=True)
     m5_finalize.add_argument("--rounds", type=int, required=True)
+    m5_finalize.add_argument("--checkpoint-verification", type=Path)
 
     m5_verify_campaign = subparsers.add_parser(
         "m5-verify-campaign",
@@ -828,33 +773,24 @@ def build_parser() -> argparse.ArgumentParser:
     m5_verify_campaign.add_argument("--trust-workspace", type=Path, required=True)
     m5_verify_campaign.add_argument("--partition-manifest", type=Path, required=True)
     m5_verify_campaign.add_argument("--server-evaluation", type=Path, required=True)
+    m5_verify_campaign.add_argument("--checkpoint-verification", type=Path)
 
     m6_verify_live_disagreement = subparsers.add_parser(
         "m6-verify-live-disagreement-round",
         help="verify bound M6 treatments and their in-round policy decisions",
     )
-    m6_verify_live_disagreement.add_argument(
-        "--workspace", type=Path, required=True
-    )
+    m6_verify_live_disagreement.add_argument("--workspace", type=Path, required=True)
 
     m6_verify_real_attestation = subparsers.add_parser(
         "m6-verify-real-attestation-failure-round",
         help="verify the authentic failed Quote and its exclusion before FedAvg",
     )
     m6_verify_real_attestation.add_argument("--workspace", type=Path, required=True)
-    m6_verify_real_attestation.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
+    m6_verify_real_attestation.add_argument("--trust-workspace", type=Path, required=True)
     m6_verify_real_attestation.add_argument("--submissions", type=Path, required=True)
-    m6_verify_live_disagreement.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m6_verify_live_disagreement.add_argument(
-        "--submissions", type=Path, required=True
-    )
-    m6_verify_live_disagreement.add_argument(
-        "--validation-split", type=Path, required=True
-    )
+    m6_verify_live_disagreement.add_argument("--trust-workspace", type=Path, required=True)
+    m6_verify_live_disagreement.add_argument("--submissions", type=Path, required=True)
+    m6_verify_live_disagreement.add_argument("--validation-split", type=Path, required=True)
 
     m6_freeze = subparsers.add_parser(
         "m6-freeze", help="freeze one deterministic attack set from a verified M5 round"
@@ -884,9 +820,7 @@ def build_parser() -> argparse.ArgumentParser:
         dest="attacker_ids",
         help="explicit attacker identity; repeat exactly f times",
     )
-    m6_freeze.add_argument(
-        "--config", type=Path, default=Path("configs/byzantine.yaml")
-    )
+    m6_freeze.add_argument("--config", type=Path, default=Path("configs/byzantine.yaml"))
 
     m6_verify_frozen = subparsers.add_parser(
         "m6-verify-frozen", help="verify every digest in a frozen M6 update set"
@@ -899,9 +833,7 @@ def build_parser() -> argparse.ArgumentParser:
     m6_compare.add_argument("--frozen-workspace", type=Path, required=True)
     m6_compare.add_argument("--partition-workspace", type=Path, required=True)
     m6_compare.add_argument("--output", type=Path, required=True)
-    m6_compare.add_argument(
-        "--config", type=Path, default=Path("configs/byzantine.yaml")
-    )
+    m6_compare.add_argument("--config", type=Path, default=Path("configs/byzantine.yaml"))
 
     m6_verify = subparsers.add_parser(
         "m6-verify", help="independently recompute an M6 aggregator comparison"
@@ -909,9 +841,7 @@ def build_parser() -> argparse.ArgumentParser:
     m6_verify.add_argument("--frozen-workspace", type=Path, required=True)
     m6_verify.add_argument("--partition-workspace", type=Path, required=True)
     m6_verify.add_argument("--workspace", type=Path, required=True)
-    m6_verify.add_argument(
-        "--config", type=Path, default=Path("configs/byzantine.yaml")
-    )
+    m6_verify.add_argument("--config", type=Path, default=Path("configs/byzantine.yaml"))
 
     m6_joint_admission = subparsers.add_parser(
         "m6-joint-admission",
@@ -920,18 +850,10 @@ def build_parser() -> argparse.ArgumentParser:
     m6_joint_admission.add_argument("--round-workspace", type=Path, required=True)
     m6_joint_admission.add_argument("--trust-workspace", type=Path, required=True)
     m6_joint_admission.add_argument("--partition-workspace", type=Path, required=True)
-    m6_joint_admission.add_argument(
-        "--clean-frozen-workspace", type=Path, required=True
-    )
-    m6_joint_admission.add_argument(
-        "--clean-comparison-workspace", type=Path, required=True
-    )
-    m6_joint_admission.add_argument(
-        "--candidate-frozen-workspace", type=Path, required=True
-    )
-    m6_joint_admission.add_argument(
-        "--candidate-comparison-workspace", type=Path, required=True
-    )
+    m6_joint_admission.add_argument("--clean-frozen-workspace", type=Path, required=True)
+    m6_joint_admission.add_argument("--clean-comparison-workspace", type=Path, required=True)
+    m6_joint_admission.add_argument("--candidate-frozen-workspace", type=Path, required=True)
+    m6_joint_admission.add_argument("--candidate-comparison-workspace", type=Path, required=True)
     m6_joint_admission.add_argument("--output", type=Path, required=True)
     m6_joint_admission.add_argument(
         "--config",
@@ -948,24 +870,12 @@ def build_parser() -> argparse.ArgumentParser:
         "m6-verify-joint-admission",
         help="recompute a joint TPM/statistical admission artifact",
     )
-    m6_verify_joint_admission.add_argument(
-        "--round-workspace", type=Path, required=True
-    )
-    m6_verify_joint_admission.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m6_verify_joint_admission.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
-    m6_verify_joint_admission.add_argument(
-        "--clean-frozen-workspace", type=Path, required=True
-    )
-    m6_verify_joint_admission.add_argument(
-        "--clean-comparison-workspace", type=Path, required=True
-    )
-    m6_verify_joint_admission.add_argument(
-        "--candidate-frozen-workspace", type=Path, required=True
-    )
+    m6_verify_joint_admission.add_argument("--round-workspace", type=Path, required=True)
+    m6_verify_joint_admission.add_argument("--trust-workspace", type=Path, required=True)
+    m6_verify_joint_admission.add_argument("--partition-workspace", type=Path, required=True)
+    m6_verify_joint_admission.add_argument("--clean-frozen-workspace", type=Path, required=True)
+    m6_verify_joint_admission.add_argument("--clean-comparison-workspace", type=Path, required=True)
+    m6_verify_joint_admission.add_argument("--candidate-frozen-workspace", type=Path, required=True)
     m6_verify_joint_admission.add_argument(
         "--candidate-comparison-workspace", type=Path, required=True
     )
@@ -991,9 +901,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="recompute M6 contribution explanations and aggregation traces",
     )
     _add_contribution_explanation_sources(m6_verify_contribution_explanations)
-    m6_verify_contribution_explanations.add_argument(
-        "--workspace", type=Path, required=True
-    )
+    m6_verify_contribution_explanations.add_argument("--workspace", type=Path, required=True)
 
     m6_explain_live_contributions = subparsers.add_parser(
         "m6-explain-live-contributions",
@@ -1006,24 +914,16 @@ def build_parser() -> argparse.ArgumentParser:
         "m6-verify-live-contribution-explanations",
         help="recompute the live M6 explanation bundle from campaign evidence",
     )
-    _add_live_contribution_explanation_sources(
-        m6_verify_live_contribution_explanations
-    )
-    m6_verify_live_contribution_explanations.add_argument(
-        "--workspace", type=Path, required=True
-    )
+    _add_live_contribution_explanation_sources(m6_verify_live_contribution_explanations)
+    m6_verify_live_contribution_explanations.add_argument("--workspace", type=Path, required=True)
 
     m6_prototype_freeze = subparsers.add_parser(
         "m6-prototype-freeze",
         help="freeze class prototypes from a verified M5 global checkpoint",
     )
-    m6_prototype_freeze.add_argument(
-        "--source-round-workspace", type=Path, required=True
-    )
+    m6_prototype_freeze.add_argument("--source-round-workspace", type=Path, required=True)
     m6_prototype_freeze.add_argument("--trust-workspace", type=Path, required=True)
-    m6_prototype_freeze.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m6_prototype_freeze.add_argument("--partition-workspace", type=Path, required=True)
     m6_prototype_freeze.add_argument("--output", type=Path, required=True)
     m6_prototype_freeze.add_argument("--f", type=int, required=True)
     m6_prototype_freeze.add_argument(
@@ -1043,15 +943,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="re-extract and verify every frozen prototype submission",
     )
     m6_prototype_verify_frozen.add_argument("--workspace", type=Path, required=True)
-    m6_prototype_verify_frozen.add_argument(
-        "--source-round-workspace", type=Path, required=True
-    )
-    m6_prototype_verify_frozen.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m6_prototype_verify_frozen.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m6_prototype_verify_frozen.add_argument("--source-round-workspace", type=Path, required=True)
+    m6_prototype_verify_frozen.add_argument("--trust-workspace", type=Path, required=True)
+    m6_prototype_verify_frozen.add_argument("--partition-workspace", type=Path, required=True)
     m6_prototype_verify_frozen.add_argument(
         "--config",
         type=Path,
@@ -1062,12 +956,8 @@ def build_parser() -> argparse.ArgumentParser:
         "m6-prototype-compare",
         help="compare baseline and robust aggregation on frozen prototypes",
     )
-    m6_prototype_compare.add_argument(
-        "--frozen-workspace", type=Path, required=True
-    )
-    m6_prototype_compare.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m6_prototype_compare.add_argument("--frozen-workspace", type=Path, required=True)
+    m6_prototype_compare.add_argument("--partition-workspace", type=Path, required=True)
     m6_prototype_compare.add_argument("--output", type=Path, required=True)
     m6_prototype_compare.add_argument(
         "--config",
@@ -1079,12 +969,8 @@ def build_parser() -> argparse.ArgumentParser:
         "m6-prototype-verify",
         help="recompute and verify the M6 prototype comparison",
     )
-    m6_prototype_verify.add_argument(
-        "--frozen-workspace", type=Path, required=True
-    )
-    m6_prototype_verify.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m6_prototype_verify.add_argument("--frozen-workspace", type=Path, required=True)
+    m6_prototype_verify.add_argument("--partition-workspace", type=Path, required=True)
     m6_prototype_verify.add_argument("--workspace", type=Path, required=True)
     m6_prototype_verify.add_argument(
         "--config",
@@ -1106,15 +992,9 @@ def build_parser() -> argparse.ArgumentParser:
         "m6-prototype-sensitivity",
         help="run every predeclared exploratory prototype sensitivity scenario",
     )
-    m6_prototype_sensitivity.add_argument(
-        "--source-round-workspace", type=Path, required=True
-    )
-    m6_prototype_sensitivity.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m6_prototype_sensitivity.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m6_prototype_sensitivity.add_argument("--source-round-workspace", type=Path, required=True)
+    m6_prototype_sensitivity.add_argument("--trust-workspace", type=Path, required=True)
+    m6_prototype_sensitivity.add_argument("--partition-workspace", type=Path, required=True)
     m6_prototype_sensitivity.add_argument("--output", type=Path, required=True)
     m6_prototype_sensitivity.add_argument(
         "--config",
@@ -1129,15 +1009,9 @@ def build_parser() -> argparse.ArgumentParser:
     m6_prototype_verify_sensitivity.add_argument(
         "--source-round-workspace", type=Path, required=True
     )
-    m6_prototype_verify_sensitivity.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m6_prototype_verify_sensitivity.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
-    m6_prototype_verify_sensitivity.add_argument(
-        "--workspace", type=Path, required=True
-    )
+    m6_prototype_verify_sensitivity.add_argument("--trust-workspace", type=Path, required=True)
+    m6_prototype_verify_sensitivity.add_argument("--partition-workspace", type=Path, required=True)
+    m6_prototype_verify_sensitivity.add_argument("--workspace", type=Path, required=True)
     m6_prototype_verify_sensitivity.add_argument(
         "--config",
         type=Path,
@@ -1151,12 +1025,8 @@ def build_parser() -> argparse.ArgumentParser:
     m6_prototype_sensitivity_report.add_argument(
         "--source-round-workspace", type=Path, required=True
     )
-    m6_prototype_sensitivity_report.add_argument(
-        "--trust-workspace", type=Path, required=True
-    )
-    m6_prototype_sensitivity_report.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m6_prototype_sensitivity_report.add_argument("--trust-workspace", type=Path, required=True)
+    m6_prototype_sensitivity_report.add_argument("--partition-workspace", type=Path, required=True)
     m6_prototype_sensitivity_report.add_argument(
         "--sensitivity-workspace", type=Path, required=True
     )
@@ -1209,9 +1079,7 @@ def build_parser() -> argparse.ArgumentParser:
     m7_selection = m7_predict.add_mutually_exclusive_group(required=True)
     m7_selection.add_argument("--window-id", action="append", dest="window_ids")
     m7_selection.add_argument("--first", type=int)
-    m7_predict.add_argument(
-        "--config", type=Path, default=Path("configs/investigation.yaml")
-    )
+    m7_predict.add_argument("--config", type=Path, default=Path("configs/investigation.yaml"))
 
     m7_verify_predictions = subparsers.add_parser(
         "m7-verify-predictions",
@@ -1219,9 +1087,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     m7_verify_predictions.add_argument("--round-workspace", type=Path, required=True)
     m7_verify_predictions.add_argument("--trust-workspace", type=Path, required=True)
-    m7_verify_predictions.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m7_verify_predictions.add_argument("--partition-workspace", type=Path, required=True)
     m7_verify_predictions.add_argument("--dataset-workspace", type=Path, required=True)
     m7_verify_predictions.add_argument("--workspace", type=Path, required=True)
     m7_verify_predictions.add_argument(
@@ -1255,13 +1121,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     m7_verify_explanations.add_argument("--round-workspace", type=Path, required=True)
     m7_verify_explanations.add_argument("--trust-workspace", type=Path, required=True)
-    m7_verify_explanations.add_argument(
-        "--partition-workspace", type=Path, required=True
-    )
+    m7_verify_explanations.add_argument("--partition-workspace", type=Path, required=True)
     m7_verify_explanations.add_argument("--dataset-workspace", type=Path, required=True)
-    m7_verify_explanations.add_argument(
-        "--prediction-workspace", type=Path, required=True
-    )
+    m7_verify_explanations.add_argument("--prediction-workspace", type=Path, required=True)
     m7_verify_explanations.add_argument("--workspace", type=Path, required=True)
     m7_verify_explanations.add_argument(
         "--prediction-config",
@@ -1435,9 +1297,7 @@ def build_parser() -> argparse.ArgumentParser:
     m7_report.add_argument(
         "--explanation-config",
         type=Path,
-        default=Path(
-            "configs/investigation-explanations.yaml"
-        ),
+        default=Path("configs/investigation-explanations.yaml"),
     )
     m7_report.add_argument(
         "--attack-config",
@@ -1502,9 +1362,7 @@ def build_parser() -> argparse.ArgumentParser:
     m7_verify_report.add_argument(
         "--explanation-config",
         type=Path,
-        default=Path(
-            "configs/investigation-explanations.yaml"
-        ),
+        default=Path("configs/investigation-explanations.yaml"),
     )
     m7_verify_report.add_argument(
         "--attack-config",
@@ -1520,9 +1378,7 @@ def build_parser() -> argparse.ArgumentParser:
     m8_preserve = subparsers.add_parser(
         "m8-preserve", help="publish the deterministic M8.1 preservation inventory"
     )
-    m8_preserve.add_argument(
-        "--config", type=Path, default=Path("configs/preservation.yaml")
-    )
+    m8_preserve.add_argument("--config", type=Path, default=Path("configs/preservation.yaml"))
     m8_preserve.add_argument(
         "--output", type=Path, default=Path("artifacts/m8-preservation-manifest-v1")
     )
@@ -1530,9 +1386,7 @@ def build_parser() -> argparse.ArgumentParser:
     m8_verify = subparsers.add_parser(
         "m8-verify-preservation", help="reconstruct and verify an M8.1 inventory"
     )
-    m8_verify.add_argument(
-        "--config", type=Path, default=Path("configs/preservation.yaml")
-    )
+    m8_verify.add_argument("--config", type=Path, default=Path("configs/preservation.yaml"))
     m8_verify.add_argument(
         "--workspace",
         type=Path,
@@ -1542,19 +1396,13 @@ def build_parser() -> argparse.ArgumentParser:
     m8_merkle = subparsers.add_parser(
         "m8-build-merkle", help="commit the M8.1 inventory in a deterministic Merkle tree"
     )
-    m8_merkle.add_argument(
-        "--config", type=Path, default=Path("configs/merkle.yaml")
-    )
-    m8_merkle.add_argument(
-        "--output", type=Path, default=Path("artifacts/m8-merkle-tree-v1")
-    )
+    m8_merkle.add_argument("--config", type=Path, default=Path("configs/merkle.yaml"))
+    m8_merkle.add_argument("--output", type=Path, default=Path("artifacts/m8-merkle-tree-v1"))
 
     m8_verify_merkle = subparsers.add_parser(
         "m8-verify-merkle", help="reconstruct and verify the M8.2 Merkle commitment"
     )
-    m8_verify_merkle.add_argument(
-        "--config", type=Path, default=Path("configs/merkle.yaml")
-    )
+    m8_verify_merkle.add_argument("--config", type=Path, default=Path("configs/merkle.yaml"))
     m8_verify_merkle.add_argument(
         "--workspace",
         type=Path,
@@ -1564,9 +1412,7 @@ def build_parser() -> argparse.ArgumentParser:
     m8_timestamp = subparsers.add_parser(
         "m8-anchor-time", help="obtain and verify an RFC 3161 timestamp for M8.2"
     )
-    m8_timestamp.add_argument(
-        "--config", type=Path, default=Path("configs/timestamp.yaml")
-    )
+    m8_timestamp.add_argument("--config", type=Path, default=Path("configs/timestamp.yaml"))
     m8_timestamp.add_argument(
         "--output", type=Path, default=Path("artifacts/m8-timestamp-anchor-v1")
     )
@@ -1574,9 +1420,7 @@ def build_parser() -> argparse.ArgumentParser:
     m8_verify_timestamp = subparsers.add_parser(
         "m8-verify-timestamp", help="offline-verify the M8.3 RFC 3161 proof"
     )
-    m8_verify_timestamp.add_argument(
-        "--config", type=Path, default=Path("configs/timestamp.yaml")
-    )
+    m8_verify_timestamp.add_argument("--config", type=Path, default=Path("configs/timestamp.yaml"))
     m8_verify_timestamp.add_argument(
         "--workspace",
         type=Path,
@@ -1586,12 +1430,8 @@ def build_parser() -> argparse.ArgumentParser:
     m8_recovery = subparsers.add_parser(
         "m8-export-recovery", help="create the deterministic M8.4 offline recovery TAR"
     )
-    m8_recovery.add_argument(
-        "--config", type=Path, default=Path("configs/recovery.yaml")
-    )
-    m8_recovery.add_argument(
-        "--output", type=Path, default=Path("artifacts/m8-recovery-export-v1")
-    )
+    m8_recovery.add_argument("--config", type=Path, default=Path("configs/recovery.yaml"))
+    m8_recovery.add_argument("--output", type=Path, default=Path("artifacts/m8-recovery-export-v1"))
 
     m8_verify_recovery = subparsers.add_parser(
         "m8-verify-recovery", help="verify M8.4 entirely from the recovery package"
@@ -1691,7 +1531,42 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # System-profile commands preserve the original milestone command contracts.
     arguments = build_parser().parse_args(argv)
+    if arguments.command in {"system-chain-verify", "m8-unified-create", "m8-unified-verify"}:
+        from .unified_preservation import run_system_command
+
+        try:
+            result = run_system_command(arguments)
+            code = 0
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            result, code = {"status": "invalid", "errors": [str(exc)]}, 1
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return code
+    if arguments.command.startswith("witness-"):
+        result, code = run_witness_command(arguments)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return code
+    if arguments.command in {"ingestion-create", "ingestion-verify"}:
+        result, code = run_ingestion_command(arguments)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return code
+    if arguments.command in {
+        "campaign-derive",
+        "campaign-verify",
+        "campaign-blast-radius",
+        "counterfactual-create",
+        "counterfactual-verify",
+        "retraining-create",
+        "retraining-verify",
+    }:
+        result, code = run_campaign_graph_command(arguments)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return code
+    if arguments.command in {"review-init", "review-append", "review-verify"}:
+        result, code = run_review_command(arguments)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return code
     if arguments.command == "demo":
         result = run_demo(
             input_path=arguments.input,
@@ -1997,9 +1872,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     if arguments.command == "m4-tpm-quote":
-        result = create_tpm_quote_evidence(
-            node_workspace=arguments.workspace, tcti=arguments.tcti
-        )
+        result = create_tpm_quote_evidence(node_workspace=arguments.workspace, tcti=arguments.tcti)
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     if arguments.command == "m4-tpm-extend-pcr":
@@ -2022,9 +1895,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
     if arguments.command == "m4-mtls-test":
-        result = test_mtls_bindings(
-            workspace=arguments.workspace, node_root=arguments.node_root
-        )
+        result = test_mtls_bindings(workspace=arguments.workspace, node_root=arguments.node_root)
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
     if arguments.command == "m4-revoke":
@@ -2047,12 +1918,8 @@ def main(argv: list[str] | None = None) -> int:
             round_number=arguments.round_number,
             previous_round_workspace=arguments.previous_round_workspace,
             in_round_admission_config_path=arguments.in_round_admission_config,
-            disagreement_experiment_config_path=(
-                arguments.disagreement_experiment_config
-            ),
-            real_attestation_failure_config_path=(
-                arguments.real_attestation_failure_config
-            ),
+            disagreement_experiment_config_path=(arguments.disagreement_experiment_config),
+            real_attestation_failure_config_path=(arguments.real_attestation_failure_config),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
@@ -2065,9 +1932,26 @@ def main(argv: list[str] | None = None) -> int:
             submission_workspace=arguments.submission_workspace,
             tcti=arguments.tcti,
             client_id=arguments.client_id,
+            client_receipt_root=arguments.client_receipt_root,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
+    if arguments.command in {"m5-input-inventory", "m5-input-inventory-verify"}:
+        options = {
+            "workspace": arguments.workspace,
+            "trust_workspace": arguments.trust_workspace,
+            "client_receipts": arguments.client_receipts,
+            "submissions_root": arguments.submissions,
+            "inventory_path": arguments.inventory,
+        }
+        if arguments.command == "m5-input-inventory":
+            result = create_submission_inventory_workspace(
+                **options, coordinator_workspace=arguments.coordinator_workspace
+            )
+        else:
+            result = verify_submission_inventory_workspace(**options)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["status"] == "verified_for_evidence_set" else 1
     if arguments.command == "m5-refresh-bundle-attestation":
         result = refresh_update_bundle_attestation(
             public_workspace=arguments.public_workspace,
@@ -2103,34 +1987,46 @@ def main(argv: list[str] | None = None) -> int:
             submissions_root=arguments.submissions,
             validation_split_path=arguments.validation_split,
             coordinator_workspace=arguments.coordinator_workspace,
+            input_inventory_path=arguments.input_inventory,
+            client_receipts=arguments.client_receipts,
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "aggregated" else 1
-    if arguments.command == "m5-verify-composite-round":
+    if arguments.command in {"m5-verify-composite-round", "m5-verify-round-derivation"}:
         result = verify_in_round_secure_round(
             workspace=arguments.workspace,
             trust_workspace=arguments.trust_workspace,
             submissions_root=arguments.submissions,
             validation_split_path=arguments.validation_split,
+            client_receipts=arguments.client_receipts,
+            require_derivation=(
+                arguments.command == "m5-verify-round-derivation" or arguments.require_derivation
+            ),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1
     if arguments.command == "m5-finalize-campaign":
+        from .checkpoint_verification import verification_arguments
+
         result = finalize_secure_campaign(
             workspace=arguments.workspace,
             trust_workspace=arguments.trust_workspace,
             partition_manifest_path=arguments.partition_manifest,
             server_evaluation_path=arguments.server_evaluation,
             expected_rounds=arguments.rounds,
+            **verification_arguments(arguments.checkpoint_verification),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0
     if arguments.command == "m5-verify-campaign":
+        from .checkpoint_verification import verification_arguments
+
         result = verify_secure_campaign(
             workspace=arguments.workspace,
             trust_workspace=arguments.trust_workspace,
             partition_manifest_path=arguments.partition_manifest,
             server_evaluation_path=arguments.server_evaluation,
+            **verification_arguments(arguments.checkpoint_verification),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "verified" else 1

@@ -35,6 +35,8 @@ def _verify_round_checkpoint(
     round_workspace: Path,
     trust_workspace: Path,
     partition_workspace: Path,
+    verification_profile: dict[str, Any] | None = None,
+    profile_root: Path | None = None,
 ) -> dict[str, Any]:
     """Dispatch fail-closed verification by the checkpoint's signed schema."""
 
@@ -42,6 +44,8 @@ def _verify_round_checkpoint(
     checkpoint = load_json(checkpoint_path)
     artifact_type = checkpoint.get("artifact_type")
     if artifact_type == "secure_global_checkpoint":
+        if verification_profile is not None or (round_workspace / "witness-round").exists():
+            raise PredictionBundleError("witness profile requires an in-round secure checkpoint")
         return verify_secure_round(
             workspace=round_workspace,
             trust_workspace=trust_workspace,
@@ -81,11 +85,23 @@ def _verify_round_checkpoint(
             if isinstance(exc, PredictionBundleError):
                 raise
             raise PredictionBundleError(str(exc)) from exc
+        if verification_profile is not None or (round_workspace / "witness-round").exists():
+            from .checkpoint_verification import verify_witness_checkpoint
+
+            return verify_witness_checkpoint(
+                workspace=round_workspace,
+                trust_workspace=trust_workspace,
+                validation_split_path=validation_split_path,
+                verification_profile=verification_profile,
+                profile_root=profile_root,
+            )
         return verify_in_round_secure_round(
             workspace=round_workspace,
             trust_workspace=trust_workspace,
             submissions_root=round_workspace / "submissions",
             validation_split_path=validation_split_path,
+            client_receipts=(round_workspace / "client-receipts")
+            if (round_workspace / "client-receipts").is_dir() else None,
         )
     raise PredictionBundleError(
         f"unsupported secure checkpoint artifact type: {artifact_type!r}"
@@ -318,6 +334,14 @@ def _validated_inputs(
         round_workspace=round_workspace,
         trust_workspace=trust_workspace,
         partition_workspace=partition_workspace,
+        **(
+            {
+                "verification_profile": config["checkpoint_verification"],
+                "profile_root": config_path.resolve().parent,
+            }
+            if "checkpoint_verification" in config
+            else {}
+        ),
     )
     if round_verification.get("status") != "verified":
         raise PredictionBundleError(

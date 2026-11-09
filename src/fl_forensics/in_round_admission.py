@@ -53,10 +53,12 @@ from .in_round_admission_models import (
     InRoundSecureCheckpoint,
     InRoundSecureCheckpointCore,
 )
+from .live_bounded_aggregation import backend as aggregation_backend
+from .live_bounded_aggregation import label as aggregation_label
+from .live_bounded_aggregation import materialize as materialize_bounded
 from .preprocessing import derived_json_bytes
 from .real_attestation_failure import active_target_for_round
 from .secure_round import (
-    EXPECTED_CLIENTS,
     SecureRoundError,
     _admission_checks,
     _coordinator_public_key,
@@ -89,16 +91,22 @@ SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256 = frozenset(
     }
 )
 
-LEGACY_FRESH_ATTESTATION_DETAIL = (
-    "signed, passed, fresh attestation and identity binding"
+# Explicit pre-derivation versions of this repository, supporting both live policies.
+SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256 = frozenset(
+    {
+        "96d86edde3569913405a8ab4e98340dcb5ad8df96849f45bec9b45b292c79b16",
+        "a2ce95e26f9c388fc18ec5ca8cdad2efac0f31e9d5e7374c63ba66fd7086da42",
+    }
 )
+
+LEGACY_FRESH_ATTESTATION_DETAIL = "signed, passed, fresh attestation and identity binding"
 
 
 def _utc(value: datetime) -> str:
     return value.astimezone(UTC).isoformat().replace("+00:00", "Z")
 
 
-def _decimal(value: int | float | Decimal) -> str:
+def _decimal(value: float | Decimal) -> str:
     return format(Decimal(str(value)).normalize(), "f")
 
 
@@ -108,6 +116,14 @@ def _implementation_sha256() -> str:
         {
             name: sha256_file(root / name)
             for name in (
+                "client_envelope_policy.py",
+                "current_evidence_policy.py",
+                "sequential_decision.py",
+                "state_conditioned_audit.py",
+                "live_envelope.py",
+                "bounded_aggregation.py",
+                "live_bounded_aggregation.py",
+                "partition_training_binding.py",
                 "byzantine.py",
                 "composite_admission.py",
                 "composite_admission_models.py",
@@ -115,6 +131,8 @@ def _implementation_sha256() -> str:
                 "disagreement_experiment_models.py",
                 "in_round_admission.py",
                 "in_round_admission_models.py",
+                "round_derivation.py",
+                "round_derivation_models.py",
                 "secure_round.py",
             )
         }
@@ -167,8 +185,7 @@ def build_in_round_contract(
     if set(raw_references) != set(raw_weights):
         raise InRoundAdmissionError("indicator references and weights must align")
     references = [
-        IndicatorReference(name=name, **raw_references[name])
-        for name in sorted(raw_references)
+        IndicatorReference(name=name, **raw_references[name]) for name in sorted(raw_references)
     ]
     weights = {name: float(raw_weights[name]) for name in sorted(raw_weights)}
     if any(value <= 0.0 for value in weights.values()):
@@ -182,17 +199,13 @@ def build_in_round_contract(
         )
     split_records = partition_manifest.get("server_evaluation_splits")
     if not isinstance(split_records, dict) or "validation" not in split_records:
-        raise InRoundAdmissionError(
-            "in-round admission requires an isolated validation split"
-        )
+        raise InRoundAdmissionError("in-round admission requires an isolated validation split")
     validation = split_records["validation"]
     core = InRoundAdmissionContractCore(
         policy_id=str(settings["policy_id"]),
         primary_policy=str(settings["primary_policy"]),
         policy_config_sha256=config_sha256,
-        calibration_source_admission_sha256=str(
-            calibration["source_admission_sha256"]
-        ),
+        calibration_source_admission_sha256=str(calibration["source_admission_sha256"]),
         calibration_semantics=str(calibration["semantics"]),
         indicator_references=references,
         indicator_weights=weights,
@@ -222,6 +235,13 @@ def install_in_round_contract(
 ) -> tuple[InRoundAdmissionContract, dict[str, Any]]:
     """Publish policy inputs before the signed round context is created."""
 
+    if (
+        load_yaml(config_path)[0].get("runtime_admission", {}).get("primary_policy")
+        == "observable_envelope"
+    ):
+        from .live_envelope import install_assets
+
+        install_assets(public_workspace, config_path)
     contract = build_in_round_contract(
         config_path=config_path, partition_manifest=partition_manifest
     )
@@ -247,12 +267,11 @@ def _load_bound_contract(workspace: Path) -> InRoundAdmissionContract:
     training_contract = load_json(public / "training-contract.json")
     binding = training_contract.get("in_round_admission")
     if not isinstance(binding, dict):
-        raise InRoundAdmissionError(
-            "signed training contract has no in-round admission binding"
-        )
-    if binding.get("policy_config_path") != "in-round-admission.yaml" or binding.get(
-        "contract_path"
-    ) != "in-round-admission-contract.json":
+        raise InRoundAdmissionError("signed training contract has no in-round admission binding")
+    if (
+        binding.get("policy_config_path") != "in-round-admission.yaml"
+        or binding.get("contract_path") != "in-round-admission-contract.json"
+    ):
         raise InRoundAdmissionError("unsafe in-round admission public path")
     config_path = public / "in-round-admission.yaml"
     contract_path = public / "in-round-admission-contract.json"
@@ -262,21 +281,19 @@ def _load_bound_contract(workspace: Path) -> InRoundAdmissionContract:
         raise InRoundAdmissionError("bound in-round admission contract changed")
     partition = load_json(public / "partition-manifest.json")
     observed = InRoundAdmissionContract.model_validate(load_json(contract_path))
-    expected = build_in_round_contract(
-        config_path=config_path, partition_manifest=partition
-    )
+    expected = build_in_round_contract(config_path=config_path, partition_manifest=partition)
     if observed.core.implementation_sha256 != expected.core.implementation_sha256:
-        if observed.core.primary_policy != "gated_composite":
-            raise InRoundAdmissionError(
-                "historical implementations only support gated_composite"
-            )
         if (
-            observed.core.implementation_sha256
-            not in SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+            observed.core.primary_policy != "gated_composite"
+            and observed.core.implementation_sha256
+            not in SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256
         ):
-            raise InRoundAdmissionError(
-                "unsupported historical in-round implementation digest"
-            )
+            raise InRoundAdmissionError("historical implementations only support gated_composite")
+        if observed.core.implementation_sha256 not in (
+            SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+            | SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256
+        ):
+            raise InRoundAdmissionError("unsupported historical in-round implementation digest")
         legacy_core = expected.core.model_copy(
             update={"implementation_sha256": observed.core.implementation_sha256}
         )
@@ -374,6 +391,7 @@ def _load_or_create_trust_records(
     now: datetime,
     create: bool,
     coordinator_workspace: Path | None = None,
+    blocked_client_ids: set[str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str]]:
     context = _load_context(workspace / "public")
     base = load_json(workspace / "public" / "base-model.json")
@@ -400,6 +418,8 @@ def _load_or_create_trust_records(
     ):
         raise InRoundAdmissionError("in-round replay state/context mismatch")
     for client_id in [item.client_id for item in context.core.clients]:
+        if client_id in (blocked_client_ids or set()):
+            continue
         submission = submissions_root / client_id
         bundle_path = submission / "bundle.json"
         if not bundle_path.is_file():
@@ -443,9 +463,7 @@ def _load_or_create_trust_records(
                     trust_workspace=trust_workspace,
                     now=decision_time,
                     expected_client_id=client_id,
-                    post_training_attestation_client_id=(
-                        post_training_attestation_client_id
-                    ),
+                    post_training_attestation_client_id=(post_training_attestation_client_id),
                 )
                 trust_decision = _sign_decision(
                     signer=signer,
@@ -458,18 +476,14 @@ def _load_or_create_trust_records(
             write_json_once(decision_path, trust_decision.model_dump(mode="json"))
         if consumed is None:
             if not create:
-                raise InRoundAdmissionError(
-                    f"in-round replay slot is missing: {client_id}"
-                )
+                raise InRoundAdmissionError(f"in-round replay slot is missing: {client_id}")
             state.setdefault("slots", {})[slot] = {
                 "bundle_sha256": bundle_sha256,
                 "decision_path": str(decision_path.relative_to(workspace)),
             }
             atomic_json(state_path, state)
         elif consumed.get("decision_path") != str(decision_path.relative_to(workspace)):
-            raise InRoundAdmissionError(
-                f"in-round replay decision path mismatch: {client_id}"
-            )
+            raise InRoundAdmissionError(f"in-round replay decision path mismatch: {client_id}")
         if not _verify_signed(trust_decision, public_key):
             raise InRoundAdmissionError(f"invalid trust decision signature: {client_id}")
         if trust_decision.core.bundle_sha256 != bundle_sha256:
@@ -485,29 +499,20 @@ def _load_or_create_trust_records(
                 trust_workspace=trust_workspace,
                 now=decision_time,
                 expected_client_id=client_id,
-                post_training_attestation_client_id=(
-                    post_training_attestation_client_id
-                ),
+                post_training_attestation_client_id=(post_training_attestation_client_id),
             )
             if [item.model_dump(mode="json") for item in trust_decision.core.checks] != [
                 item.model_dump(mode="json") for item in expected_checks
             ]:
                 legacy_checks = [
-                    check.model_copy(
-                        update={"detail": LEGACY_FRESH_ATTESTATION_DETAIL}
-                    )
+                    check.model_copy(update={"detail": LEGACY_FRESH_ATTESTATION_DETAIL})
                     if check.name == "fresh_attestation"
                     else check
                     for check in expected_checks
                 ]
-                legacy_compatible = (
-                    post_training_attestation_client_id is None
-                    and [
-                        item.model_dump(mode="json")
-                        for item in trust_decision.core.checks
-                    ]
-                    == [item.model_dump(mode="json") for item in legacy_checks]
-                )
+                legacy_compatible = post_training_attestation_client_id is None and [
+                    item.model_dump(mode="json") for item in trust_decision.core.checks
+                ] == [item.model_dump(mode="json") for item in legacy_checks]
                 if not legacy_compatible:
                     raise InRoundAdmissionError(
                         f"trust decision checks do not recompute: {client_id}"
@@ -548,20 +553,14 @@ def _compute_statistical_state(
     eligible = [
         item
         for item in records
-        if item["bundle"] is not None
-        and item["trust_decision"].core.status == "accepted"
+        if item["bundle"] is not None and item["trust_decision"].core.status == "accepted"
     ]
     if len(eligible) < contract.core.minimum_contributors:
         return {}
     base_arrays = arrays_from_export(base, np=np)
     updates = [load_json(item["submission"] / "update.json") for item in eligible]
-    deltas = [
-        model_delta(base_arrays, arrays_from_export(update, np=np))
-        for update in updates
-    ]
-    indicators = update_indicators(
-        deltas, client_ids=[str(item["client_id"]) for item in eligible]
-    )
+    deltas = [model_delta(base_arrays, arrays_from_export(update, np=np)) for update in updates]
+    indicators = update_indicators(deltas, client_ids=[str(item["client_id"]) for item in eligible])
     base_validation_f1 = _validation_f1(
         model_export=base, rows=validation_rows, batch_size=batch_size
     )
@@ -605,8 +604,14 @@ def _compute_statistical_state(
             "statistics": statistical[client_id],
             "policies": policies,
             "primary": next(
-                decision for decision in policies
-                if decision.policy == contract.core.primary_policy
+                decision
+                for decision in policies
+                if decision.policy
+                == (
+                    "tpm_only"
+                    if contract.core.primary_policy == "observable_envelope"
+                    else contract.core.primary_policy
+                )
             ),
         }
     return result
@@ -647,12 +652,10 @@ def _runtime_decision_core(
             reasons=["bundle integrity failed before complete trust evaluation"],
         )
     state = statistical_state.get(client_id)
-    integrity_failed = [
-        item for item in failed if item.name not in TRUST_CHECK_NAMES
-    ]
+    integrity_failed = [item for item in failed if item.name not in TRUST_CHECK_NAMES]
     if integrity_failed:
         final_status = "integrity_quarantined"
-        effective = Decimal("0")
+        effective = Decimal(0)
         policies: list[Any] = []
         primary = None
         statistics = None
@@ -661,7 +664,7 @@ def _runtime_decision_core(
     elif state is None:
         trust_failed = any(item.name in TRUST_CHECK_NAMES for item in failed)
         final_status = "trust_quarantined" if trust_failed else "integrity_quarantined"
-        effective = Decimal("0")
+        effective = Decimal(0)
         policies = []
         primary = None
         statistics = None
@@ -674,11 +677,11 @@ def _runtime_decision_core(
         primary = state["primary"]
         final_status = primary.status
         if primary.status == "accepted":
-            factor = Decimal("1")
+            factor = Decimal(1)
         elif primary.status == "accepted_downweighted":
             factor = Decimal(str(contract.core.accepted_downweight_factor))
         else:
-            factor = Decimal("0")
+            factor = Decimal(0)
         effective = Decimal(bundle.core.num_examples) * factor
         reasons = list(primary.reasons)
     bundle_id = (
@@ -743,9 +746,7 @@ def _load_or_create_runtime_decisions(
             decided_at = decision.core.decided_at
         else:
             if not create or signer is None:
-                raise InRoundAdmissionError(
-                    f"missing in-round contribution decision: {client_id}"
-                )
+                raise InRoundAdmissionError(f"missing in-round contribution decision: {client_id}")
             decided_at = _utc(now)
             core = _runtime_decision_core(
                 context=context,
@@ -764,9 +765,7 @@ def _load_or_create_runtime_decisions(
             )
             write_once(path, derived_json_bytes(decision.model_dump(mode="json")))
         if not verify_in_round_signature(decision, public_key):
-            raise InRoundAdmissionError(
-                f"invalid in-round decision signature: {client_id}"
-            )
+            raise InRoundAdmissionError(f"invalid in-round decision signature: {client_id}")
         expected_core = _runtime_decision_core(
             context=context,
             contract=contract,
@@ -788,11 +787,12 @@ def _aggregate_inputs(
     base: dict[str, Any],
     decisions: list[tuple[InRoundContributionDecision, Path]],
     records: list[dict[str, Any]],
+    aggregate_override: Any = None,
 ) -> tuple[dict[str, Any], list[InRoundCheckpointInput], Decimal]:
     by_client = {str(item["client_id"]): item for item in records}
     weighted_updates: list[tuple[list[Any], float]] = []
     inputs: list[InRoundCheckpointInput] = []
-    total_weight = Decimal("0")
+    total_weight = Decimal(0)
     for decision, decision_path in decisions:
         if decision.core.final_status not in {"accepted", "accepted_downweighted"}:
             continue
@@ -822,12 +822,10 @@ def _aggregate_inputs(
     if not weighted_updates:
         raise InRoundAdmissionError("no contribution remains after in-round admission")
     _np, _torch, _flwr, _sklearn, aggregate, *_metrics = dependencies()
-    averaged = fedavg(weighted_updates, aggregate=aggregate)
+    averaged = fedavg(weighted_updates, aggregate=aggregate_override or aggregate)
     result = copy.deepcopy(base)
     for parameter, array in zip(result["parameters"], averaged, strict=True):
-        parameter["values"] = np.asarray(
-            array, dtype=np.dtype(parameter["dtype"])
-        ).tolist()
+        parameter["values"] = np.asarray(array, dtype=np.dtype(parameter["dtype"])).tolist()
     return result, inputs, total_weight
 
 
@@ -839,16 +837,49 @@ def admit_and_aggregate_in_round(
     validation_split_path: Path,
     coordinator_workspace: Path | None = None,
     now: datetime | None = None,
+    input_inventory_path: Path | None = None,
+    client_receipts: Path | None = None,
 ) -> dict[str, Any]:
     """Apply trust and statistical gates after local training, before aggregation."""
 
+    from .round_derivation import materialize_round_derivation, prepare_round_derivation
+
+    binding = prepare_round_derivation(
+        workspace=workspace,
+        trust_workspace=trust_workspace,
+        submissions_root=submissions_root,
+        client_receipts=client_receipts,
+        input_inventory_path=input_inventory_path,
+        coordinator_workspace=coordinator_workspace,
+        create=True,
+    )
     checkpoint_path = workspace / "checkpoint" / "manifest.json"
+    if (
+        binding is not None
+        and not checkpoint_path.exists()
+        and (workspace / "derivation" / "manifest.json").exists()
+    ):
+        verification = verify_in_round_secure_round(
+            workspace=workspace,
+            trust_workspace=trust_workspace,
+            submissions_root=submissions_root,
+            validation_split_path=validation_split_path,
+            client_receipts=client_receipts,
+            require_derivation=True,
+        )
+        if verification["status"] != "verified":
+            raise InRoundAdmissionError(
+                f"existing failed-round derivation does not verify: {verification['errors']}"
+            )
+        return {**verification, "status": "failed", "idempotent": True, "checkpoint_created": False}
     if checkpoint_path.is_file():
         verification = verify_in_round_secure_round(
             workspace=workspace,
             trust_workspace=trust_workspace,
             submissions_root=submissions_root,
             validation_split_path=validation_split_path,
+            client_receipts=client_receipts,
+            require_derivation=binding is not None,
         )
         if verification["status"] != "verified":
             raise InRoundAdmissionError(
@@ -869,6 +900,24 @@ def admit_and_aggregate_in_round(
                 )
             },
             "workspace": str(workspace),
+            **{
+                key: value
+                for key, value in verification.items()
+                if key
+                in {
+                    "derivation_status",
+                    "round_status",
+                    "admission_decisions_verified",
+                    "derivation_verified",
+                    "scoring_population_verified",
+                    "coefficients_verified",
+                    "deadline_verified",
+                    "delivery_verified",
+                    "derivation_manifest_id",
+                    "property_statuses",
+                    "verification_scope",
+                }
+            },
         }
     now = now or datetime.now(UTC)
     context = _load_context(workspace / "public")
@@ -888,6 +937,7 @@ def admit_and_aggregate_in_round(
         now=now,
         create=True,
         coordinator_workspace=coordinator_workspace,
+        blocked_client_ids=set(binding.core.blocked_client_ids) if binding is not None else None,
     )
     base = load_json(workspace / "public" / "base-model.json")
     statistical_state = _compute_statistical_state(
@@ -898,6 +948,20 @@ def admit_and_aggregate_in_round(
         contract=contract,
         disagreement_contract=disagreement_contract,
     )
+    if contract.core.primary_policy == "observable_envelope":
+        from .live_envelope import apply_live_envelope
+
+        statistical_state = apply_live_envelope(
+            workspace=workspace,
+            trust_workspace=trust_workspace,
+            validation_split_path=validation_split_path,
+            context=context,
+            contract=contract,
+            records=records,
+            base=base,
+            statistical_state=statistical_state,
+            create=True,
+        )
     decisions = _load_or_create_runtime_decisions(
         workspace=workspace,
         records=records,
@@ -914,6 +978,23 @@ def admit_and_aggregate_in_round(
         if item.core.final_status in {"accepted", "accepted_downweighted"}
     ]
     if len(contributing) < contract.core.minimum_contributors:
+        derivation = {}
+        if binding is not None:
+            derivation = materialize_round_derivation(
+                workspace=workspace,
+                context=context,
+                contract=contract,
+                records=records,
+                missing=missing,
+                statistical_state=statistical_state,
+                decisions=decisions,
+                base=base,
+                aggregate=aggregation_backend(workspace, dependencies()[4]),
+                now=now,
+                aggregated=False,
+                create=True,
+                coordinator_workspace=coordinator_workspace,
+            )
         return {
             "status": "failed",
             "reason": "minimum contributing client count was not reached",
@@ -922,9 +1003,14 @@ def admit_and_aggregate_in_round(
             "missing_count": len(missing),
             "checkpoint_created": False,
             "workspace": str(workspace),
+            **derivation,
         }
+    materialize_bounded(workspace, records, decisions, True)
     global_model, inputs, total_weight = _aggregate_inputs(
-        base=base, decisions=decisions, records=records
+        base=base,
+        decisions=decisions,
+        records=records,
+        aggregate_override=aggregation_backend(workspace, dependencies()[4]),
     )
     model_bytes = derived_json_bytes(global_model)
     model_sha256 = sha256_bytes(model_bytes)
@@ -934,9 +1020,7 @@ def admit_and_aggregate_in_round(
         for item, path in decisions
         if item.core.final_status not in {"accepted", "accepted_downweighted"}
     ]
-    trust_accepted_count = sum(
-        item["trust_decision"].core.status == "accepted" for item in records
-    )
+    trust_accepted_count = sum(item["trust_decision"].core.status == "accepted" for item in records)
     core = InRoundSecureCheckpointCore(
         campaign_id=context.core.campaign_id,
         context_id=context.context_id,
@@ -944,15 +1028,13 @@ def admit_and_aggregate_in_round(
         round_number=context.core.round_number,
         previous_checkpoint_sha256=context.core.previous_checkpoint_sha256,
         base_model_sha256=context.core.base_model_sha256,
-        aggregation_strategy="FedAvg-" + contract.core.primary_policy.replace("_", "-"),
+        aggregation_strategy=aggregation_label(workspace, contract),
         required_client_count=context.core.required_client_count,
         minimum_contributors=contract.core.minimum_contributors,
         evaluated_count=len(decisions),
         trust_accepted_count=trust_accepted_count,
         accepted_count=len(inputs),
-        downweighted_count=sum(
-            item.status == "accepted_downweighted" for item in inputs
-        ),
+        downweighted_count=sum(item.status == "accepted_downweighted" for item in inputs),
         quarantined_count=len(quarantined),
         missing_client_ids=missing,
         total_examples=sum(item.num_examples for item in inputs),
@@ -986,6 +1068,23 @@ def admit_and_aggregate_in_round(
     state = load_json(state_path)
     state["in_round_checkpoint_id"] = checkpoint.checkpoint_id
     atomic_json(state_path, state)
+    derivation = {}
+    if binding is not None:
+        derivation = materialize_round_derivation(
+            workspace=workspace,
+            context=context,
+            contract=contract,
+            records=records,
+            missing=missing,
+            statistical_state=statistical_state,
+            decisions=decisions,
+            base=base,
+            aggregate=aggregation_backend(workspace, dependencies()[4]),
+            now=now,
+            aggregated=True,
+            create=True,
+            coordinator_workspace=coordinator_workspace,
+        )
     return {
         "status": "aggregated",
         "checkpoint_id": checkpoint.checkpoint_id,
@@ -996,6 +1095,7 @@ def admit_and_aggregate_in_round(
         "global_model_sha256": core.global_model_sha256,
         "idempotent": False,
         "workspace": str(workspace),
+        **derivation,
     }
 
 
@@ -1005,18 +1105,54 @@ def verify_in_round_secure_round(
     trust_workspace: Path,
     submissions_root: Path,
     validation_split_path: Path,
+    client_receipts: Path | None = None,
+    require_derivation: bool = False,
 ) -> dict[str, Any]:
     """Recompute all gates and the exact checkpoint from immutable round inputs."""
 
     errors: list[str] = []
     checkpoint: InRoundSecureCheckpoint | None = None
     aggregate_matches = False
+    derivation: dict[str, Any] = {}
+    binding = None
+    derivation_requested = (
+        require_derivation
+        or client_receipts is not None
+        or any(
+            (workspace / "derivation" / name).exists()
+            for name in (
+                "binding.json",
+                "input-inventory.json",
+                "scoring-state.json",
+                "manifest.json",
+            )
+        )
+    )
     try:
+        from .round_derivation import (
+            materialize_round_derivation,
+            prepare_round_derivation,
+            verify_failed_round_derivation,
+        )
+
+        binding = prepare_round_derivation(
+            workspace=workspace,
+            trust_workspace=trust_workspace,
+            submissions_root=submissions_root,
+            client_receipts=client_receipts,
+            require=require_derivation,
+        )
+        if binding is not None and not (workspace / "checkpoint" / "manifest.json").is_file():
+            return verify_failed_round_derivation(
+                workspace=workspace,
+                trust_workspace=trust_workspace,
+                submissions_root=submissions_root,
+                validation_split_path=validation_split_path,
+                binding=binding,
+            )
         context = _load_context(workspace / "public")
         contract = _load_bound_contract(workspace)
-        disagreement_contract = load_bound_disagreement_contract(
-            workspace / "public"
-        )
+        disagreement_contract = load_bound_disagreement_contract(workspace / "public")
         validation_rows = _load_validation_rows(
             workspace=workspace,
             validation_split_path=validation_split_path,
@@ -1033,6 +1169,9 @@ def verify_in_round_secure_round(
             submissions_root=submissions_root,
             now=_parse_time(checkpoint.core.created_at),
             create=False,
+            blocked_client_ids=set(binding.core.blocked_client_ids)
+            if binding is not None
+            else None,
         )
         base = load_json(workspace / "public" / "base-model.json")
         statistical_state = _compute_statistical_state(
@@ -1043,6 +1182,20 @@ def verify_in_round_secure_round(
             contract=contract,
             disagreement_contract=disagreement_contract,
         )
+        if contract.core.primary_policy == "observable_envelope":
+            from .live_envelope import apply_live_envelope
+
+            statistical_state = apply_live_envelope(
+                workspace=workspace,
+                trust_workspace=trust_workspace,
+                validation_split_path=validation_split_path,
+                context=context,
+                contract=contract,
+                records=records,
+                base=base,
+                statistical_state=statistical_state,
+                create=False,
+            )
         decisions = _load_or_create_runtime_decisions(
             workspace=workspace,
             records=records,
@@ -1052,8 +1205,12 @@ def verify_in_round_secure_round(
             now=_parse_time(checkpoint.core.created_at),
             create=False,
         )
+        materialize_bounded(workspace, records, decisions, False)
         recomputed_model, inputs, total_weight = _aggregate_inputs(
-            base=base, decisions=decisions, records=records
+            base=base,
+            decisions=decisions,
+            records=records,
+            aggregate_override=aggregation_backend(workspace, dependencies()[4]),
         )
         quarantined = [
             (item, path)
@@ -1063,7 +1220,7 @@ def verify_in_round_secure_round(
         expected_values = {
             "aggregation strategy": (
                 checkpoint.core.aggregation_strategy,
-                "FedAvg-" + contract.core.primary_policy.replace("_", "-"),
+                aggregation_label(workspace, contract),
             ),
             "campaign": (checkpoint.core.campaign_id, context.core.campaign_id),
             "context": (checkpoint.core.context_id, context.context_id),
@@ -1135,10 +1292,12 @@ def verify_in_round_secure_round(
         implementation_matches = (
             checkpoint.core.implementation_sha256 == _implementation_sha256()
             or (
-                checkpoint.core.implementation_sha256
-                == contract.core.implementation_sha256
+                checkpoint.core.implementation_sha256 == contract.core.implementation_sha256
                 and checkpoint.core.implementation_sha256
-                in SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+                in (
+                    SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+                    | SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256
+                )
             )
         )
         if not implementation_matches:
@@ -1156,9 +1315,7 @@ def verify_in_round_secure_round(
         aggregate_matches = (
             model_path.is_file()
             and model_path.read_bytes() == recomputed_bytes
-            and sha256_file(model_path)
-            == checkpoint.core.global_model_sha256
-            == recomputed_sha256
+            and sha256_file(model_path) == checkpoint.core.global_model_sha256 == recomputed_sha256
         )
         if not aggregate_matches:
             errors.append("in-round checkpoint differs from recomputed weighted FedAvg")
@@ -1168,6 +1325,21 @@ def verify_in_round_secure_round(
             < _parse_time(context.core.expires_at)
         ):
             errors.append("in-round checkpoint was created outside context lifetime")
+        if binding is not None and not errors:
+            derivation = materialize_round_derivation(
+                workspace=workspace,
+                context=context,
+                contract=contract,
+                records=records,
+                missing=missing,
+                statistical_state=statistical_state,
+                decisions=decisions,
+                base=base,
+                aggregate=aggregation_backend(workspace, dependencies()[4]),
+                now=_parse_time(checkpoint.core.created_at),
+                aggregated=True,
+                create=False,
+            )
     except (FileNotFoundError, KeyError, OSError, TypeError, ValueError) as exc:
         errors.append(str(exc))
     return {
@@ -1178,13 +1350,35 @@ def verify_in_round_secure_round(
         "downweighted_count": checkpoint.core.downweighted_count if checkpoint else 0,
         "quarantined_count": checkpoint.core.quarantined_count if checkpoint else 0,
         "missing_count": len(checkpoint.core.missing_client_ids) if checkpoint else 0,
-        "global_model_sha256": (
-            checkpoint.core.global_model_sha256 if checkpoint else None
-        ),
+        "global_model_sha256": (checkpoint.core.global_model_sha256 if checkpoint else None),
         "trust_recomputed": not errors,
         "statistics_recomputed": not errors,
         "decisions_recomputed": not errors,
         "aggregate_recomputed": aggregate_matches,
         "error_count": len(errors),
         "errors": errors,
+        "derivation_status": ("failed" if errors and derivation_requested else "not_requested"),
+        "verification_scope": "receipt_bound_round_derivation"
+        if derivation_requested
+        else "legacy_secure_round",
+        "admission_decisions_verified": False,
+        "derivation_verified": False,
+        "scoring_population_verified": False,
+        "coefficients_verified": False,
+        "deadline_verified": False,
+        "delivery_verified": False,
+        "property_statuses": {
+            "admission_decisions": (
+                "insufficient_evidence"
+                if derivation_requested and client_receipts is None
+                else "failed"
+                if errors and derivation_requested
+                else "not_checked"
+            ),
+            "deadline": "not_checked",
+            "delivery": "not_checked",
+            "scoring_population": "failed" if errors and derivation_requested else "not_checked",
+            "coefficients": "failed" if errors and derivation_requested else "not_checked",
+        },
+        **derivation,
     }

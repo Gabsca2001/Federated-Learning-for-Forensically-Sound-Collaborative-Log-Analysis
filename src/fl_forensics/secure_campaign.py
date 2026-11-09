@@ -188,6 +188,8 @@ def _inspect_campaign(
     partition_manifest_path: Path,
     server_evaluation_path: Path,
     expected_rounds: int,
+    verification_profile: dict[str, Any] | None = None,
+    profile_root: Path | None = None,
 ) -> dict[str, Any]:
     if expected_rounds < 1:
         raise SecureRoundError("a secure campaign must contain at least one round")
@@ -243,6 +245,10 @@ def _inspect_campaign(
             checkpoint_value.get("artifact_type")
             == "in_round_secure_global_checkpoint"
         )
+        if not in_round and (
+            verification_profile is not None or (round_workspace / "witness-round").exists()
+        ):
+            raise SecureRoundError("witness profile requires an in-round secure checkpoint")
         if campaign_in_round_mode is None:
             campaign_in_round_mode = in_round
         elif in_round != campaign_in_round_mode:
@@ -254,12 +260,25 @@ def _inspect_campaign(
                 raise SecureRoundError(
                     "in-round campaign requires an isolated validation split"
                 )
-            verification = verify_in_round_secure_round(
-                workspace=round_workspace,
-                trust_workspace=trust_workspace,
-                submissions_root=round_workspace / "submissions",
-                validation_split_path=validation_split_path,
-            )
+            if verification_profile is not None or (round_workspace / "witness-round").exists():
+                from .checkpoint_verification import verify_witness_checkpoint
+
+                verification = verify_witness_checkpoint(
+                    workspace=round_workspace,
+                    trust_workspace=trust_workspace,
+                    validation_split_path=validation_split_path,
+                    verification_profile=verification_profile,
+                    profile_root=profile_root,
+                )
+            else:
+                verification = verify_in_round_secure_round(
+                    workspace=round_workspace,
+                    trust_workspace=trust_workspace,
+                    submissions_root=round_workspace / "submissions",
+                    validation_split_path=validation_split_path,
+                    client_receipts=(round_workspace / "client-receipts")
+                    if (round_workspace / "client-receipts").is_dir() else None,
+                )
             checkpoint = InRoundSecureCheckpoint.model_validate(checkpoint_value)
             if in_round_contract_sha256 is None:
                 in_round_contract_sha256 = checkpoint.core.admission_contract_sha256
@@ -505,6 +524,8 @@ def finalize_secure_campaign(
     server_evaluation_path: Path,
     expected_rounds: int,
     now: datetime | None = None,
+    verification_profile: dict[str, Any] | None = None,
+    profile_root: Path | None = None,
 ) -> dict[str, Any]:
     """Verify all rounds, select on validation, then evaluate test exactly once."""
 
@@ -517,6 +538,8 @@ def finalize_secure_campaign(
         partition_manifest_path=partition_manifest_path,
         server_evaluation_path=server_evaluation_path,
         expected_rounds=expected_rounds,
+        verification_profile=verification_profile,
+        profile_root=profile_root,
     )
     evaluation_root = workspace / "evaluation"
     for artifact in inspected["validation_artifacts"]:
@@ -595,6 +618,8 @@ def verify_secure_campaign(
     trust_workspace: Path,
     partition_manifest_path: Path,
     server_evaluation_path: Path,
+    verification_profile: dict[str, Any] | None = None,
+    profile_root: Path | None = None,
 ) -> dict[str, Any]:
     """Independently verify the round chain, selection, and final evaluation."""
 
@@ -611,6 +636,8 @@ def verify_secure_campaign(
             partition_manifest_path=partition_manifest_path,
             server_evaluation_path=server_evaluation_path,
             expected_rounds=manifest.core.round_count,
+            verification_profile=verification_profile,
+            profile_root=profile_root,
         )
         expected_references = [item.model_dump(mode="json") for item in inspected["references"]]
         if [item.model_dump(mode="json") for item in manifest.core.rounds] != (expected_references):

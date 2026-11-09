@@ -185,6 +185,67 @@ class PredictionBundleTests(unittest.TestCase):
             trust_workspace=self.root / "trust",
             submissions_root=round_workspace / "submissions",
             validation_split_path=validation_path,
+            client_receipts=None,
+        )
+
+    def test_checkpoint_verification_forwards_collected_client_receipts(self) -> None:
+        round_workspace = self.root / "in-round"
+        partition_workspace = self.root / "partition"
+        validation_path = partition_workspace / "server" / "splits" / "validation.json"
+        write_once(
+            validation_path,
+            derived_json_bytes(
+                {
+                    "split": "validation",
+                    "rows": {"validation": [{"window_id": "window-validation"}]},
+                }
+            ),
+        )
+        write_once(
+            round_workspace / "checkpoint" / "manifest.json",
+            derived_json_bytes(
+                {"artifact_type": "in_round_secure_global_checkpoint"}
+            ),
+        )
+        write_once(
+            round_workspace / "public" / "partition-manifest.json",
+            derived_json_bytes(
+                {
+                    "artifact_type": "partition_manifest",
+                    "server_evaluation_splits": {
+                        "validation": {
+                            "path": "server/splits/validation.json",
+                            "sha256": sha256_file(validation_path),
+                        }
+                    },
+                }
+            ),
+        )
+        (round_workspace / "client-receipts").mkdir()
+        expected = {"status": "verified", "errors": []}
+        with (
+            patch(
+                "fl_forensics.prediction_bundle._verify_partition_snapshot_files",
+                return_value=validation_path,
+            ) as partition_verifier,
+            patch(
+                "fl_forensics.prediction_bundle.verify_in_round_secure_round",
+                return_value=expected,
+            ) as round_verifier,
+        ):
+            result = _verify_round_checkpoint(
+                round_workspace=round_workspace,
+                trust_workspace=self.root / "trust",
+                partition_workspace=partition_workspace,
+            )
+        self.assertEqual(result, expected)
+        partition_verifier.assert_called_once()
+        round_verifier.assert_called_once_with(
+            workspace=round_workspace,
+            trust_workspace=self.root / "trust",
+            submissions_root=round_workspace / "submissions",
+            validation_split_path=validation_path,
+            client_receipts=round_workspace / "client-receipts",
         )
 
     def test_checkpoint_verification_rejects_unknown_artifact_type(self) -> None:

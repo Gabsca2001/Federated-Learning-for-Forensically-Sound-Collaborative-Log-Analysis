@@ -1,0 +1,5 @@
+FROM revision-attested-chain:20261102-v4
+COPY src /app/src
+COPY configs /app/configs
+COPY scripts /app/scripts
+COPY Dockerfile.revision-dba /app/Dockerfile.revision-dba

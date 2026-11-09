@@ -14,6 +14,7 @@ PolicyName = Literal[
     "statistics_only",
     "sequential",
     "gated_composite",
+    "observable_envelope",
 ]
 DecisionStatus = Literal[
     "accepted",
@@ -98,9 +99,7 @@ class CompositeAdmissionClientRecord(StrictModel):
     source_bundle_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     source_update_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     candidate_update_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    candidate_update_binding: Literal[
-        "source-bundle-signed", "controlled-derived-not-resigned"
-    ]
+    candidate_update_binding: Literal["source-bundle-signed", "controlled-derived-not-resigned"]
     attestation_result_id: str
     attestation_result_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     trust: TrustSignal

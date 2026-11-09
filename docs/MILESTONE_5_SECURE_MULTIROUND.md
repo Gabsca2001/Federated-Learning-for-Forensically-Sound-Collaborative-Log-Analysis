@@ -1,11 +1,20 @@
-# Milestone 5 — secure multi-round campaign
+# Milestone 5 - secure multi-round campaign
 
-> **Pilot multiobiettivo — 2026-09-30:** quattro ricerche validation-only su un round firmato congelato.
-> Obiettivi reconnaissance→benign e degrado generale, gated-composite e TPM-only;
-> 66 query per cella, verifiche indipendenti completate. Nel caso untargeted il calo
-> selezionato è 0,675 pp con gated e 25,297 pp con TPM-only (soglia predefinita 1 pp).
-> Non è evidenza su test o training live; vedere il [report e i grafici](../results/m6-adaptive-objectives-ablation-v1/README.md)
-> e il [protocollo](M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
+> **Optional witnessed intake, 2026-11-05:** policy v2 separates the signed
+> registration cutoff from live round expiry. The new witness-round adapter
+> and offline verifier bind the sealed eligible set to actual M5 decisions,
+> weights and checkpoint, with 752 passing core tests and two fresh 15-client
+> software-TPM cases. This is two one-round protocol cases, not another complete
+> 30-round utility or attack campaign. Default profiles and historical evidence
+> retain their original scope. Independent administration and production TSA
+> acceptance remain deployment assumptions. See [the contract](WITNESS_LIVE_ROUND.md).
+
+> **Multiobjective pilot — 2026-09-30:** four validation-only searches over a signed frozen round.
+> Objectives: reconnaissance→benign and general degradation, with gated-composite and TPM-only;
+> 66 queries per cell, with independent verification completed. For the untargeted objective,
+> the selected drop is 0.675 pp with gated and 25.297 pp with TPM-only (predeclared threshold: 1 pp).
+> This is not evidence from test evaluation or live training; see the [report and plots](../results/m6-adaptive-objectives-ablation-v1/README.md)
+> and the [protocol](M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
 
 
 > **Completion update — 2026-09-30:** all four adaptive extension pairs are verified.

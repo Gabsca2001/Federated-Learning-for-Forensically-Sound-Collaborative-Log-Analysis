@@ -1,0 +1,6 @@
+FROM revision-attested-chain:20261102-v4
+COPY src /app/src
+COPY configs /app/configs
+COPY scripts /app/scripts
+COPY tests/test_witness_time.py /app/tests/test_witness_time.py
+COPY Dockerfile.revision-witness /app/Dockerfile.revision-witness
