@@ -1,0 +1,10 @@
+{
+  "recorded_utc": "2026-11-09T22:31:07Z",
+  "phase": "train",
+  "local_training_device": "cuda",
+  "env": "FL_FORENSICS_REPLAY_DEVICE=cuda",
+  "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU, 610.88",
+  "torch": "2.14.0+cu130 13.0",
+  "note": "Signed replay manifests carry the label controlled-offline-cpu-fedavg-v1; local training actually ran on CUDA. CUDA execution is not guaranteed bit-reproducible. A previous CPU run of this phase was stopped before completion and deleted without being used for selection.",
+  "retraining_replay_sha256": "09c97c1ee1bcae52ece0da5cc2656087ceab531bb361a58410105a44a6bc2e25"
+}

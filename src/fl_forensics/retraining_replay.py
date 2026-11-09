@@ -34,6 +34,17 @@ from .secure_round import _model_from_export
 from .storage import write_json_once, write_once
 
 
+def _replay_device() -> str:
+    """Local-training device; CPU unless FL_FORENSICS_REPLAY_DEVICE overrides it.
+
+    Non-CPU execution is not bit-reproducible and is not reflected in the signed
+    protocol label, so callers must record the actual device separately.
+    """
+    import os
+
+    return os.environ.get("FL_FORENSICS_REPLAY_DEVICE", "cpu")
+
+
 class RetrainingReplayError(ValueError):
     """The pinned experimental replay protocol cannot be reproduced."""
 
@@ -221,7 +232,7 @@ def _replay(
                     batch_size=plan.batch_size,
                     learning_rate=float(rate),
                     seed=seed,
-                    device_name="cpu",
+                    device_name=_replay_device(),
                     torch=torch,
                     np=np,
                 )
