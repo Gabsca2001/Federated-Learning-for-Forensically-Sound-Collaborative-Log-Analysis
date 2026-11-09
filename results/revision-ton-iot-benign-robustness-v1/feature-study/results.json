@@ -1,0 +1,5953 @@
+{
+  "status": "complete",
+  "closure_sha256": "049e89ff9ebbc6088db4eb3f18c48d31075c746b68bdedd8657d8854802bef25",
+  "selected_representation": "augmented",
+  "results": [
+    {
+      "id": "occurrence-fractions-s341593",
+      "view": "occurrence",
+      "representation": "fractions",
+      "scope": "federated",
+      "seed": 341593,
+      "selected_round": 29,
+      "threshold": 0.072662603110075,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              8,
+              909
+            ]
+          ]
+        },
+        "accuracy": 0.9939271255060729,
+        "attack_precision": 0.9989010989010989,
+        "attack_recall": 0.9912758996728462,
+        "attack_f1": 0.9950738916256158,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9947529940842108,
+        "macro_f1": 0.993579162171647,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.998145163625134,
+        "average_precision": 0.9990391143777035,
+        "benign_f1": 0.9920844327176781,
+        "threshold": 0.072662603110075,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9659090909090909
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.8181818181818182
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "8e2cf142c8288cb5c99ce8fb615d0715a5c0d5290a7c37f85b455544e9b7365f",
+      "elapsed_seconds": 17.888886942,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              458,
+              120
+            ],
+            [
+              7,
+              1007
+            ]
+          ]
+        },
+        "accuracy": 0.9202261306532663,
+        "attack_precision": 0.8935226264418811,
+        "attack_recall": 0.9930966469428008,
+        "attack_f1": 0.9406819243344232,
+        "benign_specificity": 0.7923875432525952,
+        "false_positive_rate": 0.20761245674740483,
+        "balanced_accuracy": 0.892742095097698,
+        "macro_f1": 0.9094588912180266,
+        "false_positive_rate_wilson95": [
+          0.17652986709712476,
+          0.24255587374183912
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9468436695945346,
+        "average_precision": 0.9536011372894989,
+        "benign_f1": 0.87823585810163,
+        "threshold": 0.072662603110075,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9801980198019802
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8421052631578947
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-fractions-s342593",
+      "view": "occurrence",
+      "representation": "fractions",
+      "scope": "federated",
+      "seed": 342593,
+      "selected_round": 14,
+      "threshold": 0.048219652846455574,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              563,
+              2
+            ],
+            [
+              5,
+              912
+            ]
+          ]
+        },
+        "accuracy": 0.99527665317139,
+        "attack_precision": 0.9978118161925602,
+        "attack_recall": 0.9945474372955289,
+        "attack_f1": 0.9961769524849808,
+        "benign_specificity": 0.9964601769911504,
+        "false_positive_rate": 0.0035398230088495575,
+        "balanced_accuracy": 0.9955038071433396,
+        "macro_f1": 0.9949993323766475,
+        "false_positive_rate_wilson95": [
+          0.000971284498222493,
+          0.012813679131100191
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9996216983043978,
+        "average_precision": 0.9997725961311228,
+        "benign_f1": 0.9938217122683142,
+        "threshold": 0.048219652846455574,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9715909090909091
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "b9cb33114305e236c7de30ee943da42cbb21eb516faad54ba0a469b6570fe85a",
+      "elapsed_seconds": 17.275956703,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              454,
+              124
+            ],
+            [
+              4,
+              1010
+            ]
+          ]
+        },
+        "accuracy": 0.9195979899497487,
+        "attack_precision": 0.890652557319224,
+        "attack_recall": 0.9960552268244576,
+        "attack_f1": 0.9404096834264432,
+        "benign_specificity": 0.7854671280276817,
+        "false_positive_rate": 0.21453287197231835,
+        "balanced_accuracy": 0.8907611774260696,
+        "macro_f1": 0.9084287799371598,
+        "false_positive_rate_wilson95": [
+          0.18300971597298282,
+          0.24982547478695233
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9727636616776888,
+        "average_precision": 0.980947603868807,
+        "benign_f1": 0.8764478764478765,
+        "threshold": 0.048219652846455574,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.995049504950495
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8421052631578947
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-fractions-s343593",
+      "view": "occurrence",
+      "representation": "fractions",
+      "scope": "federated",
+      "seed": 343593,
+      "selected_round": 28,
+      "threshold": 0.042751142755150795,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              6,
+              911
+            ]
+          ]
+        },
+        "accuracy": 0.99527665317139,
+        "attack_precision": 0.9989035087719298,
+        "attack_recall": 0.9934569247546347,
+        "attack_f1": 0.996172772006561,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.995843506625105,
+        "macro_f1": 0.9950026855627518,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9995213325484216,
+        "average_precision": 0.9997198617676712,
+        "benign_f1": 0.9938325991189427,
+        "threshold": 0.042751142755150795,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9659090909090909
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "691ee1eab3518ec83b6e2b1a28dc43c74f301aec287968015b7c67f689251c66",
+      "elapsed_seconds": 18.906263411000005,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              459,
+              119
+            ],
+            [
+              3,
+              1011
+            ]
+          ]
+        },
+        "accuracy": 0.9233668341708543,
+        "attack_precision": 0.8946902654867257,
+        "attack_recall": 0.9970414201183432,
+        "attack_f1": 0.9430970149253731,
+        "benign_specificity": 0.7941176470588235,
+        "false_positive_rate": 0.20588235294117646,
+        "balanced_accuracy": 0.8955795335885833,
+        "macro_f1": 0.9128946613088404,
+        "false_positive_rate_wilson95": [
+          0.174912136294678,
+          0.24073624206404304
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9666391965766465,
+        "average_precision": 0.9708336700688943,
+        "benign_f1": 0.8826923076923077,
+        "threshold": 0.042751142755150795,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9900990099009901
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-extra-trees-occurrence-fractions",
+      "view": "occurrence",
+      "representation": "fractions",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.45730861579850046,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.45730861579850046,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              459,
+              119
+            ],
+            [
+              2,
+              1012
+            ]
+          ]
+        },
+        "accuracy": 0.9239949748743719,
+        "attack_precision": 0.8947833775419982,
+        "attack_recall": 0.9980276134122288,
+        "attack_f1": 0.9435897435897436,
+        "benign_specificity": 0.7941176470588235,
+        "false_positive_rate": 0.20588235294117646,
+        "balanced_accuracy": 0.8960726302355262,
+        "macro_f1": 0.9135658053848621,
+        "false_positive_rate_wilson95": [
+          0.174912136294678,
+          0.24073624206404304
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9344411798830217,
+        "average_precision": 0.9436993544849515,
+        "benign_f1": 0.8835418671799807,
+        "threshold": 0.45730861579850046,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9047619047619048
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-histogram-occurrence-fractions",
+      "view": "occurrence",
+      "representation": "fractions",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.9025044382995667,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9986504723346828,
+        "attack_precision": 0.9989094874591058,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9989094874591058,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9985697879773405,
+        "macro_f1": 0.9985697879773405,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999054245760994,
+        "average_precision": 0.9999431762283097,
+        "benign_f1": 0.9982300884955753,
+        "threshold": 0.9025044382995667,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              463,
+              115
+            ],
+            [
+              107,
+              907
+            ]
+          ]
+        },
+        "accuracy": 0.8605527638190955,
+        "attack_precision": 0.8874755381604696,
+        "attack_recall": 0.8944773175542406,
+        "attack_f1": 0.8909626719056974,
+        "benign_specificity": 0.801038062283737,
+        "false_positive_rate": 0.19896193771626297,
+        "balanced_accuracy": 0.8477576899189888,
+        "macro_f1": 0.8487914404824655,
+        "false_positive_rate_wilson95": [
+          0.16845038827860875,
+          0.23344854015914102
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9488791862028487,
+        "average_precision": 0.9697188095483851,
+        "benign_f1": 0.8066202090592335,
+        "threshold": 0.9025044382995667,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.5693069306930693
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.6190476190476191
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8421052631578947
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-rates-s341593",
+      "view": "occurrence",
+      "representation": "rates",
+      "scope": "federated",
+      "seed": 341593,
+      "selected_round": 29,
+      "threshold": 0.979947566986084,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              563,
+              2
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9978213507625272,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9983651226158038,
+        "benign_specificity": 0.9964601769911504,
+        "false_positive_rate": 0.0035398230088495575,
+        "balanced_accuracy": 0.9976848322251282,
+        "macro_f1": 0.9978539519190622,
+        "false_positive_rate_wilson95": [
+          0.000971284498222493,
+          0.012813679131100191
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999498171220119,
+        "average_precision": 0.9999676992226364,
+        "benign_f1": 0.9973427812223207,
+        "threshold": 0.979947566986084,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9943181818181818
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "85ef91708ac8258eba75b63ae8331d80cd1cb4f9847d8deaab9aa62e7fe66c54",
+      "elapsed_seconds": 21.678874175000004,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              467,
+              111
+            ],
+            [
+              19,
+              995
+            ]
+          ]
+        },
+        "accuracy": 0.9183417085427136,
+        "attack_precision": 0.8996383363471971,
+        "attack_recall": 0.9812623274161736,
+        "attack_f1": 0.9386792452830188,
+        "benign_specificity": 0.8079584775086506,
+        "false_positive_rate": 0.19204152249134948,
+        "balanced_accuracy": 0.8946104024624121,
+        "macro_f1": 0.9082493970775997,
+        "false_positive_rate_wilson95": [
+          0.16200374873961038,
+          0.22614572977716818
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9375567317076501,
+        "average_precision": 0.9390215116548941,
+        "benign_f1": 0.8778195488721805,
+        "threshold": 0.979947566986084,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9554455445544554
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8947368421052632
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8571428571428571
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-rates-s342593",
+      "view": "occurrence",
+      "representation": "rates",
+      "scope": "federated",
+      "seed": 342593,
+      "selected_round": 26,
+      "threshold": 0.938738077878952,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              2,
+              915
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9989082969432315,
+        "attack_recall": 0.9978189749182116,
+        "attack_f1": 0.9983633387888707,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9980245317068934,
+        "macro_f1": 0.9978554094474857,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999691182289305,
+        "average_precision": 0.9999809421774071,
+        "benign_f1": 0.9973474801061007,
+        "threshold": 0.938738077878952,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9886363636363636
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "e95f4574332a0e28dc0a05cb47e6d58fc235558d5b98de64e296ec6ab9d5d8b2",
+      "elapsed_seconds": 16.905036249000005,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              463,
+              115
+            ],
+            [
+              21,
+              993
+            ]
+          ]
+        },
+        "accuracy": 0.914572864321608,
+        "attack_precision": 0.8962093862815884,
+        "attack_recall": 0.9792899408284024,
+        "attack_f1": 0.9359095193213949,
+        "benign_specificity": 0.801038062283737,
+        "false_positive_rate": 0.19896193771626297,
+        "balanced_accuracy": 0.8901640015560697,
+        "macro_f1": 0.9039246278339554,
+        "false_positive_rate_wilson95": [
+          0.16845038827860875,
+          0.23344854015914102
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9642957078410898,
+        "average_precision": 0.9692201720326288,
+        "benign_f1": 0.871939736346516,
+        "threshold": 0.938738077878952,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9405940594059405
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-rates-s343593",
+      "view": "occurrence",
+      "representation": "rates",
+      "scope": "federated",
+      "seed": 343593,
+      "selected_round": 21,
+      "threshold": 0.8839980959892273,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              563,
+              2
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9978213507625272,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9983651226158038,
+        "benign_specificity": 0.9964601769911504,
+        "false_positive_rate": 0.0035398230088495575,
+        "balanced_accuracy": 0.9976848322251282,
+        "macro_f1": 0.9978539519190622,
+        "false_positive_rate_wilson95": [
+          0.000971284498222493,
+          0.012813679131100191
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999671881182386,
+        "average_precision": 0.9999797479571058,
+        "benign_f1": 0.9973427812223207,
+        "threshold": 0.8839980959892273,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9943181818181818
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "eacd24a294cd1c844af3be10e7d446ef98d3cd3298489f889999f4094eeb2198",
+      "elapsed_seconds": 17.934966239000005,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              463,
+              115
+            ],
+            [
+              19,
+              995
+            ]
+          ]
+        },
+        "accuracy": 0.9158291457286433,
+        "attack_precision": 0.8963963963963963,
+        "attack_recall": 0.9812623274161736,
+        "attack_f1": 0.9369114877589454,
+        "benign_specificity": 0.801038062283737,
+        "false_positive_rate": 0.19896193771626297,
+        "balanced_accuracy": 0.8911501948499553,
+        "macro_f1": 0.9052481967096614,
+        "false_positive_rate_wilson95": [
+          0.16845038827860875,
+          0.23344854015914102
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9789256635477024,
+        "average_precision": 0.9870067138688032,
+        "benign_f1": 0.8735849056603774,
+        "threshold": 0.8839980959892273,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9554455445544554
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-extra-trees-occurrence-rates",
+      "view": "occurrence",
+      "representation": "rates",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.2952095111033839,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 1.0,
+        "attack_precision": 1.0,
+        "attack_recall": 1.0,
+        "attack_f1": 1.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 1.0,
+        "macro_f1": 1.0,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 1.0,
+        "average_precision": 1.0,
+        "benign_f1": 1.0,
+        "threshold": 0.2952095111033839,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              455,
+              123
+            ],
+            [
+              1,
+              1013
+            ]
+          ]
+        },
+        "accuracy": 0.9221105527638191,
+        "attack_precision": 0.891725352112676,
+        "attack_recall": 0.9990138067061144,
+        "attack_f1": 0.9423255813953488,
+        "benign_specificity": 0.78719723183391,
+        "false_positive_rate": 0.21280276816608998,
+        "balanced_accuracy": 0.8931055192700121,
+        "macro_f1": 0.9112014754172102,
+        "false_positive_rate_wilson95": [
+          0.18138843084712789,
+          0.24800939743256448
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.941446052838121,
+        "average_precision": 0.951745886890423,
+        "benign_f1": 0.8800773694390716,
+        "threshold": 0.2952095111033839,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-histogram-occurrence-rates",
+      "view": "occurrence",
+      "representation": "rates",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.8914138443919661,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999864892251571,
+        "average_precision": 0.9999917385413568,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.8914138443919661,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              460,
+              118
+            ],
+            [
+              21,
+              993
+            ]
+          ]
+        },
+        "accuracy": 0.9126884422110553,
+        "attack_precision": 0.8937893789378938,
+        "attack_recall": 0.9792899408284024,
+        "attack_f1": 0.9345882352941176,
+        "benign_specificity": 0.7958477508650519,
+        "false_positive_rate": 0.2041522491349481,
+        "balanced_accuracy": 0.8875688458467271,
+        "macro_f1": 0.9016661667499861,
+        "false_positive_rate_wilson95": [
+          0.17329531442706753,
+          0.23891570145141072
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9742984036635887,
+        "average_precision": 0.9860330168956432,
+        "benign_f1": 0.8687440982058546,
+        "threshold": 0.8914138443919661,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9851485148514851
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.6190476190476191
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.7959183673469388
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-augmented-s341593",
+      "view": "occurrence",
+      "representation": "augmented",
+      "scope": "federated",
+      "seed": 341593,
+      "selected_round": 26,
+      "threshold": 0.8799030184745789,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 0.9989106753812637,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9994550408719346,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9991150442477876,
+        "macro_f1": 0.9992846506396874,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999942096679245,
+        "average_precision": 0.999996432344366,
+        "benign_f1": 0.9991142604074402,
+        "threshold": 0.8799030184745789,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "40450f206195a2891cf0db10901430c53f5f0178d0bd158dae46aef668791fa2",
+      "elapsed_seconds": 15.417601904999984,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              459,
+              119
+            ],
+            [
+              11,
+              1003
+            ]
+          ]
+        },
+        "accuracy": 0.9183417085427136,
+        "attack_precision": 0.8939393939393939,
+        "attack_recall": 0.9891518737672583,
+        "attack_f1": 0.9391385767790262,
+        "benign_specificity": 0.7941176470588235,
+        "false_positive_rate": 0.20588235294117646,
+        "balanced_accuracy": 0.8916347604130409,
+        "macro_f1": 0.9075463876261544,
+        "false_positive_rate_wilson95": [
+          0.174912136294678,
+          0.24073624206404304
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9568804897524621,
+        "average_precision": 0.9577810681174489,
+        "benign_f1": 0.8759541984732825,
+        "threshold": 0.8799030184745789,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": true
+    },
+    {
+      "id": "occurrence-augmented-s342593",
+      "view": "occurrence",
+      "representation": "augmented",
+      "scope": "federated",
+      "seed": 342593,
+      "selected_round": 29,
+      "threshold": 0.999380499124527,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.999380499124527,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "bd32a8f9fe2f4b556c4b53ace35a6d167453fd2e270d9247b5eca9cedbd6cc96",
+      "elapsed_seconds": 17.043720334,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              460,
+              118
+            ],
+            [
+              16,
+              998
+            ]
+          ]
+        },
+        "accuracy": 0.9158291457286433,
+        "attack_precision": 0.8942652329749103,
+        "attack_recall": 0.9842209072978304,
+        "attack_f1": 0.9370892018779343,
+        "benign_specificity": 0.7958477508650519,
+        "false_positive_rate": 0.2041522491349481,
+        "balanced_accuracy": 0.8900343290814412,
+        "macro_f1": 0.9049772385101247,
+        "false_positive_rate_wilson95": [
+          0.17329531442706753,
+          0.23891570145141072
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9505103294363342,
+        "average_precision": 0.9508225176439158,
+        "benign_f1": 0.872865275142315,
+        "threshold": 0.999380499124527,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9851485148514851
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.8571428571428571
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": true
+    },
+    {
+      "id": "occurrence-augmented-s343593",
+      "view": "occurrence",
+      "representation": "augmented",
+      "scope": "federated",
+      "seed": 343593,
+      "selected_round": 27,
+      "threshold": 0.9998331964015961,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.9998331964015961,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "f02b6f9978d0a20cd734f419ef89a32c81b07ff0f38e42b1ea67a4ac5b20d1be",
+      "elapsed_seconds": 16.734310934000007,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              464,
+              114
+            ],
+            [
+              17,
+              997
+            ]
+          ]
+        },
+        "accuracy": 0.917713567839196,
+        "attack_precision": 0.8973897389738974,
+        "attack_recall": 0.9832347140039448,
+        "attack_f1": 0.9383529411764706,
+        "benign_specificity": 0.8027681660899654,
+        "false_positive_rate": 0.1972318339100346,
+        "balanced_accuracy": 0.893001440046955,
+        "macro_f1": 0.9073256679442315,
+        "false_positive_rate_wilson95": [
+          0.1668372889376264,
+          0.2316242770198806
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9425440033305352,
+        "average_precision": 0.9444994514189182,
+        "benign_f1": 0.8762983947119924,
+        "threshold": 0.9998331964015961,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9801980198019802
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9047619047619048
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.7959183673469388
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": true
+    },
+    {
+      "id": "central-extra-trees-occurrence-augmented",
+      "view": "occurrence",
+      "representation": "augmented",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.3825989524566019,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 1.0,
+        "attack_precision": 1.0,
+        "attack_recall": 1.0,
+        "attack_f1": 1.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 1.0,
+        "macro_f1": 1.0,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 1.0,
+        "average_precision": 1.0,
+        "benign_f1": 1.0,
+        "threshold": 0.3825989524566019,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              456,
+              122
+            ],
+            [
+              10,
+              1004
+            ]
+          ]
+        },
+        "accuracy": 0.9170854271356784,
+        "attack_precision": 0.8916518650088809,
+        "attack_recall": 0.9901380670611439,
+        "attack_f1": 0.9383177570093458,
+        "benign_specificity": 0.7889273356401384,
+        "false_positive_rate": 0.21107266435986158,
+        "balanced_accuracy": 0.8895327013506411,
+        "macro_f1": 0.9059404877000752,
+        "false_positive_rate_wilson95": [
+          0.17976802242801526,
+          0.24619244337143426
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9643434819106897,
+        "average_precision": 0.9761644010401103,
+        "benign_f1": 0.8735632183908046,
+        "threshold": 0.3825989524566019,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-histogram-occurrence-augmented",
+      "view": "occurrence",
+      "representation": "augmented",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.9794546030228879,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              2,
+              915
+            ]
+          ]
+        },
+        "accuracy": 0.9986504723346828,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9978189749182116,
+        "attack_f1": 0.9989082969432315,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9989094874591058,
+        "macro_f1": 0.9985707562454673,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999922795572326,
+        "average_precision": 0.9999952547632431,
+        "benign_f1": 0.9982332155477032,
+        "threshold": 0.9794546030228879,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.8181818181818182
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              462,
+              116
+            ],
+            [
+              23,
+              991
+            ]
+          ]
+        },
+        "accuracy": 0.9126884422110553,
+        "attack_precision": 0.8952122854561879,
+        "attack_recall": 0.9773175542406312,
+        "attack_f1": 0.9344648750589345,
+        "benign_specificity": 0.7993079584775087,
+        "false_positive_rate": 0.20069204152249134,
+        "balanced_accuracy": 0.8883127563590699,
+        "macro_f1": 0.9018514403516686,
+        "false_positive_rate_wilson95": [
+          0.17006443164830182,
+          0.2352718592696908
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9798837042648594,
+        "average_precision": 0.9889151589201262,
+        "benign_f1": 0.8692380056444027,
+        "threshold": 0.9794546030228879,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9851485148514851
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.5238095238095238
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.7959183673469388
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-fractions-s341593",
+      "view": "exact-projection",
+      "representation": "fractions",
+      "scope": "federated",
+      "seed": 341593,
+      "selected_round": 23,
+      "threshold": 0.03378212824463844,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              563,
+              2
+            ],
+            [
+              7,
+              910
+            ]
+          ]
+        },
+        "accuracy": 0.9939271255060729,
+        "attack_precision": 0.9978070175438597,
+        "attack_recall": 0.9923664122137404,
+        "attack_f1": 0.9950792782941498,
+        "benign_specificity": 0.9964601769911504,
+        "false_positive_rate": 0.0035398230088495575,
+        "balanced_accuracy": 0.9944132946024454,
+        "macro_f1": 0.9935748814378238,
+        "false_positive_rate_wilson95": [
+          0.000971284498222493,
+          0.012813679131100191
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9995097518842706,
+        "average_precision": 0.9997238578697608,
+        "benign_f1": 0.9920704845814978,
+        "threshold": 0.03378212824463844,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9715909090909091
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 0.9230769230769231
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "87371bd4d59c941f1b4e8c41faa4582a618275f45bbfda944620a14b228231b3",
+      "elapsed_seconds": 18.035214975000002,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              456,
+              122
+            ],
+            [
+              5,
+              1009
+            ]
+          ]
+        },
+        "accuracy": 0.9202261306532663,
+        "attack_precision": 0.8921308576480991,
+        "attack_recall": 0.995069033530572,
+        "attack_f1": 0.9407925407925408,
+        "benign_specificity": 0.7889273356401384,
+        "false_positive_rate": 0.21107266435986158,
+        "balanced_accuracy": 0.8919981845853552,
+        "macro_f1": 0.9092798122634504,
+        "false_positive_rate_wilson95": [
+          0.17976802242801526,
+          0.24619244337143426
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9559139179514479,
+        "average_precision": 0.966479923424031,
+        "benign_f1": 0.87776708373436,
+        "threshold": 0.03378212824463844,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9900990099009901
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8421052631578947
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-fractions-s342593",
+      "view": "exact-projection",
+      "representation": "fractions",
+      "scope": "federated",
+      "seed": 342593,
+      "selected_round": 17,
+      "threshold": 0.036613184958696365,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              563,
+              2
+            ],
+            [
+              6,
+              911
+            ]
+          ]
+        },
+        "accuracy": 0.9946018893387314,
+        "attack_precision": 0.9978094194961665,
+        "attack_recall": 0.9934569247546347,
+        "attack_f1": 0.9956284153005465,
+        "benign_specificity": 0.9964601769911504,
+        "false_positive_rate": 0.0035398230088495575,
+        "balanced_accuracy": 0.9949585508728925,
+        "macro_f1": 0.9942868707896031,
+        "false_positive_rate_wilson95": [
+          0.000971284498222493,
+          0.012813679131100191
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9998417309232684,
+        "average_precision": 0.9999018394271816,
+        "benign_f1": 0.9929453262786596,
+        "threshold": 0.036613184958696365,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9715909090909091
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 0.9230769230769231
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "7fd539e4eb00bce1fab787048e90b10040bac0a21929d07d34c2d4a26265931e",
+      "elapsed_seconds": 17.34052488399999,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              454,
+              124
+            ],
+            [
+              4,
+              1010
+            ]
+          ]
+        },
+        "accuracy": 0.9195979899497487,
+        "attack_precision": 0.890652557319224,
+        "attack_recall": 0.9960552268244576,
+        "attack_f1": 0.9404096834264432,
+        "benign_specificity": 0.7854671280276817,
+        "false_positive_rate": 0.21453287197231835,
+        "balanced_accuracy": 0.8907611774260696,
+        "macro_f1": 0.9084287799371598,
+        "false_positive_rate_wilson95": [
+          0.18300971597298282,
+          0.24982547478695233
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9710429420637032,
+        "average_precision": 0.9813421183656122,
+        "benign_f1": 0.8764478764478765,
+        "threshold": 0.036613184958696365,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.995049504950495
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8421052631578947
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-fractions-s343593",
+      "view": "exact-projection",
+      "representation": "fractions",
+      "scope": "federated",
+      "seed": 343593,
+      "selected_round": 16,
+      "threshold": 0.018048346042633057,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              559,
+              6
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 0.9959514170040485,
+        "attack_precision": 0.9934994582881906,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9967391304347826,
+        "benign_specificity": 0.9893805309734514,
+        "false_positive_rate": 0.010619469026548672,
+        "balanced_accuracy": 0.9946902654867257,
+        "macro_f1": 0.9957005260714837,
+        "false_positive_rate_wilson95": [
+          0.0048758329660809705,
+          0.022972803196156896
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9998127792628908,
+        "average_precision": 0.9998827452860822,
+        "benign_f1": 0.994661921708185,
+        "threshold": 0.018048346042633057,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "230d7e27e1f9a634567e3d12bee6dbee7ca7847aa11414ff5265f640831e32f6",
+      "elapsed_seconds": 24.602925706999997,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              454,
+              124
+            ],
+            [
+              4,
+              1010
+            ]
+          ]
+        },
+        "accuracy": 0.9195979899497487,
+        "attack_precision": 0.890652557319224,
+        "attack_recall": 0.9960552268244576,
+        "attack_f1": 0.9404096834264432,
+        "benign_specificity": 0.7854671280276817,
+        "false_positive_rate": 0.21453287197231835,
+        "balanced_accuracy": 0.8907611774260696,
+        "macro_f1": 0.9084287799371598,
+        "false_positive_rate_wilson95": [
+          0.18300971597298282,
+          0.24982547478695233
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9796328903994596,
+        "average_precision": 0.9864181630248865,
+        "benign_f1": 0.8764478764478765,
+        "threshold": 0.018048346042633057,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.7894736842105263
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-extra-trees-exact-projection-fractions",
+      "view": "exact-projection",
+      "representation": "fractions",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.5130455097148428,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999942096679244,
+        "average_precision": 0.9999964439808449,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.5130455097148428,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              462,
+              116
+            ],
+            [
+              5,
+              1009
+            ]
+          ]
+        },
+        "accuracy": 0.9239949748743719,
+        "attack_precision": 0.8968888888888888,
+        "attack_recall": 0.995069033530572,
+        "attack_f1": 0.9434315100514259,
+        "benign_specificity": 0.7993079584775087,
+        "false_positive_rate": 0.20069204152249134,
+        "balanced_accuracy": 0.8971884960040404,
+        "macro_f1": 0.9138210181836077,
+        "false_positive_rate_wilson95": [
+          0.17006443164830182,
+          0.2352718592696908
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9298053889150508,
+        "average_precision": 0.9377574773004949,
+        "benign_f1": 0.8842105263157894,
+        "threshold": 0.5130455097148428,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.995049504950495
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9047619047619048
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8947368421052632
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-histogram-exact-projection-fractions",
+      "view": "exact-projection",
+      "representation": "fractions",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.8557866632949149,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              2,
+              915
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9989082969432315,
+        "attack_recall": 0.9978189749182116,
+        "attack_f1": 0.9983633387888707,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9980245317068934,
+        "macro_f1": 0.9978554094474857,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999150751295587,
+        "average_precision": 0.9999484050204331,
+        "benign_f1": 0.9973474801061007,
+        "threshold": 0.8557866632949149,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 0.9230769230769231
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              461,
+              117
+            ],
+            [
+              106,
+              908
+            ]
+          ]
+        },
+        "accuracy": 0.8599246231155779,
+        "attack_precision": 0.8858536585365854,
+        "attack_recall": 0.8954635108481263,
+        "attack_f1": 0.8906326630701324,
+        "benign_specificity": 0.7975778546712803,
+        "false_positive_rate": 0.20242214532871972,
+        "balanced_accuracy": 0.8465206827597033,
+        "macro_f1": 0.8479364188713108,
+        "false_positive_rate_wilson95": [
+          0.17167940998626813,
+          0.23709424341196728
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9528580837138196,
+        "average_precision": 0.9729005686531684,
+        "benign_f1": 0.8052401746724891,
+        "threshold": 0.8557866632949149,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": false,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.5792079207920792
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.6666666666666666
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.7368421052631579
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-rates-s341593",
+      "view": "exact-projection",
+      "representation": "rates",
+      "scope": "federated",
+      "seed": 341593,
+      "selected_round": 17,
+      "threshold": 0.6078743040561676,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              562,
+              3
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9967391304347826,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9983669025585193,
+        "benign_specificity": 0.9946902654867257,
+        "false_positive_rate": 0.005309734513274336,
+        "balanced_accuracy": 0.9973451327433629,
+        "macro_f1": 0.9978524841097831,
+        "false_positive_rate_wilson95": [
+          0.001807397723902802,
+          0.015493484038648676
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9998880535798729,
+        "average_precision": 0.9999303379618285,
+        "benign_f1": 0.997338065661047,
+        "threshold": 0.6078743040561676,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "632be0f01e79fb19176eac51d73844d9f59f6d1d0bfbcb325c5c772a78f5257c",
+      "elapsed_seconds": 18.025186364999996,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              465,
+              113
+            ],
+            [
+              16,
+              998
+            ]
+          ]
+        },
+        "accuracy": 0.9189698492462312,
+        "attack_precision": 0.8982898289828983,
+        "attack_recall": 0.9842209072978304,
+        "attack_f1": 0.9392941176470588,
+        "benign_specificity": 0.8044982698961938,
+        "false_positive_rate": 0.19550173010380623,
+        "balanced_accuracy": 0.8943595885970121,
+        "macro_f1": 0.9087405432427929,
+        "false_positive_rate_wilson95": [
+          0.1652251428865859,
+          0.22979906059067828
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9807743494195451,
+        "average_precision": 0.9888459631567681,
+        "benign_f1": 0.8781869688385269,
+        "threshold": 0.6078743040561676,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9653465346534653
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8571428571428571
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-rates-s342593",
+      "view": "exact-projection",
+      "representation": "rates",
+      "scope": "federated",
+      "seed": 342593,
+      "selected_round": 30,
+      "threshold": 0.9718782305717468,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              2,
+              915
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9989082969432315,
+        "attack_recall": 0.9978189749182116,
+        "attack_f1": 0.9983633387888707,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9980245317068934,
+        "macro_f1": 0.9978554094474857,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999710483396222,
+        "average_precision": 0.9999821223690701,
+        "benign_f1": 0.9973474801061007,
+        "threshold": 0.9718782305717468,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9886363636363636
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "4bd1571adf1a22dcf8b2833a08f2a82355dd9e1eaa5244458ec75a3f9d3a1423",
+      "elapsed_seconds": 18.548701627000014,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              459,
+              119
+            ],
+            [
+              22,
+              992
+            ]
+          ]
+        },
+        "accuracy": 0.9114321608040201,
+        "attack_precision": 0.8928892889288929,
+        "attack_recall": 0.9783037475345168,
+        "attack_f1": 0.9336470588235294,
+        "benign_specificity": 0.7941176470588235,
+        "false_positive_rate": 0.20588235294117646,
+        "balanced_accuracy": 0.8862106972966701,
+        "macro_f1": 0.9002512914514247,
+        "false_positive_rate_wilson95": [
+          0.174912136294678,
+          0.24073624206404304
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9466227145226347,
+        "average_precision": 0.9485822516358283,
+        "benign_f1": 0.8668555240793201,
+        "threshold": 0.9718782305717468,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9455445544554455
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.8947368421052632
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-rates-s343593",
+      "view": "exact-projection",
+      "representation": "rates",
+      "scope": "federated",
+      "seed": 343593,
+      "selected_round": 28,
+      "threshold": 0.9081765711307526,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              563,
+              2
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9979757085020243,
+        "attack_precision": 0.9978213507625272,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9983651226158038,
+        "benign_specificity": 0.9964601769911504,
+        "false_positive_rate": 0.0035398230088495575,
+        "balanced_accuracy": 0.9976848322251282,
+        "macro_f1": 0.9978539519190622,
+        "false_positive_rate_wilson95": [
+          0.000971284498222493,
+          0.012813679131100191
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999691182289305,
+        "average_precision": 0.9999809476408691,
+        "benign_f1": 0.9973427812223207,
+        "threshold": 0.9081765711307526,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 0.9943181818181818
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "443e4e36db67a30a185ddf29ee2334f8353615b566a5161d027406a2757d6217",
+      "elapsed_seconds": 18.372924375000025,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              459,
+              119
+            ],
+            [
+              18,
+              996
+            ]
+          ]
+        },
+        "accuracy": 0.9139447236180904,
+        "attack_precision": 0.8932735426008969,
+        "attack_recall": 0.9822485207100592,
+        "attack_f1": 0.9356505401596994,
+        "benign_specificity": 0.7941176470588235,
+        "false_positive_rate": 0.20588235294117646,
+        "balanced_accuracy": 0.8881830838844413,
+        "macro_f1": 0.9028963601272431,
+        "false_positive_rate_wilson95": [
+          0.174912136294678,
+          0.24073624206404304
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9556340984009335,
+        "average_precision": 0.9584992675693373,
+        "benign_f1": 0.8701421800947867,
+        "threshold": 0.9081765711307526,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9603960396039604
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-extra-trees-exact-projection-rates",
+      "view": "exact-projection",
+      "representation": "rates",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.4947107887291109,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.4947107887291109,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              457,
+              121
+            ],
+            [
+              9,
+              1005
+            ]
+          ]
+        },
+        "accuracy": 0.9183417085427136,
+        "attack_precision": 0.8925399644760214,
+        "attack_recall": 0.9911242603550295,
+        "attack_f1": 0.9392523364485982,
+        "benign_specificity": 0.7906574394463668,
+        "false_positive_rate": 0.2093425605536332,
+        "balanced_accuracy": 0.8908908499006982,
+        "macro_f1": 0.9073656318258316,
+        "false_positive_rate_wilson95": [
+          0.1781484985213071,
+          0.24437460479789958
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9276743241675367,
+        "average_precision": 0.9353553044538069,
+        "benign_f1": 0.8754789272030651,
+        "threshold": 0.4947107887291109,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.995049504950495
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.8571428571428571
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.9183673469387755
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-histogram-exact-projection-rates",
+      "view": "exact-projection",
+      "representation": "rates",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.8425083063303827,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999884193358489,
+        "average_precision": 0.9999929110777407,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.8425083063303827,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              458,
+              120
+            ],
+            [
+              20,
+              994
+            ]
+          ]
+        },
+        "accuracy": 0.9120603015075377,
+        "attack_precision": 0.8922800718132855,
+        "attack_recall": 0.980276134122288,
+        "attack_f1": 0.9342105263157895,
+        "benign_specificity": 0.7923875432525952,
+        "false_positive_rate": 0.20761245674740483,
+        "balanced_accuracy": 0.8863318386874416,
+        "macro_f1": 0.900817384370016,
+        "false_positive_rate_wilson95": [
+          0.17652986709712476,
+          0.24255587374183912
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.970796393740232,
+        "average_precision": 0.9840117693676279,
+        "benign_f1": 0.8674242424242424,
+        "threshold": 0.8425083063303827,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9801980198019802
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.6190476190476191
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-augmented-s341593",
+      "view": "exact-projection",
+      "representation": "augmented",
+      "scope": "federated",
+      "seed": 341593,
+      "selected_round": 25,
+      "threshold": 0.8808622062206268,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 0.9989106753812637,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9994550408719346,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9991150442477876,
+        "macro_f1": 0.9992846506396874,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999942096679244,
+        "average_precision": 0.999996432344366,
+        "benign_f1": 0.9991142604074402,
+        "threshold": 0.8808622062206268,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "adf6ca66510222f96ee049a8ec7227fec2de236d9d2b4de911b5e67d2753703b",
+      "elapsed_seconds": 17.016704296,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              459,
+              119
+            ],
+            [
+              11,
+              1003
+            ]
+          ]
+        },
+        "accuracy": 0.9183417085427136,
+        "attack_precision": 0.8939393939393939,
+        "attack_recall": 0.9891518737672583,
+        "attack_f1": 0.9391385767790262,
+        "benign_specificity": 0.7941176470588235,
+        "false_positive_rate": 0.20588235294117646,
+        "balanced_accuracy": 0.8916347604130409,
+        "macro_f1": 0.9075463876261544,
+        "false_positive_rate_wilson95": [
+          0.174912136294678,
+          0.24073624206404304
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9623344116623327,
+        "average_precision": 0.9639656586790433,
+        "benign_f1": 0.8759541984732825,
+        "threshold": 0.8808622062206268,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": true
+    },
+    {
+      "id": "exact-projection-augmented-s342593",
+      "view": "exact-projection",
+      "representation": "augmented",
+      "scope": "federated",
+      "seed": 342593,
+      "selected_round": 29,
+      "threshold": 0.9991967380046844,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.9991967380046844,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "0b660ad75cc8c95fe413b8979a2b8daca951e180f02437890a2adb95e7cfcf99",
+      "elapsed_seconds": 17.48649296299999,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              460,
+              118
+            ],
+            [
+              14,
+              1000
+            ]
+          ]
+        },
+        "accuracy": 0.9170854271356784,
+        "attack_precision": 0.8944543828264758,
+        "attack_recall": 0.9861932938856016,
+        "attack_f1": 0.9380863039399625,
+        "benign_specificity": 0.7958477508650519,
+        "false_positive_rate": 0.2041522491349481,
+        "balanced_accuracy": 0.8910205223753267,
+        "macro_f1": 0.9063055093844299,
+        "false_positive_rate_wilson95": [
+          0.17329531442706753,
+          0.23891570145141072
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9456621144803206,
+        "average_precision": 0.9449516322847183,
+        "benign_f1": 0.8745247148288974,
+        "threshold": 0.9991967380046844,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.995049504950495
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.8571428571428571
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8163265306122449
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": true
+    },
+    {
+      "id": "exact-projection-augmented-s343593",
+      "view": "exact-projection",
+      "representation": "augmented",
+      "scope": "federated",
+      "seed": 343593,
+      "selected_round": 27,
+      "threshold": 0.9998137056827545,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.9998137056827545,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "tensor_sha256": "41823077e71b847704c602f87abb4344e248cf24e68e109c8057c2510d28190c",
+      "elapsed_seconds": 13.799963174000027,
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              464,
+              114
+            ],
+            [
+              17,
+              997
+            ]
+          ]
+        },
+        "accuracy": 0.917713567839196,
+        "attack_precision": 0.8973897389738974,
+        "attack_recall": 0.9832347140039448,
+        "attack_f1": 0.9383529411764706,
+        "benign_specificity": 0.8027681660899654,
+        "false_positive_rate": 0.1972318339100346,
+        "balanced_accuracy": 0.893001440046955,
+        "macro_f1": 0.9073256679442315,
+        "false_positive_rate_wilson95": [
+          0.1668372889376264,
+          0.2316242770198806
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9371608894166785,
+        "average_precision": 0.9384520392394997,
+        "benign_f1": 0.8762983947119924,
+        "threshold": 0.9998137056827545,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9801980198019802
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9047619047619048
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.7959183673469388
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": true
+    },
+    {
+      "id": "central-extra-trees-exact-projection-augmented",
+      "view": "exact-projection",
+      "representation": "augmented",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.359443731463829,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 1.0,
+        "attack_precision": 1.0,
+        "attack_recall": 1.0,
+        "attack_f1": 1.0,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 1.0,
+        "macro_f1": 1.0,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 1.0,
+        "average_precision": 1.0,
+        "benign_f1": 1.0,
+        "threshold": 0.359443731463829,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              456,
+              122
+            ],
+            [
+              5,
+              1009
+            ]
+          ]
+        },
+        "accuracy": 0.9202261306532663,
+        "attack_precision": 0.8921308576480991,
+        "attack_recall": 0.995069033530572,
+        "attack_f1": 0.9407925407925408,
+        "benign_specificity": 0.7889273356401384,
+        "false_positive_rate": 0.21107266435986158,
+        "balanced_accuracy": 0.8919981845853552,
+        "macro_f1": 0.9092798122634504,
+        "false_positive_rate_wilson95": [
+          0.17976802242801526,
+          0.24619244337143426
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9566262634535192,
+        "average_precision": 0.9698393852551138,
+        "benign_f1": 0.87776708373436,
+        "threshold": 0.359443731463829,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.9183673469387755
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "central-histogram-exact-projection-augmented",
+      "view": "exact-projection",
+      "representation": "augmented",
+      "scope": "centralized-reference",
+      "seed": 341593,
+      "threshold": 0.9734966201311898,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999942096679244,
+        "average_precision": 0.9999964439808449,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.9734966201311898,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        }
+      },
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              461,
+              117
+            ],
+            [
+              21,
+              993
+            ]
+          ]
+        },
+        "accuracy": 0.9133165829145728,
+        "attack_precision": 0.8945945945945946,
+        "attack_recall": 0.9792899408284024,
+        "attack_f1": 0.9350282485875706,
+        "benign_specificity": 0.7975778546712803,
+        "false_positive_rate": 0.20242214532871972,
+        "balanced_accuracy": 0.8884338977498414,
+        "macro_f1": 0.9024197846711438,
+        "false_positive_rate_wilson95": [
+          0.17167940998626813,
+          0.23709424341196728
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9804621117503736,
+        "average_precision": 0.9891792705800522,
+        "benign_f1": 0.869811320754717,
+        "threshold": 0.9734966201311898,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9851485148514851
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.6190476190476191
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.7959183673469388
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-binary-balanced-s341593",
+      "view": "occurrence",
+      "scope": "federated",
+      "family": "binary-balanced",
+      "seed": 341593,
+      "selected_round": 30,
+      "threshold": 0.16419929265975952,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              0,
+              917
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 0.9989106753812637,
+        "attack_recall": 1.0,
+        "attack_f1": 0.9994550408719346,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9991150442477876,
+        "macro_f1": 0.9992846506396874,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999942096679244,
+        "average_precision": 0.999996432344366,
+        "benign_f1": 0.9991142604074402,
+        "threshold": 0.16419929265975952,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 1.0
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        },
+        "all_known_family_recall_goal_met": true
+      },
+      "tensor_sha256": "a190ef5f548e2a5dc28fe92af1bbfb2ac8c424f2e990c6771392937937670308",
+      "representation": "original25",
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              458,
+              120
+            ],
+            [
+              8,
+              1006
+            ]
+          ]
+        },
+        "accuracy": 0.9195979899497487,
+        "attack_precision": 0.8934280639431617,
+        "attack_recall": 0.9921104536489151,
+        "attack_f1": 0.9401869158878504,
+        "benign_specificity": 0.7923875432525952,
+        "false_positive_rate": 0.20761245674740483,
+        "balanced_accuracy": 0.8922489984507551,
+        "macro_f1": 0.9087907759515881,
+        "false_positive_rate_wilson95": [
+          0.17652986709712476,
+          0.24255587374183912
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9534697624263768,
+        "average_precision": 0.9559872941806068,
+        "benign_f1": 0.8773946360153256,
+        "threshold": 0.16419929265975952,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8571428571428571
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-binary-balanced-s342593",
+      "view": "occurrence",
+      "scope": "federated",
+      "family": "binary-balanced",
+      "seed": 342593,
+      "selected_round": 26,
+      "threshold": 0.9994326233863831,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              2,
+              915
+            ]
+          ]
+        },
+        "accuracy": 0.9986504723346828,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9978189749182116,
+        "attack_f1": 0.9989082969432315,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9989094874591058,
+        "macro_f1": 0.9985707562454673,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999922795572326,
+        "average_precision": 0.9999952508966182,
+        "benign_f1": 0.9982332155477032,
+        "threshold": 0.9994326233863831,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.8181818181818182
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        },
+        "all_known_family_recall_goal_met": true
+      },
+      "tensor_sha256": "b590877d170ae733baff3ab33f1f5386f1246d4b69ac97e77764ed4ab1b910e9",
+      "representation": "original25",
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              468,
+              110
+            ],
+            [
+              19,
+              995
+            ]
+          ]
+        },
+        "accuracy": 0.9189698492462312,
+        "attack_precision": 0.9004524886877828,
+        "attack_recall": 0.9812623274161736,
+        "attack_f1": 0.9391222274657858,
+        "benign_specificity": 0.8096885813148789,
+        "false_positive_rate": 0.1903114186851211,
+        "balanced_accuracy": 0.8954754543655262,
+        "macro_f1": 0.9089977334512027,
+        "false_positive_rate_wilson95": [
+          0.16039452022553485,
+          0.22431759581100086
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9235649010735516,
+        "average_precision": 0.9239416963517049,
+        "benign_f1": 0.8788732394366198,
+        "threshold": 0.9994326233863831,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9603960396039604
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9047619047619048
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "occurrence-binary-balanced-s343593",
+      "view": "occurrence",
+      "scope": "federated",
+      "family": "binary-balanced",
+      "seed": 343593,
+      "selected_round": 27,
+      "threshold": 0.9852614998817444,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.9852614998817444,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        },
+        "all_known_family_recall_goal_met": true
+      },
+      "tensor_sha256": "339ea41c8da1c67a8029d6e16ea2a935010cec87ebe5cd12ab3a4066e4233cfc",
+      "representation": "original25",
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              460,
+              118
+            ],
+            [
+              11,
+              1003
+            ]
+          ]
+        },
+        "accuracy": 0.9189698492462312,
+        "attack_precision": 0.8947368421052632,
+        "attack_recall": 0.9891518737672583,
+        "attack_f1": 0.9395784543325527,
+        "benign_specificity": 0.7958477508650519,
+        "false_positive_rate": 0.2041522491349481,
+        "balanced_accuracy": 0.8924998123161552,
+        "macro_f1": 0.9083020965657044,
+        "false_positive_rate_wilson95": [
+          0.17329531442706753,
+          0.23891570145141072
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9583154180572334,
+        "average_precision": 0.9605689871930084,
+        "benign_f1": 0.877025738798856,
+        "threshold": 0.9852614998817444,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9851485148514851
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8571428571428571
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-binary-balanced-s341593",
+      "view": "exact-projection",
+      "scope": "federated",
+      "family": "binary-balanced",
+      "seed": 341593,
+      "selected_round": 24,
+      "threshold": 0.43094602227211,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              564,
+              1
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9986504723346828,
+        "attack_precision": 0.9989094874591058,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9989094874591058,
+        "benign_specificity": 0.9982300884955753,
+        "false_positive_rate": 0.0017699115044247787,
+        "balanced_accuracy": 0.9985697879773405,
+        "macro_f1": 0.9985697879773405,
+        "false_positive_rate_wilson95": [
+          0.00031250119335612427,
+          0.009956544302737763
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999903494465407,
+        "average_precision": 0.9999940642473687,
+        "benign_f1": 0.9982300884955753,
+        "threshold": 0.43094602227211,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        },
+        "all_known_family_recall_goal_met": true
+      },
+      "tensor_sha256": "e65656d2b5bf25f2fcb3ea856783dc18212fce4b1782f47106684e2b8f7657cf",
+      "representation": "original25",
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              457,
+              121
+            ],
+            [
+              8,
+              1006
+            ]
+          ]
+        },
+        "accuracy": 0.9189698492462312,
+        "attack_precision": 0.8926353149955635,
+        "attack_recall": 0.9921104536489151,
+        "attack_f1": 0.9397477814105558,
+        "benign_specificity": 0.7906574394463668,
+        "false_positive_rate": 0.2093425605536332,
+        "balanced_accuracy": 0.891383946547641,
+        "macro_f1": 0.9080330469852396,
+        "false_positive_rate_wilson95": [
+          0.1781484985213071,
+          0.24437460479789958
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9730187410850174,
+        "average_precision": 0.9783522532679337,
+        "benign_f1": 0.8763183125599233,
+        "threshold": 0.43094602227211,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8571428571428571
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-binary-balanced-s342593",
+      "view": "exact-projection",
+      "scope": "federated",
+      "family": "binary-balanced",
+      "seed": 342593,
+      "selected_round": 26,
+      "threshold": 0.9995519518852234,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              2,
+              915
+            ]
+          ]
+        },
+        "accuracy": 0.9986504723346828,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9978189749182116,
+        "attack_f1": 0.9989082969432315,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9989094874591058,
+        "macro_f1": 0.9985707562454673,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999903494465407,
+        "average_precision": 0.9999940681365292,
+        "benign_f1": 0.9982332155477032,
+        "threshold": 0.9995519518852234,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.8181818181818182
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        },
+        "all_known_family_recall_goal_met": true
+      },
+      "tensor_sha256": "cdfb583d95617e938be7263571bc01951df04f0bf8af2fbf66cfba7641febce1",
+      "representation": "original25",
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              467,
+              111
+            ],
+            [
+              19,
+              995
+            ]
+          ]
+        },
+        "accuracy": 0.9183417085427136,
+        "attack_precision": 0.8996383363471971,
+        "attack_recall": 0.9812623274161736,
+        "attack_f1": 0.9386792452830188,
+        "benign_specificity": 0.8079584775086506,
+        "false_positive_rate": 0.19204152249134948,
+        "balanced_accuracy": 0.8946104024624121,
+        "macro_f1": 0.9082493970775997,
+        "false_positive_rate_wilson95": [
+          0.16200374873961038,
+          0.22614572977716818
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9187482511278092,
+        "average_precision": 0.9188903669223888,
+        "benign_f1": 0.8778195488721805,
+        "threshold": 0.9995519518852234,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9603960396039604
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9047619047619048
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8367346938775511
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    },
+    {
+      "id": "exact-projection-binary-balanced-s343593",
+      "view": "exact-projection",
+      "scope": "federated",
+      "family": "binary-balanced",
+      "seed": 343593,
+      "selected_round": 27,
+      "threshold": 0.987318217754364,
+      "validation": {
+        "rows": 1482,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              565,
+              0
+            ],
+            [
+              1,
+              916
+            ]
+          ]
+        },
+        "accuracy": 0.9993252361673415,
+        "attack_precision": 1.0,
+        "attack_recall": 0.9989094874591058,
+        "attack_f1": 0.9994544462629569,
+        "benign_specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "balanced_accuracy": 0.9994547437295529,
+        "macro_f1": 0.9992851364824953,
+        "false_positive_rate_wilson95": [
+          0.0,
+          0.006753127362865091
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9999980698893082,
+        "average_precision": 0.9999988120778421,
+        "benign_f1": 0.9991158267020336,
+        "threshold": 0.987318217754364,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": true,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 306,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 176,
+            "recall": 1.0
+          },
+          "dos": {
+            "windows": 96,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 41,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 11,
+            "recall": 0.9090909090909091
+          },
+          "password": {
+            "windows": 158,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 13,
+            "recall": 1.0
+          },
+          "scanning": {
+            "windows": 42,
+            "recall": 1.0
+          },
+          "xss": {
+            "windows": 74,
+            "recall": 1.0
+          }
+        },
+        "all_known_family_recall_goal_met": true
+      },
+      "tensor_sha256": "673196b170af36f6f6c66eebba602c2a7a03825ea204bdcfd14e290627cae487",
+      "representation": "original25",
+      "test": {
+        "rows": 1592,
+        "confusion_matrix": {
+          "labels": [
+            "benign",
+            "attack"
+          ],
+          "values": [
+            [
+              461,
+              117
+            ],
+            [
+              12,
+              1002
+            ]
+          ]
+        },
+        "accuracy": 0.9189698492462312,
+        "attack_precision": 0.8954423592493298,
+        "attack_recall": 0.9881656804733728,
+        "attack_f1": 0.939521800281294,
+        "benign_specificity": 0.7975778546712803,
+        "false_positive_rate": 0.20242214532871972,
+        "balanced_accuracy": 0.8928717675723266,
+        "macro_f1": 0.9083907764489247,
+        "false_positive_rate_wilson95": [
+          0.17167940998626813,
+          0.23709424341196728
+        ],
+        "interval_scope": "Window-level binomial descriptive interval; temporal dependence is not modeled.",
+        "auroc": 0.9543237239204767,
+        "average_precision": 0.9559971912334984,
+        "benign_f1": 0.8772597526165556,
+        "threshold": 0.987318217754364,
+        "decision": "attack_score > threshold",
+        "f1_goal_met": true,
+        "low_false_alarm_goal_met": false,
+        "attack_family_recall": {
+          "backdoor": {
+            "windows": 313,
+            "recall": 1.0
+          },
+          "ddos": {
+            "windows": 202,
+            "recall": 0.9851485148514851
+          },
+          "dos": {
+            "windows": 104,
+            "recall": 1.0
+          },
+          "injection": {
+            "windows": 53,
+            "recall": 1.0
+          },
+          "mitm": {
+            "windows": 21,
+            "recall": 0.9523809523809523
+          },
+          "password": {
+            "windows": 169,
+            "recall": 1.0
+          },
+          "ransomware": {
+            "windows": 19,
+            "recall": 0.9473684210526315
+          },
+          "scanning": {
+            "windows": 49,
+            "recall": 0.8571428571428571
+          },
+          "xss": {
+            "windows": 84,
+            "recall": 1.0
+          }
+        }
+      },
+      "selected": false
+    }
+  ]
+}

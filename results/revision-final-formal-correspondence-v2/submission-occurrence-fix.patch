@@ -1,0 +1,140 @@
+--- a/src/fl_forensics/campaign_derivation.py
++++ b/src/fl_forensics/campaign_derivation.py
+@@ -300,7 +300,7 @@
+                 checkpoint_sha256=manifest.core.checkpoint_sha256,
+                 global_model_sha256=checkpoint.core.global_model_sha256 if checkpoint else None,
+                 submissions={
+-                    item.submission_id: f"update_bundle:{item.bundle_sha256}"
++                    item.submission_id: f"update_bundle:{item.submission_id}"
+                     for item in manifest.core.dispositions
+                 },
+             )
+@@ -348,8 +348,9 @@
+         if reference.checkpoint_sha256:
+             # Signed successful inputs identify which local models used this base.
+             checkpoint, _context = checkpoints[reference.checkpoint_sha256]
+-            for item in checkpoint.core.accepted_inputs:
+-                edges.add((base, f"update_bundle:{item.bundle_sha256}", "num"))
++            for item in manifest.core.dispositions:
++                if Decimal(item.effective_weight_decimal) > 0:
++                    edges.add((base, f"update_bundle:{item.submission_id}", "num"))
+ 
+     import json
+ 
+--- a/src/fl_forensics/round_derivation.py
++++ b/src/fl_forensics/round_derivation.py
+@@ -371,9 +371,10 @@
+     edges: set[tuple[str, str, str]] = set()
+ 
+     def node(
+-        kind: str, digest: str, *, prefix: str | None = None, commitment_only: bool = False
++        kind: str, digest: str, *, prefix: str | None = None, commitment_only: bool = False,
++        occurrence_id: str | None = None,
+     ) -> str:
+-        identity = (prefix or kind) + ":" + digest
++        identity = (prefix or kind) + ":" + (digest if occurrence_id is None else occurrence_id)
+         nodes[identity] = DerivationNode(
+             node_id=identity,
+             kind=kind,
+@@ -418,6 +419,9 @@
+         bundle = node(
+             "update_bundle",
+             item.bundle_sha256,
++            # Identical bundle bytes can be claimed in another context/client slot.
++            # Keep that rejected submission separate from the original occurrence.
++            occurrence_id=item.submission_id,
+             commitment_only=entry.outcome != "ready_for_admission",
+         )
+         final = node("submission_final_disposition", digest_object(item.model_dump(mode="json")))
+--- a/tests/test_campaign_derivation.py
++++ b/tests/test_campaign_derivation.py
+@@ -25,6 +25,7 @@
+ )
+ from fl_forensics.preprocessing import derived_json_bytes
+ from fl_forensics.storage import write_json_once, write_once
++from fl_forensics.submission_evidence import submission_identity
+ 
+ 
+ class CampaignDerivationTests(unittest.TestCase):
+@@ -39,7 +40,8 @@
+         self.root = self.first.root
+         self.output = self.root / "campaign-graph"
+ 
+-    def _round(self, parent=None, *, value=0.5, minimum=1, wrong_base=False):
++    def _round(self, parent=None, *, value=0.5, minimum=1, wrong_base=False,
++               replay_bundle_from=None, borrowed_client=None):
+         case = round_tests.RoundDerivationTests(
+             "test_nominal_derivation_binds_receipts_decisions_scoring_and_checkpoint"
+         )
+@@ -81,10 +83,71 @@
+             case.fixture.context = case.fixture.context.model_copy(update={"core": core})
+             self.assertEqual(checkpoint["core"]["campaign_id"], core.campaign_id)
+         case._prepare(second_value=value, minimum=minimum)
++        if replay_bundle_from is not None:
++            self._claim_bundle(case, replay_bundle_from, "client01", "client01")
++        if borrowed_client is not None:
++            self._claim_bundle(case, case, "client01", borrowed_client)
+         result = case._run()
+         self.assertIn(result["status"], {"aggregated", "failed"}, result)
+         self.rounds[sha256_file(case.manifest_path)] = case.workspace
+         return case
++
++    def _claim_bundle(self, case, source, source_client, claim_client):
++        """A legitimate signer claims bytes which must fail bundle admission."""
++        source_path = source.fixture.submissions_root / source_client / "bundle.json"
++        raw = source_path.read_bytes()
++        bundle = json.loads(raw)
++        previous = case.receipts[claim_client]
++        signer = case.signers[claim_client]
++        core = previous.core.model_copy(update={
++            "submission_id": submission_identity(case.context, claim_client, sha256_bytes(raw)),
++            "bundle_id": bundle["bundle_id"], "bundle_sha256": sha256_bytes(raw),
++            "bundle_core_digest": bundle["core_digest"],
++        })
++        digest = digest_object(core.model_dump(mode="json"))
++        receipt = previous.model_copy(update={
++            "core": core, "core_digest": digest, "receipt_id": "submission-receipt-" + digest,
++            "signature": previous.signature.model_copy(update={
++                "key_id": signer.key_id, "value_b64": signer.sign_digest(digest),
++            }),
++        })
++        case._remove(case.client_receipts / f"{previous.core.submission_id}.json")
++        case._replace(case.fixture.submissions_root / claim_client / "bundle.json", raw)
++        data = derived_json_bytes(receipt.model_dump(mode="json"))
++        case._replace(case.fixture.submissions_root / claim_client / "submission-receipt.json", data)
++        case._replace(case.client_receipts / f"{receipt.core.submission_id}.json", data)
++        case.receipts[claim_client] = receipt
++
++    def _assert_separate_bundle_origins(self, case, accepted_case):
++        self.assertEqual(accepted_case._verify()["status"], "verified")
++        self.assertEqual(case._verify()["status"], "verified")
++        rejected = next(x for x in case._manifest()["core"]["dispositions"]
++                        if x["client_id"] == ("client02" if case is accepted_case else "client01"))
++        self.assertEqual(rejected["kind"], "protocol_rejection")
++        self._create()
++        graph = json.loads((self.output / "manifest.json").read_bytes())["core"]
++        contexts = {r["context_digest"]: r for r in graph["rounds"]}
++        accepted_sid = accepted_case.receipts["client01"].core.submission_id
++        accepted_node = contexts[accepted_case.context.core_digest]["submissions"][accepted_sid]
++        rejected_node = contexts[case.context.core_digest]["submissions"][rejected["submission_id"]]
++        self.assertNotEqual(accepted_node, rejected_node)
++        nodes = {n["node_id"]: n for n in graph["nodes"]}
++        self.assertEqual(nodes[accepted_node]["sha256"], nodes[rejected_node]["sha256"])
++        self.assertEqual(len(nodes[accepted_node]["contexts"]), 1)
++        self.assertEqual(len(nodes[rejected_node]["contexts"]), 1)
++        radius = self._blast(case, client=rejected["client_id"])
++        self.assertEqual(radius["status"], "verified", radius)
++        self.assertFalse(any(n["kind"] in {"checkpoint", "checkpoint_model", "round_scoring_state"}
++                             for n in radius["reachable"]))
++        self.assertEqual(self._verify()["status"], "verified")
++
++    def test_replayed_rejected_bundle_keeps_its_own_round_occurrence(self):
++        second = self._round(self.first, replay_bundle_from=self.first)
++        self._assert_separate_bundle_origins(second, self.first)
++
++    def test_borrowed_bundle_keeps_its_own_client_occurrence(self):
++        case = self._round(borrowed_client="client02")
++        self._assert_separate_bundle_origins(case, case)
+ 
+     def _common(self):
+         return {

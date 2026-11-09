@@ -1,0 +1,85 @@
+{
+  "status": "source_schema_and_record_preflight_complete_model_validation_pending",
+  "official_statistics_counts_match": true,
+  "official_expected_attack_type_counts": {
+    "backdoor": 508116,
+    "ddos": 6165008,
+    "dos": 3375328,
+    "injection": 452659,
+    "mitm": 1052,
+    "password": 1718568,
+    "ransomware": 72805,
+    "scanning": 7140161,
+    "xss": 2108944,
+    "normal": 796380
+  },
+  "total_records": 22339021,
+  "all_25_source_field_dependencies_available": true,
+  "source_rows_passing_declared_numeric_address_and_label_checks": 22338152,
+  "proposed_rejected_occurrences": 869,
+  "rejected_binary_label_counts": {
+    "0": 869
+  },
+  "rejected_fraction": 3.890054089657734e-05,
+  "affected_60s_buckets_before_rejection": 247,
+  "service_unknown_occurrences": 16909396,
+  "unknown_service_policy": "Retain as missing, which contributes to service_other_fraction under the existing feature implementation.",
+  "utc_day_binary_label_counts": {
+    "2019-04-02": {
+      "0": 43377
+    },
+    "2019-04-03": {
+      "0": 121945
+    },
+    "2019-04-04": {
+      "0": 35576
+    },
+    "2019-04-23": {
+      "1": 3733109,
+      "0": 22476
+    },
+    "2019-04-24": {
+      "1": 5591875,
+      "0": 89324
+    },
+    "2019-04-25": {
+      "0": 81742,
+      "1": 5147657
+    },
+    "2019-04-26": {
+      "1": 3829702,
+      "0": 91576
+    },
+    "2019-04-27": {
+      "1": 2658325,
+      "0": 48578
+    },
+    "2019-04-28": {
+      "1": 346350,
+      "0": 231561
+    },
+    "2019-04-29": {
+      "1": 235623,
+      "0": 30225
+    }
+  },
+  "pre_rejection_bucket_counts": {
+    "total": 7934,
+    "pure_benign": 2888,
+    "pure_attack": 123,
+    "mixed": 4923
+  },
+  "cross_file_60s_buckets": 22,
+  "constant_attack_prediction_accuracy_at_record_level": 0.9643502730043542,
+  "targeted_tests_passed": 26,
+  "full_test_suite_run": false,
+  "adapter_source_sha256": "e2162bbbf907d828677142474d363395c4baf7ed2ad95f0d2fde7a403ba0dfe1",
+  "auditor_source_sha256": "ecb8fc06affdd1ba3e586583608053642bbc1ee97864938e2d6e0c2d3b5bc77c",
+  "model_evaluation_started": false,
+  "training_dataset_or_scaler_modified": false,
+  "source_rows_actually_discarded": false,
+  "derived_feature_dataset_materialized": false,
+  "connection_identity_audit_complete": false,
+  "full_dataset_compatibility_claimed": false,
+  "next_step": "Freeze a connection-identity/occurrence policy and derive globally merged windows with explicit rejection accounting; then run frozen Data24 transfer before separate ToN-IoT retraining."
+}

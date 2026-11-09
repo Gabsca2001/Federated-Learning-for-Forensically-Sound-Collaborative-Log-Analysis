@@ -1,0 +1,125 @@
+{
+  "status": "verified_host_windows_prepared",
+  "source_rows": 22339021,
+  "accepted_occurrences": 22338152,
+  "rejected_occurrences": 869,
+  "host_windows": 80172,
+  "unique_hosts": 23413,
+  "source_counts": {
+    "Network_dataset_1.csv": 999825,
+    "Network_dataset_2.csv": 1000000,
+    "Network_dataset_3.csv": 1000000,
+    "Network_dataset_4.csv": 1000000,
+    "Network_dataset_5.csv": 1000000,
+    "Network_dataset_6.csv": 1000000,
+    "Network_dataset_7.csv": 1000000,
+    "Network_dataset_8.csv": 1000000,
+    "Network_dataset_9.csv": 1000000,
+    "Network_dataset_10.csv": 1000000,
+    "Network_dataset_11.csv": 1000000,
+    "Network_dataset_12.csv": 1000000,
+    "Network_dataset_13.csv": 1000000,
+    "Network_dataset_14.csv": 1000000,
+    "Network_dataset_15.csv": 1000000,
+    "Network_dataset_16.csv": 1000000,
+    "Network_dataset_17.csv": 1000000,
+    "Network_dataset_18.csv": 1000000,
+    "Network_dataset_19.csv": 1000000,
+    "Network_dataset_20.csv": 1000000,
+    "Network_dataset_21.csv": 1000000,
+    "Network_dataset_22.csv": 999310,
+    "Network_dataset_23.csv": 339017
+  },
+  "split_support": {
+    "train": {
+      "global_minutes": 6061,
+      "host_windows": 67959,
+      "binary_counts": {
+        "benign": 58906,
+        "attack": 9053
+      },
+      "daily_counts": {
+        "2019-04-02": {
+          "benign": 4075
+        },
+        "2019-04-03": {
+          "benign": 11325
+        },
+        "2019-04-04": {
+          "benign": 3153
+        },
+        "2019-04-23": {
+          "benign": 932,
+          "attack": 732
+        },
+        "2019-04-24": {
+          "attack": 1678,
+          "benign": 3547
+        },
+        "2019-04-25": {
+          "benign": 16296,
+          "attack": 2850
+        },
+        "2019-04-26": {
+          "benign": 15524,
+          "attack": 2497
+        },
+        "2019-04-27": {
+          "benign": 4054,
+          "attack": 1296
+        }
+      },
+      "attack_family_windows": {
+        "scanning": 1364,
+        "dos": 1560,
+        "injection": 498,
+        "ddos": 3105,
+        "password": 1689,
+        "xss": 837
+      }
+    },
+    "validation": {
+      "global_minutes": 1080,
+      "host_windows": 7707,
+      "binary_counts": {
+        "benign": 6485,
+        "attack": 1222
+      },
+      "daily_counts": {
+        "2019-04-28": {
+          "benign": 6485,
+          "attack": 1222
+        }
+      },
+      "attack_family_windows": {
+        "ransomware": 256,
+        "backdoor": 966
+      }
+    },
+    "test": {
+      "global_minutes": 718,
+      "host_windows": 4093,
+      "binary_counts": {
+        "benign": 3336,
+        "attack": 757
+      },
+      "daily_counts": {
+        "2019-04-29": {
+          "benign": 3336,
+          "attack": 757
+        }
+      },
+      "attack_family_windows": {
+        "backdoor": 627,
+        "mitm": 130
+      }
+    }
+  },
+  "global_minutes_reconstructed": 7934,
+  "max_absolute_global_feature_error": 0.0,
+  "protocol_sha256": "6387f9fd065feb0d753b77b99feef151eaaa1d09e4ef3a503e0616cb5e62e39d",
+  "host_matrix_sha256": "d2fd4135fd5f18dfd1eb3277291750aa3f2bc0e160a22e87ca8e5699590706b4",
+  "lineage_sha256": "24d023b9cf8098fcef7ee6fc6520342a0356c54ba893e2c4d0a6202472d8f662",
+  "duplicate_sensitivity_claimed": false,
+  "source_files_modified": false
+}

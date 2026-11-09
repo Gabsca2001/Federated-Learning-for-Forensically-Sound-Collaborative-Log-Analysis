@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/unified-chain-20261105/audit_final.py", line 104, in <module>
+    member=archive.getmember('payload/products/report/report.json')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/tarfile.py", line 2065, in getmember
+    raise KeyError("filename %r not found" % name)
+KeyError: "filename 'payload/products/report/report.json' not found"

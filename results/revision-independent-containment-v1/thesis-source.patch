@@ -1,0 +1,988 @@
+--- before/bibliography.bib
++++ after/bibliography.bib
+@@ -621,3 +621,13 @@
+   url     = {https://digital-strategy.ec.europa.eu/en/policies/cyber-solidarity},
+   urldate = {2026-10-26}
+ }
++
++@online{sameera2025weidetectv1,
++  author = {{Sameera K. M.} and {Vinod P.} and {Anderson Rocha} and {Rafidha Rehiman K. A.} and {Mauro Conti}},
++  title = {{WeiDetect}: Weibull Distribution-Based Defense against Poisoning Attacks in Federated Learning for Network Intrusion Detection Systems},
++  year = {2025},
++  eprint = {2504.04367},
++  eprinttype = {arxiv},
++  url = {https://arxiv.org/html/2504.04367v1},
++  note = {Version 1; algorithmic target of the reported adaptation}
++}
+--- before/content/chapters/chap1.tex
++++ after/content/chapters/chap1.tex
+@@ -144,10 +144,13 @@
+ \section{Contributions}
+ \label{sec:intro-contributions}
+ 
+-The contribution lies in the design, implementation, and evaluation of an
+-integrated experimental pipeline. Established learning and cryptographic
+-mechanisms are connected through explicit artifact contracts and derivation
+-links. The resulting system supports six complementary contributions:
++The methodological contribution is a conditional derivation model with
++explicit artifact identities, typed dependencies, effective numerical masses,
++and separately versioned semantic reviews. Its statements, assumptions and
++verifiers connect an implemented experimental pipeline to inspectable evidence.
++Established learning and cryptographic mechanisms supply the underlying
++operators. The work does not claim a new general-purpose aggregation defense.
++This model and its implementation support six complementary contributions:
+ 
+ \begin{enumerate}
+     \item \textbf{A verifiable provenance and data-preparation path.}
+@@ -248,6 +251,21 @@
+ reports the measured results, operational costs, and threats to validity
+ within these boundaries.
+ 
++\section{Use of AI Assistance}
++\label{sec:ai-assistance}
++
++AI assistance was used for English phrasing and translation, and during the
++revision for code drafting and debugging, experiment controllers, tool-mediated
++execution and verification, result analysis, and drafts of formal arguments and
++thesis passages. Its role therefore extends beyond language correction.
++Retained commands, source revisions, artifacts and verifier outputs provide
++an inspectable record of the reported experiments. A replay using the same
++implementation is a reproducibility check, not an independent implementation
++review. Tests and generated prose do not themselves establish a mathematical
++proof or scientific originality. The author remains responsible for checking
++the final claims, references and submitted text; no percentage of AI authorship
++is inferred from automated detection scores.
++
+ \section{Thesis Organization}
+ \label{sec:thesis-structure}
+ 
+--- before/content/chapters/chap2.tex
++++ after/content/chapters/chap2.tex
+@@ -140,36 +140,21 @@
+ processes: model aggregation through FedGradTrace and explanation alignment
+ through the construction of a global hash-feature pool.
+ 
+-The first problem is addressed using FedGradTrace,
+-an extension of FedAvg that, rather than simply averaging client parameters based
+-on the sheer number of local data, preserves the trajectory of each client's last
+-$\tau$ gradient updates and uses it, via the
+-Frobenius norm, to weight each client's contribution based on the
+-stability of its local learning. Therefore, clients with more volatile gradient trajectories,
+-and therefore less aligned with the global trend, receive a lower weight
+-in the aggregation. This mechanism is not designed to improve the
+-explainability of individual predictions, but to make the
+-aggregation process itself traceable, so much so that the authors explicitly formalize each client's contribution to the global update as a quantity that can be decomposed and therefore attributed a posteriori.
+-Conceptually, this objective is similar, although pursued with different mathematical tools, to the audit log of the federated process proposed in this thesis.
+-In both cases, the aim is to reconstruct the weight that each client
+-had in a given round, not just the final result of the aggregation.
+-This indirectly confirms that the issue of traceability of the federated process, and not just of the individual prediction, is also addressed in recent literature, albeit with a motivation related to training stability rather than forensic auditability.
+-
+-The second problem, that of log format heterogeneity,
+-is addressed through a hash-based feature alignment mechanism where
+-each log is traced to a template using the Drain parser, which
+-is associated with a unique eight-digit hexadecimal hash identifier
+-generated with a one-way function, thus preventing the reconstruction of the
+-original log from the hash. The SHAP values computed locally by each
+-client are then projected onto this shared hash space, resulting in a
+-global explanation space that is consistent across clients even when the original log formats differ substantially, as in the case of the four datasets used for validation.
+-It is worth analyzing this mechanism carefully because,
+-at first glance, it appears to overlap with the concept of evidence manifest proposed in this thesis, but upon closer inspection, the overlap is only superficial.
+-The FedXLog hash was created to protect the confidentiality of log content during the explanation process, and the hash-template mapping is maintained exclusively on the client, never being transmitted to the server.
+-Therefore, the goal is to prevent a compromised server from observing the most frequent hashes, from tracing log patterns associated with an anomaly.
+-The evidence manifest of this thesis, however, pursues a complementary but distinct objective: not to hide the contents of a log, but to demonstrate that a log has not been altered between the time of acquisition and the time it is used as evidence.
+-The former is a confidentiality mechanism, the latter is a verifiable integrity mechanism for evidentiary purposes.
+-This distinction, made clear by the comparison with FedXLog, allows us to better clarify the thesis's positioning: that is, the literature on FL applied to logs has already begun to use hashing for privacy purposes, but has not yet employed it for chain of custody purposes.
++FedGradTrace retains a gradient trajectory and uses its norm in aggregation.
++The published motivation concerns stability and traceability, but the displayed
++formulations require care: Eq.~(3) normalizes sample-count--trajectory-norm
++products, whereas the separately printed Eq.~(2) is not that normalized
++coefficient rule. Increasing a norm does not automatically decrease its
++positive multiplier. Section~\ref{subsec:revision-fedgradtrace} therefore
++labels both readings, uses actual gradients in a separate native experiment,
++and reports the interrupted formulation without inventing later rounds
++\parencite{gu2026fedxlog}.
++
++FedXLog's hash-template alignment serves explanation exchange, whereas this
++thesis binds retained evidence to derivation records. A short template hash
++alone supplies no general confidentiality guarantee against dictionary guessing
++or collisions. This comparison concerns these two mechanisms and does not
++establish that all prior federated-log work lacks chain-of-custody support.
+ 
+ The third issue, computational cost, is addressed through knowledge
+ distillation. That is, a student model based on a six-layer Transformer architecture is trained to mimic both the predictions and the distribution of SHAP values of a BERT-based teacher model, using a loss function that combines cross-entropy on the true labels and Kullback-Leibler divergence with respect to the teacher model's output distributions. The result, measured by the authors on a federated LogBERT benchmark model, is a reduction of approximately 42\% in the number of parameters, approximately 39\% in model size, and approximately 50\% in FLOPs, without a significant loss of accuracy on the four validation datasets.
+--- before/content/chapters/chap4.tex
++++ after/content/chapters/chap4.tex
+@@ -125,6 +125,7 @@
+ the mechanisms and assumptions needed to interpret those results.
+ 
+ \input{content/chapters/formal_derivation}
++\input{content/chapters/formal_revision_closure}
+ 
+ \section{Project Requirements}
+ \label{sec:sec4requirements}
+--- before/content/chapters/chap5.tex
++++ after/content/chapters/chap5.tex
+@@ -1750,6 +1750,9 @@
+ \FloatBarrier
+ 
+ \input{content/chapters/derivation_validation}
++\input{content/chapters/revision_authenticated_validation}
++\input{content/chapters/revision_dba_groups}
++\input{content/chapters/revision_containment_validation}
+ 
+ \section{Computational and Operational Costs}
+ \label{sec:ch5-cost-results}
+@@ -2073,6 +2076,32 @@
+ registration, global knowledge of all products, and certified unlearning are
+ not established by these mechanisms.
+ 
++The additional DBA comparison is conditional on shared incoming updates,
++not a demonstration that every defense controls the same future trajectory.
++The complete-trigger variant remains effective against several adaptations.
++The native FedGradTrace comparison uses actual gradients and keeps the
++interrupted unnormalized formulation separate. Retrospective group selection
++also misses attackers and admits benign members in some cases. Joint and
++individual interventions support conclusions about groups compatible with
++coordinated behavior, rather than proving intent or collusion.
++
++Fresh attested multiround branches connect corrected checkpoints to newly
++trained updates and actual investigative products. Separately, the hard DBA
++case shows why removing later updates cannot generally repair an already
++contaminated base. Rewinding to the original base with the declared reduced
++population reproduces that population's matched reference; it does not prove
++universal machine unlearning or equivalence with an all-client clean run.
++
++The experimental bounded-contribution profile adds a verifiable transformation
++between signed inputs and aggregation. Its mathematical result is conditional
++control of a tensor delta and fixed-input removal, not a security theorem for
++backdoor success. In particular, the zero complete-trigger ASR of the known-seed
++pilot is not sufficient to conclude decontamination. The independent validation
++in Section~\ref{subsec:revision-independent-validation} evaluates the frozen
++profile using a stronger multi-trigger objective and retains residual attacks,
++clean-utility costs and missing checkpoints in its conclusion. Automatic
++semantic exclusion and general operational robustness are not established.
++
+ The research question is therefore answered within the prototype's scope:
+ collaborative learning, authenticated admission, and investigative
+ reconstruction can share a verifiable artifact chain. The experiments
+@@ -2083,19 +2112,21 @@
+ \subsection{Future Work}
+ \label{subsec:ch5-future-work}
+ 
+-A first priority is to examine whether the statistical admission score
+-identifies updates whose reduced influence actually benefits aggregation.
+-The current reference combines five equally weighted indicators and
+-uses a limited clean-development calibration. Ablations should assess
+-the information added by each component, including possible overlap
+-between geometric indicators. Round-dependent changes in honest updates
+-also motivate studying the stability of the fixed reference. Any revised
+-calibration should use designated development data, with the policy and
+-evaluation protocol fixed before new final-test access. Paired comparisons
+-with sequential admission should retain both predictive outcomes and the
+-cost of excluding or downweighting honest contributions. Such experiments
+-could determine when the intermediate treatment band is useful, rather
+-than assuming that additional interventions improve robustness.
++A first priority is to understand the failures retained by the fixed-profile
++multi-trigger validation. New candidate policies should be developed on a
++separate partition of experiments and frozen before subsequent validation,
++with clean utility, support failures, false exclusions and all trigger components
++specified in advance. Broader attacker families should vary component placement,
++timing and per-client optimization, while matched attack-effective controls
++prevent an ineffective attack from being counted as successful mitigation.
++The present containment profile remains explicit and experimental. Its norm
++bound should not be relabelled as a calibrated automatic-maliciousness rule.
++
++Retrospective group analysis requires additional independently reserved
++identities and distributions, and a stronger account of multiple candidate
++searches. Its current clean calibration and benign controls do not supply a
++population-wide significance guarantee. Prospective selection, intervention
++and reporting must remain separate from ground-truth attacker identities.
+ 
+ A second priority concerns the data available for assessing generalization.
+ Additional capture periods and independently collected organizational data
+@@ -2106,6 +2137,11 @@
+ that distinguishes a frozen-model assessment from any subsequent
+ adaptation. More prospective seed replications would improve the
+ precision of comparisons, but cannot substitute for independent data.
++The proposed ToN-IoT follow-up remains deferred in this revision. It first
++requires explicit compatibility checks for the 25-feature contract and label
++coverage. A frozen-model transfer and a separately retrained pipeline would
++answer different questions; incompatible categories must not be forced into
++the six Data24 MITRE-derived classes.
+ 
+ The infrastructure should also be evaluated across separately administered
+ hosts and physical TPMs. Such a deployment would require explicit
+--- before/content/chapters/formal_derivation.tex
++++ after/content/chapters/formal_derivation.tex
+@@ -68,7 +68,7 @@
+ and let $\lambda_t\in(0,1)$ be the fixed downweight factor in the round contract.
+ The effective unnormalized mass is
+ \begin{equation}
+- a_t(s)=n_s\,c_t(s),\qquad
++ m_t(s)=n_s\,c_t(s),\qquad
+  c_t(s)=
+  \begin{cases}
+  1,&G_t(s)=1\ \land\ A_t(s)=\mathrm{accept},\\
+@@ -81,10 +81,10 @@
+ The statistical or composite risk selects an action; it does not silently
+ replace this fixed factor with a continuous multiplier such as $1-r$.
+ 
+-Let $C_t=\{s:a_t(s)>0\}$ and let $q_t$ be the minimum contributor count.
+-If $|C_t|\ge q_t$ and $M_t=\sum_s a_t(s)>0$, the mathematical coefficient is
+-\begin{equation}
+- \alpha_t(s)=\frac{a_t(s)}{M_t},\qquad
++Let $C_t=\{s:m_t(s)>0\}$ and let $q_t$ be the minimum contributor count.
++If $|C_t|\ge q_t$ and $M_t=\sum_s m_t(s)>0$, the mathematical coefficient is
++\begin{equation}
++ \alpha_t(s)=\frac{m_t(s)}{M_t},\qquad
+  \theta_t=\sum_{s\in C_t}\alpha_t(s)\theta_{t,s}.
+  \label{eq:formal-alpha}
+ \end{equation}
+@@ -134,7 +134,7 @@
+ Review records are appended to a globally ordered hash chain and to the
+ submission's review history. The current projection is the latest attributed
+ statement, not a consensus procedure or a proof of the client's intent.
+-Appending a review does not update $G_t$, $A_t$, $a_t$, $\alpha_t$, or $\theta_t$
++Appending a review does not update $G_t$, $A_t$, $m_t$, $\alpha_t$, or $\theta_t$
+ in a historical round. An intervention motivated by the review produces a new
+ analytical branch with its own provenance.
+ 
+@@ -185,7 +185,7 @@
+ \paragraph{P4: Non-compensation at the hard gate.}
+ For every statistical score and policy threshold,
+ \begin{equation}
+- G_t(s)=0\ \Longrightarrow\ a_t(s)=0.
++ G_t(s)=0\ \Longrightarrow\ m_t(s)=0.
+  \label{eq:formal-noncompensation}
+ \end{equation}
+ \emph{Proof.} Both positive cases in Equation~\eqref{eq:formal-mass} require
+@@ -258,7 +258,9 @@
+ action changes, the L1 difference between historical and new coefficients, and
+ the additional coefficient difference beyond frozen-decision renormalization.
+ Quorum failure produces an explicit no-model outcome and undefined model
+-distances. These measures distinguish policy changes from mere renormalization.
++distances. These supplementary measures distinguish policy changes from mere renormalization.
++The fixed-client original measures are retained explicitly in
++Section~\ref{subsec:formal-fixed-client-diagnostics}.
+ 
+ For subsequent rounds, each surviving client's update must be retrained from
+ the corrected branch's current model. Reusing updates trained from the original
+@@ -269,6 +271,10 @@
+ submission in one round differs from permanently excluding that client.
+ The implemented CPU FedAvg control provides a circumscribed numerical replay,
+ not a fresh execution of the complete attested composite-admission system.
++The later circumscribed attested replay in
++Section~\ref{sec:revision-authenticated-replay} supplies a separate
++validation of fresh training and downstream products; it does not retroactively
++change this earlier CPU experiment.
+ 
+ Finally, coefficients must not be multiplied along mixed numerical, decision,
+ and audit paths to obtain an alleged global influence score. Local training and
+--- before/content/chapters/formal_revision_closure.tex
++++ after/content/chapters/formal_revision_closure.tex
+@@ -0,0 +1,166 @@
++\subsection{Implementation Profiles and Upstream Record Coverage}
++\label{subsec:formal-profile-closure}
++
++The preceding statements are conditional properties of named profiles, not a
++single certificate for every interface that exports a graph. The full round
++verifier reconstructs admission, scoring, masses and checkpoint bytes. A graph
++query authenticates its supplied view and paths; it does not independently
++rerun local training or every investigative product. A round-local analytical
++intervention likewise does not acquire fresh attestation merely by referring
++to an authenticated historical round. Historical signatures retain their
++original serialization and source release when later implementations change.
++
++Write $B_t$ for the incoming model of round $t$ and $\theta_t$ for its output.
++The original proposal denotes these by $W(t)$ and $W(t+1)$, whereas the later
++experiment records use $W_{t-1}$ and $W_t$. Thus a correction to experimental
++round 10 starts from $B_{10}=W_9$. These are index translations, not different
++execution orders. In this section $m_t(s)$ denotes unnormalized mass,
++$c_t(s)$ its policy factor, and $\alpha_t(s)$ the normalized coefficient.
++
++Submission identity includes context and client as well as bundle content.
++The corrected graph therefore identifies an update-bundle occurrence by its
++submission identity while retaining the original content hash as an attribute.
++Reusing identical bytes in a different client or round slot cannot acquire the
++original occurrence's numerical descendants. Conflicting signed claims can
++have separate negative dispositions while still occupying at most one numerical
++slot per client. Regression cases cover both cross-round replay and a
++same-round claim to another client's bundle. This correction concerns graph
++identity; it does not retrospectively re-sign earlier graphs.
++
++There is a separate upstream completeness obligation. For a named ingestion
++profile, let $I_0$ enumerate occurrences by committed source, position and record
++digest. Equal record values at different positions remain different inputs.
++The verifier requires exactly one terminal outcome per occurrence: a derived
++retained event/window association, or an identifiable discard with its reason.
++Many source occurrences may share a consolidated event or feature window.
++Verification re-enumerates the pinned sources, reruns the transformation and
++checks identities and associations rather than only matching totals. Blank
++lines, parsing failures and training-window selection have profile-specific
++outcomes; an unsupported transformation fails rather than receiving a fabricated
++successful coverage manifest. An empty input has only trivial coverage.
++
++The JSONL, Data24 CSV and Data24 Parquet profiles make this statement relative
++to their committed $I_0$. The new replay writes its inventory before its own
++transformation, but that ordering does not independently timestamp an earlier
++historical capture. It does not establish that all network events were captured
++before ingestion. Similarly, receipt-relative submission coverage does not
++establish delivery or a trusted registration deadline. An independently
++administered append-only witness with trusted closure and retained heads remains
++a stronger deployment hypothesis, not an implemented external service.
++
++\subsection{Fixed-Client Diagnostics and Their Failure Domain}
++\label{subsec:formal-fixed-client-diagnostics}
++
++Let $K$ be the fixed expected-client set and compare two successful round
++normalizations, padding absent coefficients with zero. The original measures are
++\begin{align}
++ \Delta_K &= \sum_{k\in K}|\alpha'_k-\alpha_k|,\\
++ J_K &= \mathbf{1}\{\exists k\in K:A'_k\ne A_k\}.
++ \label{eq:formal-fixed-diagnostics}
++\end{align}
++The augmented action alphabet includes an explicit \texttt{not\_submitted}
++outcome. For a removed set of original coefficient mass $\beta<1$, the removed
++coordinates contribute $\beta$ to $\Delta_K$, and the surviving coordinates
++contribute at least $\beta$ because their signed changes sum to $\beta$.
++Hence $\Delta_K\ge 2\beta$. Frozen-decision renormalization attains equality.
++These quantities are undefined when a required normalization is absent.
++
++Under the stated absence convention, every nonempty allowed removal already
++gives $J_K=1$. It therefore cannot by itself establish an indirect policy effect.
++The implementation separately reports the fraction of \emph{surviving} actions
++that change, survivor coefficient differences, and deviation beyond ordinary
++renormalization. These supplementary diagnostics do not replace the original
++fixed-$K$ definitions. Nor do scalar norms of direct and policy effects add in
++general: vector effects can reinforce or cancel.
++
++Semantic reviews remain in a separate authenticated append-only ledger and
++lineage index. Runtime graph traversal uses numerical, decision and audit edges;
++it is not presented as a unified four-edge traversal including semantic review.
++An externally retained expected head is needed to detect rollback relative to
++a known review history. A valid unanchored alternative head alone cannot
++establish the unique history or the truth of a reviewer's judgment.
++
++\subsection{Authenticated Containment of Derived Contributions}
++\label{subsec:formal-bounded-influence}
++
++An additional experimental profile transforms a contribution before aggregation.
++It retains the original signed model $U_{t,s}$ and records a separate derived
++object. For tensor $\ell$, with fixed base $B_t$ and a positive clean-reference
++limit $C_\ell$, define
++\begin{align}
++ d_{t,s,\ell} &= U_{t,s,\ell}-B_{t,\ell},\\
++ \eta_{t,s,\ell} &= \min\{1,C_\ell/\lVert d_{t,s,\ell}\rVert\},\\
++ v_{t,s,\ell} &= \eta_{t,s,\ell}d_{t,s,\ell},\\
++ \theta_{t,\ell} &= B_{t,\ell}+\sum_s\alpha_t(s)v_{t,s,\ell}.
++ \label{eq:formal-clipped-aggregation}
++\end{align}
++For a zero delta, $\eta=1$. The original signature is not transferred to the
++derived delta. The declared limits, original bundle/update hashes, factors,
++effective masses and float64 derived values are reconstructed independently;
++the coordinator's signed derivation manifest binds that transformation. The
++graph includes original bundle $\rightarrow$ bounded derivation $\rightarrow$
++checkpoint, with base and limit dependencies. The final checkpoint is exported
++to its declared tensor dtype.
++
++The original hard gate still determines admissibility. Failed gates and
++quarantine have zero mass, and insufficient quorum yields no checkpoint.
++Clipping never restores rejected mass. The newer statistical adapters expose
++proposals; unsupported-context abstention may retain eligible proposed mass.
++The live caller explicitly closes that domain by assigning zero final mass
++and producing a verified failure without a checkpoint. This conservative
++complete-cohort rule has an availability cost and does not claim calibrated
++operation on an arbitrary partial cohort.
++
++In exact arithmetic, $\lVert v_{t,s,\ell}\rVert\le C_\ell$. Convex normalization
++and the triangle inequality therefore imply
++\begin{equation}
++ \left\lVert\sum_s\alpha_t(s)v_{t,s,\ell}\right\rVert\le C_\ell.
++ \label{eq:formal-cap}
++\end{equation}
++Freeze the original inputs, base, limits and survivor decisions. Removing
++client $k$ with $\alpha_t(k)<1$ changes the tensor aggregate by
++$\alpha_t(k)(v_{t,k,\ell}-\mu_{-k,\ell})$, where $\mu_{-k,\ell}$ is the
++renormalized survivor mean. Both vectors have norm at most $C_\ell$, giving
++\begin{equation}
++ \lVert\theta_{t,\ell}-\theta_{t,-k,\ell}\rVert
++ \le 2\alpha_t(k)C_\ell.
++ \label{eq:formal-cap-removal}
++\end{equation}
++For a removed group of total coefficient mass $A<1$, the analogous bound is
++$2AC_\ell$. A real survivor checkpoint additionally requires survivor quorum.
++Otherwise the algebraic mean does not authorize a checkpoint rejected by the
++live policy. The numerical certificates include both checkpoint-export rounding
++errors and a declared $10^{-12}$ comparison allowance; they are finite checks,
++not a proof of arbitrary floating-point arithmetic.
++
++Here $\alpha_t(s)$ weights the \emph{derived} contribution. Its raw-delta
++representation has tensor-specific coefficient $\alpha_t(s)\eta_{t,s,\ell}$
++and base coefficient $1-\sum_s\alpha_t(s)\eta_{t,s,\ell}$. Because clipping is
++nonlinear, these observed algebraic coefficients are not marginal derivatives
++or demonstrated causal responsibility. They must not silently replace the
++original coefficients in $\Delta_K$. The norm bound establishes neither
++semantic malice nor an ASR guarantee, clean-state recovery or a bound on later
++retraining. The legacy raw-update counterfactual adapter explicitly rejects
++this profile; its clipped-delta removal operation is separate.
++
++\begin{table}[tbp]
++\centering\small
++\caption[Formal obligations and verification scope]{Condensed correspondence of the revised obligations.
++All proofs retain their stated trust, source-release and availability hypotheses.}
++\label{tab:formal-profile-correspondence}
++\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{.17\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
++\toprule
++Obligation & Verification & Evidence boundary \\
++\midrule
++Committed integrity & Core/payload hashes and signatures & Trusted expected roots and keys \\
++Submission coverage & Receipt, inventory and final-disposition reconstruction & Supplied nonempty receipt set; no trusted deadline \\
++Record coverage & Enumerate $I_0$ and replay each terminal outcome & Named committed ingestion profiles \\
++Mass and weight & Gate, count, action, normalization and backend replay & Successful quorum and declared transformation \\
++Review history & Attributed append-only chain and known-head checks & Separate semantic ledger; no truth certification \\
++Structural radius & Typed reachability with witness paths & Supplied authenticated manifest set \\
++Future effects & New training from each corrected base & Bound inputs, seeds, optimizer and runtime \\
++Containment & Derived-delta replay and removal certificates & Fixed base, limits and survivor decisions \\
++\bottomrule
++\end{tabularx}
++\end{table}
++\FloatBarrier
+--- before/content/chapters/revision_authenticated_validation.tex
++++ after/content/chapters/revision_authenticated_validation.tex
+@@ -0,0 +1,72 @@
++\section{Authenticated Multiround Evidence and Replay}
++\label{sec:revision-authenticated-replay}
++
++The earlier 466-test milestone in Section~\ref{sec:ch5-derivation-validation}
++is preserved as a historical validation of the small CPU replay and structural
++fixtures. A later, separate case exercises the complete signed round path with
++real Data24 local training and emulated TPMs. Its four five-round trajectories
++comprise an original DBA history, removal of client01's first submission,
++removal of that client's three attack-round submissions, and an unchanged
++attacked control. Client01 returns in later rounds; these are explicit
++submission schedules, not permanent identity bans. Clients06 and11 remain.
++
++The case has 300 fresh verified swtpm Quotes, 296 original local training
++outputs and 12 actual investigative bundles. Prediction, explanation, mapping
++and report bundles are produced for the original and two intervention branches.
++The separate numerical verification repeats all 296 local trainings under the
++frozen implementation. It adds no Quotes. The unchanged attacked control
++reproduces every checkpoint byte. These are twenty round instances over four
++trajectories, not a single twenty-round history or physical-TPM evaluation.
++
++The supplied graph contains 1,678 nodes and 4,757 edges. The selected first-round
++source and the union of its three attack-round submissions both reach 311
++dependent objects, including five checkpoint models and four product manifests.
++The earliest source can already reach later descendants, so equal union size
++does not imply equal intervention strength. Counts are relative to this supplied
++graph; no global registration of all possible products is established.
++
++The final model L2 distance from the original is 0.388520 for single-submission
++removal and 0.412999 for removal in rounds 1--3. Later local models are genuinely
++retrained from their own branch checkpoints, rather than reused from the
++original future. Nevertheless the complete-trigger ASR is zero in all four
++branches, including the original attack and unchanged attacked control.
++This case demonstrates authenticated propagation and reproducibility, not
++successful removal of an effective backdoor. The longer efficacy studies in
++Section~\ref{sec:revision-dba-groups} answer a different question.
++
++Nine attributed retrospective reviews bind the known scripted poisoning and
++its input commitments. Historical decisions, coefficients, checkpoints and
++products remain unchanged. Those judgments use experimental ground truth;
++they do not establish automatic identification of real malicious intent.
++The historical graph release remains preserved. A subsequent review corrects
++the occurrence-identity defect described in
++Section~\ref{subsec:formal-profile-closure}; the retained case itself has 296
++distinct submission origins, so that specific alias condition is absent there.
++
++\subsection{Source Versions and Evidence Types}
++\label{subsec:revision-source-versions}
++
++Source identity is part of the experiment, not merely a build annotation.
++The final correspondence review contains 633 passing tests at the corrected
++114-file release. The later empirical live adapters and containment profile
++have a 119-file release with 678 passing tests. The full-source fingerprint of
++the latter is
++\begin{quote}\small\ttfamily
++4b58e1590179dbaa37c8e9760b94bd57549db6c3a228e95f00ee2def26012bbb
++\end{quote}
++Old signed artifacts remain associated with their own original serializers,
++code and numerical environment. They are not migrated or re-signed to imply
++that a later release produced them. Function-body agreement is a local check,
++not proof of equivalence of all transitive dependencies. Unit-test totals,
++artifact hashes, actual training replay and manual conditional proofs provide
++different evidence and are not interchangeable.
++
++The theorem-to-code correspondence separates receipt/intake verification,
++full admission verification, graph reachability, ingestion coverage, review
++history and experiment-specific numerical replay. The logical conditions of
++the bound in Section~\ref{subsec:formal-bounded-influence} do not turn empirical
++calibration into proof of semantic trust. Analyst-signed closures bind study
++inputs, scripts and outputs under local software keys; they are not independent
++timestamp services, physical TPM signatures of the analysis or external
++mathematical certification.
++\FloatBarrier
+--- before/content/chapters/revision_containment_validation.tex
++++ after/content/chapters/revision_containment_validation.tex
+@@ -0,0 +1,118 @@
++\section{Adaptive Quarantine Limits and Bounded Contributions}
++\label{sec:revision-containment}
++
++Automatic quarantine is an additional experimental thread, distinct from the
++retrospective group requirement. The individual-envelope head compares two
++frozen clean response predictors and requires confirmed current evidence.
++Its extra envelope channel retains a peak over an uninterrupted positive
++episode. Current excess below half that peak can remain under review without
++quarantine. Accumulated evidence is review-only, and neither an alert nor
++release proves semantic malice or innocence.
++
++An input-level counterexample and an actual trained-model pilot expose peak
++suppression. The old pilot can retain positive excess for two attackers over
++five successive rounds without quarantine. Replacing the peak rule with a
++fixed confirmation count increases development interceptions but excludes one
++currently unmodified update responding to a contaminated base. A two-round
++rolling peak passes the earlier development guardrail and improves ordinary
++non-IID coverage, yet a head-aware six-round search reaches 26.81\% peak
++full-trigger validation ASR. These rejected variants remain reported; neither
++is silently promoted as a reliable automatic classifier.
++
++\subsection{Frozen Containment Contract and Initial Results}
++\label{subsec:revision-containment-initial}
++
++The containment profile in Section~\ref{subsec:formal-bounded-influence}
++instead limits each admitted tensor delta while retaining the original signed
++object. It uses a fixed common per-tensor 99th percentile, with the
++\texttt{higher} quantile rule, from 3,675 unmodified reference updates per
++cohort. The references include responses to generic perturbed shared states.
++Adversarial-client identities and attack outcomes do not enter fitting.
++The reference information budget and dependence on the known cohort are
++explicit assumptions, not evidence of independent-dataset generalization.
++Clipping is already a component of the literature comparison; it is not
++claimed as a novel defense. The added contribution is authenticated
++transformation and verifiable influence accounting.
++
++Twelve separately evolving histories use new seeds 581593 (IID) and 591593
++(non-IID): clean/DBA training under FedAvg, the original envelope and bounded
++envelope. Ten attack rounds are followed by five unmodified continuations.
++They execute 2,700 local trainings, with 360 first/last-round repeats, 180
++replayed decisions/aggregates and 854 direct removal certificates. Worst paired
++clean macro-F1 loss is 1.6374 percentage points IID and 0.3791 points non-IID,
++within the two-point budget frozen before evaluation. The original envelope
++already gives zero complete-trigger ASR in these ordinary attack cases, so no
++incremental full-trigger advantage over it follows there.
++
++A deliberately privileged white-box replication uses the previously observed
++non-IID seed 551593 and six rounds. From the actual current base, the attacker
++trains unmodified and poisoned endpoints, then searches ten shared factors
++\begin{equation}
++ \{0,\,0.03125,\,0.0625,\,0.125,\,0.25,\,0.5,\,0.75,\,1,\,2,\,4\}
++\end{equation}
++for the three attackers' exports. An export is
++$U_{\mathrm{clean}}+a(U_{\mathrm{poison}}-U_{\mathrm{clean}})$; factors above
++one extrapolate that poisoning direction. The search evaluates validation ASR
++after the actual defended aggregation and uses the same candidate budget for
++both methods. It is offline post-training model manipulation, not a demonstrated
++TPM training-contract bypass. The local endpoint training still uses the
++declared Adam procedure; parameter deltas are not relabelled as gradients.
++
++The first greedy selector chose no manipulation in early ASR ties and was
++ineffective. An explicitly exploratory follow-up chooses larger manipulation
++in such ties while leaving the defender fixed. The original-head control then
++reaches 100\% peak complete-trigger ASR and 97.8688\% final ASR; the bounded
++variant stays at zero for that trigger through all six fixed rounds. Its
++final clean macro-F1 is approximately 0.94. Across both attack-search versions,
++240 candidate queries and 48 selected aggregates are replayed, and each
++version's 540 local trainings are repeated exactly.
++
++This is a known-seed exploratory replication, not the independent evaluation
++below. The bounded variant still has 1.0656\% maximum component-trigger ASR
++and final parameter L2 distance 2.151472 from its matched clean reference.
++Zero complete-trigger ASR therefore does not establish all-trigger security or
++clean-state recovery. Candidate choices and future bases depend on the defense;
++the peaks are not a paired fixed-update comparison. The stronger attack was
++developed after observing the first tie-breaking weakness and that history is
++part of the method, not hidden selection.
++
++\subsection{Authenticated Live Containment}
++\label{subsec:revision-containment-live}
++
++The final live mechanism case has three five-round trajectories: unmodified
++training with containment, DBA under the original enforced head, and DBA under
++the bounded head. It adds 225 fresh verified swtpm Quotes and 225 local
++trainings. The live quorum is ten, versus eight in the offline pilot. Three
++attack rounds and two continuations exercise actual transformations and future
++training from each branch's checkpoint. All rounds and all three final
++campaigns verify under the preserved source and frozen runtime image.
++
++Ten bounded live rounds reconstruct the original inputs, derived report and
++exported checkpoint bytes exactly, with 145 direct individual-removal
++certificates. The signed context binds the limit asset; the round graph binds
++the transformation, original bundle references and checkpoint. Original client
++signatures remain on original submissions. Seven mutations of disposable copies
++are rejected, including clipping factors and original-update references in
++addition to signatures, masses and historical dependencies. The unchanged copy
++verifies. A separate post-hoc check authenticates 75 historical genuine swtpm
++bundles and derives new bounded objects without creating new Quotes or
++rewriting any historical checkpoint.
++
++Both attacked live branches have zero complete-trigger ASR in this short
++case. Its role is runtime mechanism validation, not a live efficacy advantage.
++The declared swtpm measurements cover selected components; neither physical TPM
++protection nor entire-host integrity is inferred. The head shares the live
++coordinator process; denial of that process's access to all raw partitions is
++not claimed. Numerical byte reconstruction is distinct from those deployment
++properties and from the semantic trustworthiness of data.
++
++The implementation review also found an accumulation-order issue in the first
++live trial: unpadded string indices sort lexically with more than ten inputs.
++The final version zero-pads numerical indices and requires exact agreement
++between report and runtime aggregate before checkpoint creation. The original
++trial and source are preserved separately. Five new regressions and the final
++678-test suite cover the corrected release. No earlier source is relabelled as
++having executed this final implementation.
++
++\input{content/chapters/revision_independent_results}
++\FloatBarrier
+--- before/content/chapters/revision_dba_groups.tex
++++ after/content/chapters/revision_dba_groups.tex
+@@ -0,0 +1,228 @@
++\section{Distributed Backdoors, Literature Adaptations, and Retrospective Groups}
++\label{sec:revision-dba-groups}
++
++This section consolidates the added experiments motivated by the derivation
++model. It distinguishes shared-update comparisons, independently evolving
++trajectories, retrospective interventions and mechanism validation. A successful
++signature authenticates the submitted object; it does not establish a benign
++local objective. Conversely, an update can have recorded numerical influence
++without achieving its attack target. All study summaries retain negative and
++partial outcomes instead of converting them into successful defense results.
++
++\subsection{Distributed Trigger and Common-Input Comparison}
++\label{subsec:revision-dba-baselines}
++
++The Data24 DBA protocol has fifteen clients and three controlled adversaries.
++Each attacker edits a deterministic 50\% of its local training records, adds
++its own component at standardized feature index 13, 17 or 24, and assigns the
++target label \texttt{benign}. The complete evaluation trigger combines all
++three components; component evaluations preserve the true reference labels.
++The trigger value is 12 in the standardized feature space. This is a
++feature-space model experiment, not proof that such values can be realized in
++raw network traffic. A second condition applies all components to each selected
++row. Its row-edit budget matches DBA, but its feature-edit budget is larger.
++
++Nine source histories cover clean, distributed and complete-trigger training
++at seeds 341593, 342593 and 343593. Each has fifteen rounds, with attack at
++rounds 1--10 and unmodified continuations at rounds 11--15. Local Adam uses ten
++epochs, batch 128 and learning rate 0.001. The retained partitions, scaler and
++initial model are fixed. Server validation has 3,223 windows and the existing
++test fold 4,937. The source recurrence is FedAvg. Other methods reaggregate the
++same incoming base and local updates; their values are conditional round
++comparisons, not eight separate defense-controlled training histories.
++
++\begin{table}[tbp]
++\centering\small
++\caption[DBA and complete-trigger shared-update comparison]{Round-10 test outcomes on common inputs.
++ASRs are percentages, mean $\pm$ sample standard deviation over three seeds.
++The final column is clean macro-F1 under the complete-trigger condition.}
++\label{tab:revision-baselines}
++\begin{tabular}{lrrr}
++\toprule
++Method & DBA ASR & Complete ASR & Macro-F1 (\%) \\
++\midrule
++FedAvg & $44.09\pm3.75$ & $96.97\pm0.52$ & $91.57\pm0.89$ \\
++Coordinate median & $0.02\pm0.03$ & $86.57\pm3.18$ & $91.16\pm0.30$ \\
++Trimmed mean & $0.04\pm0.03$ & $89.70\pm2.12$ & $91.13\pm0.31$ \\
++Multi-Krum & $0.00\pm0.00$ & $63.69\pm8.73$ & $90.16\pm1.86$ \\
++Bulyan & $0.00\pm0.00$ & $68.05\pm1.60$ & $90.55\pm0.70$ \\
++FLAME adaptation & $0.00\pm0.00$ & $64.15\pm6.85$ & $89.01\pm2.05$ \\
++WeiDetect adaptation & $0.00\pm0.00$ & $95.09\pm1.84$ & $93.27\pm2.46$ \\
++Original composite & $0.00\pm0.00$ & $88.21\pm0.22$ & $91.90\pm0.55$ \\
++\bottomrule
++\end{tabular}
++\end{table}
++
++The original composite suppresses the distributed trigger in these conditional
++outputs but retains substantial complete-trigger ASR. A poisoned incoming
++checkpoint can preserve a backdoor even when current poisoned updates are
++removed. At round 15, mean complete-trigger ASR remains 11.81\% for FedAvg,
++2.69\% for FLAME, 23.93\% for WeiDetect and 11.37\% for the original composite.
++Zero final DBA ASR also occurs in the continuing FedAvg source and does not
++prove a unique defense advantage or equality with a clean reference model.
++
++Operational selection is reported separately. During the 90 poisoned-update
++opportunities of DBA rounds 1--10, FLAME excludes 90, WeiDetect 67 and the
++original composite 90. Their currently clean exclusions are respectively
++111, 23 and 1 out of 360 opportunities; clipping and downweighting are separate
++operations. In the complete-trigger condition the corresponding poisoned
++exclusions are 90, 36 and 77, with 114, 54 and 1 currently clean exclusions.
++The old composite's zero strict exclusions on its own clean reference are an
++in-sample result. A secondary comparison with separate clean references gives
++15/675 IID and 16/675 non-IID clean exclusions. The individual-envelope policy
++has zero observed clean exclusions in that added comparison, but its larger
++clean-reference budget prevents an equal-information superiority claim.
++
++The implementation retains FLAME's clustering, clipping, averaging and noise
++stages~\cite{nguyen2022flame}, with a declared 0.01 noise factor. It is an
++MLP/Data24 adaptation, not the original experimental system or a new privacy
++guarantee. WeiDetect follows the retained v1 auxiliary-F1, Weibull and top-$K$
++procedure~\cite{sameera2025weidetectv1}: 2,238 correctly classified high-confidence
++initial examples form the fixed auxiliary set, and $K=12$ of fifteen forces
++three removals even in an all-clean round. Of 135 fits, 88 are degenerate and
++use the declared fallback. All rankings match the seeded F1 top-$K$ selection.
++Neither fixed pruning nor a fitting fallback establishes malicious intent.
++
++\subsection{Actual-Gradient FedGradTrace Adaptations}
++\label{subsec:revision-fedgradtrace}
++
++FedGradTrace's printed Eq.~(2) and Eq.~(3) imply different recurrences, and its
++positive trajectory-norm factors do not themselves implement the text's
++suggested suppression of large norms~\cite{gu2026fedxlog}. Both literal
++interpretations are therefore retained. The experiment collects actual
++full-snapshot class-weighted gradients at the current global base, with a
++three-snapshot trajectory and global SGD step 0.001. It does not substitute
++multi-epoch Adam model deltas for gradients. The 10\% poisoning fraction and
++gradient protocol differ from the 50\%/local-Adam DBA comparison; results are
++not pooled. The MLP adapter is not a reproduction of the full FedXLog system.
++
++The gradient-FedAvg and literal-Eq.~(3) cases complete ten clean and ten
++attacked rounds each. Their full-trigger ASR is zero even for the gradient
++control, so they do not demonstrate attack mitigation. Literal Eq.~(2) reduces
++final clean accuracy to 26.09\%. Its attacked execution completes only three
++of ten requested rounds: coefficient sum is approximately 10,247.55, clean
++accuracy 44.68\%, and both triggered and untriggered non-target examples map
++to the target at 100\%. The partial next state reaches parameter magnitude
++$1.37\times10^{30}$ and produces invalid validation losses. This is broad
++prediction collapse, not a selective stealth backdoor. No valid fourth-round
++or ten-round result is invented. All 53 completed aggregate exports replay
++exactly, with separately declared tolerance for floating diagnostics.
++
++\subsection{Measured Computational Scope}
++\label{subsec:revision-measured-cost}
++
++The audit measures 3,240 kernel calls and 162 full-scoring calls in sequential
++single-thread jobs over preloaded inputs. One warm-up per method/scope is
++excluded, and equivalence is checked outside the timer. Table~\ref{tab:revision-cost}
++keeps scopes explicit: cached kernel inputs do not represent full scoring.
++Process peak memory includes common Torch/Flower libraries and allocator state,
++not only incremental defense allocation. Loading, transfer, local training,
++reference generation, TPM and first imports lie outside these timers.
++
++\begin{table}[tbp]
++\centering\small
++\caption[Measured aggregation and scoring costs]{Wall time in milliseconds; median and 95th percentile.
++The envelope rows use different source contexts and cannot supply a paired speedup ratio.}
++\label{tab:revision-cost}
++\begin{tabular}{llrr}
++\toprule
++Method & Scope & Median & 95th percentile \\
++\midrule
++FedAvg & Kernel & 2.952 & 4.313 \\
++FLAME adaptation & Kernel & 3.995 & 5.572 \\
++WeiDetect adaptation & Cached kernel & 0.899 & 8.652 \\
++Original composite & Cached kernel & 0.218 & 0.417 \\
++WeiDetect adaptation & Full scoring & 192.895 & 299.786 \\
++Original composite & Full scoring & 269.115 & 371.448 \\
++Envelope, IID & Predictors/policy/aggregate & 21.480 & 25.949 \\
++Envelope, non-IID & Predictors/policy/aggregate & 21.275 & 24.106 \\
++\bottomrule
++\end{tabular}
++\end{table}
++
++Full WeiDetect evaluates fifteen local models on 2,238 auxiliary windows; full
++composite evaluates the base and local models on 3,223 validation windows and
++includes indicator construction, policy and aggregation. The envelope benchmark
++has 540 state-advancing operations, rather than idempotent retries. Actual-gradient
++server recurrences have medians 0.580/5.313/4.333 ms for FedAvg/literal Eq.~(2)/
++literal Eq.~(3); representative fifteen-client gradient collection has median
++38.736 ms. These dependent measurements do not imply confidence intervals or
++production latency guarantees.
++
++\subsection{Retrospective Candidate Groups and Controlled Removal}
++\label{subsec:revision-retrospective-groups}
++
++The agreed group analysis is retrospective and distinct from automatic
++quarantine. The V2 selector uses median-centered update similarity, tensor
++profiles and temporal indicator associations. Each cohort has three clean
++fitting histories and three disjoint clean threshold histories, using only
++rounds 1--10. Candidate selection closes before evaluation identities, ASR and
++rounds 11--15 are read. Evaluation is a secondary analysis of twelve existing
++shadow-FedAvg histories, not untouched prospective group discovery.
++
++V2 ranks maximal cliques by their weakest conditioned edge and selects the
++first retaining eight contributors. In all six attacked evaluation cases, the
++priority pair contains two true members, no false member and one missed attacker.
++Across the wider candidate pools there are 15 true and 16 false members, with
++three attackers absent from the pools. Six clean histories return no group.
++The comparison envelope prefix set contains all three scripted attackers in
++each attacked case, but exact experimental membership is not evidence of
++pairwise cooperation or intent. Different reference budgets further limit
++direct ranking of the two selectors.
++
++Each selected set is removed individually and jointly at round 10. Survivors
++retain their original decisions and weights are renormalized. The 293 direct
++outputs are reconstructed. Up to twenty hash-random benign subsets of equal
++size, plus the benign subset closest in original sample mass, provide controls
++chosen before effects are inspected. Equal client counts can remove different
++mass, particularly under non-IID data. A joint improvement beyond individual
++removal is a descriptive contrast, not a p-value or a proof of collusion.
++
++For the hard non-IID seed 512593, source round-10 ASR is 97.59\%. Removing the
++three-member envelope set jointly lowers it to 49.30\%, whereas the two-member
++V2 group yields 93.33\%. Other source cases already have near-zero or zero ASR
++and supply little evidence of reduction. Each intervention therefore retains
++its source rate, individual removals and benign controls.
++
++Selected memberships are then held fixed while successors really train from
++the corrected branch base. Five later rounds are not reconstructed by reusing
++updates trained on the original checkpoint. The same-start comparison uses
++experimental $W_9$, with a separate unmodified training reference of identical
++participation. Equality from that point alone cannot certify a clean earlier
++history. Late removal of all three selected attackers in the hard case leaves
++1.68\% validation ASR and 1.54\% test ASR at round 15.
++
++\begin{table}[tbp]
++\centering\small
++\caption[Late correction and complete rewind]{Hard-case round-15 test results.
++The reduced-population rewind and its reference exclude the same selected set throughout.}
++\label{tab:revision-rewind}
++\begin{tabularx}{\linewidth}{Xrr}
++\toprule
++Intervention & ASR (\%) & Macro-F1 (\%) \\
++\midrule
++Original all-client scripted attack & 99.91 & 94.45 \\
++Late selected-set removal at round 10 & 1.54 & 95.98 \\
++Replay from $W_0$, selected set excluded & 0.00 & 95.96 \\
++Matched unmodified reference, same exclusions & 0.00 & 95.96 \\
++Privileged unmodified replay, all clients & 0.00 & 94.50 \\
++\bottomrule
++\end{tabularx}
++\end{table}
++
++The separate complete rewind excludes the unchanged selected set from rounds
++1--15 and matches every checkpoint of its reduced-population unmodified
++reference. A privileged all-client unmodified replay matches the original
++all-client clean history, but needs correct snapshots, starting model, seeds,
++optimizer and deterministic runtime. A snapshot commitment alone does not
++establish semantic cleanliness. The two interventions concern different
++populations and must not be conflated. Neither rewrites the historical record
++or establishes certified unlearning in an arbitrary deployment.
++
++The group continuation and rewind studies execute 5,670 local trainings in
++their declared phases. The existing test fold is evaluated at fixed endpoints;
++it has been used by earlier studies and is not a pristine external holdout.
++The conclusion is limited to groups \emph{compatible with coordinated behavior}
++under the stated evidence and controls. False candidates and missed members
++remain part of the result.
++\FloatBarrier
+--- before/content/chapters/revision_independent_results.tex
++++ after/content/chapters/revision_independent_results.tex
+@@ -0,0 +1,84 @@
++\subsection{Independent Seeds and a Multi-Trigger Adaptive Objective}
++\label{subsec:revision-independent-validation}
++
++The defender, its clean reference, and the following evaluation protocol were
++frozen before these outcomes were observed. Six newly reserved cohort/seed and
++adversarial-identity assignments each produce four histories: original versus
++bounded envelope, with unmodified versus adaptive training. Fifteen rounds are
++planned, with attacks at rounds 1--10 and unmodified continuations at 11--15.
++The six seeds are 2026110401--2026110406, abbreviated by their final two digits
++in the table and figure. The data splits and partitions remain Data24; these are new experimental seeds
++and identities, not a new independent dataset. No test-fold evaluation or new
++TPM Quote is performed in this follow-up.
++
++The attacker trains clean and poisoned endpoints from each actual current base
++and uses the same ten interpolation/extrapolation factors as the pilot. Its
++selection objective is now the maximum validation ASR across the complete
++trigger and each of the three components, then fewer quarantined attackers,
++then a larger factor. This is a privileged validation-oracle attack with one
++shared factor for three attackers, not a search over arbitrary local objectives.
++Defender fitting and thresholds are unchanged. Every attempted case is retained.
++An unsupported state or lost quorum creates an explicit failure and no next
++checkpoint; it is never assigned ASR zero.
++
++\begin{table}[tbp]
++\centering\small
++\caption[Independent multi-trigger validation]{Observed peak validation ASR (percent).
++The completed-round columns expose stopped histories. Peaks use available
++endpoints only; an absent endpoint is not imputed. Clean loss is the largest
++paired clean macro-F1 decrease, in percentage points.}
++\label{tab:revision-independent-validation}
++\begin{tabular}{llrrrrrr}
++\toprule
++Cohort & Seed suffix & Rounds O/B & O worst & B worst & B full & B comp. & Clean loss \\
++\midrule
++iid & 01 & 15/15 & 100.00 & 0.00 & 0.00 & 0.00 & 0.90 \\
++iid & 02 & 15/15 & 100.00 & 0.00 & 0.00 & 0.00 & 1.72 \\
++iid & 03 & 15/15 & 100.00 & 0.00 & 0.00 & 0.00 & 0.56 \\
++non-iid & 04 & 15/15 & 99.21 & 0.00 & 0.00 & 0.00 & 0.01 \\
++non-iid & 05 & 7/15 & 100.00 & 86.82 & 35.56 & 86.82 & 0.01 \\
++non-iid & 06 & 9/15 & 100.00 & 99.50 & 99.50 & 96.24 & 0.34 \\
++\bottomrule
++\end{tabular}
++\end{table}
++
++\begin{figure}[tbp]
++\centering
++\includegraphics[width=\linewidth]{images/revision/independent-worst-asr.pdf}
++\caption[Adaptive ASR under independent assignments]{Maximum ASR across complete
++and component triggers at each observed validation endpoint. Crosses mark the
++last available checkpoint before an explicit failure. The vertical line ends
++the ten attack rounds. Later updates are unmodified responses to each branch's
++own current model. Omitted tails are unavailable, not successful mitigation.}
++\label{fig:revision-independent-asr}
++\end{figure}
++
++The run completes 22 of 24 planned histories and records 346 successful round endpoints. It executes 6,990 local training calls and 870 designated training repeats. Post-run reconstruction authenticates all 24 software-analyst manifests and repeats all 1,180 adaptive candidates, including failed searches, and all 346 selected aggregates from retained originals. The 2,693 bounded individual-removal certificates pass under their fixed-input assumptions. This is a separate replay using the same implementation, not an independent implementation or external audit.
++
++Observed availability failures are non-iid seed 2026110405 original head before round 8; non-iid seed 2026110406 original head before round 10. Stopped controls cannot support a paired final-round mitigation claim.
++
++The maximum paired clean macro-F1 loss is 1.7244 percentage points. The predeclared two-point clean-utility guardrail passes; this finding is reported without retuning the profile.
++
++The strongest observed bounded component-trigger ASR is 96.2423\% (seed 2026110406); the bounded complete trigger itself reaches 99.4952\% (seed 2026110406). Thus this is not only a residual sub-trigger issue: the new attack also supplies a complete-trigger counterexample to generalizing the earlier zero-ASR pilot. The finite comparison may show reductions under specific completed protocols, but it does not establish general backdoor elimination, recovery of a clean state, semantic identification of malicious clients, or reliable operation outside the declared support domain. These negative results do not contradict the per-tensor norm bound: predictive decision boundaries can remain vulnerable inside that bound. The profile remains experimental and explicit rather than the runtime default.
++
++At the strongest complete-trigger peak, clean macro-F1 is 95.6025\%, only 0.3010 percentage points below its matched bounded clean reference. This is not simply total predictive collapse. Its worst-trigger ASR remains 46.8873\% at round 15, after five unmodified continuation rounds. Across the six bounded attacked histories, quarantine intercepts 7 of 180 nonzero scripted manipulated exports; no currently unmodified exclusion is observed in those histories or the six bounded clean references. These finite counts do not establish reliable automatic identification. Clipping limits a derived contribution without proving its source malicious.
++
++\begin{table}[tbp]
++\centering\small
++\caption[Final attack rate and matched-clean model distance]{Round-15 bounded histories.
++L2 compares exported parameters with the same-seed, same-population bounded
++clean reference. Zero measured trigger success does not imply equal models.}
++\label{tab:revision-independent-final}
++\begin{tabular}{llrr}
++\toprule
++Cohort & Seed suffix & Worst-trigger ASR (\%) & Parameter L2 \\
++\midrule
++iid & 01 & 0.0000 & 3.009686 \\
++iid & 02 & 0.0000 & 3.709731 \\
++iid & 03 & 0.0000 & 3.150610 \\
++non-iid & 04 & 0.0000 & 2.466553 \\
++non-iid & 05 & 0.5048 & 6.334439 \\
++non-iid & 06 & 46.8873 & 5.208128 \\
++\bottomrule
++\end{tabular}
++\end{table}
+--- before/content/summary.tex
++++ after/content/summary.tex
+@@ -40,6 +40,19 @@
+ chains. These results establish feasibility and inspectability within
+ the controlled environment; they do not establish the truth of historical
+ captures, universal attack resistance, physical-TPM protection, or
+-investigative correctness. The contribution is an evaluated integration
+-that preserves distinct meanings and verifiable evidence links for learning
+-outcomes, admission decisions, and investigative artifacts.
++investigative correctness. The contribution combines this evaluated integration with a conditional
++derivation model that separates provenance, effective numerical influence and
++semantic review. Receipt-relative coverage, upstream record accounting,
++append-only reviews, typed multiround graphs and circumscribed retraining
++make the associated assumptions and verification procedures explicit.
++
++Additional experiments compare literature adaptations on common DBA updates,
++evaluate retrospective candidate groups with individual and joint removals,
++and distinguish late rollback from retraining from the original clean base.
++Group recovery remains partial and is not proof of collusion. An experimental
++containment profile preserves signed originals and records separately clipped
++contributions. Its fixed-input norm bounds do not imply backdoor elimination.
++The known-seed pilot and the subsequent frozen-profile, multi-trigger validation
++are reported separately, including residual attacks and availability failures.
++Software-TPM runtime trials validate mechanism integration under their local
++deployment assumptions.

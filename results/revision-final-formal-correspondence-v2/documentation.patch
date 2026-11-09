@@ -1,0 +1,292 @@
+--- a/docs/FORMAL_MODEL_THEOREMS.md
++++ b/docs/FORMAL_MODEL_THEOREMS.md
+@@ -590,3 +590,159 @@
+ semantic malice and historical clean-state recovery remain separate claims.
+ No new TPM attestation, live deployment or permanent ban is introduced. See
+ [the full prospective results](../results/revision-individual-envelope-v1/README.md).
++
++
++## Final current-release correspondence annex (2026-11-03)
++
++The final correspondence is recorded in [FORMAL_PROFILE_CORRESPONDENCE.md](FORMAL_PROFILE_CORRESPONDENCE.md).
++Sections 1–11 above retain the original core/manual arguments and the historical
++attested example under its preserved 104-file release. The current 114-file
++release adds empirical adapters and diagnostics. Their properties below are
++explicitly separate; a matching local function body is not a complete
++cross-release numerical certificate.
++
++### Index translation and implementation refinements
++
++Use B_t for the incoming model of round t and Theta_t for its output. The
++original proposal calls these W(t) and W(t+1). The later experiment reports
++instead use W_(t-1) and W_t, with W0 as the initial checkpoint. Thus the late
++round-10 correction starts from B_10 = experimental W9; these are indexing
++translations, not distinct execution orders.
++
++The original one-client/one-bundle notation is refined to distinct submission
++identities when conflicting signed envelopes exist. They receive separate
++negative intake dispositions and cannot occupy multiple numerical slots for
++one client. Observed eligibility E differs from the actual scoring population
++S if collective statistics are skipped. Controlled M6 effective veto, missing
++slot action padding, exact path-type sets, separate review indexing and the
++profile-specific committed input stream are also explicit refinements. The
++program is not silently claimed to implement a single four-edge-type BFS:
++runtime traversal uses num/dec/audit; semantic reviews have a separate
++authenticated ledger/lineage index.
++
++### Corrected submission occurrence identity
++
++The review found a graph-construction defect beyond wording refinements.
++Content-keyed bundle nodes merged distinct signed receipt claims for the same
++bytes. A valid negative intake disposition for a replay in a later round then
++caused a cycle; a rejected borrowed-byte claim in the same round inherited the
++accepted client's scoring/checkpoint descendants. Both source rounds could
++pass full admission verification: the fault was in occurrence modelling.
++
++The corrected release keys every bundle occurrence as
++update_bundle:<submission_id>, while its sha256 field still commits the exact
++bundle bytes. Base-to-update edges and query origins use that same occurrence
++identity. Since submission identity binds context and client as well as bytes,
++retries of one identity remain idempotent, while another context/client claim
++cannot acquire dependencies merely by reusing content. The graph still checks
++acyclicity and exact reference reconstruction. Two regression tests and matched
++before/after signed fixtures cover the distinct failure modes.
++
++This is a graph identity profile change recorded by the corrected implementation
++fingerprint; numerical admission, local training and weighted aggregation
++algorithms are unchanged. Old signed round/graph representations remain under
++their preserved source releases. They are neither migrated nor relabelled as
++occurrence-keyed graphs by this review.
++The preserved attested case has 296 submission occurrences and 296 distinct
++bundle-origin nodes, so the newly found alias condition is absent from that
++particular case. This survey does not certify every historical graph.
++
++### Additional diagnostic identities
++
++For two normalized survivor coefficient vectors v (frozen decisions) and w
++(rescored), define TV(v,w) = (1/2) sum_i abs(v_i-w_i). Nonnegativity and unit
++mass give 0 <= TV <= 1. The sum is zero exactly when every coordinate agrees.
++This does not establish unchanged raw scores, semantic labels or local data.
++For comparable models with representable intermediate arithmetic, define d = Theta_frozen-Theta_original and
++p = Theta_rescored-Theta_frozen. Algebra gives total = d+p, but their scalar
++norms need not add. For example, local vectors -1, 0, 2 with original weights
++(1/2,1/4,1/4) give original 0; removing the first gives frozen 1; selecting
++only the zero-valued survivor gives rescored 0. Direct and policy norms are 1,
++while the total norm is 0. Recorded finite-precision residuals are numerical
++diagnostics, not an exact-real floating-point theorem.
++
++### Current-evidence and individual-envelope invariants
++
++These statements assume fixed calibrated views/cohort, finite validated risks,
++valid nonnegative input masses, a faithful state implementation and a trusted
++expected predecessor. They concern the adapter's proposed action/mass output,
++not fresh TPM admission or automatic operational deployment.
++
++Let s_t be effective support: supplied context support AND all mandatory gates.
++Let H_i,t denote s_t and both current standardized view risks strictly above
++their fixed global limits. The current-evidence adapter proposes quarantine
++exactly when H_i,t AND H_i,t-1. This follows by induction on the streak update:
++it increments on H and resets otherwise; streak >= 2 with current H is
++equivalent to two consecutive H observations. A gap, unsupported context or
++gate failure breaks confirmation. A statistical release does not override a
++mandatory rejection or establish benign intent.
++
++For the additional client-envelope channel, let e_i,t be the minimum across
++views of current raw risk minus that client's frozen per-view limit. Under
++effective support and e>0, P_i,t = max(P_i,t-1,e_i,t); otherwise P_i,t=0.
++Let R_i,t mean effective support, e_i,t>0 and e_i,t >= P_i,t/2. Its confirmed
++proposal is R_i,t AND R_i,t-1. The final envelope policy uses the union of
++this channel and the current-evidence channel. The field named non_receding
++means retention of at least half the episode peak; it is not monotonicity
++against the previous observation. The stored peak can suppress this channel
++but cannot authorize quarantine without current positive retained evidence.
++The baseline channel can independently continue to authorize an action.
++
++For either adapter, a mandatory gate failure gives zero proposed effective
++mass. Quarantine also gives zero proposed mass. If proposal quorum fails,
++the adapter never restores an excluded mass. It emits proposed masses and a
++quorum flag, not the original normalized checkpoint proof. In particular,
++unsupported-context abstention can preserve positive proposed mass for
++gate-passing clients and can leave proposal_quorum_satisfied true. It is
++not full statistical acceptance, and the original core rule 'unscored input
++has zero mass' must not be transferred to this different adapter. A live caller
++must explicitly specify/check its abstention and aggregation contract.
++
++With fixed inputs/calibration, these recurrences and canonical digests are
++deterministic. Induction on the equal initial state and equal input prefix
++proves identical prefix decisions/heads for any later continuations. This is
++causal input use, not statistical independence of the two views. Exact retries
++preserve the recorded state; a trusted predecessor is still required to detect
++an alternative history. A statistical review queue is not the attributed
++semantic review ledger from P5.
++
++There is no universal eventual-quarantine theorem. As a constructive input
++counterexample, use global limit 10, per-client limits 2 in both views and
++current risks 2.5 followed by 2.0625 in both views. The additional excess is
++first 0.5 then 0.0625, while the episode peak remains 0.5; subsequent retention
++is false. The baseline stays below its limit. Confirmation never occurs during
++the declared 15-round horizon despite positive envelope excess in every round.
++This input-level counterexample does not demonstrate a realizable model attack;
++it excludes a stronger guarantee not proved by the finite pilot outcomes.
++
++### Complete reference reconstruction and experiment scope
++
++Let C include the starting checkpoint, ordered participation, local snapshots
++and declared transformations, per-client seeds, optimizer/reset contract,
++training/aggregation implementation and numerical environment. If two executions
++share C, deterministic local training gives identical first-round outputs;
++identical aggregation gives the same next base. Induction proves complete
++history equality. If the common initial base is already contaminated, the same
++induction preserves equality to that contaminated-start reference: equality
++alone does not establish a globally clean past.
++
++compare_replay_histories checks a projection onto round/base/global/ordered
++participant/local-input/local-output commitments. It explicitly does not
++authenticate payloads; it does not by itself verify seeds or optimizer state.
++Those are caller obligations before interpreting equal projected histories as
++the declared execution equivalence. The latest case-specific verifiers check
++payloads, inputs, seeds, recurrences and matched references. They are retained
++software experiment evidence, not general-purpose live TPM verification.
++
++The historical attested case consists of four five-round trajectories (20 live
++round instances total), 300 swtpm Quotes and 296 executed local trainings,
++with separately replayed local outputs. It is not one 20-step trajectory, and
++its ASR is zero even without intervention. Later 15-round software studies
++include successful attacks. In the latest non-IID hard case, late R10 selected
++removal leaves validation ASR 1.68% (test 1.54%), while a post-hoc full W0 replay
++of the unchanged selected set has ASR zero and exact matched reduced-population
++reference equality. Reconstructing the all-client clean history is a separate
++privileged unmodified-snapshot intervention. Neither result proves semantic
++intent, complete collusion discovery, certified unlearning or physical hardware
++security. Ordinary independent-witness/deadline and global artifact completeness
++limits remain unchanged.
+--- a/docs/FORMAL_PROFILE_CORRESPONDENCE.md
++++ b/docs/FORMAL_PROFILE_CORRESPONDENCE.md
+@@ -0,0 +1,46 @@
++# Final formal-profile correspondence
++
++Date: 2026-11-03. This is a manual conditional proof and implementation review.
++The original proposal and accepted mail obligations are preserved as read-only
++references. The current release, historical attested release and newer empirical
++adapters have distinct scopes. The complete source/line/hash/evidence ledger is
++in the [review package](../results/revision-final-formal-correspondence-v2/README.md).
++
++# Final property → assumptions → code → verifier → evidence matrix
++
++Corrected current implementation: `3a5165d525b0d69079f6f5bf83ef939f46a269568907724913d3575010cf3073` (114 package files). Before graph correction: `c1f236869b9cb410cde0d0311c545c54a69dd1a5fc95d2828174c2925cfa7d7b`. Historical attested core: `d38d32f853153b4436801f9402ae52ba336c92c507c949e868b77e1f3b9e6a75` (104 files). Function-body comparison is local AST equality, not a proof of transitive or cross-release execution equivalence. The JSON ledger binds actual line locations and file/function hashes.
++
++| Property / status | Assumptions and scoped result | Implementation / verifier | Tests / evidence |
++| --- | --- | --- | --- |
++| P0 — conditional_core_proof | Provenance, operational treatment, numerical weight and attributed semantic state remain distinct. Definitions and admitted counterstates; neither zero mass nor statistical review proves malice. **Boundary:** Core plus separate review layer; statistical review queues are not semantic ledger judgments. | `round_derivation._dispositions`:279, `review_ledger.append_review`:423, `lineage.LineageStore.record_review_path`:65; verify: `in_round_admission.verify_in_round_secure_round`:1068, `review_ledger.verify_review_ledger`:518 | `test_round_derivation.py`, `test_review_ledger.py`, `test_review_lineage.py`; current-full-suite, historical-case |
++| P1 — conditional_core_proof | Required committed modifications are detectable relative to authenticated expected roots. Trusted keys/roots; collision/second-preimage resistance and signature unforgeability; fixed encoders, stable bytes and faithful verifier execution. **Boundary:** Only required representations. An optional missing product payload remains structurally represented with availability annotations. | `round_derivation._verify_signature`:64, `campaign_derivation._pinned`:41, `review_ledger.authenticate_review_subject`:92; verify: `in_round_admission.verify_in_round_secure_round`:1068, `campaign_derivation.verify_campaign_derivation`:574 | `test_round_derivation.py`, `test_campaign_derivation.py`, `test_review_ledger.py`; current-full-suite, historical-case |
++| P2 — conditional_core_proof | Every presented authenticated receipt claim has one consistent inventory entry; full round binding also accounts for final dispositions. Nonempty externally supplied receipt set, correct context/enrollment and expected authority; exactly reconstructed inventory/intake for full binding. **Boundary:** Intake-only coverage is narrower than admission verification. No independent registration deadline, delivery or universal set of attempted submissions. | `submission_evidence.verify_submission_coverage`:364, `round_derivation._binding_core`:91, `round_derivation._dispositions`:279; verify: `submission_evidence.verify_submission_coverage`:364, `in_round_admission.verify_in_round_secure_round`:1068 | `test_submission_evidence.py`, `test_submission_evidence_workspace.py`, `test_round_derivation.py`; current-full-suite, historical-case |
++| P2b — conditional_core_proof | Each enumerated committed record occurrence has a reproduced derivation or motivated exclusion, including many-to-one outputs. Named enumeration/transformation profile, fixed committed source files and replay; path/position/content identities remain distinct for equal values. **Boundary:** Relative to supplied I0; historical pre-transform existence and pre-capture completeness are not independently timestamped. | `ingestion_coverage._records`:108, `ingestion_coverage._outcomes`:213; verify: `ingestion_coverage.verify_ingestion_coverage`:452 | `test_ingestion_coverage.py`; current-full-suite, initial-formal-review |
++| P3 — conditional_core_proof | Reconstructed policy, masses, rational coefficients, ordered operational weights and checkpoint bytes agree under the declared backend. Successful mass/quorum domain, authenticated inputs, preserved implementation/environment/order; n is the bound declared count, not proof of semantic data truth. **Boundary:** The original gated-composite live FedAvg profile. Graph-only checks and newer empirical adapters do not automatically satisfy this full antecedent. | `in_round_admission._compute_statistical_state`:554, `in_round_admission._runtime_decision_core`:630, `in_round_admission._aggregate_inputs`:801, `round_derivation.materialize_round_derivation`:478; verify: `in_round_admission.verify_in_round_secure_round`:1068 | `test_round_derivation.py`, `test_in_round_campaign_accounting.py`; current-full-suite, current-finite-checks, historical-case |
++| P4 — conditional_core_proof | Effective mandatory veto forces zero factor/mass; normalized alpha is zero when a valid aggregate exists. Gated-composite veto branch, nonnegative count, positive total mass and quorum for alpha. Distinguish observed and experimentally injected effective gates. **Boundary:** Observed gate failure excludes from ordinary scoring. Controlled M6 effective veto can be injected after the observed scoring population was formed. | `composite_admission.decide_admission_policies`:301, `in_round_admission._runtime_decision_core`:630, `round_derivation._dispositions`:279; verify: `in_round_admission.verify_in_round_secure_round`:1068 | `test_composite_admission.py`, `test_round_derivation.py`; current-full-suite, current-finite-checks, historical-finite-checks |
++| Delta-J — conditional_core_proof | Original fixed-K L1 Delta and binary J remain distinct from survivor/rescoring diagnostics. Two valid normalizations for Delta; zero-padding on fixed K; not_submitted action padding. Frozen mass formula requires beta<1 and survivor quorum. **Boundary:** Delta_K>=2 beta; frozen Delta_K=2 beta. Every nonempty allowed removal gives J_K=1 under this explicit absence convention. | `counterfactual_round._proposal_metrics`:127, `counterfactual_round._calculate`:218; verify: `counterfactual_round.verify_counterfactual_round`:643 | `test_counterfactual_round.py`; current-full-suite, current-finite-checks, historical-finite-checks |
++| DIAG — conditional_diagnostic_definition | Survivor policy TV and vector/model differences measure separate effects. Validated normalized coefficient vectors and matching survivor population; comparable models with representable intermediate arithmetic. Caller binds model/weight/source correspondence. **Boundary:** TV is zero iff the two normalized coefficient vectors agree. Model L2 scalars do not add; zero TV need not mean unchanged raw scores. | `influence_diagnostics.influence_diagnostics`:14; verify: `investigation_verifier.verify_investigation`:19 | `test_influence_diagnostics.py`, `test_investigation_verifier.py`; current-full-suite, current-finite-checks, effective-influence |
++| P5 — conditional_core_proof | Appending attributed review preserves historical decisions/coefficients/checkpoints and authenticates anchored prefixes. Authorized keys, fixed historical subject, application append/lock semantics and independently retained expected head for rollback/fork protection. **Boundary:** An old head authenticates its prefix, not a unique future suffix. No physical write prevention, trusted review time or truth of a semantic label. | `review_ledger.append_review`:423, `review_ledger._read_history`:249, `lineage.LineageStore.record_review_path`:65; verify: `review_ledger.verify_review_ledger`:518 | `test_review_ledger.py`, `test_review_lineage.py`; current-full-suite, historical-case |
++| P6 — conditional_core_proof | Typed BFS returns precisely supplied-graph descendants, shortest witnesses per exact edge-type set, and deduplicated selected-set union. Validated finite supplied DAG, known unique origins, three runtime edge types and authenticated round/product manifests; trusted expected graph snapshot. **Boundary:** Submission-occurrence v2 separates repeated bytes across contexts/client slots. Old snapshots retain their original release. Review is separate; radius is structural exposure, not damage, semantic guilt or all products ever created. | `round_derivation._graph`:360, `campaign_derivation.reconstruct_campaign_graph`:108, `campaign_derivation.structural_blast_radius`:635, `campaign_derivation.structural_blast_radius_set`:715; verify: `campaign_derivation.verify_campaign_derivation`:574 | `test_campaign_derivation.py`; current-full-suite, historical-finite-checks, historical-case |
++| COMPOSE — conditional_verifier_composition | Full source admission, graph, exact removal set and optional externally anchored attributed reviews can be verified together. Full inputs for exactly all graph rounds; matching pinned authorities/sources/intervention population; retained review tip when review evidence is supplied. **Boundary:** No new Quote, successor training, trusted deadline, global product inventory or product-payload recomputation follows from composition. | `investigation_verifier.verify_investigation`:19; verify: `investigation_verifier.verify_investigation`:19 | `test_investigation_verifier.py`; current-full-suite, effective-influence |
++| CF — conditional_recurrence_proof | A declared successor counterfactual requires fresh training from each changed base, or an independent equality certificate. Fixed intervention, data/attacker schedule, seed/optimizer/environment/backend and starting checkpoint; preserve source releases and branch order. **Boundary:** Standalone round-local counterfactual preserves historical_policy_decisions_revalidated=false. The latest case-specific software verifiers cover their explicit transforms, not a generic live TPM replay. | `counterfactual_round._calculate`:218, `retraining_replay._replay`:100; verify: `counterfactual_round.verify_counterfactual_round`:643, `retraining_replay.verify_retraining_replay`:351 | `test_counterfactual_round.py`, `test_retraining_replay.py`; current-full-suite, historical-case, group-validation |
++| REF — conditional_reference_induction | Matched clean-reference reconstruction requires complete declared execution equality, not ASR zero alone. Authenticated payloads and independently checked participation, initial/warm checkpoint, local input commitments, seeds, optimizer and environment. **Boundary:** The API compares a projection of committed histories; it explicitly does not authenticate payloads or independently verify seeds/optimizer. Case verifiers must supply these antecedents. | `remediation_validation.compare_replay_histories`:10; verify: `remediation_validation.compare_replay_histories`:10 | `test_remediation_validation.py`; current-full-suite, group-validation |
++| STAT — conditional_adapter_invariants | Current/evidence-envelope actions are deterministic functions of their validated input prefix; mandatory veto remains non-compensable. Fixed calibrated cohort/views/thresholds, valid inputs, strict predecessor/round bindings and faithful state execution. Caller handles the proposal and quorum. **Boundary:** These are proposals, not the original full live-admission proof. Unsupported inputs may retain eligible proposed mass; no guaranteed eventual quarantine or classification accuracy. | `sequential_decision.SequentialRoundPolicy.step`:101, `current_evidence_policy.CurrentEvidencePolicy.step`:34, `client_envelope_policy.ClientEnvelopePolicy.step`:27; verify: `sequential_decision.SequentialRoundPolicy.step`:101 | `test_sequential_decision.py`, `test_current_evidence_policy.py`, `test_client_envelope_policy.py`; current-full-suite, current-finite-checks, envelope-study |
++| GROUP — empirical_discovery_scope_not_universal_accuracy | Clean-calibrated pair groups and individual anomaly sets remain retrospective hypotheses with measured errors. Externally justified clean references, separate cohort/fit/calibration/evaluation, frozen rules, authenticated observations and post-selection labelled controls. **Boundary:** V2 misses a member in every priority group of the added six cases; an accurate envelope prefix set is not a pairwise proof of collusion. | `group_calibration_v2.fit_group_reference`:28, `group_calibration_v2.calibrate_group_threshold`:74, `group_calibration_v2.detect_conditioned_groups`:112; verify: `group_calibration_v2.detect_conditioned_groups`:112 | `test_group_calibration_v2.py`, `test_retrospective_groups.py`; current-full-suite, group-validation |
++
++## Evidence identities
++
++- **current-full-suite**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-closure-20261103/full-tests.xml`; SHA-256 `a1a57b2e04c08119d6f65414871c52ea2875992fdbfa312afe9fe53ec26167fa`.
++- **current-finite-checks**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-closure-20261103/current-obligation-checks.json`; SHA-256 `5fb9e6bc530c95d62da5b8b396bffaa877d35e95cffd237a0460b04ca9f4b4ab`.
++- **historical-finite-checks**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-closure-20261103/obligation-checks.json`; SHA-256 `846da952ad188487ca46dac967b31c44ee6bf36fcd330425eb0a124e4c5bc33d`.
++- **initial-formal-review**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-review-20261103/review-manifest.json`; SHA-256 `262672450a452a0a803186d36254aa33f63e25ac4a479f8779cdf9879a702a24`.
++- **historical-case**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/attack-replay-20261103/case-closure.json`; SHA-256 `f265b12d1d331cdf913eb2c21eab4555684ed79550ab0fd6630bec07d5d6759c`.
++- **effective-influence**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/effective-influence-20261103/completion-closure.json`; SHA-256 `9803d5b46fcca8dcededad8255a3d4e9360adb088c189e9e6327ad91cc0c10fa`.
++- **baseline-validation**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/baseline-dba-closure-20261103/completion-closure.json`; SHA-256 `6ecb9bf6d30527cc55c61b9a5bfc60dce315bf10df244937068b3864091efa69`.
++- **occurrence-probe-before**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-closure-20261103/borrowed-bundle-probe-before.json`; SHA-256 `662191aa2ac90f345ba717fe3c312f14a09a2ac7c46b817114853aaa91eb990d`.
++- **occurrence-probe-after**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-closure-20261103/borrowed-bundle-probe-after.json`; SHA-256 `b7a38de499427eac91724676c80ece339f27013ea633300071bd67c4405f8f65`.
++- **historical-occurrence-scope**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/formal-closure-20261103/historical-occurrence-scope.json`; SHA-256 `596e5da8b09af3f861fa66ebececfc2cdabb4f19655f069093c21faac038698d`.
++- **group-validation**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/group-validation-20261103/completion-closure.json`; SHA-256 `be3c2d61597d7bc32ace3c90dfdc41d6bf4a755b8e39d2efcaeaa6d9570dcd02`.
++- **envelope-study**: `/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/geometry-detector-20261103/completion-closure.json`; SHA-256 `17346b960336a5881a063c0026bfc9bc0241c2f16ae258a63e5632eb83680690`.
++
++Finite tests/experiments support correspondence, not universal classification accuracy. Signed analyst records do not certify proof-assistant correctness, independent time, witness administration or physical TPM hardware. The thesis remains unchanged.
+--- a/docs/FORMAL_MODEL_REVIEW.md
++++ b/docs/FORMAL_MODEL_REVIEW.md
+@@ -1,3 +1,12 @@
++> Final formal correspondence, 2026-11-03: a concrete graph-identity defect was
++> found and corrected. Replayed/borrowed identical bundle bytes now have distinct
++> submission-occurrence nodes, preserving their content commitments. Two negative
++> regression cases pass; the full corrected-release suite passes 633 tests.
++> The 15-property matrix binds assumptions, real function lines/hashes, verifiers
++> and evidence. Historical releases and their signed graphs remain preserved.
++> See [the final review](../results/revision-final-formal-correspondence-v2/README.md)
++> and [current profiles](FORMAL_PROFILE_CORRESPONDENCE.md).
++
+ > Concluding review, 2026-11-03: see [FORMAL_MODEL_THEOREMS.md](FORMAL_MODEL_THEOREMS.md)
+ > for explicit definitions, conditional manual proofs, verifier antecedents and
+ > the correspondence with the sealed attacked case. Numerical Python code and
+--- a/docs/STATUS.md
++++ b/docs/STATUS.md
+@@ -1,3 +1,12 @@
++> Final formal correspondence, 2026-11-03: a concrete graph-identity defect was
++> found and corrected. Replayed/borrowed identical bundle bytes now have distinct
++> submission-occurrence nodes, preserving their content commitments. Two negative
++> regression cases pass; the full corrected-release suite passes 633 tests.
++> The 15-property matrix binds assumptions, real function lines/hashes, verifiers
++> and evidence. Historical releases and their signed graphs remain preserved.
++> See [the final review](../results/revision-final-formal-correspondence-v2/README.md)
++> and [current profiles](FORMAL_PROFILE_CORRESPONDENCE.md).
++
+ > Retrospective group validation, 2026-11-03: frozen V2 and an explicitly
+ > separate envelope-prefix anomaly set are tested on changed identities and
+ > separately calibrated IID/non-IID cohorts. V2 priority groups miss one attacker
+--- a/docs/SUPERVISOR_REQUIREMENTS_AUDIT.md
++++ b/docs/SUPERVISOR_REQUIREMENTS_AUDIT.md
+@@ -1,3 +1,12 @@
++> Final formal correspondence, 2026-11-03: a concrete graph-identity defect was
++> found and corrected. Replayed/borrowed identical bundle bytes now have distinct
++> submission-occurrence nodes, preserving their content commitments. Two negative
++> regression cases pass; the full corrected-release suite passes 633 tests.
++> The 15-property matrix binds assumptions, real function lines/hashes, verifiers
++> and evidence. Historical releases and their signed graphs remain preserved.
++> See [the final review](../results/revision-final-formal-correspondence-v2/README.md)
++> and [current profiles](FORMAL_PROFILE_CORRESPONDENCE.md).
++
+ > Retrospective group validation, 2026-11-03: frozen V2 and an explicitly
+ > separate envelope-prefix anomaly set are tested on changed identities and
+ > separately calibrated IID/non-IID cohorts. V2 priority groups miss one attacker
+@@ -355,3 +364,35 @@
+ collusion identification or automatic live exclusion. No new TPM or ToN-IoT
+ campaign and no thesis edit is introduced. Final formal correspondence,
+ adaptive/live policy qualification and thesis integration remain separate steps.
++
++
++## Final conditional-proof/code/evidence correspondence (2026-11-03)
++
++The original proposal and both supplied exchanges are pinned read-only sources.
++The final matrix covers the accepted core and distinguishes newer empirical
++adapters. The review corrected content-based aliasing of distinct submissions:
++cross-round rejected replay could create a cycle, and same-round borrowed bytes
++could inherit another client's numerical/scoring descendants. Node identity now
++uses submission ID; the node's content SHA remains the bundle byte hash.
++
++The corrected release passes 633 tests and the current finite obligations.
++The earlier 631-pass run and old-source counterexamples remain preserved. The
++historical 104-file release independently rechecks its 4,135 typed witnesses;
++the old attested graph has 296 distinct origins for 296 submissions and does not
++contain the newly identified alias condition. Its 20 live round instances are
++four five-round branches, not one 20-step trajectory. No new TPM or training
++campaign is added by this review.
++
++Receipt coverage still depends on supplied retained client evidence, record
++coverage on named committed source profiles, and review rollback detection on
++externally retained heads. The newer empirical adapters emit proposed masses:
++unsupported abstention can retain eligible mass and quorum, so it is not the
++original full live-admission/scoring theorem. Exact history comparison requires
++caller authentication and seed/optimizer-contract checks. Statistical success,
++semantic truth, independent deadline/delivery, all-product completeness and a
++physical TPM are not inferred.
++
++The thesis handoff carries these bounds, model-index translation, all empirical
++negative outcomes and the need for an accurate assistance disclosure. Adaptive
++and live-TPM policy validation remain separate; ToN-IoT stays deferred. The
++actual thesis and Git index are unchanged.

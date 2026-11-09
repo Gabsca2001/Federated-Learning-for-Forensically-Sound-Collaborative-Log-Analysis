@@ -1,0 +1,1675 @@
+--- a/src/fl_forensics/composite_admission_models.py
++++ b/src/fl_forensics/composite_admission_models.py
+@@ -14,6 +14,7 @@
+     "statistics_only",
+     "sequential",
+     "gated_composite",
++    "observable_envelope",
+ ]
+ DecisionStatus = Literal[
+     "accepted",
+@@ -98,9 +99,7 @@
+     source_bundle_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+     source_update_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+     candidate_update_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+-    candidate_update_binding: Literal[
+-        "source-bundle-signed", "controlled-derived-not-resigned"
+-    ]
++    candidate_update_binding: Literal["source-bundle-signed", "controlled-derived-not-resigned"]
+     attestation_result_id: str
+     attestation_result_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+     trust: TrustSignal
+--- a/src/fl_forensics/counterfactual_round.py
++++ b/src/fl_forensics/counterfactual_round.py
+@@ -446,6 +446,10 @@
+         }
+         decisions = {}
+         if mode == "rescore_round":
++            if contract.core.primary_policy == "observable_envelope":
++                raise CounterfactualError(
++                    "observable envelope rescoring requires a newly supported cohort and authenticated prefix; frozen-decisions mode remains available"
++                )
+             records = [entry["record"] for entry in survivors]
+             state = _compute_statistical_state(
+                 records=records,
+@@ -547,20 +551,31 @@
+             before_coefficients=original_alpha,
+             frozen_coefficients=conditional_alpha,
+             after_coefficients=alpha,
+-            before_actions={entry["submission_id"]: entry["runtime"].core.final_status for entry in entries},
++            before_actions={
++                entry["submission_id"]: entry["runtime"].core.final_status for entry in entries
++            },
+             after_actions=actions,
+             removed_ids=set(removed_submission_ids),
+-            original_model=arrays_from_export(original_model, np=np) if original_model is not None else None,
+-            frozen_model=arrays_from_export(conditional, np=np) if conditional is not None else None,
++            original_model=arrays_from_export(original_model, np=np)
++            if original_model is not None
++            else None,
++            frozen_model=arrays_from_export(conditional, np=np)
++            if conditional is not None
++            else None,
+             after_model=arrays_from_export(result, np=np) if result is not None else None,
+         )
+         dispositions = {item.submission_id: item for item in manifest.core.dispositions}
+         analysis["historical_gate_and_scoring_membership"] = {
+             entry["submission_id"]: {
+                 "client_id": entry["client_id"],
+-                "observed_trust_eligible": entry["record"]["trust_decision"].core.status == "accepted",
+-                "effective_mandatory_gate_passed": dispositions[entry["submission_id"]].mandatory_gate_passed,
+-                "participated_in_scoring": dispositions[entry["submission_id"]].participated_in_scoring,
++                "observed_trust_eligible": entry["record"]["trust_decision"].core.status
++                == "accepted",
++                "effective_mandatory_gate_passed": dispositions[
++                    entry["submission_id"]
++                ].mandatory_gate_passed,
++                "participated_in_scoring": dispositions[
++                    entry["submission_id"]
++                ].participated_in_scoring,
+             }
+             for entry in entries
+         }
+--- a/src/fl_forensics/in_round_admission.py
++++ b/src/fl_forensics/in_round_admission.py
+@@ -89,14 +89,14 @@
+ )
+ 
+ # Explicit pre-derivation versions of this repository, supporting both live policies.
+-SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256 = frozenset({
+-    "96d86edde3569913405a8ab4e98340dcb5ad8df96849f45bec9b45b292c79b16",
+-    "a2ce95e26f9c388fc18ec5ca8cdad2efac0f31e9d5e7374c63ba66fd7086da42",
+-})
+-
+-LEGACY_FRESH_ATTESTATION_DETAIL = (
+-    "signed, passed, fresh attestation and identity binding"
++SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256 = frozenset(
++    {
++        "96d86edde3569913405a8ab4e98340dcb5ad8df96849f45bec9b45b292c79b16",
++        "a2ce95e26f9c388fc18ec5ca8cdad2efac0f31e9d5e7374c63ba66fd7086da42",
++    }
+ )
++
++LEGACY_FRESH_ATTESTATION_DETAIL = "signed, passed, fresh attestation and identity binding"
+ 
+ 
+ def _utc(value: datetime) -> str:
+@@ -113,6 +113,12 @@
+         {
+             name: sha256_file(root / name)
+             for name in (
++                "client_envelope_policy.py",
++                "current_evidence_policy.py",
++                "sequential_decision.py",
++                "state_conditioned_audit.py",
++                "live_envelope.py",
++                "partition_training_binding.py",
+                 "byzantine.py",
+                 "composite_admission.py",
+                 "composite_admission_models.py",
+@@ -174,8 +180,7 @@
+     if set(raw_references) != set(raw_weights):
+         raise InRoundAdmissionError("indicator references and weights must align")
+     references = [
+-        IndicatorReference(name=name, **raw_references[name])
+-        for name in sorted(raw_references)
++        IndicatorReference(name=name, **raw_references[name]) for name in sorted(raw_references)
+     ]
+     weights = {name: float(raw_weights[name]) for name in sorted(raw_weights)}
+     if any(value <= 0.0 for value in weights.values()):
+@@ -189,17 +194,13 @@
+         )
+     split_records = partition_manifest.get("server_evaluation_splits")
+     if not isinstance(split_records, dict) or "validation" not in split_records:
+-        raise InRoundAdmissionError(
+-            "in-round admission requires an isolated validation split"
+-        )
++        raise InRoundAdmissionError("in-round admission requires an isolated validation split")
+     validation = split_records["validation"]
+     core = InRoundAdmissionContractCore(
+         policy_id=str(settings["policy_id"]),
+         primary_policy=str(settings["primary_policy"]),
+         policy_config_sha256=config_sha256,
+-        calibration_source_admission_sha256=str(
+-            calibration["source_admission_sha256"]
+-        ),
++        calibration_source_admission_sha256=str(calibration["source_admission_sha256"]),
+         calibration_semantics=str(calibration["semantics"]),
+         indicator_references=references,
+         indicator_weights=weights,
+@@ -229,6 +230,13 @@
+ ) -> tuple[InRoundAdmissionContract, dict[str, Any]]:
+     """Publish policy inputs before the signed round context is created."""
+ 
++    if (
++        load_yaml(config_path)[0].get("runtime_admission", {}).get("primary_policy")
++        == "observable_envelope"
++    ):
++        from .live_envelope import install_assets
++
++        install_assets(public_workspace, config_path)
+     contract = build_in_round_contract(
+         config_path=config_path, partition_manifest=partition_manifest
+     )
+@@ -254,12 +262,11 @@
+     training_contract = load_json(public / "training-contract.json")
+     binding = training_contract.get("in_round_admission")
+     if not isinstance(binding, dict):
+-        raise InRoundAdmissionError(
+-            "signed training contract has no in-round admission binding"
+-        )
+-    if binding.get("policy_config_path") != "in-round-admission.yaml" or binding.get(
+-        "contract_path"
+-    ) != "in-round-admission-contract.json":
++        raise InRoundAdmissionError("signed training contract has no in-round admission binding")
++    if (
++        binding.get("policy_config_path") != "in-round-admission.yaml"
++        or binding.get("contract_path") != "in-round-admission-contract.json"
++    ):
+         raise InRoundAdmissionError("unsafe in-round admission public path")
+     config_path = public / "in-round-admission.yaml"
+     contract_path = public / "in-round-admission-contract.json"
+@@ -269,26 +276,19 @@
+         raise InRoundAdmissionError("bound in-round admission contract changed")
+     partition = load_json(public / "partition-manifest.json")
+     observed = InRoundAdmissionContract.model_validate(load_json(contract_path))
+-    expected = build_in_round_contract(
+-        config_path=config_path, partition_manifest=partition
+-    )
++    expected = build_in_round_contract(config_path=config_path, partition_manifest=partition)
+     if observed.core.implementation_sha256 != expected.core.implementation_sha256:
+         if (
+             observed.core.primary_policy != "gated_composite"
+             and observed.core.implementation_sha256
+             not in SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256
+         ):
+-            raise InRoundAdmissionError(
+-                "historical implementations only support gated_composite"
+-            )
+-        if (
+-            observed.core.implementation_sha256
+-            not in (SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+-                    | SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256)
++            raise InRoundAdmissionError("historical implementations only support gated_composite")
++        if observed.core.implementation_sha256 not in (
++            SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
++            | SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256
+         ):
+-            raise InRoundAdmissionError(
+-                "unsupported historical in-round implementation digest"
+-            )
++            raise InRoundAdmissionError("unsupported historical in-round implementation digest")
+         legacy_core = expected.core.model_copy(
+             update={"implementation_sha256": observed.core.implementation_sha256}
+         )
+@@ -458,9 +458,7 @@
+                     trust_workspace=trust_workspace,
+                     now=decision_time,
+                     expected_client_id=client_id,
+-                    post_training_attestation_client_id=(
+-                        post_training_attestation_client_id
+-                    ),
++                    post_training_attestation_client_id=(post_training_attestation_client_id),
+                 )
+                 trust_decision = _sign_decision(
+                     signer=signer,
+@@ -473,18 +471,14 @@
+             write_json_once(decision_path, trust_decision.model_dump(mode="json"))
+         if consumed is None:
+             if not create:
+-                raise InRoundAdmissionError(
+-                    f"in-round replay slot is missing: {client_id}"
+-                )
++                raise InRoundAdmissionError(f"in-round replay slot is missing: {client_id}")
+             state.setdefault("slots", {})[slot] = {
+                 "bundle_sha256": bundle_sha256,
+                 "decision_path": str(decision_path.relative_to(workspace)),
+             }
+             atomic_json(state_path, state)
+         elif consumed.get("decision_path") != str(decision_path.relative_to(workspace)):
+-            raise InRoundAdmissionError(
+-                f"in-round replay decision path mismatch: {client_id}"
+-            )
++            raise InRoundAdmissionError(f"in-round replay decision path mismatch: {client_id}")
+         if not _verify_signed(trust_decision, public_key):
+             raise InRoundAdmissionError(f"invalid trust decision signature: {client_id}")
+         if trust_decision.core.bundle_sha256 != bundle_sha256:
+@@ -500,29 +494,20 @@
+                 trust_workspace=trust_workspace,
+                 now=decision_time,
+                 expected_client_id=client_id,
+-                post_training_attestation_client_id=(
+-                    post_training_attestation_client_id
+-                ),
++                post_training_attestation_client_id=(post_training_attestation_client_id),
+             )
+             if [item.model_dump(mode="json") for item in trust_decision.core.checks] != [
+                 item.model_dump(mode="json") for item in expected_checks
+             ]:
+                 legacy_checks = [
+-                    check.model_copy(
+-                        update={"detail": LEGACY_FRESH_ATTESTATION_DETAIL}
+-                    )
++                    check.model_copy(update={"detail": LEGACY_FRESH_ATTESTATION_DETAIL})
+                     if check.name == "fresh_attestation"
+                     else check
+                     for check in expected_checks
+                 ]
+-                legacy_compatible = (
+-                    post_training_attestation_client_id is None
+-                    and [
+-                        item.model_dump(mode="json")
+-                        for item in trust_decision.core.checks
+-                    ]
+-                    == [item.model_dump(mode="json") for item in legacy_checks]
+-                )
++                legacy_compatible = post_training_attestation_client_id is None and [
++                    item.model_dump(mode="json") for item in trust_decision.core.checks
++                ] == [item.model_dump(mode="json") for item in legacy_checks]
+                 if not legacy_compatible:
+                     raise InRoundAdmissionError(
+                         f"trust decision checks do not recompute: {client_id}"
+@@ -563,20 +548,14 @@
+     eligible = [
+         item
+         for item in records
+-        if item["bundle"] is not None
+-        and item["trust_decision"].core.status == "accepted"
++        if item["bundle"] is not None and item["trust_decision"].core.status == "accepted"
+     ]
+     if len(eligible) < contract.core.minimum_contributors:
+         return {}
+     base_arrays = arrays_from_export(base, np=np)
+     updates = [load_json(item["submission"] / "update.json") for item in eligible]
+-    deltas = [
+-        model_delta(base_arrays, arrays_from_export(update, np=np))
+-        for update in updates
+-    ]
+-    indicators = update_indicators(
+-        deltas, client_ids=[str(item["client_id"]) for item in eligible]
+-    )
++    deltas = [model_delta(base_arrays, arrays_from_export(update, np=np)) for update in updates]
++    indicators = update_indicators(deltas, client_ids=[str(item["client_id"]) for item in eligible])
+     base_validation_f1 = _validation_f1(
+         model_export=base, rows=validation_rows, batch_size=batch_size
+     )
+@@ -620,8 +599,14 @@
+             "statistics": statistical[client_id],
+             "policies": policies,
+             "primary": next(
+-                decision for decision in policies
+-                if decision.policy == contract.core.primary_policy
++                decision
++                for decision in policies
++                if decision.policy
++                == (
++                    "tpm_only"
++                    if contract.core.primary_policy == "observable_envelope"
++                    else contract.core.primary_policy
++                )
+             ),
+         }
+     return result
+@@ -662,9 +647,7 @@
+             reasons=["bundle integrity failed before complete trust evaluation"],
+         )
+     state = statistical_state.get(client_id)
+-    integrity_failed = [
+-        item for item in failed if item.name not in TRUST_CHECK_NAMES
+-    ]
++    integrity_failed = [item for item in failed if item.name not in TRUST_CHECK_NAMES]
+     if integrity_failed:
+         final_status = "integrity_quarantined"
+         effective = Decimal(0)
+@@ -758,9 +741,7 @@
+             decided_at = decision.core.decided_at
+         else:
+             if not create or signer is None:
+-                raise InRoundAdmissionError(
+-                    f"missing in-round contribution decision: {client_id}"
+-                )
++                raise InRoundAdmissionError(f"missing in-round contribution decision: {client_id}")
+             decided_at = _utc(now)
+             core = _runtime_decision_core(
+                 context=context,
+@@ -779,9 +760,7 @@
+             )
+             write_once(path, derived_json_bytes(decision.model_dump(mode="json")))
+         if not verify_in_round_signature(decision, public_key):
+-            raise InRoundAdmissionError(
+-                f"invalid in-round decision signature: {client_id}"
+-            )
++            raise InRoundAdmissionError(f"invalid in-round decision signature: {client_id}")
+         expected_core = _runtime_decision_core(
+             context=context,
+             contract=contract,
+@@ -840,9 +819,7 @@
+     averaged = fedavg(weighted_updates, aggregate=aggregate)
+     result = copy.deepcopy(base)
+     for parameter, array in zip(result["parameters"], averaged, strict=True):
+-        parameter["values"] = np.asarray(
+-            array, dtype=np.dtype(parameter["dtype"])
+-        ).tolist()
++        parameter["values"] = np.asarray(array, dtype=np.dtype(parameter["dtype"])).tolist()
+     return result, inputs, total_weight
+ 
+ 
+@@ -862,21 +839,32 @@
+     from .round_derivation import materialize_round_derivation, prepare_round_derivation
+ 
+     binding = prepare_round_derivation(
+-        workspace=workspace, trust_workspace=trust_workspace, submissions_root=submissions_root,
+-        client_receipts=client_receipts, input_inventory_path=input_inventory_path,
+-        coordinator_workspace=coordinator_workspace, create=True,
++        workspace=workspace,
++        trust_workspace=trust_workspace,
++        submissions_root=submissions_root,
++        client_receipts=client_receipts,
++        input_inventory_path=input_inventory_path,
++        coordinator_workspace=coordinator_workspace,
++        create=True,
+     )
+     checkpoint_path = workspace / "checkpoint" / "manifest.json"
+-    if binding is not None and not checkpoint_path.exists() and (
+-        workspace / "derivation" / "manifest.json"
+-    ).exists():
++    if (
++        binding is not None
++        and not checkpoint_path.exists()
++        and (workspace / "derivation" / "manifest.json").exists()
++    ):
+         verification = verify_in_round_secure_round(
+-            workspace=workspace, trust_workspace=trust_workspace,
+-            submissions_root=submissions_root, validation_split_path=validation_split_path,
+-            client_receipts=client_receipts, require_derivation=True,
++            workspace=workspace,
++            trust_workspace=trust_workspace,
++            submissions_root=submissions_root,
++            validation_split_path=validation_split_path,
++            client_receipts=client_receipts,
++            require_derivation=True,
+         )
+         if verification["status"] != "verified":
+-            raise InRoundAdmissionError(f"existing failed-round derivation does not verify: {verification['errors']}")
++            raise InRoundAdmissionError(
++                f"existing failed-round derivation does not verify: {verification['errors']}"
++            )
+         return {**verification, "status": "failed", "idempotent": True, "checkpoint_created": False}
+     if checkpoint_path.is_file():
+         verification = verify_in_round_secure_round(
+@@ -907,11 +895,19 @@
+             },
+             "workspace": str(workspace),
+             **{
+-                key: value for key, value in verification.items()
+-                if key in {
+-                    "derivation_status", "round_status", "admission_decisions_verified",
+-                    "derivation_verified", "scoring_population_verified", "coefficients_verified",
+-                    "deadline_verified", "delivery_verified", "derivation_manifest_id",
++                key: value
++                for key, value in verification.items()
++                if key
++                in {
++                    "derivation_status",
++                    "round_status",
++                    "admission_decisions_verified",
++                    "derivation_verified",
++                    "scoring_population_verified",
++                    "coefficients_verified",
++                    "deadline_verified",
++                    "delivery_verified",
++                    "derivation_manifest_id",
+                     "property_statuses",
+                     "verification_scope",
+                 }
+@@ -946,6 +942,20 @@
+         contract=contract,
+         disagreement_contract=disagreement_contract,
+     )
++    if contract.core.primary_policy == "observable_envelope":
++        from .live_envelope import apply_live_envelope
++
++        statistical_state = apply_live_envelope(
++            workspace=workspace,
++            trust_workspace=trust_workspace,
++            validation_split_path=validation_split_path,
++            context=context,
++            contract=contract,
++            records=records,
++            base=base,
++            statistical_state=statistical_state,
++            create=True,
++        )
+     decisions = _load_or_create_runtime_decisions(
+         workspace=workspace,
+         records=records,
+@@ -965,10 +975,19 @@
+         derivation = {}
+         if binding is not None:
+             derivation = materialize_round_derivation(
+-                workspace=workspace, context=context, contract=contract, records=records,
+-                missing=missing, statistical_state=statistical_state, decisions=decisions,
+-                base=base, aggregate=dependencies()[4], now=now, aggregated=False,
+-                create=True, coordinator_workspace=coordinator_workspace,
++                workspace=workspace,
++                context=context,
++                contract=contract,
++                records=records,
++                missing=missing,
++                statistical_state=statistical_state,
++                decisions=decisions,
++                base=base,
++                aggregate=dependencies()[4],
++                now=now,
++                aggregated=False,
++                create=True,
++                coordinator_workspace=coordinator_workspace,
+             )
+         return {
+             "status": "failed",
+@@ -991,9 +1010,7 @@
+         for item, path in decisions
+         if item.core.final_status not in {"accepted", "accepted_downweighted"}
+     ]
+-    trust_accepted_count = sum(
+-        item["trust_decision"].core.status == "accepted" for item in records
+-    )
++    trust_accepted_count = sum(item["trust_decision"].core.status == "accepted" for item in records)
+     core = InRoundSecureCheckpointCore(
+         campaign_id=context.core.campaign_id,
+         context_id=context.context_id,
+@@ -1007,9 +1024,7 @@
+         evaluated_count=len(decisions),
+         trust_accepted_count=trust_accepted_count,
+         accepted_count=len(inputs),
+-        downweighted_count=sum(
+-            item.status == "accepted_downweighted" for item in inputs
+-        ),
++        downweighted_count=sum(item.status == "accepted_downweighted" for item in inputs),
+         quarantined_count=len(quarantined),
+         missing_client_ids=missing,
+         total_examples=sum(item.num_examples for item in inputs),
+@@ -1046,10 +1061,19 @@
+     derivation = {}
+     if binding is not None:
+         derivation = materialize_round_derivation(
+-            workspace=workspace, context=context, contract=contract, records=records,
+-            missing=missing, statistical_state=statistical_state, decisions=decisions,
+-            base=base, aggregate=dependencies()[4], now=now, aggregated=True,
+-            create=True, coordinator_workspace=coordinator_workspace,
++            workspace=workspace,
++            context=context,
++            contract=contract,
++            records=records,
++            missing=missing,
++            statistical_state=statistical_state,
++            decisions=decisions,
++            base=base,
++            aggregate=dependencies()[4],
++            now=now,
++            aggregated=True,
++            create=True,
++            coordinator_workspace=coordinator_workspace,
+         )
+     return {
+         "status": "aggregated",
+@@ -1081,9 +1105,18 @@
+     aggregate_matches = False
+     derivation: dict[str, Any] = {}
+     binding = None
+-    derivation_requested = require_derivation or client_receipts is not None or any(
+-        (workspace / "derivation" / name).exists()
+-        for name in ("binding.json", "input-inventory.json", "scoring-state.json", "manifest.json")
++    derivation_requested = (
++        require_derivation
++        or client_receipts is not None
++        or any(
++            (workspace / "derivation" / name).exists()
++            for name in (
++                "binding.json",
++                "input-inventory.json",
++                "scoring-state.json",
++                "manifest.json",
++            )
++        )
+     )
+     try:
+         from .round_derivation import (
+@@ -1093,21 +1126,23 @@
+         )
+ 
+         binding = prepare_round_derivation(
+-            workspace=workspace, trust_workspace=trust_workspace,
+-            submissions_root=submissions_root, client_receipts=client_receipts,
++            workspace=workspace,
++            trust_workspace=trust_workspace,
++            submissions_root=submissions_root,
++            client_receipts=client_receipts,
+             require=require_derivation,
+         )
+         if binding is not None and not (workspace / "checkpoint" / "manifest.json").is_file():
+             return verify_failed_round_derivation(
+-                workspace=workspace, trust_workspace=trust_workspace,
+-                submissions_root=submissions_root, validation_split_path=validation_split_path,
++                workspace=workspace,
++                trust_workspace=trust_workspace,
++                submissions_root=submissions_root,
++                validation_split_path=validation_split_path,
+                 binding=binding,
+             )
+         context = _load_context(workspace / "public")
+         contract = _load_bound_contract(workspace)
+-        disagreement_contract = load_bound_disagreement_contract(
+-            workspace / "public"
+-        )
++        disagreement_contract = load_bound_disagreement_contract(workspace / "public")
+         validation_rows = _load_validation_rows(
+             workspace=workspace,
+             validation_split_path=validation_split_path,
+@@ -1124,7 +1159,9 @@
+             submissions_root=submissions_root,
+             now=_parse_time(checkpoint.core.created_at),
+             create=False,
+-            blocked_client_ids=set(binding.core.blocked_client_ids) if binding is not None else None,
++            blocked_client_ids=set(binding.core.blocked_client_ids)
++            if binding is not None
++            else None,
+         )
+         base = load_json(workspace / "public" / "base-model.json")
+         statistical_state = _compute_statistical_state(
+@@ -1135,6 +1172,20 @@
+             contract=contract,
+             disagreement_contract=disagreement_contract,
+         )
++        if contract.core.primary_policy == "observable_envelope":
++            from .live_envelope import apply_live_envelope
++
++            statistical_state = apply_live_envelope(
++                workspace=workspace,
++                trust_workspace=trust_workspace,
++                validation_split_path=validation_split_path,
++                context=context,
++                contract=contract,
++                records=records,
++                base=base,
++                statistical_state=statistical_state,
++                create=False,
++            )
+         decisions = _load_or_create_runtime_decisions(
+             workspace=workspace,
+             records=records,
+@@ -1227,11 +1278,12 @@
+         implementation_matches = (
+             checkpoint.core.implementation_sha256 == _implementation_sha256()
+             or (
+-                checkpoint.core.implementation_sha256
+-                == contract.core.implementation_sha256
++                checkpoint.core.implementation_sha256 == contract.core.implementation_sha256
+                 and checkpoint.core.implementation_sha256
+-                in (SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
+-                    | SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256)
++                in (
++                    SUPPORTED_LEGACY_IN_ROUND_IMPLEMENTATION_SHA256
++                    | SUPPORTED_PRE_DERIVATION_IMPLEMENTATION_SHA256
++                )
+             )
+         )
+         if not implementation_matches:
+@@ -1249,9 +1301,7 @@
+         aggregate_matches = (
+             model_path.is_file()
+             and model_path.read_bytes() == recomputed_bytes
+-            and sha256_file(model_path)
+-            == checkpoint.core.global_model_sha256
+-            == recomputed_sha256
++            and sha256_file(model_path) == checkpoint.core.global_model_sha256 == recomputed_sha256
+         )
+         if not aggregate_matches:
+             errors.append("in-round checkpoint differs from recomputed weighted FedAvg")
+@@ -1263,10 +1313,18 @@
+             errors.append("in-round checkpoint was created outside context lifetime")
+         if binding is not None and not errors:
+             derivation = materialize_round_derivation(
+-                workspace=workspace, context=context, contract=contract, records=records,
+-                missing=missing, statistical_state=statistical_state, decisions=decisions,
+-                base=base, aggregate=dependencies()[4], now=_parse_time(checkpoint.core.created_at),
+-                aggregated=True, create=False,
++                workspace=workspace,
++                context=context,
++                contract=contract,
++                records=records,
++                missing=missing,
++                statistical_state=statistical_state,
++                decisions=decisions,
++                base=base,
++                aggregate=dependencies()[4],
++                now=_parse_time(checkpoint.core.created_at),
++                aggregated=True,
++                create=False,
+             )
+     except (FileNotFoundError, KeyError, OSError, TypeError, ValueError) as exc:
+         errors.append(str(exc))
+@@ -1278,20 +1336,16 @@
+         "downweighted_count": checkpoint.core.downweighted_count if checkpoint else 0,
+         "quarantined_count": checkpoint.core.quarantined_count if checkpoint else 0,
+         "missing_count": len(checkpoint.core.missing_client_ids) if checkpoint else 0,
+-        "global_model_sha256": (
+-            checkpoint.core.global_model_sha256 if checkpoint else None
+-        ),
++        "global_model_sha256": (checkpoint.core.global_model_sha256 if checkpoint else None),
+         "trust_recomputed": not errors,
+         "statistics_recomputed": not errors,
+         "decisions_recomputed": not errors,
+         "aggregate_recomputed": aggregate_matches,
+         "error_count": len(errors),
+         "errors": errors,
+-        "derivation_status": (
+-            "failed" if errors and derivation_requested
+-            else "not_requested"
+-        ),
+-        "verification_scope": "receipt_bound_round_derivation" if derivation_requested
++        "derivation_status": ("failed" if errors and derivation_requested else "not_requested"),
++        "verification_scope": "receipt_bound_round_derivation"
++        if derivation_requested
+         else "legacy_secure_round",
+         "admission_decisions_verified": False,
+         "derivation_verified": False,
+@@ -1301,10 +1355,14 @@
+         "delivery_verified": False,
+         "property_statuses": {
+             "admission_decisions": (
+-                "insufficient_evidence" if derivation_requested and client_receipts is None
+-                else "failed" if errors and derivation_requested else "not_checked"
+-            ),
+-            "deadline": "not_checked", "delivery": "not_checked",
++                "insufficient_evidence"
++                if derivation_requested and client_receipts is None
++                else "failed"
++                if errors and derivation_requested
++                else "not_checked"
++            ),
++            "deadline": "not_checked",
++            "delivery": "not_checked",
+             "scoring_population": "failed" if errors and derivation_requested else "not_checked",
+             "coefficients": "failed" if errors and derivation_requested else "not_checked",
+         },
+--- a/src/fl_forensics/in_round_admission_models.py
++++ b/src/fl_forensics/in_round_admission_models.py
+@@ -19,7 +19,9 @@
+ 
+ class InRoundAdmissionContractCore(StrictModel):
+     policy_id: str
+-    primary_policy: Literal["gated_composite", "sequential"] = "gated_composite"
++    primary_policy: Literal["gated_composite", "sequential", "tpm_only", "observable_envelope"] = (
++        "gated_composite"
++    )
+     policy_config_sha256: str = Field(pattern=HEX_256_PATTERN)
+     calibration_source_admission_sha256: str = Field(pattern=HEX_256_PATTERN)
+     calibration_semantics: Literal["verified-clean-development-reference"] = (
+@@ -32,9 +34,7 @@
+     thresholds: PolicyThresholds
+     accepted_downweight_factor: float = Field(gt=0.0, lt=1.0)
+     minimum_contributors: int = Field(gt=0)
+-    validation_metric: Literal["macro_f1_all_model_classes"] = (
+-        "macro_f1_all_model_classes"
+-    )
++    validation_metric: Literal["macro_f1_all_model_classes"] = "macro_f1_all_model_classes"
+     validation_split_sha256: str = Field(pattern=HEX_256_PATTERN)
+     validation_row_count: int = Field(gt=0)
+     implementation_sha256: str = Field(pattern=HEX_256_PATTERN)
+@@ -42,9 +42,7 @@
+ 
+ class InRoundAdmissionContract(StrictModel):
+     schema_version: Literal["1.0"] = "1.0"
+-    artifact_type: Literal["in_round_admission_contract"] = (
+-        "in_round_admission_contract"
+-    )
++    artifact_type: Literal["in_round_admission_contract"] = "in_round_admission_contract"
+     contract_id: str
+     core: InRoundAdmissionContractCore
+     core_digest: str = Field(pattern=HEX_256_PATTERN)
+@@ -88,9 +86,7 @@
+ 
+ class InRoundContributionDecision(StrictModel):
+     schema_version: Literal["1.0"] = "1.0"
+-    artifact_type: Literal["in_round_contribution_decision"] = (
+-        "in_round_contribution_decision"
+-    )
++    artifact_type: Literal["in_round_contribution_decision"] = "in_round_contribution_decision"
+     decision_id: str
+     core: InRoundContributionDecisionCore
+     core_digest: str = Field(pattern=HEX_256_PATTERN)
+@@ -118,9 +114,12 @@
+     round_number: int = Field(gt=0)
+     previous_checkpoint_sha256: str = Field(pattern=HEX_256_PATTERN)
+     base_model_sha256: str = Field(pattern=HEX_256_PATTERN)
+-    aggregation_strategy: Literal["FedAvg-gated-composite", "FedAvg-sequential"] = (
+-        "FedAvg-gated-composite"
+-    )
++    aggregation_strategy: Literal[
++        "FedAvg-gated-composite",
++        "FedAvg-sequential",
++        "FedAvg-tpm-only",
++        "FedAvg-observable-envelope",
++    ] = "FedAvg-gated-composite"
+     required_client_count: int = Field(gt=0)
+     minimum_contributors: int = Field(gt=0)
+     evaluated_count: int = Field(ge=0)
+--- a/src/fl_forensics/live_envelope.py
++++ b/src/fl_forensics/live_envelope.py
+@@ -0,0 +1,259 @@
++"""Authenticated, prefix-only adapter for the experimental retreat envelope.
++
++Full verification requires every predecessor round, its submissions and trust
++evidence. A signed checkpoint alone cannot substitute for verifying that prefix.
++Unsupported observations fail closed; an audit-only arm still enforces trust.
++"""
++
++from __future__ import annotations
++
++from pathlib import Path
++
++import numpy as np
++
++from .canonical import sha256_file
++from .client_envelope_policy import ClientEnvelopePolicy
++from .composite_admission_models import AdmissionPolicyDecision
++from .config import load_yaml
++from .federated_model import arrays_from_export
++from .preprocessing import derived_json_bytes
++from .sequential_decision import digest
++from .state_conditioned_audit import load_model, residual_scores
++from .storage import load_json, write_once
++
++PROFILE = "live-client-envelope-retreat-v1"
++ASSETS = ("conditioned.npz", "state-disabled.npz", "calibration.json", "envelope.json")
++
++
++def settings(config_path):
++    value = load_yaml(config_path)[0].get("runtime_admission", {}).get("observable_policy")
++    if not isinstance(value, dict) or set(value) != {"profile", "mode", "assets"}:
++        raise ValueError("invalid observable policy binding")
++    if value["profile"] != PROFILE or value["mode"] not in ("enforce", "audit_only"):
++        raise ValueError("unsupported observable policy profile or mode")
++    if set(value["assets"]) != set(ASSETS):
++        raise ValueError("incomplete frozen observable assets")
++    for name in ASSETS:
++        pin = value["assets"][name]
++        if (
++            not isinstance(pin, str)
++            or len(pin) != 64
++            or any(c not in "0123456789abcdef" for c in pin)
++        ):
++            raise ValueError("invalid observable asset digest")
++    return value
++
++
++def verify_assets(public, value):
++    paths = {name: Path(public) / "observable-assets" / name for name in ASSETS}
++    for name, path in paths.items():
++        if sha256_file(path) != value["assets"][name]:
++            raise ValueError(f"frozen observable asset changed: {name}")
++    return paths
++
++
++def install_assets(public, config_path):
++    value = settings(config_path)
++    for name in ASSETS:
++        source = Path(config_path).parent / "observable-assets" / name
++        if sha256_file(source) != value["assets"][name]:
++            raise ValueError(f"unbound observable source asset: {name}")
++        write_once(Path(public) / "observable-assets" / name, source.read_bytes())
++    paths = verify_assets(public, value)
++    cohort = sha256_file(Path(public) / "partition-manifest.json")
++    for view in ("conditioned", "state-disabled"):
++        model = load_model(paths[f"{view}.npz"])
++        if model["schema"]["cohort_id"] != cohort:
++            raise ValueError("frozen detector is not calibrated for this partition")
++
++
++def _previous_history(workspace, context, contract, trust_workspace, validation_split_path):
++    if context.core.round_number == 1:
++        return []
++    from .in_round_admission import _load_bound_contract, verify_in_round_secure_round
++
++    parent = workspace.parent / f"round-{context.core.round_number - 1:03d}"
++    if sha256_file(parent / "checkpoint/manifest.json") != context.core.previous_checkpoint_sha256:
++        raise ValueError("observable prefix does not match the signed predecessor")
++    previous_contract = _load_bound_contract(parent)
++    if previous_contract.core.policy_config_sha256 != contract.core.policy_config_sha256:
++        raise ValueError("observable policy changed inside the campaign")
++    report = verify_in_round_secure_round(
++        workspace=parent,
++        trust_workspace=trust_workspace,
++        submissions_root=parent / "submissions",
++        validation_split_path=validation_split_path,
++        client_receipts=parent / "client-receipts",
++        require_derivation=True,
++    )
++    if report["status"] != "verified":
++        raise ValueError(f"unverified observable predecessor: {report.get('errors')}")
++    previous = load_json(parent / "observable-policy-result.json")
++    if len(previous["history"]) != context.core.round_number - 1:
++        raise ValueError("incomplete observable history")
++    return previous["history"]
++
++
++def apply_live_envelope(
++    *,
++    workspace,
++    trust_workspace,
++    validation_split_path,
++    context,
++    contract,
++    records,
++    base,
++    statistical_state,
++    create,
++):
++    """Recompute observables from verified signed updates, before signing actions."""
++    workspace = Path(workspace)
++    from .partition_training_binding import verify_public_partition_training_binding
++
++    verify_public_partition_training_binding(workspace / "public")
++    value = settings(workspace / "public/in-round-admission.yaml")
++    paths = verify_assets(workspace / "public", value)
++    calibration, envelope = load_json(paths["calibration.json"]), load_json(paths["envelope.json"])
++    models = {v: load_model(paths[f"{v}.npz"]) for v in ("conditioned", "state-disabled")}
++    clients = calibration["clients"]
++    if any(
++        m["schema"]["cohort_id"] != sha256_file(workspace / "public/partition-manifest.json")
++        for m in models.values()
++    ):
++        raise ValueError("observable cohort changed")
++    history = _previous_history(
++        workspace, context, contract, trust_workspace, validation_split_path
++    )
++    by_client = {r["client_id"]: r for r in records}
++    if len(by_client) != len(records) or set(by_client) - set(clients):
++        raise ValueError("ambiguous observable enrollment roster")
++    gates = {
++        c: c in statistical_state
++        and statistical_state[c]["trust"].admissible
++        and c in by_client
++        and all(ch.passed for ch in by_client[c]["checks"])
++        and by_client[c]["bundle"] is not None
++        for c in clients
++    }
++    masses = {
++        c: by_client[c]["bundle"].core.num_examples
++        if c in by_client and by_client[c]["bundle"] is not None
++        else 0
++        for c in clients
++    }
++    source = {
++        "context": context.core_digest,
++        "base": sha256_file(workspace / "public/base-model.json"),
++        "bundles": {c: by_client[c]["bundle_sha256"] for c in sorted(by_client)},
++        "assets": value["assets"],
++    }
++    source_digest = digest(source)
++    risks = {v: [0.0] * len(clients) for v in models}
++    distances = {}
++    supported = all(gates.values())
++    if supported:
++        arrays = arrays_from_export(base, np=np)
++        flat = lambda a: np.concatenate([x.astype(np.float64).ravel() for x in a])
++        local = [
++            arrays_from_export(load_json(by_client[c]["submission"] / "update.json"), np=np)
++            for c in clients
++        ]
++        # model_delta uses float64 differences, matching the calibrated observation exporter.
++        updates = np.stack(
++            [
++                flat(
++                    [
++                        a.astype(np.float64) - b.astype(np.float64)
++                        for a, b in zip(items, arrays, strict=True)
++                    ]
++                )
++                for items in local
++            ]
++        )
++        observation = {
++            "states": flat(arrays)[None, :],
++            "updates": updates[None, :, :],
++            "clients": clients,
++            "sizes": [a.size for a in arrays],
++            "cohort_id": sha256_file(workspace / "public/partition-manifest.json"),
++        }
++        for view, model in models.items():
++            result = residual_scores(observation, model)
++            risks[view] = result["risk"][0].tolist()
++            distances[view] = float(result["state_support_distance"][0])
++            limit = min(
++                calibration["state_support_limits"][view], envelope["state_support_limits"][view]
++            )
++            supported = supported and distances[view] <= limit * (1 + 1e-12) + 1e-12
++    frame = {
++        "round": context.core.round_number,
++        "risk": risks,
++        "context_supported": supported,
++        "mandatory_gate": gates,
++        "masses": masses,
++        "source_observation_sha256": source_digest,
++    }
++    history = [*history, frame]
++    policy = ClientEnvelopePolicy(
++        calibration, envelope, minimum_contributors=contract.core.minimum_contributors
++    )
++    for number, prior in enumerate(history, 1):
++        if prior["round"] != number:
++            raise ValueError("nonconsecutive observable history")
++        decision = policy.step(
++            number,
++            prior["risk"],
++            context_supported=prior["context_supported"],
++            mandatory_gate=prior["mandatory_gate"],
++            masses=prior["masses"],
++            expected_previous_digest=policy.head,
++            source_observation_sha256=prior["source_observation_sha256"],
++        )
++    result = {
++        "profile": PROFILE,
++        "mode": value["mode"],
++        "source": source,
++        "history": history,
++        "state_support_distances": distances,
++        "decision": decision,
++        "unsupported_context_blocks_checkpoint": True,
++        "attack_labels_used": False,
++    }
++    payload = derived_json_bytes(result)
++    target = workspace / "observable-policy-result.json"
++    if create:
++        write_once(target, payload)
++    elif target.read_bytes() != payload:
++        raise ValueError("observable policy replay mismatch")
++    result_pin = sha256_file(target)
++    for client, state in statistical_state.items():
++        blocked = not decision["supported"] or (
++            value["mode"] == "enforce" and client in decision["quarantine_current_round"]
++        )
++        status = "statistically_quarantined" if blocked else "accepted"
++        if not state["trust"].admissible:
++            status = "trust_quarantined"
++        reason = (
++            "unsupported observable context: no checkpoint"
++            if not decision["supported"]
++            else (
++                "confirmed current envelope evidence"
++                if blocked
++                else "trust gate passed; current policy permits contribution"
++            )
++        )
++        primary = AdmissionPolicyDecision(
++            policy="observable_envelope",
++            status=status,
++            contributes=status == "accepted",
++            score=float(blocked),
++            threshold=None,
++            reasons=[
++                reason,
++                f"observable-policy-result-sha256:{result_pin}",
++                f"observable-policy-mode:{value['mode']}",
++            ],
++        )
++        state["policies"] = [*state["policies"], primary]
++        state["primary"] = primary
++    return statistical_state
+--- a/src/fl_forensics/partition_training_binding.py
++++ b/src/fl_forensics/partition_training_binding.py
+@@ -0,0 +1,52 @@
++"""Explicit training-only changes over an immutable, previously built partition."""
++
++from __future__ import annotations
++
++import copy
++
++from .canonical import sha256_file
++from .config import load_yaml
++from .storage import load_json
++
++ALLOWED = ("seed", "local_epochs", "rounds")
++
++
++def partition_training_binding(config, config_digest, manifest, source_path=None):
++    if manifest.get("partition_config_sha256") == config_digest:
++        return None
++    if source_path is None:
++        raise ValueError("different federation config requires an explicit partition source config")
++    original, original_digest = load_yaml(source_path)
++    if original_digest != manifest.get("partition_config_sha256"):
++        raise ValueError("partition source config digest mismatch")
++    expected, observed = copy.deepcopy(original), copy.deepcopy(config)
++    changes = {}
++    for field in ALLOWED:
++        old, new = expected["training"].pop(field), observed["training"].pop(field)
++        if type(new) is not int or new < (0 if field == "seed" else 1):
++            raise ValueError("invalid training-only override")
++        if old != new:
++            changes[field] = {"partition_config": old, "training_config": new}
++    if expected != observed:
++        raise ValueError(
++            "training override changes partitioning, model or another protected setting"
++        )
++    return {
++        "profile": "explicit-partition-training-binding-v1",
++        "partition_config_sha256": original_digest,
++        "training_config_sha256": config_digest,
++        "changed_training_fields": changes,
++    }
++
++
++def verify_public_partition_training_binding(public):
++    config, config_digest = load_yaml(public / "federation.yaml")
++    manifest = load_json(public / "partition-manifest.json")
++    training = load_json(public / "training-contract.json")
++    observed = training.get("partition_training_binding")
++    source = public / "partition-source-federation.yaml" if observed is not None else None
++    expected = partition_training_binding(config, config_digest, manifest, source)
++    if observed != expected:
++        raise ValueError("signed partition/training binding mismatch")
++    if expected is not None and sha256_file(source) != expected["partition_config_sha256"]:
++        raise ValueError("changed partition source config")
+--- a/src/fl_forensics/persistent_envelope_policy.py
++++ b/src/fl_forensics/persistent_envelope_policy.py
+@@ -0,0 +1,147 @@
++"""Bounded confirmation of current envelope excess, independently of its peak.
++
++This is an empirical current-round policy, not evidence of malicious intent.
++Historical retreat-policy decisions remain reproducible under their own profile.
++"""
++
++from __future__ import annotations
++
++import copy
++from fractions import Fraction
++
++from .client_envelope_policy import ClientEnvelopePolicy
++from .sequential_decision import digest
++
++PROFILE = "persistent-client-envelope-policy-v1"
++
++
++class PersistentEnvelopePolicy:
++    """Keep the retreat channel and add a finite current-high confirmation bound."""
++
++    def __init__(self, calibration, envelope, *, minimum_contributors=8, confirmation_rounds=3):
++        if type(confirmation_rounds) is not int or confirmation_rounds not in (2, 3, 4):
++            raise ValueError("confirmation_rounds must be 2, 3 or 4")
++        self._retreat = ClientEnvelopePolicy(
++            calibration, envelope, minimum_contributors=minimum_contributors
++        )
++        self.clients = list(self._retreat.clients)
++        self.confirmation_rounds = confirmation_rounds
++        self.minimum = minimum_contributors
++        self.round = 0
++        self.head = "0" * 64
++        self._streak = dict.fromkeys(self.clients, 0)
++        self._quarantined = set()
++        self._last_previous = None
++        self._last_basis_digest = None
++        self.last_result = None
++
++    def step(
++        self,
++        round_number,
++        risk,
++        *,
++        context_supported,
++        mandatory_gate,
++        masses,
++        expected_previous_digest,
++        source_observation_sha256,
++    ):
++        if type(round_number) is not int or round_number < 1:
++            raise ValueError("round must be a positive integer")
++        retry = round_number == self.round
++        if expected_previous_digest != (self._last_previous if retry else self.head):
++            raise ValueError("trusted predecessor mismatch")
++        if not retry and round_number != self.round + 1:
++            raise ValueError("round order mismatch")
++        basis = self._retreat.step(
++            round_number,
++            risk,
++            context_supported=context_supported,
++            mandatory_gate=mandatory_gate,
++            masses=masses,
++            expected_previous_digest=(
++                self._retreat._last_previous if retry else self._retreat.head
++            ),
++            source_observation_sha256=source_observation_sha256,
++        )
++        if retry:
++            if basis["decision_digest"] != self._last_basis_digest:
++                raise ValueError("conflicting evidence retry")
++            return copy.deepcopy(self.last_result)
++        records = copy.deepcopy(basis["clients"])
++        streak = {
++            c: self._streak[c] + 1
++            if basis["supported"] and records[c]["client_envelope_current_high"]
++            else 0
++            for c in self.clients
++        }
++        bounded = {c for c in self.clients if streak[c] >= self.confirmation_rounds}
++        selected = set(basis["quarantine_current_round"]) | bounded
++        quarantine, reviews, rejected, transitions = [], [], [], {}
++        for client in self.clients:
++            previous = client in self._quarantined
++            if not mandatory_gate[client]:
++                action = "protocol_reject"
++                rejected.append(client)
++            elif not basis["supported"]:
++                action = "abstain_requires_review"
++                reviews.append(client)
++            elif client in selected:
++                action = "quarantine_current_round"
++                quarantine.append(client)
++            elif streak[client] or previous or records[client]["action"] == "review_required":
++                action = "review_required"
++                reviews.append(client)
++            else:
++                action = "no_statistical_alert"
++            transition = (
++                ("continued" if previous else "entered")
++                if client in quarantine
++                else (
++                    "released" if previous else "confirmation_pending" if streak[client] else "none"
++                )
++            )
++            records[client].update(
++                action=action,
++                quarantine_transition=transition,
++                consecutive_client_envelope_high_rounds=streak[client],
++                bounded_persistence_proposal=client in bounded,
++            )
++            transitions[client] = transition
++        effective = {
++            c: Fraction(0) if c in quarantine or c in rejected else Fraction(str(masses[c]))
++            for c in self.clients
++        }
++        core = {
++            "profile": PROFILE,
++            "round": round_number,
++            "source_observation_sha256": source_observation_sha256,
++            "previous_decision_digest": self.head,
++            "retreat_decision_digest": basis["decision_digest"],
++            "calibration_digest": basis["calibration_digest"],
++            "envelope_calibration_digest": basis["envelope_calibration_digest"],
++            "input_digest": digest(
++                {"retreat": basis["input_digest"], "confirmation_rounds": self.confirmation_rounds}
++            ),
++            "supported": basis["supported"],
++            "clients": records,
++            "quarantine_current_round": quarantine,
++            "review_required": reviews,
++            "mandatory_rejections": rejected,
++            "quarantine_transitions": transitions,
++            "bounded_persistence_quarantine": sorted(bounded),
++            "proposed_effective_masses": {c: str(v) for c, v in effective.items()},
++            "proposal_quorum_satisfied": sum(v > 0 for v in effective.values()) >= self.minimum,
++            "minimum_contributors": self.minimum,
++            "confirmation_rounds": self.confirmation_rounds,
++            "cumulative_evidence_role": "review_only",
++            "client_ban_performed": False,
++            "automatic_deployment_validated": False,
++        }
++        result = {**core, "decision_digest": digest(core)}
++        self._last_previous = self.head
++        self._last_basis_digest = basis["decision_digest"]
++        self.head, self.round = result["decision_digest"], round_number
++        self._streak, self._quarantined = streak, set(quarantine)
++        self.last_result = copy.deepcopy(result)
++        return result
+--- a/src/fl_forensics/round_derivation.py
++++ b/src/fl_forensics/round_derivation.py
+@@ -371,7 +371,11 @@
+     edges: set[tuple[str, str, str]] = set()
+ 
+     def node(
+-        kind: str, digest: str, *, prefix: str | None = None, commitment_only: bool = False,
++        kind: str,
++        digest: str,
++        *,
++        prefix: str | None = None,
++        commitment_only: bool = False,
+         occurrence_id: str | None = None,
+     ) -> str:
+         identity = (prefix or kind) + ":" + (digest if occurrence_id is None else occurrence_id)
+@@ -661,6 +665,20 @@
+         contract=contract,
+         disagreement_contract=disagreement,
+     )
++    if contract.core.primary_policy == "observable_envelope":
++        from .live_envelope import apply_live_envelope
++
++        statistical = apply_live_envelope(
++            workspace=workspace,
++            trust_workspace=trust_workspace,
++            validation_split_path=validation_split_path,
++            context=context,
++            contract=contract,
++            records=records,
++            base=base,
++            statistical_state=statistical,
++            create=False,
++        )
+     decisions = _load_or_create_runtime_decisions(
+         workspace=workspace,
+         records=records,
+--- a/src/fl_forensics/secure_round.py
++++ b/src/fl_forensics/secure_round.py
+@@ -165,9 +165,7 @@
+         valid = (
+             digest == record.core_digest
+             and record.signature.key_id == public_key_id(authority_key)
+-            and verify_digest_signature(
+-                authority_key, digest, record.signature.value_b64
+-            )
++            and verify_digest_signature(authority_key, digest, record.signature.value_b64)
+         )
+         if not valid:
+             raise SecureRoundError(f"invalid revocation record signature: {path.name}")
+@@ -247,6 +245,8 @@
+     disagreement_experiment_config_path: Path | None = None,
+     real_attestation_failure_config_path: Path | None = None,
+     dba_training_config_path: Path | None = None,
++    initial_model_path: Path | None = None,
++    partition_config_path: Path | None = None,
+     now: datetime | None = None,
+ ) -> dict[str, Any]:
+     """Create a signed round context after validating all 15 M4 attestations."""
+@@ -258,25 +258,17 @@
+         submitted_files = list(submissions.rglob("*")) if submissions.is_dir() else []
+         if protected or any(path.is_file() for path in submitted_files):
+             raise FileExistsError(f"M5 workspace must be new and empty: {workspace}")
++    if initial_model_path is not None and round_number != 1:
++        raise SecureRoundError("an external initial model is permitted only at genesis")
+     if round_number < 1:
+         raise SecureRoundError("round number must be positive")
+     if round_number == 1 and previous_round_workspace is not None:
+         raise SecureRoundError("round 1 cannot reference a previous checkpoint")
+     if round_number > 1 and (campaign_id is None or previous_round_workspace is None):
+-        raise SecureRoundError(
+-            "later rounds require a campaign id and previous round workspace"
+-        )
+-    if (
+-        disagreement_experiment_config_path is not None
+-        and in_round_admission_config_path is None
+-    ):
+-        raise SecureRoundError(
+-            "the M6 disagreement experiment requires in-round admission"
+-        )
+-    if (
+-        real_attestation_failure_config_path is not None
+-        and in_round_admission_config_path is None
+-    ):
++        raise SecureRoundError("later rounds require a campaign id and previous round workspace")
++    if disagreement_experiment_config_path is not None and in_round_admission_config_path is None:
++        raise SecureRoundError("the M6 disagreement experiment requires in-round admission")
++    if real_attestation_failure_config_path is not None and in_round_admission_config_path is None:
+         raise SecureRoundError(
+             "the real attestation-failure experiment requires in-round admission"
+         )
+@@ -309,8 +301,11 @@
+         raise SecureRoundError("M5 implementation currently requires FedAvg with Adam")
+     if str(config["model"]["activation"]) != "relu":
+         raise SecureRoundError("M5 implementation currently requires ReLU")
+-    if manifest.get("partition_config_sha256") != config_digest:
+-        raise SecureRoundError("partition manifest was created from a different federation config")
++    from .partition_training_binding import partition_training_binding
++
++    partition_training = partition_training_binding(
++        config, config_digest, manifest, partition_config_path
++    )
+     if manifest.get("class_weighting") != training.get("class_weighting"):
+         raise SecureRoundError("partition/training class-weighting contract mismatch")
+     if (
+@@ -337,16 +332,12 @@
+             or _revoked(trust_workspace, enrollment, authority_key, at=now)
+         ):
+             raise SecureRoundError(f"enrollment is not active: {client_id}")
+-        result, result_path = _current_attestation(
+-            trust_workspace, client_id, enrollment, now=now
+-        )
++        result, result_path = _current_attestation(trust_workspace, client_id, enrollment, now=now)
+         attested[client_id] = (enrollment, result, result_path)
+         expiry_values.append(_parse_time(result.core.expires_at))
+ 
+     requested_lifetime = int(secure_config["secure_round"]["context_lifetime_seconds"])
+-    minimum_remaining = int(
+-        secure_config["secure_round"]["minimum_attestation_remaining_seconds"]
+-    )
++    minimum_remaining = int(secure_config["secure_round"]["minimum_attestation_remaining_seconds"])
+     expires = min(now + timedelta(seconds=requested_lifetime), min(expiry_values))
+     if expires <= now + timedelta(seconds=minimum_remaining):
+         raise SecureRoundError("attestations expire too soon for an M5 round; issue fresh quotes")
+@@ -361,6 +352,8 @@
+     write_once(public / "round-coordinator.public.pem", signer.public_pem())
+     write_once(public / "partition-manifest.json", partition_manifest_path.read_bytes())
+     write_once(public / "federation.yaml", config_path.read_bytes())
++    if partition_training is not None:
++        write_once(public / "partition-source-federation.yaml", partition_config_path.read_bytes())
+ 
+     expected_model, expected_architecture = _new_model(manifest, config)
+     if previous_round_workspace is None:
+@@ -370,6 +363,18 @@
+             architecture=architecture,
+             class_names=list(manifest["class_names"]),
+         )
++        if initial_model_path is not None:
++            np = dependencies()[0]
++            initial = load_json(initial_model_path)
++            if (
++                initial.get("architecture") != base_export.get("architecture")
++                or initial.get("class_names") != base_export.get("class_names")
++                or tensor_schema(initial) != tensor_schema(base_export)
++            ):
++                raise SecureRoundError("initial model architecture or tensor schema mismatch")
++            if not all(np.isfinite(a).all() for a in arrays_from_export(initial, np=np)):
++                raise SecureRoundError("initial model has nonfinite tensors")
++            base_export = initial
+         base_bytes = derived_json_bytes(base_export)
+         previous_checkpoint_sha256 = GENESIS_DIGEST
+     else:
+@@ -377,24 +382,17 @@
+         previous_training_contract = load_json(
+             previous_round_workspace / "public" / "training-contract.json"
+         )
+-        previous_checkpoint_path = (
+-            previous_round_workspace / "checkpoint" / "manifest.json"
+-        )
+-        previous_model_path = (
+-            previous_round_workspace / "checkpoint" / "global-model.json"
+-        )
++        previous_checkpoint_path = previous_round_workspace / "checkpoint" / "manifest.json"
++        previous_model_path = previous_round_workspace / "checkpoint" / "global-model.json"
+         previous_checkpoint_value = load_json(previous_checkpoint_path)
+         composite_previous = (
+-            previous_checkpoint_value.get("artifact_type")
+-            == "in_round_secure_global_checkpoint"
++            previous_checkpoint_value.get("artifact_type") == "in_round_secure_global_checkpoint"
+         )
+         if composite_previous:
+             from .in_round_admission import verify_in_round_signature
+             from .in_round_admission_models import InRoundSecureCheckpoint
+ 
+-            previous_checkpoint = InRoundSecureCheckpoint.model_validate(
+-                previous_checkpoint_value
+-            )
++            previous_checkpoint = InRoundSecureCheckpoint.model_validate(previous_checkpoint_value)
+             previous_count_valid = (
+                 previous_checkpoint.core.accepted_count
+                 >= previous_checkpoint.core.minimum_contributors
+@@ -403,9 +401,7 @@
+                 previous_checkpoint, signer.private_key.public_key()
+             )
+         else:
+-            previous_checkpoint = SecureCheckpoint.model_validate(
+-                previous_checkpoint_value
+-            )
++            previous_checkpoint = SecureCheckpoint.model_validate(previous_checkpoint_value)
+             previous_count_valid = (
+                 previous_checkpoint.core.accepted_count == required_client_count
+                 and previous_checkpoint.core.quarantined_count == 0
+@@ -422,22 +418,15 @@
+             and previous_context.core.round_number == round_number - 1
+             and previous_checkpoint.core.round_number == round_number - 1
+             and previous_checkpoint.core.context_digest == previous_context.core_digest
+-            and previous_checkpoint.core.required_client_count
+-            == required_client_count
+-            and composite_previous
+-            == (in_round_admission_config_path is not None)
+-            and (
+-                "m6_disagreement_experiment" in previous_training_contract
+-            )
++            and previous_checkpoint.core.required_client_count == required_client_count
++            and composite_previous == (in_round_admission_config_path is not None)
++            and ("m6_disagreement_experiment" in previous_training_contract)
+             == (disagreement_experiment_config_path is not None)
+-            and (
+-                "m4_m6_real_attestation_failure" in previous_training_contract
+-            )
++            and ("m4_m6_real_attestation_failure" in previous_training_contract)
+             == (real_attestation_failure_config_path is not None)
+             and previous_count_valid
+             and previous_model_path.is_file()
+-            and sha256_file(previous_model_path)
+-            == previous_checkpoint.core.global_model_sha256
++            and sha256_file(previous_model_path) == previous_checkpoint.core.global_model_sha256
+         )
+         if not previous_valid:
+             raise SecureRoundError(
+@@ -446,13 +435,10 @@
+         base_bytes = previous_model_path.read_bytes()
+         base_export = load_json(previous_model_path)
+         architecture = base_export.get("architecture")
+-        if (
+-            architecture != expected_architecture
+-            or base_export.get("class_names") != manifest.get("class_names")
++        if architecture != expected_architecture or base_export.get("class_names") != manifest.get(
++            "class_names"
+         ):
+-            raise SecureRoundError(
+-                "previous checkpoint model architecture/class order changed"
+-            )
++            raise SecureRoundError("previous checkpoint model architecture/class order changed")
+         previous_checkpoint_sha256 = sha256_file(previous_checkpoint_path)
+     base_digest = sha256_bytes(base_bytes)
+     write_once(public / "base-model.json", base_bytes)
+@@ -486,6 +472,8 @@
+         "class_weighting": str(training["class_weighting"]),
+         "clients": public_clients,
+     }
++    if partition_training is not None:
++        training_contract["partition_training_binding"] = partition_training
+     if dba_training_config_path is not None:
+         from .dba_training import build_dba_training_binding
+ 
+@@ -516,15 +504,9 @@
+             client_ids=EXPECTED_CLIENTS,
+         )
+         if previous_round_workspace is not None:
+-            previous_binding = previous_training_contract[
+-                "m6_disagreement_experiment"
+-            ]
+-            if previous_binding.get("config_sha256") != disagreement_binding.get(
+-                "config_sha256"
+-            ):
+-                raise SecureRoundError(
+-                    "M6 disagreement configuration changed within the campaign"
+-                )
++            previous_binding = previous_training_contract["m6_disagreement_experiment"]
++            if previous_binding.get("config_sha256") != disagreement_binding.get("config_sha256"):
++                raise SecureRoundError("M6 disagreement configuration changed within the campaign")
+         training_contract["m6_disagreement_experiment"] = disagreement_binding
+     real_attestation_contract = None
+     if real_attestation_failure_config_path is not None:
+@@ -540,18 +522,14 @@
+             )
+         )
+         if previous_round_workspace is not None:
+-            previous_binding = previous_training_contract[
+-                "m4_m6_real_attestation_failure"
+-            ]
++            previous_binding = previous_training_contract["m4_m6_real_attestation_failure"]
+             if previous_binding.get("config_sha256") != real_attestation_binding.get(
+                 "config_sha256"
+             ):
+                 raise SecureRoundError(
+                     "real attestation-failure configuration changed within the campaign"
+                 )
+-        training_contract["m4_m6_real_attestation_failure"] = (
+-            real_attestation_binding
+-        )
++        training_contract["m4_m6_real_attestation_failure"] = real_attestation_binding
+     contract_bytes = derived_json_bytes(training_contract)
+     contract_digest = sha256_bytes(contract_bytes)
+     write_once(public / "training-contract.json", contract_bytes)
+@@ -603,14 +581,10 @@
+             in_round_contract.contract_id if in_round_contract is not None else None
+         ),
+         "m6_disagreement_contract_id": (
+-            disagreement_contract.contract_id
+-            if disagreement_contract is not None
+-            else None
++            disagreement_contract.contract_id if disagreement_contract is not None else None
+         ),
+         "real_attestation_failure_contract_id": (
+-            real_attestation_contract.contract_id
+-            if real_attestation_contract is not None
+-            else None
++            real_attestation_contract.contract_id if real_attestation_contract is not None else None
+         ),
+         "expires_at": context.core.expires_at,
+         "workspace": str(workspace),
+@@ -618,9 +592,7 @@
+ 
+ 
+ def _load_context(public_workspace: Path) -> SecureRoundContext:
+-    context = SecureRoundContext.model_validate(
+-        load_json(public_workspace / "round-context.json")
+-    )
++    context = SecureRoundContext.model_validate(load_json(public_workspace / "round-context.json"))
+     if not _verify_signed(context, _coordinator_public_key(public_workspace.parent)):
+         raise SecureRoundError("invalid coordinator signature on round context")
+     return context
+@@ -721,7 +693,9 @@
+     from .dba_training import prepare_dba_training_rows
+ 
+     rows, dba_training_record = prepare_dba_training_rows(
+-        training=training_contract, rows=rows, client_id=client_id,
++        training=training_contract,
++        rows=rows,
++        client_id=client_id,
+         round_number=context.core.round_number,
+     )
+     (
+@@ -740,8 +714,7 @@
+         rows=rows,
+         class_names=list(training_contract["class_names"]),
+         class_weights={
+-            key: float(value)
+-            for key, value in training_contract["global_class_weights"].items()
++            key: float(value) for key, value in training_contract["global_class_weights"].items()
+         },
+         epochs=context.core.local_epochs,
+         batch_size=context.core.batch_size,
+@@ -790,9 +763,7 @@
+         **metrics,
+     }
+     if disagreement_record is not None:
+-        metrics_artifact["m6_disagreement_experiment"] = (
+-            disagreement_record.model_dump(mode="json")
+-        )
++        metrics_artifact["m6_disagreement_experiment"] = disagreement_record.model_dump(mode="json")
+     if dba_training_record is not None:
+         metrics_artifact["dba_training_experiment"] = dba_training_record
+     metrics_bytes = derived_json_bytes(metrics_artifact)
+@@ -1012,12 +983,8 @@
+         if post_training:
+             generated_at = _parse_time(bundle.core.generated_at)
+             eligible_results: list[tuple[datetime, AttestationResultV2, Path]] = []
+-            for candidate_path in (trust_workspace / "results").glob(
+-                "attestation-*.json"
+-            ):
+-                candidate = AttestationResultV2.model_validate(
+-                    load_json(candidate_path)
+-                )
++            for candidate_path in (trust_workspace / "results").glob("attestation-*.json"):
++                candidate = AttestationResultV2.model_validate(load_json(candidate_path))
+                 evaluated_at = _parse_time(candidate.core.evaluated_at)
+                 if (
+                     candidate.core.client_id == bundle.core.client_id
+@@ -1030,8 +997,7 @@
+                 latest is not None
+                 and latest[1].result_id == result.result_id
+                 and sha256_file(latest[2]) == sha256_file(path)
+-                and _parse_time(result.core.evaluated_at)
+-                >= _parse_time(context.core.issued_at)
++                and _parse_time(result.core.evaluated_at) >= _parse_time(context.core.issued_at)
+             )
+         else:
+             result_binding_valid = (
+@@ -1303,13 +1269,19 @@
+         for decision, decision_path in zip(decisions, decision_paths, strict=True):
+             item = existing_inputs.get(decision.core.client_id)
+             bundle_path = submissions_root / decision.core.client_id / "bundle.json"
+-            retry_matches = retry_matches and item is not None and (
+-                item.decision_sha256 == sha256_file(decision_path)
+-                and item.bundle_sha256 == sha256_file(bundle_path)
++            retry_matches = (
++                retry_matches
++                and item is not None
++                and (
++                    item.decision_sha256 == sha256_file(decision_path)
++                    and item.bundle_sha256 == sha256_file(bundle_path)
++                )
+             )
+         model_path = workspace / "checkpoint" / "global-model.json"
+-        retry_matches = retry_matches and model_path.is_file() and (
+-            sha256_file(model_path) == existing.core.global_model_sha256
++        retry_matches = (
++            retry_matches
++            and model_path.is_file()
++            and (sha256_file(model_path) == existing.core.global_model_sha256)
+         )
+         if not retry_matches:
+             raise SecureRoundError(
+@@ -1440,20 +1412,15 @@
+             context.core.federation_config_sha256
+         ):
+             errors.append("public federation configuration digest mismatch")
+-        if (
+-            checkpoint.core.accepted_count != len(EXPECTED_CLIENTS)
+-            or len(checkpoint.core.accepted_inputs) != len(EXPECTED_CLIENTS)
+-        ):
++        if checkpoint.core.accepted_count != len(EXPECTED_CLIENTS) or len(
++            checkpoint.core.accepted_inputs
++        ) != len(EXPECTED_CLIENTS):
+             errors.append("checkpoint does not contain every required accepted input")
+-        if (
+-            checkpoint.core.quarantined_count != 0
+-            or checkpoint.core.quarantined_decision_sha256
+-        ):
++        if checkpoint.core.quarantined_count != 0 or checkpoint.core.quarantined_decision_sha256:
+             errors.append("checkpoint contains quarantined contributions")
+         input_client_ids = [item.client_id for item in checkpoint.core.accepted_inputs]
+-        if (
+-            input_client_ids != EXPECTED_CLIENTS
+-            or len(set(input_client_ids)) != len(EXPECTED_CLIENTS)
++        if input_client_ids != EXPECTED_CLIENTS or len(set(input_client_ids)) != len(
++            EXPECTED_CLIENTS
+         ):
+             errors.append("checkpoint client inputs are incomplete, duplicated, or unordered")
+         base = load_json(workspace / "public" / "base-model.json")
+@@ -1514,9 +1481,7 @@
+             )
+             failed_checks = [check.name for check in independent_checks if not check.passed]
+             if failed_checks:
+-                errors.append(
+-                    f"independent admission failed {item.client_id}: {failed_checks}"
+-                )
++                errors.append(f"independent admission failed {item.client_id}: {failed_checks}")
+             updates.append((arrays_from_export(update, np=np), item.num_examples))
+         averaged = fedavg(updates, aggregate=aggregate) if updates else []
+         if checkpoint.core.total_examples != sum(
+@@ -1525,15 +1490,11 @@
+             errors.append("checkpoint total example count mismatch")
+         recomputed = copy.deepcopy(base)
+         for parameter, array in zip(recomputed["parameters"], averaged, strict=True):
+-            parameter["values"] = np.asarray(
+-                array, dtype=np.dtype(parameter["dtype"])
+-            ).tolist()
++            parameter["values"] = np.asarray(array, dtype=np.dtype(parameter["dtype"])).tolist()
+         recomputed_digest = sha256_bytes(derived_json_bytes(recomputed))
+         stored_model_path = workspace / "checkpoint" / "global-model.json"
+         stored_digest = sha256_file(stored_model_path)
+-        matches = (
+-            recomputed_digest == checkpoint.core.global_model_sha256 == stored_digest
+-        )
++        matches = recomputed_digest == checkpoint.core.global_model_sha256 == stored_digest
+         if not matches:
+             errors.append("stored checkpoint differs from independently recomputed FedAvg")
+         if not (

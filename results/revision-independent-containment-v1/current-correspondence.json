@@ -1,0 +1,207 @@
+{
+  "source": "4b58e1590179dbaa37c8e9760b94bd57549db6c3a228e95f00ee2def26012bbb",
+  "package_files": 119,
+  "checks": "Named function existence and AST/file binding only. This is not a proof of transitive semantic equivalence or independent mathematical review.",
+  "obligations": {
+    "P0": [
+      {
+        "name": "round_derivation._dispositions",
+        "file": "src/fl_forensics/round_derivation.py",
+        "line": 281,
+        "file_sha256": "4e4dc4c883a9d8e478dd79b1040c6fa18ad2214aa80eebbdcee789e9889981fd",
+        "function_AST_sha256": "a0cb71a19730cc24d751be44ccfc301cecac657bab2f2debeedcf7e8495f6240"
+      },
+      {
+        "name": "review_ledger.append_review",
+        "file": "src/fl_forensics/review_ledger.py",
+        "line": 423,
+        "file_sha256": "25e34c04a615799c6b02543ee958e3eb4a318c121e6b6dd96404b180a8b3a901",
+        "function_AST_sha256": "b974ad7a787a087548151de26f02717d70a06ee2e64681a6eebd22f3bc1b85b6"
+      }
+    ],
+    "P1": [
+      {
+        "name": "campaign_derivation.verify_campaign_derivation",
+        "file": "src/fl_forensics/campaign_derivation.py",
+        "line": 574,
+        "file_sha256": "51fee07c8dad4a4b2383764c84629d49a31beb75fd10a878a87304cea77120d9",
+        "function_AST_sha256": "6713cfb13311fbb53178ffbd7eeebe0b7dd9ca4f28b55f5743005bbb75f444b4"
+      },
+      {
+        "name": "in_round_admission.verify_in_round_secure_round",
+        "file": "src/fl_forensics/in_round_admission.py",
+        "line": 1102,
+        "file_sha256": "793b2d5febc155274fa2736b1ff3388fdf6bcb66d3351d4b8c83ef616075a2ef",
+        "function_AST_sha256": "c161484855f542009ef75d36ac979785d8ad3b83c0788a17b4318aceeabc6d2e"
+      }
+    ],
+    "P2": [
+      {
+        "name": "submission_evidence.verify_submission_coverage",
+        "file": "src/fl_forensics/submission_evidence.py",
+        "line": 364,
+        "file_sha256": "926e503040713f37533bd31cc351c65a3d4bc2357a3fa4f5099311015fb06eb5",
+        "function_AST_sha256": "249e41c5ea3de4ca4b69b483d4600181d9b617680860559f6c7848139abf6dc6"
+      },
+      {
+        "name": "round_derivation._binding_core",
+        "file": "src/fl_forensics/round_derivation.py",
+        "line": 91,
+        "file_sha256": "4e4dc4c883a9d8e478dd79b1040c6fa18ad2214aa80eebbdcee789e9889981fd",
+        "function_AST_sha256": "1bc2d17421fc41b7e3a0231483e93ed97fe4dde6e6f3c3e469e74d72b9746eeb"
+      }
+    ],
+    "P2b": [
+      {
+        "name": "ingestion_coverage.verify_ingestion_coverage",
+        "file": "src/fl_forensics/ingestion_coverage.py",
+        "line": 452,
+        "file_sha256": "b0f76071b7045dec94949ae15b0d9d76c7646317703b8e765edb01e0b97bdd80",
+        "function_AST_sha256": "b723c1d4ef14c9df6acc8665e5f72e216252f65a24279622ec948921caab600a"
+      }
+    ],
+    "P3-P4": [
+      {
+        "name": "in_round_admission._runtime_decision_core",
+        "file": "src/fl_forensics/in_round_admission.py",
+        "line": 620,
+        "file_sha256": "793b2d5febc155274fa2736b1ff3388fdf6bcb66d3351d4b8c83ef616075a2ef",
+        "function_AST_sha256": "48aa65b101ad03ad0b121f100041e859a0007062a591544e9fa70a10bf3d24ee"
+      },
+      {
+        "name": "in_round_admission._aggregate_inputs",
+        "file": "src/fl_forensics/in_round_admission.py",
+        "line": 785,
+        "file_sha256": "793b2d5febc155274fa2736b1ff3388fdf6bcb66d3351d4b8c83ef616075a2ef",
+        "function_AST_sha256": "8798f1d73ab3129e1904425f12dac8cd090169e23ace777de7899c9e3e3e39fa"
+      },
+      {
+        "name": "composite_admission.decide_admission_policies",
+        "file": "src/fl_forensics/composite_admission.py",
+        "line": 301,
+        "file_sha256": "31229e5468f5975fa12974933577f585bb4e0fd6b35fb6286796f6f518d49f50",
+        "function_AST_sha256": "65da6bcfa71df16704e4dde231ee0b117cdfa807f6760b52ca608ee74330da20"
+      }
+    ],
+    "Delta-J": [
+      {
+        "name": "counterfactual_round._proposal_metrics",
+        "file": "src/fl_forensics/counterfactual_round.py",
+        "line": 127,
+        "file_sha256": "280bb0450d72a494541238e3c13ccb857e597e9c8c25ada46872e04b6391856b",
+        "function_AST_sha256": "84b094684ffe898259fd67d0f5cb66a19326a702ff0ceb1f18f94afddd5aae19"
+      },
+      {
+        "name": "counterfactual_round.verify_counterfactual_round",
+        "file": "src/fl_forensics/counterfactual_round.py",
+        "line": 664,
+        "file_sha256": "280bb0450d72a494541238e3c13ccb857e597e9c8c25ada46872e04b6391856b",
+        "function_AST_sha256": "4c6ced40a0cc5de55a63448c6e8ee03f61178a124c8339e90d76f9b3cf72e4dd"
+      }
+    ],
+    "P5": [
+      {
+        "name": "review_ledger.verify_review_ledger",
+        "file": "src/fl_forensics/review_ledger.py",
+        "line": 518,
+        "file_sha256": "25e34c04a615799c6b02543ee958e3eb4a318c121e6b6dd96404b180a8b3a901",
+        "function_AST_sha256": "8f27fdc1e8b69a1a70b44d473c120e420a85852287f319bae2b04f38ae6fdeb9"
+      }
+    ],
+    "P6": [
+      {
+        "name": "campaign_derivation.reconstruct_campaign_graph",
+        "file": "src/fl_forensics/campaign_derivation.py",
+        "line": 108,
+        "file_sha256": "51fee07c8dad4a4b2383764c84629d49a31beb75fd10a878a87304cea77120d9",
+        "function_AST_sha256": "c396bcff69592f18c6a41b01b6fdcd1cab5e4265289573eb4e09bbb81aef4395"
+      },
+      {
+        "name": "campaign_derivation.structural_blast_radius",
+        "file": "src/fl_forensics/campaign_derivation.py",
+        "line": 635,
+        "file_sha256": "51fee07c8dad4a4b2383764c84629d49a31beb75fd10a878a87304cea77120d9",
+        "function_AST_sha256": "cd5a87f5069ba2335b9f75dfab7615578bced4624dbe02b2f4425cb0826359e4"
+      },
+      {
+        "name": "campaign_derivation.structural_blast_radius_set",
+        "file": "src/fl_forensics/campaign_derivation.py",
+        "line": 715,
+        "file_sha256": "51fee07c8dad4a4b2383764c84629d49a31beb75fd10a878a87304cea77120d9",
+        "function_AST_sha256": "88da6a23854b5fbec78db9010feb187e279db56ded46e306a76e23aa561f24cf"
+      }
+    ],
+    "CF": [
+      {
+        "name": "retraining_replay.verify_retraining_replay",
+        "file": "src/fl_forensics/retraining_replay.py",
+        "line": 351,
+        "file_sha256": "ef17f2d68acdef0e3022f8d01b4b31255ad9967d3f0642c0b3ef80bf43e412d9",
+        "function_AST_sha256": "32681ee4746e8205d2bb6f0cedd4a976f3393763b5c12d582f9104b0da18ffeb"
+      },
+      {
+        "name": "investigation_verifier.verify_investigation",
+        "file": "src/fl_forensics/investigation_verifier.py",
+        "line": 19,
+        "file_sha256": "d8342779c1b05585659f2d8dd9a7ddb95e8adf5289f479ad06d1a41af0c70833",
+        "function_AST_sha256": "758c5e4e510a32131ed96a853078b2b3d3fa9dcd50b661dc2e0b6e3acd052130"
+      }
+    ],
+    "groups": [
+      {
+        "name": "group_calibration_v2.detect_conditioned_groups",
+        "file": "src/fl_forensics/group_calibration_v2.py",
+        "line": 112,
+        "file_sha256": "e442d9fc7cdde02169b8c4322d2340fbeb92f5769ac988fda129545c43d66e3b",
+        "function_AST_sha256": "506154cc90062f664be0068c272c42c5a2845f4df12cb922d0dd94ca14c21760"
+      }
+    ],
+    "containment": [
+      {
+        "name": "bounded_aggregation.aggregate_bounded",
+        "file": "src/fl_forensics/bounded_aggregation.py",
+        "line": 36,
+        "file_sha256": "60385e4d544d7d842b0f4f2739c763a9bde899e5b23e374c4a705727d23f047a",
+        "function_AST_sha256": "a15e14784b14696386251cfa11e43624fd2cbad5f724796ea70eaa9d5de8784a"
+      },
+      {
+        "name": "bounded_aggregation.verify_bounded",
+        "file": "src/fl_forensics/bounded_aggregation.py",
+        "line": 112,
+        "file_sha256": "60385e4d544d7d842b0f4f2739c763a9bde899e5b23e374c4a705727d23f047a",
+        "function_AST_sha256": "495eeaf05300f6df389ac088de810259e24f1070f6d926dba05158ff1219b742"
+      },
+      {
+        "name": "bounded_aggregation.removal_norm_bound",
+        "file": "src/fl_forensics/bounded_aggregation.py",
+        "line": 138,
+        "file_sha256": "60385e4d544d7d842b0f4f2739c763a9bde899e5b23e374c4a705727d23f047a",
+        "function_AST_sha256": "6a9882f082c80f80f47bf1d9a84b0fbc72662d2edca85476a952a1ae392baca4"
+      },
+      {
+        "name": "live_bounded_aggregation.backend",
+        "file": "src/fl_forensics/live_bounded_aggregation.py",
+        "line": 49,
+        "file_sha256": "d380a0615d37f01cece88ac730d2acca23caa2fe360283e990f6ec65c5188ef5",
+        "function_AST_sha256": "5b517561fbcb398024592b9533f3f8d82e42e11b12c7bd0d4f0ba0592f7a968d"
+      },
+      {
+        "name": "live_bounded_aggregation.materialize",
+        "file": "src/fl_forensics/live_bounded_aggregation.py",
+        "line": 85,
+        "file_sha256": "d380a0615d37f01cece88ac730d2acca23caa2fe360283e990f6ec65c5188ef5",
+        "function_AST_sha256": "2294e5bff917399de7224d0742cb3e7e11f3e8526c5a4df43327d3f6a90407ce"
+      }
+    ]
+  },
+  "previous_complete_suite": {
+    "path": "/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/bounded-influence-20261104/final-full-tests.xml",
+    "sha256": "0f986ecf2cd1ee2249698865b29488614ee0071bee1678a048bdadd7cec2a275",
+    "tests": 678,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_package_edits": false,
+  "new_test_run": false
+}

@@ -1,0 +1,39 @@
+{
+  "status": "verified",
+  "role_counts": {
+    "train": {
+      "native_units": 67959,
+      "benign": 58906,
+      "attack_families": {
+        "scanning": 1364,
+        "dos": 1560,
+        "injection": 498,
+        "ddos": 3105,
+        "password": 1689,
+        "xss": 837
+      }
+    },
+    "validation": {
+      "native_units": 7707,
+      "benign": 6485,
+      "attack_families": {
+        "ransomware": 256,
+        "backdoor": 966
+      }
+    },
+    "test": {
+      "native_units": 4093,
+      "benign": 3336,
+      "attack_families": {
+        "backdoor": 627,
+        "mitm": 130
+      }
+    }
+  },
+  "benign_reference_units": 10000,
+  "attacked_reference_units": 0,
+  "native_unit_id_roles_disjoint": true,
+  "mitm_training_and_validation_units": 0,
+  "numeric_predictor_columns": 25,
+  "caveat": "The test remains previously examined and source addresses overlap across time; role isolation is not fresh blindness or host independence."
+}

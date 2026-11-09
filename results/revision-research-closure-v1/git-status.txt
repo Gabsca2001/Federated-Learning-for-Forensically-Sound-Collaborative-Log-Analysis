@@ -1,0 +1,154 @@
+ M docs/IMPLEMENTATION_PLAN.md
+ M docs/M6_ADAPTIVE_ATTACK.md
+ M docs/MILESTONE_5_SECURE_MULTIROUND.md
+ M docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md
+ M docs/STATUS.md
+ M src/fl_forensics/cli.py
+ M src/fl_forensics/composite_admission_models.py
+ M src/fl_forensics/in_round_admission.py
+ M src/fl_forensics/in_round_admission_models.py
+ M src/fl_forensics/lineage.py
+ M src/fl_forensics/prediction_bundle.py
+ M src/fl_forensics/real_attestation_failure.py
+ M src/fl_forensics/secure_campaign.py
+ M src/fl_forensics/secure_round.py
+ M tests/test_prediction_bundle.py
+?? AGENTS.md
+?? Dockerfile.revision-dba
+?? Dockerfile.revision-live
+?? Dockerfile.revision-live-bounded
+?? Dockerfile.revision-live-envelope
+?? Dockerfile.revision-live-envelope-v2
+?? Dockerfile.revision-live-robust
+?? configs/revision-bounded-live-trust.yaml
+?? configs/revision-dba-live-federation.yaml
+?? configs/revision-dba-live-plan.json
+?? configs/revision-dba-live-trust.yaml
+?? configs/revision-envelope-live-trust-v2.yaml
+?? configs/revision-envelope-live-trust.yaml
+?? configs/revision-live-federation.yaml
+?? configs/revision-live-trust.yaml
+?? configs/revision-robust-live-trust.yaml
+?? docs/ATTESTED_DBA_REPLAY.md
+?? docs/ATTESTED_LIVE_CHAIN.md
+?? docs/BOUNDED_INFLUENCE_THEOREMS.md
+?? docs/BOUNDED_INFLUENCE_VALIDATION.md
+?? docs/COUNTERFACTUAL_REPLAY.md
+?? docs/FORMAL_MODEL_REVIEW.md
+?? docs/FORMAL_MODEL_THEOREMS.md
+?? docs/FORMAL_PROFILE_CORRESPONDENCE.md
+?? docs/INDEPENDENT_CONTAINMENT_VALIDATION.md
+?? docs/INGESTION_COVERAGE.md
+?? docs/LIVE_ENVELOPE_VALIDATION.md
+?? docs/MULTIROUND_DERIVATION.md
+?? docs/PERSISTENT_ENVELOPE_POLICY.md
+?? docs/ROLLING_ENVELOPE_VALIDATION.md
+?? docs/ROUND_DERIVATION.md
+?? docs/SEMANTIC_REVIEWS.md
+?? docs/SUBMISSION_EVIDENCE.md
+?? docs/SUPERVISOR_REQUIREMENTS_AUDIT.md
+?? docs/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md
+?? results/revision-adaptive-live-validation-v1/
+?? results/revision-baseline-validation-v1/
+?? results/revision-bounded-influence-validation-v1/
+?? results/revision-clean-reconstruction-and-groups-v1/
+?? results/revision-current-evidence-policy-v1/
+?? results/revision-effective-influence-v1/
+?? results/revision-final-formal-correspondence-v2/
+?? results/revision-independent-containment-v1/
+?? results/revision-individual-envelope-v1/
+?? results/revision-research-closure-v1/
+?? results/revision-retrospective-groups-validation-v1/
+?? results/revision-rolling-envelope-validation-v1/
+?? results/revision-sequential-round-policy-v1/
+?? results/revision-state-conditioned-audit-v1/
+?? scripts/revision_attested_chain.py
+?? scripts/revision_attested_dba.py
+?? scripts/revision_attested_dba_analysis.py
+?? scripts/revision_containment_common.py
+?? scripts/revision_dba_experiment.py
+?? scripts/revision_dba_history_replay.py
+?? scripts/revision_federated_generalization.py
+?? scripts/revision_generalization.py
+?? scripts/revision_group_analysis.py
+?? scripts/revision_group_completion.py
+?? scripts/revision_group_interventions.py
+?? scripts/revision_group_observables.py
+?? scripts/revision_live_bounded.py
+?? scripts/revision_live_bounded_v2.py
+?? scripts/revision_live_envelope.py
+?? scripts/revision_live_envelope_v2.py
+?? scripts/revision_live_robust_bounded.py
+?? scripts/revision_native_gradient_study.py
+?? scripts/revision_policy_data.py
+?? scripts/revision_robust_containment_study.py
+?? scripts/revision_shared_gradient_baselines.py
+?? scripts/revision_study_data.py
+?? scripts/revision_ton_iot_preflight.py
+?? src/fl_forensics/bounded_aggregation.py
+?? src/fl_forensics/campaign_derivation.py
+?? src/fl_forensics/campaign_derivation_cli.py
+?? src/fl_forensics/campaign_derivation_models.py
+?? src/fl_forensics/client_envelope_policy.py
+?? src/fl_forensics/counterfactual_round.py
+?? src/fl_forensics/current_evidence_policy.py
+?? src/fl_forensics/dba_training.py
+?? src/fl_forensics/distributed_backdoor.py
+?? src/fl_forensics/group_calibration_v2.py
+?? src/fl_forensics/group_calibration_v3.py
+?? src/fl_forensics/influence_diagnostics.py
+?? src/fl_forensics/ingestion_coverage.py
+?? src/fl_forensics/ingestion_coverage_cli.py
+?? src/fl_forensics/investigation_verifier.py
+?? src/fl_forensics/literature_baselines.py
+?? src/fl_forensics/live_bounded_aggregation.py
+?? src/fl_forensics/live_envelope.py
+?? src/fl_forensics/partition_training_binding.py
+?? src/fl_forensics/persistent_envelope_policy.py
+?? src/fl_forensics/remediation_validation.py
+?? src/fl_forensics/residual_geometry.py
+?? src/fl_forensics/retraining_replay.py
+?? src/fl_forensics/retrospective_groups.py
+?? src/fl_forensics/review_ledger.py
+?? src/fl_forensics/review_ledger_cli.py
+?? src/fl_forensics/review_ledger_models.py
+?? src/fl_forensics/robust_bounded_aggregation.py
+?? src/fl_forensics/round_derivation.py
+?? src/fl_forensics/round_derivation_models.py
+?? src/fl_forensics/sequential_decision.py
+?? src/fl_forensics/state_conditioned_audit.py
+?? src/fl_forensics/state_conditioned_fusion.py
+?? src/fl_forensics/submission_evidence.py
+?? src/fl_forensics/submission_evidence_models.py
+?? src/fl_forensics/submission_evidence_workspace.py
+?? tests/test_bounded_aggregation.py
+?? tests/test_campaign_derivation.py
+?? tests/test_client_envelope_policy.py
+?? tests/test_counterfactual_round.py
+?? tests/test_current_evidence_policy.py
+?? tests/test_dba_training.py
+?? tests/test_distributed_backdoor.py
+?? tests/test_group_calibration_v2.py
+?? tests/test_influence_diagnostics.py
+?? tests/test_ingestion_coverage.py
+?? tests/test_investigation_verifier.py
+?? tests/test_literature_baselines.py
+?? tests/test_live_bounded_aggregation.py
+?? tests/test_live_envelope.py
+?? tests/test_live_robust.py
+?? tests/test_partition_training_binding.py
+?? tests/test_persistent_envelope_policy.py
+?? tests/test_remediation_validation.py
+?? tests/test_research_extensions.py
+?? tests/test_residual_geometry.py
+?? tests/test_retraining_replay.py
+?? tests/test_retrospective_groups.py
+?? tests/test_review_ledger.py
+?? tests/test_review_lineage.py
+?? tests/test_revision_dba_runner.py
+?? tests/test_round_derivation.py
+?? tests/test_sequential_decision.py
+?? tests/test_state_conditioned_audit.py
+?? tests/test_submission_evidence.py
+?? tests/test_submission_evidence_workspace.py
+?? tests/test_ton_iot_preflight.py

@@ -1,0 +1,653 @@
+--- before/bibliography.bib
++++ after/bibliography.bib
+@@ -631,3 +631,13 @@
+   url = {https://arxiv.org/html/2504.04367v1},
+   note = {Version 1; algorithmic target of the reported adaptation}
+ }
++
++@article{pillutla2022robust,
++  title={Robust Aggregation for Federated Learning},
++  author={Pillutla, Krishna and Kakade, Sham M. and Harchaoui, Zaid},
++  journal={IEEE Transactions on Signal Processing},
++  year={2022},
++  doi={10.1109/TSP.2022.3153135},
++  eprint={1912.13445},
++  archivePrefix={arXiv}
++}
+--- before/content/chapters/chap2.tex
++++ after/content/chapters/chap2.tex
+@@ -112,8 +112,10 @@
+ products, whereas the separately printed Eq.~(2) is not that normalized
+ coefficient rule. Increasing a norm does not automatically decrease its
+ positive multiplier. Section~\ref{subsec:revision-fedgradtrace} therefore
+-labels both readings, uses actual gradients in a separate native experiment,
+-and reports the interrupted formulation without inventing later rounds
++labels both readings. The reserved follow-up in
++Section~\ref{subsec:revision-native-gradient-closure} uses actual honest
++gradients, explicitly forged malicious gradients and reproduced terminal
++failures without inventing later rounds
+ \parencite{gu2026fedxlog}.
+ 
+ FedXLog's hash-template alignment serves explanation exchange, whereas this
+--- before/content/chapters/chap4.tex
++++ after/content/chapters/chap4.tex
+@@ -2479,7 +2479,7 @@
+ connects these decisions to the checkpoint. This section specifies the actual
+ policy rules and the differences between the evaluated profiles.
+ 
+-\subsubsection{Original trust-only and composite policies}
++\subsubsection{The four original admission policies}
+ 
+ The original gated-composite live strategy applies a mandatory trust gate and
+ optional statistical treatment before example-weighted FedAvg. Let \(G_{k,t}\)
+@@ -2528,6 +2528,88 @@
+ contributions. Failure to meet the applicable minimum prevents publication
+ of a valid next checkpoint.
+ 
++\paragraph{Meaning of the four original policy names.}
++For a candidate whose structural bindings can be evaluated, let $G_{k,t}$ be
++the mandatory trust gate and let $\tau_s$ be the statistical exclusion
++threshold. The original comparison exposes four action factors:
++\begin{align}
++ \widetilde c^{\mathrm{TPM}}_{k,t}&=G_{k,t},\\
++ \widetilde c^{\mathrm{stat}}_{k,t}&=
++     \mathbf1\{R^{\mathrm{stat}}_{k,t}\leq\tau_s\},\\
++ \widetilde c^{\mathrm{seq}}_{k,t}&=
++     G_{k,t}\mathbf1\{R^{\mathrm{stat}}_{k,t}\leq\tau_s\},\\
++ \widetilde c^{\mathrm{comp}}_{k,t}&=a_{k,t},
++ \label{eq:original-policy-map}
++\end{align}
++where $a_{k,t}$ is the gated-composite factor in
++Equation~\eqref{eq4policyfactor}. Positive factors become masses by multiplication
++with the authenticated example count; normalization and quorum are separate
++operations.
++
++\begin{table}[htbp]
++\centering\small
++\caption[Original admission-policy names]{The original four policy names and
++their decision inputs. The statistics-only row is a diagnostic ablation.}
++\label{tab:original-policy-names}
++\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{.21\linewidth}XX}
++\toprule
++Code/report name & Decision rule & Meaning of a positive factor \\
++\midrule
++\texttt{tpm\_only} & Mandatory M4/M5 trust gate & No statistical veto; eligible mass retained \\
++\texttt{statistics\_only} & Statistical threshold alone & Statistical acceptance in the ablation, including its deliberate trust blind spot \\
++\texttt{sequential} & Trust gate, then statistical threshold & Both prerequisites pass in this round; no downweight band \\
++\texttt{gated\_composite} & Hard trust veto, then combined risk & Accept at full mass or retain half mass under the reference downweight rule \\
++\bottomrule
++\end{tabularx}
++\end{table}
++
++``TPM-only'' identifies which signals select the action; it does not mean that
++only a Quote signature is checked. Its trust signal includes the named M4/M5
++checks and accepts the declared passed or passed-with-warning states. It does
++not establish that the client's data or objective is benign. Statistics-only
++is retained to expose the complementary blind spot in the controlled
++comparison; it is not a standalone authorization to bypass the secure
++pipeline's structural checks or publish a trust-invalid checkpoint.
++
++The original \texttt{sequential} policy applies two gates \emph{within one round}.
++It does not accumulate evidence over time. The later confirmed-current and
++envelope policies have explicit histories and reset rules; their temporal
++meaning must not be inferred from this earlier name.
++
++\paragraph{How the gated score changes the mass.}
++For the displayed reference thresholds and a passed trust result,
++$R^{\mathrm{stat}}=0.70$ gives $R^{\mathrm{comp}}=0.35$: a nominal count of 100
++therefore becomes mass 50. With passed-with-warning trust risk 0.25, the same
++statistical risk gives $R^{\mathrm{comp}}=0.475$ and quarantine. A failed
++mandatory gate gives zero mass regardless of either score. The normalized
++coefficient also depends on all other retained masses, as illustrated in
++Section~\ref{subsec:formal-admission}. These are examples of the declared
++profile, not universal risk thresholds.
++
++\paragraph{Which experiment compares which policies.}
++The standard secure M5 campaign and the M6 policy comparisons have distinct
++contracts. In particular, the default M5 requirement for all fifteen accepted
++contributions must not be assigned to every TPM-only experiment. The relevant
++round contract supplies the minimum contributor count.
++Table~\ref{tab:policy-experiment-map} locates the comparisons in Chapter~5.
++
++\begin{table}[htbp]
++\centering\small
++\caption[Policy-to-experiment map]{Policy names and comparison designs in the thesis.}
++\label{tab:policy-experiment-map}
++\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{.25\linewidth}XX}
++\toprule
++Study & Policy comparison & What is held fixed \\
++\midrule
++Disagreement, Section~\ref{subsec:ch5-disagreement} & Four original decisions; gated composite drives the reported history & Shadow decisions share each observed input, not alternative future training \\
++Repeated live, Section~\ref{subsec:ch5-active-policies} & Gated composite versus sequential & Paired seeds; each policy generates its own future checkpoints \\
++Untargeted adaptive, Section~\ref{subsec:ch5-untargeted-adaptive} & Gated composite versus TPM-only & Matched attack budget and seed; active trajectories remain distinct \\
++DBA, Section~\ref{subsec:revision-dba-baselines} & Original composite and literature adaptations & Same incoming FedAvg state and updates per conditional round \\
++Envelope/containment, Section~\ref{sec:revision-containment} & Later named experimental profiles & Their own frozen calibration, support checks and numerical transformations \\
++\bottomrule
++\end{tabularx}
++\end{table}
++
+ Separate frozen policy comparisons retain TPM-only, statistics-only, and
+ joint admission controls under their declared contracts. Controlled
+ failed-trust cells in retrospective experiments must not be presented as
+@@ -2622,6 +2704,16 @@
+ Quarantine assigns zero mass. These three operations cannot be read as the
+ same action.
+ 
++The separately named \path{live-client-envelope-robust-bounded-v1} profile
++additionally applies the finite reweighting in
++Section~\ref{subsec:formal-robust-reweighting}. It preserves the admission
++decision and tensor caps but replaces mass-based aggregation coefficients
++$\alpha_t$ with recorded final coefficients $\beta_t$. A small $\beta_t(k)$
++does not change the client's recorded action to quarantine. The runtime and
++its derived report reconstruct the same operator; the original client
++signature continues to authenticate its original update. This optional
++profile has its own measured-source identity and is not the default policy.
++
+ The resulting path is: validate the submission and mandatory gate; compute
+ the named profile's supported signals and action; assign effective masses;
+ check positive mass and quorum; apply any declared numerical transformation;
+@@ -2642,11 +2734,12 @@
+ Original composite & Gates, fixed risk thresholds, accept/downweight/quarantine; quorum ten & FedAvg with masses $n_k a_{k,t}$ \\
+ Enforced envelope & Gates, supported context, confirmed two-view evidence; live quorum ten & FedAvg of retained models; no downweight factor \\
+ Bounded envelope & Same admission logic and support checks & Retained tensor deltas clipped to fixed $C_\ell$, then weighted and exported \\
++Robust bounded envelope & Same admission logic, support checks and quorum & Clipped deltas combined by finite robust coefficients $\beta_t$; both coefficient spaces retained \\
+ \bottomrule
+ \end{tabularx}
+ \end{table}
+ 
+-All four contracts answer whether and how a contribution enters a particular
++These contracts answer whether and how a contribution enters a particular
+ round. A retrospective group selector instead proposes a set for investigation
+ and controlled intervention; it is not another automatic admission rule.
+ 
+@@ -3065,7 +3158,7 @@
+ M7 investigative chain & Prediction, explanation, mapping, and report reconstruction & Technical traceability and consistency, not causal or forensic truth\\
+ M8 preservation & Inventory, Merkle tree, timestamp, recovery, and accounting & Only the declared preserved chain and separately retained dependencies\\
+ Derivation and replay & Receipt/record coverage, review history, typed graphs and corrected-base retraining & Named input sets and source releases; reachability is not damage\\
+-DBA and baselines & Distributed/full triggers, shared-update adaptations and native-gradient comparison & Separate budgets, gradient semantics and incomplete branches\\
++DBA and baselines & Distributed/full triggers, common-input adaptations and native-gradient comparison & Separate budgets, explicit forgery and reproduced terminal failures\\
+ Retrospective groups & Clean calibration, candidate selection and individual/joint removals & False members and missed attackers retained; no proof of collusion\\
+ Bounded contributions & Authenticated transformation, fixed-input certificates and multi-trigger validation & Norm bounds do not imply ASR resistance; support failures stay explicit\\
+ Cost benchmarks & Offline verification and separate containerized M4/M5 trials & WSL host/runtime context; no physical-device or wide-area API benchmark\\
+--- before/content/chapters/chap5.tex
++++ after/content/chapters/chap5.tex
+@@ -1768,6 +1768,7 @@
+ \input{content/chapters/revision_authenticated_validation}
+ \input{content/chapters/revision_dba_groups}
+ \input{content/chapters/revision_containment_validation}
++\input{content/chapters/revision_research_closure}
+ 
+ \section{What the Attack Experiments Establish}
+ \label{subsec:ch5-attack-findings}
+@@ -2140,16 +2141,19 @@
+ reported client-local comparison, but transfer to Data22 exposes weak attack
+ recall. Exploratory preprocessing alternatives trade recall against false
+ positives and variability. Shared-update baseline comparisons preserve their
+-algorithm adaptations and information budgets; the unstable native-gradient
+-FedGradTrace branch remains explicitly incomplete.
++algorithm adaptations and information budgets. The native-gradient follow-up
++closes all planned cases as either complete histories or reproduced terminal
++numerical failures; it does not reproduce the complete FedXLog system.
+ 
+ Retrospective group selection has misses and false members. Its controlled
+ removals support conclusions about behavior compatible with coordination,
+ not proof of collusion. The bounded-contribution profile likewise supplies a
+ conditional numerical bound without eliminating backdoors: the stronger
+ multi-trigger validation exposes successful attacks despite acceptable clean
+-utility. The earlier zero-ASR pilot does not justify automatic semantic exclusion
+-or deployment claims.
++utility. The reserved robust-reweighting follow-up reduces two effective control
++peaks, but retains a 75.72\% peak in one case and does not improve semantic
++identification. The earlier zero-ASR pilot does not justify automatic semantic
++exclusion or deployment claims.
+ 
+ Investigative cases and offline recovery show how an analyst can inspect the
+ source and model dependencies of both correct and incorrect predictions.
+@@ -2170,9 +2174,9 @@
+ The present containment profile remains explicit and experimental. Its norm
+ bound should not be relabelled as a calibrated automatic-maliciousness rule.
+ 
+-Retrospective group analysis requires additional independently reserved
+-identities and distributions, and a stronger account of multiple candidate
+-searches. Its current clean calibration and benign controls do not supply a
++The new reserved group histories expose additional false candidates and
++missed attackers. Further independent distributions and a stronger account
++of multiple candidate searches remain necessary. Its current clean calibration and benign controls do not supply a
+ population-wide significance guarantee. Prospective selection, intervention
+ and reporting must remain separate from ground-truth attacker identities.
+ 
+--- before/content/chapters/formal_derivation.tex
++++ after/content/chapters/formal_derivation.tex
+@@ -138,7 +138,8 @@
+ replace this fixed factor with a continuous multiplier such as $1-r$.
+ 
+ Let $C_t=\{s:m_t(s)>0\}$ and let $q_t$ be the minimum contributor count.
+-If $|C_t|\ge q_t$ and $M_t=\sum_s m_t(s)>0$, the mathematical coefficient is
++For the untransformed FedAvg profile, if $|C_t|\ge q_t$ and
++$M_t=\sum_s m_t(s)>0$, the mathematical coefficient and checkpoint are
+ \begin{equation}
+  \alpha_t(s)=\frac{m_t(s)}{M_t},\qquad
+  \theta_t=\sum_{s\in C_t}\alpha_t(s)U_{t,s}.
+@@ -288,7 +289,7 @@
+ verifies delivery or a deadline.
+ 
+ \paragraph{P3: Sound contribution accounting.}
+-For a round with sufficient quorum, verified masses and coefficients satisfy
++For an untransformed round with sufficient quorum, verified masses and coefficients satisfy
+ Equation~\eqref{eq:formal-alpha}; only declared positive-mass inputs enter its
+ aggregate, and the numerical verifier reproduces the operational aggregation.
+ \emph{Proof.} For every disposition, the verifier checks the example count,
+--- before/content/chapters/formal_revision_closure.tex
++++ after/content/chapters/formal_revision_closure.tex
+@@ -150,7 +150,60 @@
+ retraining. The legacy raw-update counterfactual adapter explicitly rejects
+ this profile; its clipped-delta removal operation is separate.
+ 
+-\begin{table}[tbp]
++\subsection{Convex Robust Reweighting as a Separate Experimental Profile}
++\label{subsec:formal-robust-reweighting}
++
++The subsequent robustness study changes aggregation after admission, not the
++meaning of a semantic review. It is an explicitly named geometric-median
++adaptation inspired by robust federated aggregation
++\parencite{pillutla2022robust}. It neither reproduces that paper's complete
++experimental system nor implements secure aggregation. The coordinator still
++observes the local parameter vectors.
++
++Let $v_s$ concatenate the already clipped tensor deltas and let $\alpha_s$
++be the positive normalized admission masses. Starting from their weighted
++mean $\mu^{(0)}$, the finite operator computes
++\begin{align}
++ \varepsilon&=\max\{10^{-8},10^{-6}\operatorname{median}_s\lVert v_s\rVert_2\},\\
++ b_s^{(r)}&=\frac{\alpha_s}{\sqrt{\lVert v_s-\mu^{(r)}\rVert_2^2+\varepsilon^2}},
++ \qquad \beta_s^{(r)}=\frac{b_s^{(r)}}{\sum_jb_j^{(r)}},\\
++ \mu^{(r+1)}&=\sum_s\beta_s^{(r)}v_s.
++ \label{eq:robust-bounded-iteration}
++\end{align}
++The implementation stops after at most 50 iterations, or when the iterate
++change is at most $10^{-8}\max\{1,\lVert\mu^{(r+1)}\rVert_2\}$. The last
++iterate defines the output even if the convergence flag is false. Its exact
++iteration count, final coefficients and output are retained for replay;
++global optimization convergence is not asserted by that flag.
++
++The final coefficients $\beta_s$ are distinct from the admission coefficients
++$\alpha_s$. They are positive for retained representable inputs, sum to one
++in the mathematical normalization and express the final robust combination.
++The corresponding rational normalization and actual arithmetic are recorded.
++The checkpoint is $B_t+\sum_s\beta_sv_s$, with the declared dtype export.
++Original signed submissions remain unchanged, and the derived report records
++both the initial mass-based and final robust derivations.
++
++For each tensor $\ell$, convexity preserves the cap:
++\begin{equation}
++ \left\lVert\sum_s\beta_sv_{s,\ell}\right\rVert_2
++ \leq\sum_s\beta_s\lVert v_{s,\ell}\rVert_2\leq C_\ell.
++ \label{eq:robust-bounded-cap}
++\end{equation}
++If these final coefficients and clipped inputs are frozen, removing a client
++has the analogous bound $2\beta_sC_\ell$, subject to survivor quorum and export
++rounding. Recomputing robust weights also changes distances, smoothing and
++coefficients; that intervention is verified by replay and does not inherit
++the frozen-coefficient bound. Original $\Delta_K$ diagnostics retain their
++declared coefficient space rather than silently replacing $\alpha$ with
++$\beta$.
++
++This profile can reduce numerical leverage without identifying its source as
++malicious. A low robust coefficient is not a new quarantine verdict, and a
++convex parameter bound is still not a bound on ASR or later training.
++
++\FloatBarrier
++\begin{table}[htbp]
+ \centering\small
+ \caption[Formal obligations and verification scope]{Condensed correspondence of the revised obligations.
+ All proofs retain their stated trust, source-release and availability hypotheses.}
+--- before/content/chapters/research_final_verification.tex
++++ after/content/chapters/research_final_verification.tex
+@@ -0,0 +1,70 @@
++The robust replay checks all 24 cases, 1,440 candidate evaluations and 359
++selected aggregates, repeats 1,455 local training executions and verifies
++2,700 fixed-final-coefficient removal certificates. The single unsupported
++terminal context remains an explicit availability failure. Its absent
++checkpoint is not assigned a zero ASR.
++
++The optional robust operator is also integrated into a separately measured
++live profile. Fifteen software-TPM clients produce three five-round histories:
++unmodified robust training, attacked bounded-mean training and attacked robust
++training. Three attack rounds precede two unmodified continuations. The case
++has 225 distinct fresh Quote executions and 225 newly trained signed
++submissions. All fifteen checkpoints reconstruct from their retained originals;
++the ten robust rounds also bind their derived report into the graph. Their
++146 positive-coefficient frozen-weight removal certificates pass, and ten
++coefficient mutations are rejected. All emulators run on one host, so this
++does not establish physical-TPM protection.
++
++Both attacked runtime branches exclude four of nine currently poisoned
++submissions and no currently unmodified submission. Their full-trigger ASR
++is zero throughout, including the old bounded control. This short mechanism
++case therefore establishes no predictive mitigation advantage. Its fresh
++attestation evidence complements the longer offline robustness evaluation;
++it does not replace that evaluation or remove its residual attacks.
++
++Computational budgets retain unsuccessful attack work. The native-gradient
++creator computes 6,546 full gradients and separately performs 855 gradient
++repeats. Its 197 active attack contexts additionally train all fifteen
++poisoned endpoints, or 2,955 Adam executions, although only three endpoints
++per context are used in the forged exports. The native verifier repeats
++5,955 clean gradients and the 591 actually used poisoned endpoints. The new
++group interventions perform 1,725 future local training executions plus 690
++creator repeats. The robust reserved creator performs 7,200 local training
++executions plus 900 repeats. These counts are not interchangeable with
++server-side aggregation latency.
++
++
++\FloatBarrier
++\begin{table}[htbp]
++\centering\small
++\caption[Sequential cached-operation costs]{A single-thread sequential
++benchmark on verified fixed inputs. One warm-up precedes five timed calls per
++context. Values are milliseconds; methods retain distinct timed scopes.}
++\label{tab:research-costs}
++\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrrr}
++\toprule
++Timed operation & Contexts & Calls & Median & 95th percentile \\
++\midrule
++Bounded mean + derivation & 36 & 180 & 201.59 & 212.55 \\
++Robust bounded + derivation & 36 & 180 & 538.93 & 572.78 \\
++FLAME cached kernel & 16 & 80 & 6.26 & 7.74 \\
++Composite cached-mass sum & 16 & 80 & 2.45 & 2.96 \\
++WeiDetect cached kernel & 16 & 80 & 3.15 & 6.92 \\
++Gradient FedAvg recurrence & 16 & 80 & 3.17 & 3.79 \\
++Literal Eq.~(2) recurrence & 12 & 60 & 6.13 & 7.97 \\
++Literal Eq.~(3) recurrence & 16 & 80 & 6.09 & 7.55 \\
++Normalized recurrence & 16 & 80 & 3.38 & 4.54 \\
++\bottomrule
++\end{tabularx}
++\end{table}
++
++Bounded operations include generation of their numerical derivation records
++and in-memory checkpoint export. The literature kernels use cached vectors
++and auxiliary scores; the composite row uses already decided masses, not
++statistical scoring. Native rows include their history-based server
++recurrence and export. These scopes do not support a single overall defense
++speed ranking. Input loading, local training, attack search, indicator
++inference, detector fitting and TPM operations lie outside the timers.
++Equivalence checks also occur outside the timed interval. No other research
++campaign runs concurrently, although unrelated host activity is not excluded.
++This is measured cached-operation cost, not end-to-end federated latency.
+--- before/content/chapters/research_robust_table.tex
++++ after/content/chapters/research_robust_table.tex
+@@ -0,0 +1,21 @@
++\begin{table}[htbp]
++\centering\small
++\caption[Reserved robust-bounded evaluation]{New reserved assignments:
++bounded mean (B) and robust bounded (R).
++Peaks are full-trigger validation ASR; the robust endpoint is the worst
++full/component ASR. Clean loss is the largest paired macro-F1 difference in
++percentage points. A missing control tail is retained as a failure.}
++\label{tab:research-robust-reserved}
++\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrrrr}
++\toprule
++Case & Rounds B/R & B peak & R peak & R final & Clean loss \\
++\midrule
++IID / 51 & 15/15 & 0.00 & 0.00 & 0.00 & 0.81 \\
++IID / 52 & 15/15 & 0.00 & 0.00 & 0.00 & 0.02 \\
++IID / 53 & 15/15 & 0.00 & 0.00 & 0.00 & 0.66 \\
++NON-IID / 54 & 14/15 & 95.74 & 75.72 & 0.00 & 0.90 \\
++NON-IID / 55 & 15/15 & 0.00 & 0.00 & 0.00 & 0.79 \\
++NON-IID / 56 & 15/15 & 83.57 & 0.00 & 0.00 & 0.13 \\
++\bottomrule
++\end{tabularx}
++\end{table}
+--- before/content/chapters/research_shared_table.tex
++++ after/content/chapters/research_shared_table.tex
+@@ -0,0 +1,24 @@
++\begin{table}[tbp]
++\centering\scriptsize
++\caption[Conditional common-gradient comparison]{Common-input validation
++comparison. ASR columns give peak full/worst-trigger percentages across the
++retained conditional outputs. F1 columns give the minimum ordinary macro-F1
++percentage on clean-source and attacked-source contexts. TP/FP counts refer
++to excluded manipulated/unmodified exports, not an intent classifier.}
++\label{tab:research-shared-gradient}
++\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrrrr}
++\toprule
++Method & IID ASR & Non-IID ASR & Clean F1 & Attack F1 & TP/FP \\
++\midrule
++Gradient FedAvg & 100.00/100.00 & 14.64/14.64 & 94.82 & 90.03 & --/-- \\
++Literal Eq.~(2) & 100.00/100.00 & 99.33/99.78 & 38.91 & 10.29 & --/-- \\
++Literal Eq.~(3) & 100.00/100.00 & 99.27/99.27 & 94.82 & 10.29 & --/-- \\
++Normalized adaptation & 100.00/100.00 & 99.16/99.61 & 94.82 & 10.29 & --/-- \\
++FLAME adaptation & 100.00/100.00 & 14.64/14.64 & 94.82 & 90.09 & 168/557 \\
++WeiDetect adaptation & 100.00/100.00 & 14.64/14.64 & 94.82 & 88.06 & 101/259 \\
++Original composite & 100.00/100.00 & 14.64/14.64 & 94.82 & 90.85 & 162/1 \\
++\bottomrule
++\end{tabularx}
++\par\smallskip\raggedright\footnotesize
++TP denominator: 168; unmodified denominator: 1632. A dash means the rule supplies no client-selection metric. WeiDetect uses its declared degenerate-fit extension in 78/120 contexts.
++\end{table}
+--- before/content/chapters/revision_authenticated_validation.tex
++++ after/content/chapters/revision_authenticated_validation.tex
+@@ -48,7 +48,7 @@
+ 
+ Source identity is part of the experiment, not merely a build annotation.
+ The final correspondence review contains 633 passing tests at the corrected
+-114-file release. The later empirical live adapters and containment profile
++114-file release. The earlier empirical live adapters and containment campaign
+ have a 119-file release with 678 passing tests. The full-source fingerprint of
+ the latter is
+ \begin{quote}\small\ttfamily
+@@ -61,6 +61,14 @@
+ artifact hashes, actual training replay and manual conditional proofs provide
+ different evidence and are not interchangeable.
+ 
++The reserved follow-up in Section~\ref{sec:revision-research-closure} adds two
++modules, producing a separately frozen 121-file offline release with 683
++passing tests. The subsequent opt-in robust live integration retains 121
++modules, has a new source identity and passes 686 tests. Its runtime image
++and measured protocol bind that exact version. The current correspondence
++ledger refreshes eighteen property/verifier entries and retains the earlier
++proof and evidence identities; it does not relabel old campaigns as new runs.
++
+ The theorem-to-code correspondence separates receipt/intake verification,
+ full admission verification, graph reachability, ingestion coverage, review
+ history and experiment-specific numerical replay. The logical conditions of
+--- before/content/chapters/revision_dba_groups.tex
++++ after/content/chapters/revision_dba_groups.tex
+@@ -108,6 +108,10 @@
+ or ten-round result is invented. All 53 completed aggregate exports replay
+ exactly, with separately declared tolerance for floating diagnostics.
+ 
++The reserved follow-up in Section~\ref{subsec:revision-native-gradient-closure}
++completes a new explicitly selective attack protocol and reproduces terminal
++failures. It does not overwrite this earlier development history.
++
+ \subsection{Measured Computational Scope}
+ \label{subsec:revision-measured-cost}
+ 
+--- before/content/chapters/revision_research_closure.tex
++++ after/content/chapters/revision_research_closure.tex
+@@ -0,0 +1,184 @@
++\section{Reserved Follow-up: Gradients, Groups and Robust Reweighting}
++\label{sec:revision-research-closure}
++
++The preceding studies motivated three separate follow-ups. Each retains its
++own representation and source history: native-gradient aggregation, selection
++of retrospective investigation groups, and robust aggregation after admission.
++All new predictive rates in this section use the retained Data24 validation
++fold. The test results in earlier sections are not recomputed or pooled with
++them. New attacker assignments are reserved experiment cases on the same two
++data partitions, rather than independently collected datasets.
++
++\subsection{Closing the Native-gradient Comparison}
++\label{subsec:revision-native-gradient-closure}
++
++The earlier interrupted experiment in
++Section~\ref{subsec:revision-fedgradtrace} is retained as a development result.
++The follow-up specifies one class-weighted full-snapshot cross-entropy
++gradient per honest client at the current global base, learning rate 0.001
++and a history of at most three gradients. It compares gradient FedAvg, the
++literal displayed Eq.~(2), the literal displayed Eq.~(3), and a separately
++named normalized sample-count--trajectory-norm adaptation. The latter is an
++ablation, not an undocumented correction of the publication. This is a study
++of server-side aggregation readings, not a reproduction of the complete
++FedXLog transformer and explanation system.
++
++Data-poisoned gradients alone either fail to produce a selective backdoor or
++achieve high ASR through broad predictive collapse in development. The final
++attack therefore explicitly forges malicious gradient submissions. For an
++attacker, an endpoint trained by ten Adam epochs on component-poisoned data
++defines $g^{\mathrm{forge}}=(B-U^{\mathrm{poison}})/0.001$. The submitted
++vector interpolates between this vector and the true clean gradient. Honest
++clients continue to submit actual derivatives. Half of each attacker's rows
++receive its assigned component, using features 13, 17 and 24 with value 12
++and target class benign. Attack optimization has privileged validation access:
++ten declared interpolation factors are searched to maximize the worst full-
++or component-trigger ASR, subject to at most five percentage points of
++ordinary macro-F1 loss from the same-round clean gradient-FedAvg reference.
++An infeasible search records a zero-factor fallback; it is not a successful
++attack.
++
++The reserved study has six new attacker assignments across IID and non-IID
++partitions. Clean training is deterministic here, so each cohort/method has
++one clean history rather than three artificial seed replications. Of 32
++planned histories, 25 complete fifteen rounds and seven terminate with
++reproduced numerical failures, giving 390 valid round outputs. The literal
++Eq.~(2) attacked IID histories fail after one valid round; its other retained
++failures and one clean failure are reported with their valid prefixes. No
++later checkpoint is fabricated. All three IID gradient-FedAvg controls and
++the Eq.~(3) and normalized-adaptation attacked histories reach 100\% full-
++trigger ASR with retained ordinary utility. The non-IID gradient-FedAvg
++controls peak at zero, zero and approximately 15\%; they do not satisfy the
++declared 20-percentage-point effective-control condition and cannot establish
++a mitigation advantage for that partition.
++
++A second comparison removes the incoming-state difference between methods.
++It applies seven server rules to 120 common contexts: thirty clean and ninety
++attacked gradient-FedAvg states. FLAME, WeiDetect and the original gated
++composite receive the one-step parameter representation $B-0.001g$ derived
++from exactly those submitted vectors. All 840 conditional outputs exist.
++Their peaks and exclusion counts are given in
++Table~\ref{tab:research-shared-gradient}. These are current-round comparisons,
++not seven self-driven future trajectories or attacks optimized separately
++against every defender. In particular, literal Eq.~(2) can return a finite
++output on a stable FedAvg input while failing under its own recurrence.
++
++\input{content/chapters/research_shared_table}
++
++Excluding a manipulated current export does not repair the incoming poisoned
++base. FLAME excludes all 168 currently manipulated exports in this conditional
++comparison, and the composite excludes 162, yet both retain a 100\% peak on
++some inherited IID states. FLAME also excludes 557 of the 1,632 currently
++unmodified exports, compared with one for the composite. These counts do not
++predict the outcome of a fresh actively defended history. The native norm-
++weighted rules can also amplify a forged vector into broad utility collapse:
++their low attacked-context F1 must be read alongside high ASR, rather than
++interpreting every such output as a selective backdoor.
++
++The native norm-weighting rules are not malicious-client classifiers; their
++detection rate is undefined. Exclusion counts for the other rules refer to
++currently manipulated exports, not permanent adversarial ownership. A
++subsequent unmodified submission from a formerly attacking client belongs
++in the unmodified denominator. WeiDetect's initial-model-correct auxiliary
++subset uses confidence at least 0.90 and keeps twelve clients. Degenerate
++all-equal scores invoke the declared neutral-CDF/seeded-tie extension; those
++cases are not successful Weibull fits. The composite uses clean gradient
++references and a software admissibility assumption, not fresh TPM evidence.
++These information budgets remain different and explicit.
++
++\subsection{Reserved Group Selection and Interventions}
++\label{subsec:revision-reserved-groups}
++
++The additional selection rule V3 scores a triple by the mean of its two
++strongest pair edges, equivalent to the maximum-spanning-tree mean for three
++vertices. It can retain a triple when one edge is weak, but does not claim
++that the missing edge is strong. Pair and triple families have separate
++clean calibration maxima; triple candidates are ranked before pairs.
++Fitting and calibration use the earlier clean histories. Twelve new source
++histories, six clean and six distributed-component attacks, are selected
++from observables before their evaluation labels are read. This is a recorded
++data-flow separation, not hardware isolation from the experiment controller.
++
++On the six attacked histories, V2 selects 8 true members, 3 false members and
++misses 10 of the 18 attacker occurrences. V3 selects 9 true members and 6
++false members, missing 9. Both raise a candidate in one of the six new clean
++histories. V3's broader candidate pool also increases false members from
++16 to 48. The alternative is therefore not promoted as uniformly superior
++and does not authorize automatic client exclusion. A successful IID attack
++with 60.29\% source ASR receives an empty selection from both rules.
++
++Method-selected sets are evaluated through 106 direct outputs and 23
++continuation branches. Individual removals, joint removals, benign controls
++and an exact no-removal continuation are kept distinct. In one IID case,
++the three-member set contains two attackers and one benign client. Joint
++removal changes round-10 full-trigger ASR from 57.66\% to 0.50\%, compared
++with 41.62--61.75\% after individual removals and 73.75--75.94\% after
++same-size benign-control removals. Retraining rounds 11--15 from the corrected
++base reaches zero measured ASR. In another IID case, V2's two true members
++reduce ASR from 61.64\% to 2.30\%, with zero after continuation; V3 adds a
++false third member. Conversely, a non-IID source with 99.44\% ASR remains at
++98.21\% after V2 joint removal and 16.55\% after continuation. V3 gives
++93.66\% and 14.64\%, respectively. These differences measure the effects of
++declared interventions, not proof of collusive intent or complete historical
++decontamination.
++
++\FloatBarrier
++
++\subsection{Reserved Robust-bounded Aggregation}
++\label{subsec:revision-reserved-robust}
++
++The optional operator in
++Section~\ref{subsec:formal-robust-reweighting} changes the combination of
++already admitted, clipped updates. It retains the existing observable
++envelope, gates, quorum and clean-derived tensor limits. Development on the
++disclosed earlier counterexample reduces peak ASR from 99.50\% to 55.52\%
++and final ASR from 46.89\% to 1.46\%. Its finite rule is then frozen before
++six new attacker assignments, with paired clean and adaptive histories for
++the old bounded mean and the new robust operator.
++
++\input{content/chapters/research_robust_table}
++
++All twelve robust histories complete fifteen rounds. One attacked bounded
++control has no valid fifteenth output; its peak is measured on the retained
++fourteen-round prefix, not an invented endpoint. The maximum paired clean
++macro-F1 loss is 0.90 percentage points, within the declared two-point
++guardrail. Only two bounded controls meet the attack-effectiveness condition.
++Their full-trigger peaks change from 95.74\% to 75.72\%, and from 83.57\%
++to zero. The residual 75.72\% peak precludes a general prevention claim even
++though all six attacked robust endpoints have zero measured full- and
++component-trigger ASR.
++
++The unchanged admission rule quarantines none of the 180 manipulated exports
++in these robust histories; no currently unmodified exports are quarantined.
++The improvement is numerical reweighting, not improved malicious-client
++identification. Final attacked models remain different from their matched
++clean models. Zero ASR does not establish clean-state recovery. The fixed-
++final-coefficient removal certificates establish their parameter bound only;
++they do not bound a recomputed robust operator, a decision margin or future
++training. Figure~\ref{fig:research-robust-asr} shows why the peak and final
++measurements must both remain visible.
++
++\begin{figure}[tbp]
++\centering
++\includegraphics[width=\linewidth]{images/research-robust-reserved-asr.pdf}
++\caption[Reserved robust-bounded trajectories]{Worst full/component-trigger
++validation ASR. Attacks occur in rounds 1--10; the dashed line precedes the
++five unmodified continuations. A cross marks the last valid output of an
++incomplete control. Zero-control cases do not show a mitigation advantage.}
++\label{fig:research-robust-asr}
++\end{figure}
++
++\subsection{Reconstruction and Measured Cost}
++\label{subsec:revision-research-verification}
++
++Separate replay drivers regenerate the native-gradient queries and selected
++aggregates, reproduce all seven terminal numerical failures, and repeat the
++relevant local training. A complete second execution of the common-input
++comparison reproduces all 840 outputs and 1,801 numerical files byte for
++byte. The group driver repeats the selections, all 106 direct outputs and
++all 23 continuation branches, including 115 future aggregates. These are
++checks using the same numerical implementation, not independent external
++validation. They supplement the formal hypotheses rather than proving them.
++
++\input{content/chapters/research_final_verification}
++\FloatBarrier

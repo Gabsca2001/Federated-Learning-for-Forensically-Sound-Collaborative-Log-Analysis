@@ -1,0 +1,235 @@
+--- before/src/fl_forensics/cli.py
++++ after/src/fl_forensics/cli.py
+@@ -21,7 +21,6 @@
+     create_campaign_accounting,
+     verify_campaign_accounting,
+ )
+-from .submission_witness_cli import add_witness_commands, run_witness_command
+ from .campaign_derivation_cli import add_campaign_graph_commands, run_campaign_graph_command
+ from .central_baseline import train_central_baseline, verify_central_baseline
+ from .composite_admission_artifact import (
+@@ -131,6 +130,7 @@
+     create_submission_inventory_workspace,
+     verify_submission_inventory_workspace,
+ )
++from .submission_witness_cli import add_witness_commands, run_witness_command
+ from .timestamp_anchor import (
+     create_timestamp_anchor,
+     verify_timestamp_anchor,
+@@ -200,6 +200,9 @@
+     add_campaign_graph_commands(subparsers)
+     add_ingestion_commands(subparsers)
+     add_witness_commands(subparsers)
++    from .unified_preservation import add_system_commands
++
++    add_system_commands(subparsers)
+ 
+     demo = subparsers.add_parser("demo", help="run the phase-1 evidence vertical slice")
+     demo.add_argument("--input", type=Path, required=True, help="Zeek JSONL file")
+@@ -760,6 +763,7 @@
+     m5_finalize.add_argument("--partition-manifest", type=Path, required=True)
+     m5_finalize.add_argument("--server-evaluation", type=Path, required=True)
+     m5_finalize.add_argument("--rounds", type=int, required=True)
++    m5_finalize.add_argument("--checkpoint-verification", type=Path)
+ 
+     m5_verify_campaign = subparsers.add_parser(
+         "m5-verify-campaign",
+@@ -769,6 +773,7 @@
+     m5_verify_campaign.add_argument("--trust-workspace", type=Path, required=True)
+     m5_verify_campaign.add_argument("--partition-manifest", type=Path, required=True)
+     m5_verify_campaign.add_argument("--server-evaluation", type=Path, required=True)
++    m5_verify_campaign.add_argument("--checkpoint-verification", type=Path)
+ 
+     m6_verify_live_disagreement = subparsers.add_parser(
+         "m6-verify-live-disagreement-round",
+@@ -1526,7 +1531,18 @@
+ 
+ 
+ def main(argv: list[str] | None = None) -> int:
++    # System-profile commands preserve the original milestone command contracts.
+     arguments = build_parser().parse_args(argv)
++    if arguments.command in {"system-chain-verify", "m8-unified-create", "m8-unified-verify"}:
++        from .unified_preservation import run_system_command
++
++        try:
++            result = run_system_command(arguments)
++            code = 0
++        except (ValueError, OSError, KeyError, TypeError) as exc:
++            result, code = {"status": "invalid", "errors": [str(exc)]}, 1
++        print(json.dumps(result, indent=2, sort_keys=True))
++        return code
+     if arguments.command.startswith("witness-"):
+         result, code = run_witness_command(arguments)
+         print(json.dumps(result, indent=2, sort_keys=True))
+@@ -1990,21 +2006,27 @@
+         print(json.dumps(result, indent=2, sort_keys=True))
+         return 0 if result["status"] == "verified" else 1
+     if arguments.command == "m5-finalize-campaign":
++        from .checkpoint_verification import verification_arguments
++
+         result = finalize_secure_campaign(
+             workspace=arguments.workspace,
+             trust_workspace=arguments.trust_workspace,
+             partition_manifest_path=arguments.partition_manifest,
+             server_evaluation_path=arguments.server_evaluation,
+             expected_rounds=arguments.rounds,
++            **verification_arguments(arguments.checkpoint_verification),
+         )
+         print(json.dumps(result, indent=2, sort_keys=True))
+         return 0
+     if arguments.command == "m5-verify-campaign":
++        from .checkpoint_verification import verification_arguments
++
+         result = verify_secure_campaign(
+             workspace=arguments.workspace,
+             trust_workspace=arguments.trust_workspace,
+             partition_manifest_path=arguments.partition_manifest,
+             server_evaluation_path=arguments.server_evaluation,
++            **verification_arguments(arguments.checkpoint_verification),
+         )
+         print(json.dumps(result, indent=2, sort_keys=True))
+         return 0 if result["status"] == "verified" else 1
+--- before/src/fl_forensics/prediction_bundle.py
++++ after/src/fl_forensics/prediction_bundle.py
+@@ -35,6 +35,8 @@
+     round_workspace: Path,
+     trust_workspace: Path,
+     partition_workspace: Path,
++    verification_profile: dict[str, Any] | None = None,
++    profile_root: Path | None = None,
+ ) -> dict[str, Any]:
+     """Dispatch fail-closed verification by the checkpoint's signed schema."""
+ 
+@@ -42,6 +44,8 @@
+     checkpoint = load_json(checkpoint_path)
+     artifact_type = checkpoint.get("artifact_type")
+     if artifact_type == "secure_global_checkpoint":
++        if verification_profile is not None or (round_workspace / "witness-round").exists():
++            raise PredictionBundleError("witness profile requires an in-round secure checkpoint")
+         return verify_secure_round(
+             workspace=round_workspace,
+             trust_workspace=trust_workspace,
+@@ -81,6 +85,16 @@
+             if isinstance(exc, PredictionBundleError):
+                 raise
+             raise PredictionBundleError(str(exc)) from exc
++        if verification_profile is not None or (round_workspace / "witness-round").exists():
++            from .checkpoint_verification import verify_witness_checkpoint
++
++            return verify_witness_checkpoint(
++                workspace=round_workspace,
++                trust_workspace=trust_workspace,
++                validation_split_path=validation_split_path,
++                verification_profile=verification_profile,
++                profile_root=profile_root,
++            )
+         return verify_in_round_secure_round(
+             workspace=round_workspace,
+             trust_workspace=trust_workspace,
+@@ -320,6 +334,14 @@
+         round_workspace=round_workspace,
+         trust_workspace=trust_workspace,
+         partition_workspace=partition_workspace,
++        **(
++            {
++                "verification_profile": config["checkpoint_verification"],
++                "profile_root": config_path.resolve().parent,
++            }
++            if "checkpoint_verification" in config
++            else {}
++        ),
+     )
+     if round_verification.get("status") != "verified":
+         raise PredictionBundleError(
+--- before/src/fl_forensics/secure_campaign.py
++++ after/src/fl_forensics/secure_campaign.py
+@@ -188,6 +188,8 @@
+     partition_manifest_path: Path,
+     server_evaluation_path: Path,
+     expected_rounds: int,
++    verification_profile: dict[str, Any] | None = None,
++    profile_root: Path | None = None,
+ ) -> dict[str, Any]:
+     if expected_rounds < 1:
+         raise SecureRoundError("a secure campaign must contain at least one round")
+@@ -243,6 +245,10 @@
+             checkpoint_value.get("artifact_type")
+             == "in_round_secure_global_checkpoint"
+         )
++        if not in_round and (
++            verification_profile is not None or (round_workspace / "witness-round").exists()
++        ):
++            raise SecureRoundError("witness profile requires an in-round secure checkpoint")
+         if campaign_in_round_mode is None:
+             campaign_in_round_mode = in_round
+         elif in_round != campaign_in_round_mode:
+@@ -254,14 +260,25 @@
+                 raise SecureRoundError(
+                     "in-round campaign requires an isolated validation split"
+                 )
+-            verification = verify_in_round_secure_round(
+-                workspace=round_workspace,
+-                trust_workspace=trust_workspace,
+-                submissions_root=round_workspace / "submissions",
+-                validation_split_path=validation_split_path,
+-                client_receipts=(round_workspace / "client-receipts")
+-                if (round_workspace / "client-receipts").is_dir() else None,
+-            )
++            if verification_profile is not None or (round_workspace / "witness-round").exists():
++                from .checkpoint_verification import verify_witness_checkpoint
++
++                verification = verify_witness_checkpoint(
++                    workspace=round_workspace,
++                    trust_workspace=trust_workspace,
++                    validation_split_path=validation_split_path,
++                    verification_profile=verification_profile,
++                    profile_root=profile_root,
++                )
++            else:
++                verification = verify_in_round_secure_round(
++                    workspace=round_workspace,
++                    trust_workspace=trust_workspace,
++                    submissions_root=round_workspace / "submissions",
++                    validation_split_path=validation_split_path,
++                    client_receipts=(round_workspace / "client-receipts")
++                    if (round_workspace / "client-receipts").is_dir() else None,
++                )
+             checkpoint = InRoundSecureCheckpoint.model_validate(checkpoint_value)
+             if in_round_contract_sha256 is None:
+                 in_round_contract_sha256 = checkpoint.core.admission_contract_sha256
+@@ -507,6 +524,8 @@
+     server_evaluation_path: Path,
+     expected_rounds: int,
+     now: datetime | None = None,
++    verification_profile: dict[str, Any] | None = None,
++    profile_root: Path | None = None,
+ ) -> dict[str, Any]:
+     """Verify all rounds, select on validation, then evaluate test exactly once."""
+ 
+@@ -519,6 +538,8 @@
+         partition_manifest_path=partition_manifest_path,
+         server_evaluation_path=server_evaluation_path,
+         expected_rounds=expected_rounds,
++        verification_profile=verification_profile,
++        profile_root=profile_root,
+     )
+     evaluation_root = workspace / "evaluation"
+     for artifact in inspected["validation_artifacts"]:
+@@ -597,6 +618,8 @@
+     trust_workspace: Path,
+     partition_manifest_path: Path,
+     server_evaluation_path: Path,
++    verification_profile: dict[str, Any] | None = None,
++    profile_root: Path | None = None,
+ ) -> dict[str, Any]:
+     """Independently verify the round chain, selection, and final evaluation."""
+ 
+@@ -613,6 +636,8 @@
+             partition_manifest_path=partition_manifest_path,
+             server_evaluation_path=server_evaluation_path,
+             expected_rounds=manifest.core.round_count,
++            verification_profile=verification_profile,
++            profile_root=profile_root,
+         )
+         expected_references = [item.model_dump(mode="json") for item in inspected["references"]]
+         if [item.model_dump(mode="json") for item in manifest.core.rounds] != (expected_references):
