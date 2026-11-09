@@ -142,3 +142,7 @@ policy and seed, admission counts with denominators, three PNG comparisons, and
 source-lock/completion receipts. Results are descriptive on one dataset; the
 342593 TPM-only adaptive checkpoint predates attack onset and strongly affects
 its aggregate mean. See the [detailed interpretation](../docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md).
+
+## Updated experimental evidence overview
+
+See [Experimental Evidence Overview](EXPERIMENTAL_EVIDENCE_OVERVIEW.md) for the current research classification and evidence catalog.
