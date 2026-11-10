@@ -1,0 +1,193 @@
+{
+ "data24": {
+  "auroc": 1.0,
+  "median_rank_test_benign": 0.5067846607669617,
+  "median_rank_attack": 1.0,
+  "share_attack_above_p99": 1.0,
+  "share_test_benign_above_p99": 0.005555555555555556,
+  "share_attack_below_median": 0.0,
+  "knockout_auroc_gain": {
+   "connection_count": 0.0,
+   "unique_destination_count": 0.0,
+   "unique_destination_port_count": 0.0,
+   "duration_mean": 0.0,
+   "duration_std": 0.0,
+   "duration_max": 0.0,
+   "originator_bytes_sum": 0.0,
+   "responder_bytes_sum": 0.0,
+   "originator_packets_sum": 0.0,
+   "responder_packets_sum": 0.0,
+   "protocol_tcp_fraction": 0.0,
+   "protocol_udp_fraction": 0.0,
+   "protocol_icmp_fraction": 0.0,
+   "protocol_other_fraction": 0.0,
+   "service_dns_fraction": 0.0,
+   "service_http_fraction": 0.0,
+   "service_ssl_fraction": 0.0,
+   "service_ssh_fraction": 0.0,
+   "service_other_fraction": 0.0,
+   "state_sf_fraction": 0.0,
+   "state_s0_fraction": 0.0,
+   "state_rej_fraction": 0.0,
+   "state_rsto_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_other_fraction": 0.0
+  },
+  "auroc_top3_knocked_out": 1.0
+ },
+ "data22": {
+  "auroc": 0.04518339809556343,
+  "median_rank_test_benign": 0.5784722222222223,
+  "median_rank_attack": 0.0,
+  "share_attack_above_p99": 0.03636363636363636,
+  "share_test_benign_above_p99": 0.011272898074213245,
+  "share_attack_below_median": 0.9545454545454546,
+  "knockout_auroc_gain": {
+   "state_sf_fraction": 0.015382808830436821,
+   "originator_bytes_sum": 0.01142661941158888,
+   "state_s0_fraction": 0.003578291131132838,
+   "connection_count": 0.002491566676630086,
+   "originator_packets_sum": 0.0010525641573081654,
+   "service_other_fraction": 0.0006725308510184061,
+   "unique_destination_port_count": 0.0005081344207694613,
+   "state_other_fraction": 0.0001772065416969157,
+   "protocol_icmp_fraction": 0.00015585635595029984,
+   "unique_destination_count": 6.405055723984754e-05,
+   "duration_std": 6.405055723981978e-06,
+   "state_rej_fraction": 6.405055723981978e-06,
+   "duration_mean": 4.270037149325945e-06,
+   "protocol_other_fraction": 0.0,
+   "service_http_fraction": 0.0,
+   "service_ssl_fraction": 0.0,
+   "service_ssh_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_rsto_fraction": -2.1350185746629724e-06,
+   "duration_max": -0.00014091122592766597,
+   "responder_bytes_sum": -0.0004355437892309688,
+   "responder_packets_sum": -0.0004846492164481825,
+   "protocol_tcp_fraction": -0.008335112515478887,
+   "service_dns_fraction": -0.008405568128442717,
+   "protocol_udp_fraction": -0.008493103890003843
+  },
+  "auroc_top3_knocked_out": 0.20864255519023014
+ },
+ "ton_iot": {
+  "auroc": 0.18380411178373132,
+  "median_rank_test_benign": 0.5394335511982571,
+  "median_rank_attack": 0.013507625272331155,
+  "share_attack_above_p99": 0.013079667063020214,
+  "share_test_benign_above_p99": 0.01517706576728499,
+  "share_attack_below_median": 0.8995243757431629,
+  "families": {
+   "backdoor": {
+    "units": 1563,
+    "auroc": 0.1549545292218126,
+    "above_p99": 0.0
+   },
+   "ddos": {
+    "units": 1006,
+    "auroc": 0.41448274937223206,
+    "above_p99": 0.0
+   },
+   "dos": {
+    "units": 518,
+    "auroc": 0.022807919941140852,
+    "above_p99": 0.0
+   },
+   "injection": {
+    "units": 261,
+    "auroc": 0.4076486208834874,
+    "above_p99": 0.24521072796934865
+   },
+   "mitm": {
+    "units": 102,
+    "auroc": 0.1400820024468472,
+    "above_p99": 0.0
+   },
+   "password": {
+    "units": 842,
+    "auroc": 0.11097603473621387,
+    "above_p99": 0.0
+   },
+   "ransomware": {
+    "units": 93,
+    "auroc": 0.07516002103392627,
+    "above_p99": 0.0
+   },
+   "scanning": {
+    "units": 243,
+    "auroc": 0.07075691017980694,
+    "above_p99": 0.00823045267489712
+   },
+   "xss": {
+    "units": 418,
+    "auroc": 0.043510009117535525,
+    "above_p99": 0.0
+   }
+  },
+  "knockout_auroc_gain": {
+   "connection_count": 0.12337022161710912,
+   "state_other_fraction": 0.04066032634668304,
+   "protocol_icmp_fraction": 0.02859660766813779,
+   "state_sf_fraction": 0.021691166395635703,
+   "originator_packets_sum": 0.007354931593922753,
+   "service_other_fraction": 0.007168451594403991,
+   "duration_mean": 0.006858319982301103,
+   "responder_packets_sum": 0.006133788371267657,
+   "state_s0_fraction": 0.005103803857796629,
+   "state_rej_fraction": 0.0005063032244998766,
+   "protocol_other_fraction": 0.0,
+   "service_ssh_fraction": 0.0,
+   "unique_destination_port_count": -0.00023794580583755276,
+   "duration_std": -0.002211024510423154,
+   "state_rstr_fraction": -0.003036148379261555,
+   "duration_max": -0.004955421922695685,
+   "unique_destination_count": -0.005921575468589485,
+   "originator_bytes_sum": -0.011903974162828457,
+   "state_rsto_fraction": -0.012217113516859057,
+   "responder_bytes_sum": -0.016225096732322336,
+   "service_dns_fraction": -0.02154178187989217,
+   "service_http_fraction": -0.02865993734539371,
+   "protocol_udp_fraction": -0.03755299474179871,
+   "protocol_tcp_fraction": -0.04044811344400487,
+   "service_ssl_fraction": -0.042833921179783435
+  },
+  "auroc_top3_knocked_out": 0.48264867101251957
+ },
+ "unsw_nb15": {
+  "auroc": 0.8492194912045424,
+  "median_rank_test_benign": 0.4222941720629047,
+  "median_rank_attack": 1.0,
+  "share_attack_above_p99": 0.7358421629521373,
+  "share_test_benign_above_p99": 0.001611026581938602,
+  "share_attack_below_median": 0.16514431859700401,
+  "knockout_auroc_gain": {
+   "protocol_udp_fraction": 0.012391278350868062,
+   "protocol_tcp_fraction": 0.007309265469522486,
+   "state_s0_fraction": 0.005690701404793774,
+   "state_sf_fraction": 0.0019661057874754695,
+   "duration_mean": 0.0016637562608931011,
+   "duration_max": 0.0009763901513581974,
+   "service_ssh_fraction": 0.0008075734272633417,
+   "duration_std": 0.00037084088321504005,
+   "service_http_fraction": 0.0002196007187716953,
+   "protocol_other_fraction": 2.1876685408095398e-05,
+   "state_rej_fraction": 0.0,
+   "state_rstr_fraction": 0.0,
+   "state_rsto_fraction": -8.33864690452657e-06,
+   "service_ssl_fraction": -1.8116119157141064e-05,
+   "protocol_icmp_fraction": -3.394319798755152e-05,
+   "state_other_fraction": -0.00017506253412924444,
+   "originator_bytes_sum": -0.0015009073919358684,
+   "service_other_fraction": -0.0015961314695269735,
+   "unique_destination_count": -0.0025680252916719937,
+   "connection_count": -0.002807230005813177,
+   "service_dns_fraction": -0.0031001617664798697,
+   "responder_bytes_sum": -0.0038589949850723615,
+   "originator_packets_sum": -0.004851866226782908,
+   "responder_packets_sum": -0.005480027943296273,
+   "unique_destination_port_count": -0.007778436985057979
+  },
+  "auroc_top3_knocked_out": 0.8727138250612703
+ }
+}
