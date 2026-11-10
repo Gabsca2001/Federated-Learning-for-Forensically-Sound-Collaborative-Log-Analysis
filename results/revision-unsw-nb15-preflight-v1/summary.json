@@ -1,0 +1,86 @@
+{
+ "records": 2540047,
+ "windows": 1441,
+ "label_counts": {
+  "benign": 636,
+  "attack": 805
+ },
+ "family_counts": {
+  "multiple": 802,
+  "benign": 636,
+  "Exploits": 2,
+  "Fuzzers": 1
+ },
+ "windows_by_day": {
+  "2015-01-22": 718,
+  "2015-01-23": 26,
+  "2015-02-18": 697
+ },
+ "attack_record_fraction_in_attack_windows": {
+  "median": 0.11860718171926006,
+  "p10": 0.047109207708779445
+ },
+ "reference_checks": [
+  {
+   "bucket": 23698871,
+   "records": 1722,
+   "max_relative_difference": 4.924394225724882e-13
+  },
+  {
+   "bucket": 23699236,
+   "records": 1460,
+   "max_relative_difference": 4.795053243356051e-13
+  },
+  {
+   "bucket": 23699332,
+   "records": 1300,
+   "max_relative_difference": 4.615197113366776e-13
+  },
+  {
+   "bucket": 23699423,
+   "records": 1222,
+   "max_relative_difference": 4.99184027447086e-13
+  },
+  {
+   "bucket": 23699535,
+   "records": 926,
+   "max_relative_difference": 4.0178971261184415e-13
+  },
+  {
+   "bucket": 23737045,
+   "records": 1647,
+   "max_relative_difference": 4.553735860612917e-13
+  },
+  {
+   "bucket": 23737086,
+   "records": 2028,
+   "max_relative_difference": 4.812261700237741e-13
+  },
+  {
+   "bucket": 23737118,
+   "records": 1347,
+   "max_relative_difference": 4.528322161689857e-13
+  },
+  {
+   "bucket": 23737233,
+   "records": 1366,
+   "max_relative_difference": 3.6017543114663653e-13
+  },
+  {
+   "bucket": 23737252,
+   "records": 1528,
+   "max_relative_difference": 4.711786516509164e-13
+  },
+  {
+   "bucket": 23737304,
+   "records": 2402,
+   "max_relative_difference": 4.904965322793942e-13
+  },
+  {
+   "bucket": 23737451,
+   "records": 1992,
+   "max_relative_difference": 3.9861667335580983e-13
+  }
+ ],
+ "windows_sha256": "a82cef4bc306198f5931de6b481fe4c5bea6fe06d3c3d9eb4c3c6f6e57152728"
+}
