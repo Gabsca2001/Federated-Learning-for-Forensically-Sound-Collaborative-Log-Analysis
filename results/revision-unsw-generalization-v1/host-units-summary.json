@@ -1,0 +1,28 @@
+{
+ "units": 27076,
+ "label_counts": {
+  "benign": 23870,
+  "attack": 3206
+ },
+ "units_by_day": {
+  "2015-01-22": 12756,
+  "2015-01-23": 410,
+  "2015-02-18": 13910
+ },
+ "distinct_source_hosts": 43,
+ "attack_source_hosts": [
+  "175.45.176.0",
+  "175.45.176.1",
+  "175.45.176.2",
+  "175.45.176.3"
+ ],
+ "hosts_with_both_labels": 4,
+ "attack_record_fraction_in_attack_units": {
+  "median": 1.0,
+  "share_pure": 0.566126013724267
+ },
+ "minutes_with_attack_units": 805,
+ "attack_minutes_that_also_have_benign_units": 805,
+ "reference_check_max_relative_difference": 4.782840790085174e-13,
+ "units_sha256": "29d946b89bee0c217b18d848418c54f71da8b08070c1b26dc057be090766ecb2"
+}
