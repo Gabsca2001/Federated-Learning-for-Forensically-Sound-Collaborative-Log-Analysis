@@ -1,0 +1,292 @@
+{
+  "artifact_type": "report_to_source_walkthrough",
+  "schema_version": "1.0",
+  "case_id": "m7-investigation-case-498ee95ed92e641b997528a6",
+  "protocol_sha256": "4ffb783a3bb1a843557c6aaea0e07a2157205b52f66773ff9524c9035a3b26a9",
+  "producer_script_sha256": "c1aa5ede87ecbed54c25adb88dca49aad7a88a7ee26c12e144497eefeaa172d7",
+  "report": {
+    "manifest_sha256": "d6859456ae5b35ec00882083c532acd980e6df19367287d830e6f91dbf7e44a5",
+    "investigation_report_sha256": "debbe4ab48699b5fac7a8c151e074972f9936417dff36255af849ae5aa9b2025",
+    "report_markdown_sha256": "a836f83cad31724a6ce4d5b70f13b0e83156ae61e0905f7a07e4e3e2665cf6cd",
+    "canonical_core_sha256": "fe23c60b9bbc04b932b5211adfe995758b723bac560df268f12289802ea045ca",
+    "manifest_digests_verified": true
+  },
+  "case_model_outputs_not_evidence": {
+    "predicted_class": "reconnaissance",
+    "confidence": 0.765174567699,
+    "attack_tactic_candidates": [
+      {
+        "tactic_id": "TA0043",
+        "tactic_name": "Reconnaissance"
+      }
+    ],
+    "top_ig_features": [
+      "state_rej_fraction",
+      "state_s0_fraction",
+      "service_other_fraction",
+      "state_sf_fraction",
+      "unique_destination_count"
+    ],
+    "window_id": "window-central-001798b1c92400003e9a"
+  },
+  "reader": "fl_forensics.dataset24_parquet._iter_parquet_rows (1-based row numbers)",
+  "source_files": {
+    "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet": {
+      "sha256": "97dda852f7240375ec76afcfc96964b4edcda3516ebc0f45a9cd92ae60319f63",
+      "size_bytes": 27802118,
+      "matches_report": true,
+      "matches_dataset_manifest": true
+    }
+  },
+  "events": [
+    {
+      "event_id": "event-central-5fead349f04ba7bcba04",
+      "relative_path": "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet",
+      "row_number": 64274,
+      "declared_source_record_sha256": "0f92d8687a1709fce4fd779ec0f071c485a18e709dcd37948b23be801abff75a",
+      "source_record_sha256": "0f92d8687a1709fce4fd779ec0f071c485a18e709dcd37948b23be801abff75a",
+      "source_record_match": true,
+      "source_identity_sha256": "5fead349f04ba7bcba04b3166bc44d2579f4e1367484e037c0474ef308592537",
+      "source_identity_match": true,
+      "fields": {
+        "src_ip_zeek": "143.88.7.11",
+        "dest_ip_zeek": "143.88.8.10",
+        "dest_port_zeek": "135",
+        "proto": "tcp",
+        "service": "",
+        "conn_state": "S0",
+        "history": "S",
+        "duration": "0.0013661384582519531",
+        "orig_bytes": "0",
+        "resp_bytes": "0",
+        "orig_pkts": "4",
+        "resp_pkts": "0",
+        "datetime": "2024-03-22T23:23:30.818000Z"
+      }
+    },
+    {
+      "event_id": "event-central-65bd459ee01b3f49a32d",
+      "relative_path": "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet",
+      "row_number": 73452,
+      "declared_source_record_sha256": "7786631687741b7a9cfa82d00a30cf3ffcce73b8a5d936c661cec1ee0f8a9761",
+      "source_record_sha256": "7786631687741b7a9cfa82d00a30cf3ffcce73b8a5d936c661cec1ee0f8a9761",
+      "source_record_match": true,
+      "source_identity_sha256": "65bd459ee01b3f49a32ddf7602caa8e6f51284c450e750aa1c392a4873814144",
+      "source_identity_match": true,
+      "fields": {
+        "src_ip_zeek": "143.88.7.11",
+        "dest_ip_zeek": "143.88.8.1",
+        "dest_port_zeek": "135",
+        "proto": "tcp",
+        "service": "",
+        "conn_state": "S0",
+        "history": "S",
+        "duration": "0.000614166259765625",
+        "orig_bytes": "0",
+        "resp_bytes": "0",
+        "orig_pkts": "3",
+        "resp_pkts": "0",
+        "datetime": "2024-03-22T23:23:30.918000Z"
+      }
+    },
+    {
+      "event_id": "event-central-e8fa5c9b07fc31ca0d92",
+      "relative_path": "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet",
+      "row_number": 73715,
+      "declared_source_record_sha256": "7fea36db406b26443485e85a87342b6a044d577e75b721ad005985b1a4366529",
+      "source_record_sha256": "7fea36db406b26443485e85a87342b6a044d577e75b721ad005985b1a4366529",
+      "source_record_match": true,
+      "source_identity_sha256": "e8fa5c9b07fc31ca0d925df70bcc7459153f931f308ba04d7e7e2e99ceab66f6",
+      "source_identity_match": true,
+      "fields": {
+        "src_ip_zeek": "143.88.7.11",
+        "dest_ip_zeek": "143.88.8.1",
+        "dest_port_zeek": "135",
+        "proto": "tcp",
+        "service": "",
+        "conn_state": "S0",
+        "history": "S",
+        "duration": "0.0010380744934082031",
+        "orig_bytes": "0",
+        "resp_bytes": "0",
+        "orig_pkts": "3",
+        "resp_pkts": "0",
+        "datetime": "2024-03-22T23:23:30.818000Z"
+      }
+    },
+    {
+      "event_id": "event-central-368fb0b6b28b073bd30b",
+      "relative_path": "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet",
+      "row_number": 175166,
+      "declared_source_record_sha256": "24485a17a2e93b9b240ce301075395238eb7e0af8ec1179326e238db77d4b878",
+      "source_record_sha256": "24485a17a2e93b9b240ce301075395238eb7e0af8ec1179326e238db77d4b878",
+      "source_record_match": true,
+      "source_identity_sha256": "368fb0b6b28b073bd30b967a040190e00433f62d0c73875daae097c3925d7052",
+      "source_identity_match": true,
+      "fields": {
+        "src_ip_zeek": "143.88.7.11",
+        "dest_ip_zeek": "143.88.8.10",
+        "dest_port_zeek": "135",
+        "proto": "tcp",
+        "service": "",
+        "conn_state": "S0",
+        "history": "S",
+        "duration": "0.002034902572631836",
+        "orig_bytes": "0",
+        "resp_bytes": "0",
+        "orig_pkts": "4",
+        "resp_pkts": "0",
+        "datetime": "2024-03-22T23:23:30.918000Z"
+      }
+    },
+    {
+      "event_id": "event-central-334026b284161ed2b7c7",
+      "relative_path": "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet",
+      "row_number": 323166,
+      "declared_source_record_sha256": "09119af31ae7ea35d0f006a4de297f367891c3c550a112c15bfd5c727e29659b",
+      "source_record_sha256": "09119af31ae7ea35d0f006a4de297f367891c3c550a112c15bfd5c727e29659b",
+      "source_record_match": true,
+      "source_identity_sha256": "334026b284161ed2b7c7dc460e700e4812487bd5726a10cb9bdc4f7aac5f725a",
+      "source_identity_match": true,
+      "fields": {
+        "src_ip_zeek": "143.88.7.11",
+        "dest_ip_zeek": "143.88.8.11",
+        "dest_port_zeek": "135",
+        "proto": "tcp",
+        "service": "",
+        "conn_state": "REJ",
+        "history": "Sr",
+        "duration": "0.002354145050048828",
+        "orig_bytes": "0",
+        "resp_bytes": "0",
+        "orig_pkts": "4",
+        "resp_pkts": "4",
+        "datetime": "2024-03-22T23:23:30.818000Z"
+      }
+    },
+    {
+      "event_id": "event-central-afccd40f0043ce33bf8f",
+      "relative_path": "2024-03-17 - 2024-03-24/part-00000-5f556208-a1fc-40a1-9cc2-a4e24c76aeb3-c000.snappy.parquet",
+      "row_number": 323200,
+      "declared_source_record_sha256": "d015c00dc407f00902e5259cb5029e097ba012a06d8b55c6693277887c32acef",
+      "source_record_sha256": "d015c00dc407f00902e5259cb5029e097ba012a06d8b55c6693277887c32acef",
+      "source_record_match": true,
+      "source_identity_sha256": "afccd40f0043ce33bf8fa10699219d354b162e96a83f99b0bc0c268520b74b6b",
+      "source_identity_match": true,
+      "fields": {
+        "src_ip_zeek": "143.88.7.11",
+        "dest_ip_zeek": "143.88.8.12",
+        "dest_port_zeek": "135",
+        "proto": "tcp",
+        "service": "",
+        "conn_state": "REJ",
+        "history": "Sr",
+        "duration": "0.0024499893188476562",
+        "orig_bytes": "0",
+        "resp_bytes": "0",
+        "orig_pkts": "4",
+        "resp_pkts": "4",
+        "datetime": "2024-03-22T23:23:30.818000Z"
+      }
+    }
+  ],
+  "all_record_digests_match": true,
+  "all_identity_digests_match": true,
+  "fields_used": [
+    "src_ip_zeek",
+    "dest_ip_zeek",
+    "dest_port_zeek",
+    "proto",
+    "service",
+    "conn_state",
+    "history",
+    "duration",
+    "orig_bytes",
+    "resp_bytes",
+    "orig_pkts",
+    "resp_pkts",
+    "datetime"
+  ],
+  "label_columns_extracted": false,
+  "descriptive_summary": {
+    "record_count": 6,
+    "distinct_originators": [
+      "143.88.7.11"
+    ],
+    "distinct_destination_ips": [
+      "143.88.8.1",
+      "143.88.8.10",
+      "143.88.8.11",
+      "143.88.8.12"
+    ],
+    "distinct_destination_ports": [
+      "135"
+    ],
+    "proto_counts": {
+      "tcp": 6
+    },
+    "service_counts": {
+      "<empty>": 6
+    },
+    "conn_state_counts": {
+      "REJ": 2,
+      "S0": 4
+    },
+    "history_counts": {
+      "Sr": 2,
+      "S": 4
+    },
+    "unestablished_or_rejected_count": 6,
+    "established_count": 0,
+    "established_with_bidirectional_payload_count": 0,
+    "payload_bytes_per_record": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "payload_bytes_total": 0.0,
+    "payload_bytes_median": 0.0,
+    "payload_bytes_max": 0.0,
+    "orig_pkts_total": 22.0,
+    "resp_pkts_total": 8.0,
+    "records_missing_byte_fields": 0,
+    "records_missing_conn_state": 0,
+    "duration_seconds": {
+      "present": 6,
+      "min": 0.000614166259765625,
+      "max": 0.0024499893188476562,
+      "median": 0.0017005205154418945
+    },
+    "time_first_utc": "2024-03-22T23:23:30.818000+00:00",
+    "time_last_utc": "2024-03-22T23:23:30.918000+00:00",
+    "time_span_seconds": 0.1,
+    "fan_out_by_originator": {
+      "143.88.7.11": {
+        "destination_ips": 4,
+        "destination_ports": 1
+      }
+    }
+  },
+  "assessment": {
+    "supported_criteria": {
+      "S1_single_originator": true,
+      "S2_fan_out": true,
+      "S3_majority_unestablished": true,
+      "S4_low_payload": true,
+      "S5_within_window": true
+    },
+    "contested_criteria": {
+      "C1_majority_established_with_payload": false,
+      "C2_single_target_established": false,
+      "C3_mixed_sources_no_fan_out": false
+    },
+    "records_missing_too_many_fields": false,
+    "verdict": "supported",
+    "reason": "all S1-S5 hold and no C condition holds",
+    "scope": "compatibility of referenced records with a reconnaissance-style probing pattern; not a confirmation of malicious activity"
+  },
+  "independent_analyst_study_performed": false
+}
