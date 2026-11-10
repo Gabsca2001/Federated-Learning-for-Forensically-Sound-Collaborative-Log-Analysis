@@ -43,7 +43,7 @@ help:
 	  '  make docs-index        Regenerate the two registered catalogue files' \
 	  '  make evidence-list     List all retained study directories' \
 	  '  make evidence-check    Check the selected stored flat checksum publication' \
-	  '  make thesis-evidence   Check every registered study with a flat checksum index' \
+	  '  make thesis-evidence   Check the evidence cited by the thesis (docs/thesis-evidence.txt)' \
 	  '                         Override STUDY=results/<registered-study>' \
 	  '' \
 	  'Environment and verification:' \
@@ -207,17 +207,9 @@ evidence-list: check
 evidence-check: check
 	"$(PYTHON)" scripts/repository_audit.py evidence --study "$(STUDY)"
 
-# Runs evidence-check on every registered study with a flat checksum index.
+# Checks the retained evidence cited by the thesis (docs/thesis-evidence.txt).
 thesis-evidence: check
-	status=0
-	while IFS= read -r study; do
-	  printf '== %s\n' "$$study"
-	  if ! "$(PYTHON)" scripts/repository_audit.py evidence --study "$$study" >/dev/null; then
-	    printf 'FAILED %s\n' "$$study" >&2
-	    status=1
-	  fi
-	done < <("$(PYTHON)" -c 'import json; m = json.load(open("docs/documentation-map.json")); print("\n".join(s["path"] for s in m["studies"] if s["flat_checksum_index"]))')
-	exit $$status
+	"$(PYTHON)" scripts/thesis_evidence.py
 
 test-docs: check
 	"$(PYTHON)" -m pytest -q tests/test_repository_audit.py
