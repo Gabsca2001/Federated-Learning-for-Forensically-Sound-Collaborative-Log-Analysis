@@ -1,0 +1,66 @@
+{
+ "classes": [
+  "benign",
+  "credential_access",
+  "exfiltration",
+  "initial_access",
+  "multi_tactic",
+  "reconnaissance"
+ ],
+ "results": {
+  "standard": {
+   "six_class": {
+    "macro_f1": 0.9020100834501926,
+    "accuracy": 0.9823779623252988,
+    "holdout_fpr": 0.00030864197530864197
+   },
+   "binary": {
+    "balanced_accuracy": 1.0,
+    "fpr": 0.0,
+    "recall": 1.0,
+    "holdout_fpr": 0.0
+   },
+   "six_class_macro_f1_per_seed": [
+    0.9231767485565023,
+    0.8905581530868716,
+    0.8922953487072038
+   ]
+  },
+  "A": {
+   "six_class": {
+    "macro_f1": 0.9124788005764313,
+    "accuracy": 0.9848085882114644,
+    "holdout_fpr": 0.0002314814814814815
+   },
+   "binary": {
+    "balanced_accuracy": 1.0,
+    "fpr": 0.0,
+    "recall": 1.0,
+    "holdout_fpr": 0.0
+   },
+   "six_class_macro_f1_per_seed": [
+    0.92536978029624,
+    0.9210553197690805,
+    0.8910113016639732
+   ]
+  },
+  "B": {
+   "six_class": {
+    "macro_f1": 0.8744470453448222,
+    "accuracy": 0.946863817432989,
+    "holdout_fpr": 0.000771604938271605
+   },
+   "binary": {
+    "balanced_accuracy": 1.0,
+    "fpr": 0.0,
+    "recall": 1.0,
+    "holdout_fpr": 0.0
+   },
+   "six_class_macro_f1_per_seed": [
+    0.8912349087439143,
+    0.8834197412423886,
+    0.8486864860481638
+   ]
+  }
+ }
+}
