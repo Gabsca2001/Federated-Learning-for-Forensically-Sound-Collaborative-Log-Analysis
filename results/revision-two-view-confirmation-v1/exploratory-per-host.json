@@ -1,0 +1,159 @@
+{
+ "S1_feb18": {
+  "baseline_units_of_attacker_hosts": 0,
+  "hosts": {
+   "175.45.176.0": {
+    "attack_units": 685,
+    "recall_system": 0.9854014598540146,
+    "recall_A": 0.8087591240875912,
+    "benign_units": 2,
+    "benign_flagged_system": 1.0,
+    "benign_flagged_A": 1.0
+   },
+   "175.45.176.1": {
+    "attack_units": 685,
+    "recall_system": 0.9693430656934306,
+    "recall_A": 0.7518248175182481,
+    "benign_units": 2,
+    "benign_flagged_system": 1.0,
+    "benign_flagged_A": 1.0
+   },
+   "175.45.176.2": {
+    "attack_units": 683,
+    "recall_system": 0.9926793557833089,
+    "recall_A": 0.9648609077598829,
+    "benign_units": 3,
+    "benign_flagged_system": 1.0,
+    "benign_flagged_A": 1.0
+   },
+   "175.45.176.3": {
+    "attack_units": 684,
+    "recall_system": 0.9926900584795322,
+    "recall_A": 0.7997076023391813,
+    "benign_units": 1,
+    "benign_flagged_system": 1.0,
+    "benign_flagged_A": 1.0
+   }
+  },
+  "families": {
+   "multiple": {
+    "units": 2722,
+    "recall_system": 0.9853049228508449,
+    "recall_A": 0.8317413666421749
+   },
+   "Exploits": {
+    "units": 7,
+    "recall_system": 1.0,
+    "recall_A": 1.0
+   },
+   "Fuzzers": {
+    "units": 3,
+    "recall_system": 0.6666666666666666,
+    "recall_A": 0.6666666666666666
+   },
+   "Reconnaissance": {
+    "units": 3,
+    "recall_system": 1.0,
+    "recall_A": 0.3333333333333333
+   },
+   "Generic": {
+    "units": 2,
+    "recall_system": 1.0,
+    "recall_A": 0.5
+   }
+  },
+  "purity": {
+   "0-0.25": {
+    "units": 110,
+    "recall_system": 0.9090909090909091,
+    "recall_A": 0.8727272727272727
+   },
+   "0.25-0.75": {
+    "units": 606,
+    "recall_system": 0.9686468646864687,
+    "recall_A": 0.9092409240924092
+   },
+   "0.75-1.01": {
+    "units": 2021,
+    "recall_system": 0.9940623453735774,
+    "recall_A": 0.805541810984661
+   }
+  },
+  "other_hosts_benign": {
+   "units": 11165,
+   "flagged_system": 0.05669502910882221,
+   "flagged_A": 0.0014330497089117778
+  }
+ },
+ "S0_jan22_attack_period": {
+  "baseline_units_of_attacker_hosts": 0,
+  "hosts": {
+   "175.45.176.0": {
+    "attack_units": 117,
+    "recall_system": 0.9914529914529915,
+    "recall_A": 0.9487179487179487,
+    "benign_units": 0,
+    "benign_flagged_system": null,
+    "benign_flagged_A": null
+   },
+   "175.45.176.1": {
+    "attack_units": 118,
+    "recall_system": 0.940677966101695,
+    "recall_A": 0.5338983050847458,
+    "benign_units": 0,
+    "benign_flagged_system": null,
+    "benign_flagged_A": null
+   },
+   "175.45.176.2": {
+    "attack_units": 117,
+    "recall_system": 0.9743589743589743,
+    "recall_A": 0.9145299145299145,
+    "benign_units": 0,
+    "benign_flagged_system": null,
+    "benign_flagged_A": null
+   },
+   "175.45.176.3": {
+    "attack_units": 117,
+    "recall_system": 1.0,
+    "recall_A": 0.9914529914529915,
+    "benign_units": 0,
+    "benign_flagged_system": null,
+    "benign_flagged_A": null
+   }
+  },
+  "families": {
+   "multiple": {
+    "units": 468,
+    "recall_system": 0.9764957264957265,
+    "recall_A": 0.8461538461538461
+   },
+   "Fuzzers": {
+    "units": 1,
+    "recall_system": 1.0,
+    "recall_A": 1.0
+   }
+  },
+  "purity": {
+   "0-0.25": {
+    "units": 13,
+    "recall_system": 1.0,
+    "recall_A": 0.9230769230769231
+   },
+   "0.25-0.75": {
+    "units": 84,
+    "recall_system": 0.9880952380952381,
+    "recall_A": 0.8809523809523809
+   },
+   "0.75-1.01": {
+    "units": 372,
+    "recall_system": 0.9731182795698925,
+    "recall_A": 0.8360215053763441
+   }
+  },
+  "other_hosts_benign": {
+   "units": 2332,
+   "flagged_system": 0.05660377358490566,
+   "flagged_A": 0.011149228130360206
+  }
+ }
+}
