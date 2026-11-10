@@ -7,6 +7,7 @@ and versioned evidence.
 | Purpose | Entry point |
 | --- | --- |
 | Current implementation and limitations | [Status](STATUS.md) |
+| First visit: diagram, round walkthrough, code map | [Architecture map](guide/ARCHITECTURE_MAP.md) |
 | Terms and identifiers (M1–M8, V4/V5, profiles) | [Glossary](guide/GLOSSARY.md) |
 | Architecture and M2–M8 composition | [Framework](guide/FRAMEWORK.md) |
 | Effective defaults and four original policies | [Admission and defenses](guide/ADMISSION.md) |
