@@ -1,0 +1,324 @@
+{
+ "hypotheses": {
+  "cli:tpm_only+bounded_vs_tpm_only+fedavg": {
+   "lower": 13,
+   "higher": 0,
+   "equal": 3,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2026111031,
+     "variant": "distributed",
+     "a": 0.45181584215041465,
+     "b": 0.6365456105233057
+    },
+    {
+     "seed": 2026111031,
+     "variant": "complete-trigger",
+     "a": 0.9756934515298827,
+     "b": 0.9825564769802688
+    },
+    {
+     "seed": 2026111031,
+     "variant": "adaptive",
+     "a": 0.44609665427509293,
+     "b": 1.0
+    },
+    {
+     "seed": 2026111032,
+     "variant": "distributed",
+     "a": 0.5098655990849299,
+     "b": 0.6093794681155276
+    },
+    {
+     "seed": 2026111032,
+     "variant": "complete-trigger",
+     "a": 0.9719759794109236,
+     "b": 0.979982842436374
+    },
+    {
+     "seed": 2026111032,
+     "variant": "adaptive",
+     "a": 0.44809837003145553,
+     "b": 1.0
+    },
+    {
+     "seed": 2026111033,
+     "variant": "distributed",
+     "a": 0.45381755790677725,
+     "b": 0.5813554475264513
+    },
+    {
+     "seed": 2026111033,
+     "variant": "complete-trigger",
+     "a": 0.9699742636545611,
+     "b": 0.9742636545610524
+    },
+    {
+     "seed": 2026111033,
+     "variant": "adaptive",
+     "a": 0.4752645124392336,
+     "b": 1.0
+    },
+    {
+     "seed": 2026111034,
+     "variant": "adaptive",
+     "a": 0.0,
+     "b": 0.8907635115813555
+    },
+    {
+     "seed": 2026111035,
+     "variant": "distributed",
+     "a": 0.9997140406062339,
+     "b": 0.9997140406062339
+    },
+    {
+     "seed": 2026111035,
+     "variant": "complete-trigger",
+     "a": 0.9997140406062339,
+     "b": 0.9997140406062339
+    },
+    {
+     "seed": 2026111035,
+     "variant": "adaptive",
+     "a": 1.0,
+     "b": 1.0
+    },
+    {
+     "seed": 2026111036,
+     "variant": "distributed",
+     "a": 0.19874177866742923,
+     "b": 0.21732913926222477
+    },
+    {
+     "seed": 2026111036,
+     "variant": "complete-trigger",
+     "a": 0.8106948813268516,
+     "b": 0.8244209322276237
+    },
+    {
+     "seed": 2026111036,
+     "variant": "adaptive",
+     "a": 0.5910780669144982,
+     "b": 0.9997140406062339
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "tpm_only+bounded",
+   "b": "tpm_only+fedavg",
+   "text": ""
+  }
+ },
+ "clean_guard": [
+  {
+   "seed": 2026111031,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0013710399730111344
+   ]
+  },
+  {
+   "seed": 2026111032,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.00569792016508508,
+    0.0038806269375504243
+   ]
+  },
+  {
+   "seed": 2026111033,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.002611465949346803,
+    0.003617994936541802
+   ]
+  },
+  {
+   "seed": 2026111034,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.006327426503609068
+   ]
+  },
+  {
+   "seed": 2026111035,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0001018998687168926,
+    -0.0006553243126904418
+   ]
+  },
+  {
+   "seed": 2026111036,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "aggregate": [
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.456486512248594,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.456486512248594
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 1.0,
+   "mean_full_final": 0.9997140406062339,
+   "mean_worst_peak": 1.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "complete-trigger",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.9725478981984558,
+   "mean_full_final": 0.533600228767515,
+   "mean_worst_peak": 0.9725478981984558
+  },
+  {
+   "cohort": "iid",
+   "variant": "complete-trigger",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.9789343246592317,
+   "mean_full_final": 0.5935563816604709,
+   "mean_worst_peak": 0.9789343246592317
+  },
+  {
+   "cohort": "iid",
+   "variant": "distributed",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.47183299971404064,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.47183299971404064
+  },
+  {
+   "cohort": "iid",
+   "variant": "distributed",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.6090935087217616,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.6090935087217616
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.530359355638166,
+   "mean_full_final": 0.3308550185873606,
+   "mean_worst_peak": 0.530359355638166
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.9634925173958632,
+   "mean_full_final": 0.6945000476598989,
+   "mean_worst_peak": 0.9634925173958632
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "complete-trigger",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.6056619959965684,
+   "mean_full_final": 0.3503002573634544,
+   "mean_worst_peak": 0.6056619959965684
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "complete-trigger",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.6112858640739681,
+   "mean_full_final": 0.45448479649223145,
+   "mean_worst_peak": 0.6112858640739681
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "distributed",
+   "arm": "tpm_only+bounded",
+   "complete": "3/3",
+   "mean_full_peak": 0.3477266228195596,
+   "mean_full_final": 0.18997235725860262,
+   "mean_worst_peak": 0.39948527309122106
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "distributed",
+   "arm": "tpm_only+fedavg",
+   "complete": "3/3",
+   "mean_full_peak": 0.35935563816604704,
+   "mean_full_final": 0.18959107806691453,
+   "mean_worst_peak": 0.4056810599561529
+  }
+ ],
+ "reference": "tpm_only+fedavg",
+ "cases": 48,
+ "attacker_data_share": {},
+ "definitions": "Report for the head-CUSUM live study (reads closed, verified, tested evidence).\n\nDefinitions follow docs/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:\n* worst-trigger ASR(r) = max(full-trigger ASR, every component-trigger ASR) on test.\n* paired peak harm = max over rounds of worst(attacked, r) - worst(own-policy clean, r);\n  undefined when either history is incomplete (never treated as zero).\n* effective TPM-only control: at round 10 or 15, worst-trigger ASR >= clean + 0.20\n  with clean macro-F1 loss <= 0.05 vs the paired TPM-only clean history.\nUsage: report_head_cusum_study.py [--lab PATH] [--out PATH]\n"
+}

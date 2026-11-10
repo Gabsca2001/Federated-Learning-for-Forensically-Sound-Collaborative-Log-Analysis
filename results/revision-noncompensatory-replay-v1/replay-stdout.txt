@@ -1,0 +1,57 @@
+decisions: 12600
+admissible: 12000  clean-calibration benign: 6300  attacker_active: 240  trusted_attacked: 300
+clean benign fraction saturated (z>=3) per indicator: {'coordinate_median_distance': np.float64(0.238), 'cosine_to_median': np.float64(0.641), 'mad_score': np.float64(0.045), 'relative_norm': np.float64(0.019), 'validation_impact': np.float64(0.12)}
+clean benign fraction exactly risk==1: {'coordinate_median_distance': np.float64(0.238), 'cosine_to_median': np.float64(0.641), 'mad_score': np.float64(0.045), 'relative_norm': np.float64(0.019), 'validation_impact': np.float64(0.12)}
+current clean benign quarantine rate: 0.0197
+[fpr 0.0100] mean_capped (attuale s)              clean_fpr=0.010 att=  5/240 (zero-comp 0/135) dba=296/300 benQ_adv=0.010 benQ_dis=0.001 noQuorum=0/120 attShare=0.199 (curr 0.197)
+[fpr 0.0100] mean_capped ricalibrato              clean_fpr=0.010 att= 13/240 (zero-comp 3/135) dba=300/300 benQ_adv=0.008 benQ_dis=0.005 noQuorum=0/120 attShare=0.193 (curr 0.197)
+[fpr 0.0100] max_avverso ricalibrato              clean_fpr=0.010 att= 16/240 (zero-comp 5/135) dba=300/300 benQ_adv=0.008 benQ_dis=0.002 noQuorum=0/120 attShare=0.190 (curr 0.197)
+[fpr 0.0100] 2o_max_avverso ricalibrato (2 su 5)  clean_fpr=0.010 att= 12/240 (zero-comp 4/135) dba=300/300 benQ_adv=0.008 benQ_dis=0.005 noQuorum=0/120 attShare=0.194 (curr 0.197)
+[fpr 0.0100] max_bilaterale ricalibrato           clean_fpr=0.010 att=  0/240 (zero-comp 0/135) dba=300/300 benQ_adv=0.013 benQ_dis=0.008 noQuorum=2/120 attShare=0.200 (curr 0.197)
+[fpr 0.0100] somma_quadrati_bilat. ricalibrata    clean_fpr=0.010 att=  5/240 (zero-comp 0/135) dba=300/300 benQ_adv=0.011 benQ_dis=0.006 noQuorum=2/120 attShare=0.197 (curr 0.197)
+[fpr 0.0100] mahalanobis ricalibrata              clean_fpr=0.010 att=  9/240 (zero-comp 4/135) dba=300/300 benQ_adv=0.013 benQ_dis=0.013 noQuorum=2/120 attShare=0.193 (curr 0.197)
+[fpr 0.0100] 2o_max_avverso (z originali)         clean_fpr=0.010 att= 39/240 (zero-comp 12/135) dba=300/300 benQ_adv=0.010 benQ_dis=0.007 noQuorum=0/120 attShare=0.173 (curr 0.197)
+[fpr 0.0100] CUSUM su s attuale                   clean_fpr=0.010 att= 11/240 (zero-comp 3/135) dba=210/300 benQ_adv=0.014 benQ_dis=0.001 noQuorum=0/120 attShare=0.195 (curr 0.197)
+[fpr 0.0100] CUSUM su max_avverso ricalibrato     clean_fpr=0.010 att= 15/240 (zero-comp 4/135) dba=300/300 benQ_adv=0.010 benQ_dis=0.000 noQuorum=0/120 attShare=0.192 (curr 0.197)
+[fpr 0.0100] CUSUM su 2o_max ricalibrato          clean_fpr=0.010 att= 12/240 (zero-comp 2/135) dba=300/300 benQ_adv=0.011 benQ_dis=0.001 noQuorum=0/120 attShare=0.194 (curr 0.197)
+[fpr 0.0197] mean_capped (attuale s)              clean_fpr=0.020 att= 11/240 (zero-comp 0/135) dba=300/300 benQ_adv=0.019 benQ_dis=0.005 noQuorum=0/120 attShare=0.197 (curr 0.197)
+[fpr 0.0197] mean_capped ricalibrato              clean_fpr=0.000 att=  0/240 (zero-comp 0/135) dba=296/300 benQ_adv=0.000 benQ_dis=0.000 noQuorum=0/120 attShare=0.200 (curr 0.197)
+[fpr 0.0197] max_avverso ricalibrato              clean_fpr=0.020 att= 30/240 (zero-comp 10/135) dba=300/300 benQ_adv=0.013 benQ_dis=0.006 noQuorum=0/120 attShare=0.181 (curr 0.197)
+[fpr 0.0197] 2o_max_avverso ricalibrato (2 su 5)  clean_fpr=0.020 att= 26/240 (zero-comp 9/135) dba=300/300 benQ_adv=0.012 benQ_dis=0.008 noQuorum=0/120 attShare=0.184 (curr 0.197)
+[fpr 0.0197] max_bilaterale ricalibrato           clean_fpr=0.020 att=  4/240 (zero-comp 1/135) dba=300/300 benQ_adv=0.024 benQ_dis=0.019 noQuorum=3/120 attShare=0.197 (curr 0.197)
+[fpr 0.0197] somma_quadrati_bilat. ricalibrata    clean_fpr=0.020 att= 11/240 (zero-comp 3/135) dba=300/300 benQ_adv=0.023 benQ_dis=0.018 noQuorum=2/120 attShare=0.194 (curr 0.197)
+[fpr 0.0197] mahalanobis ricalibrata              clean_fpr=0.020 att= 13/240 (zero-comp 5/135) dba=300/300 benQ_adv=0.024 benQ_dis=0.027 noQuorum=3/120 attShare=0.191 (curr 0.197)
+[fpr 0.0197] 2o_max_avverso (z originali)         clean_fpr=0.020 att= 54/240 (zero-comp 15/135) dba=300/300 benQ_adv=0.018 benQ_dis=0.017 noQuorum=0/120 attShare=0.163 (curr 0.197)
+[fpr 0.0197] CUSUM su s attuale                   clean_fpr=0.020 att= 22/240 (zero-comp 6/135) dba=220/300 benQ_adv=0.021 benQ_dis=0.003 noQuorum=0/120 attShare=0.188 (curr 0.197)
+[fpr 0.0197] CUSUM su max_avverso ricalibrato     clean_fpr=0.020 att= 36/240 (zero-comp 16/135) dba=300/300 benQ_adv=0.020 benQ_dis=0.002 noQuorum=0/120 attShare=0.177 (curr 0.197)
+[fpr 0.0197] CUSUM su 2o_max ricalibrato          clean_fpr=0.020 att= 26/240 (zero-comp 10/135) dba=300/300 benQ_adv=0.016 benQ_dis=0.004 noQuorum=0/120 attShare=0.183 (curr 0.197)
+[fpr 0.0500] mean_capped (attuale s)              clean_fpr=0.050 att= 62/240 (zero-comp 8/135) dba=300/300 benQ_adv=0.051 benQ_dis=0.019 noQuorum=0/120 attShare=0.165 (curr 0.197)
+[fpr 0.0500] mean_capped ricalibrato              clean_fpr=0.050 att= 59/240 (zero-comp 14/135) dba=300/300 benQ_adv=0.041 benQ_dis=0.021 noQuorum=0/120 attShare=0.165 (curr 0.197)
+[fpr 0.0500] max_avverso ricalibrato              clean_fpr=0.050 att= 65/240 (zero-comp 21/135) dba=300/300 benQ_adv=0.037 benQ_dis=0.023 noQuorum=0/120 attShare=0.159 (curr 0.197)
+[fpr 0.0500] 2o_max_avverso ricalibrato (2 su 5)  clean_fpr=0.050 att= 73/240 (zero-comp 19/135) dba=300/300 benQ_adv=0.043 benQ_dis=0.024 noQuorum=0/120 attShare=0.154 (curr 0.197)
+[fpr 0.0500] max_bilaterale ricalibrato           clean_fpr=0.050 att= 16/240 (zero-comp 5/135) dba=300/300 benQ_adv=0.052 benQ_dis=0.057 noQuorum=4/120 attShare=0.191 (curr 0.197)
+[fpr 0.0500] somma_quadrati_bilat. ricalibrata    clean_fpr=0.050 att= 24/240 (zero-comp 8/135) dba=300/300 benQ_adv=0.049 benQ_dis=0.058 noQuorum=3/120 attShare=0.187 (curr 0.197)
+[fpr 0.0500] mahalanobis ricalibrata              clean_fpr=0.050 att= 47/240 (zero-comp 14/135) dba=300/300 benQ_adv=0.056 benQ_dis=0.083 noQuorum=3/120 attShare=0.169 (curr 0.197)
+[fpr 0.0500] 2o_max_avverso (z originali)         clean_fpr=0.050 att= 86/240 (zero-comp 27/135) dba=300/300 benQ_adv=0.041 benQ_dis=0.041 noQuorum=0/120 attShare=0.141 (curr 0.197)
+[fpr 0.0500] CUSUM su s attuale                   clean_fpr=0.050 att= 53/240 (zero-comp 22/135) dba=240/300 benQ_adv=0.046 benQ_dis=0.016 noQuorum=3/120 attShare=0.166 (curr 0.197)
+[fpr 0.0500] CUSUM su max_avverso ricalibrato     clean_fpr=0.050 att= 67/240 (zero-comp 30/135) dba=300/300 benQ_adv=0.042 benQ_dis=0.020 noQuorum=0/120 attShare=0.155 (curr 0.197)
+[fpr 0.0500] CUSUM su 2o_max ricalibrato          clean_fpr=0.050 att= 67/240 (zero-comp 31/135) dba=300/300 benQ_adv=0.042 benQ_dis=0.026 noQuorum=0/120 attShare=0.155 (curr 0.197)
+
+median signed z (positive = adverse):
+  clean benign         coordinate_m=+1.52 cosine_to_me=+11.84 mad_score=+0.19 relative_nor=+0.00 validation_i=+0.24
+  adaptive attacker    coordinate_m=+4.12 cosine_to_me=+23.18 mad_score=+0.67 relative_nor=+0.97 validation_i=+0.75
+  controlled attacked  coordinate_m=+221.99 cosine_to_me=+76.58 mad_score=+203.94 relative_nor=+192.00 validation_i=+30.58
+  adaptive benign      coordinate_m=+1.35 cosine_to_me=+9.45 mad_score=-0.01 relative_nor=+0.00 validation_i=+0.24
+
+median RE-STANDARDIZED z:
+  clean benign         coordinate_m=+0.00 cosine_to_me=+0.00 mad_score=+0.00 relative_nor=+0.00 validation_i=-0.00
+  adaptive attacker    coordinate_m=+1.31 cosine_to_me=+0.69 mad_score=+0.49 relative_nor=+1.18 validation_i=+0.21
+  adaptive benign      coordinate_m=-0.08 cosine_to_me=-0.15 mad_score=-0.19 relative_nor=+0.00 validation_i=+0.00
+
+single-indicator AUC (adaptive attacker vs adaptive benign, signed z):
+   coordinate_m=0.823 cosine_to_me=0.777 mad_score=0.683 relative_nor=0.696 validation_i=0.642
+   score AUCs: mean_capped (attuale s)=0.816 mean_capped ricalibrato=0.803 max_avverso ricalibrato=0.789 2o_max_avverso ricalibra=0.804 max_bilaterale ricalibra=0.583 somma_quadrati_bilat. ri=0.600 mahalanobis ricalibrata=0.629 2o_max_avverso (z origin=0.834 CUSUM su s attuale=0.838 CUSUM su max_avverso ric=0.839 CUSUM su 2o_max ricalibr=0.845
+
+fraction with z<0 (component=0) :
+  clean benign         coordinate_m=0.20 cosine_to_me=0.29 mad_score=0.47 relative_nor=0.53 validation_i=0.44
+  adaptive attacker    coordinate_m=0.01 cosine_to_me=0.00 mad_score=0.23 relative_nor=0.33 validation_i=0.29

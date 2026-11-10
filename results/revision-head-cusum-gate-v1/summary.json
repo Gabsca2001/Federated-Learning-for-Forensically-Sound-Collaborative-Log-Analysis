@@ -1,0 +1,498 @@
+{
+ "hypotheses": {
+  "H1_head_cusum_vs_gated_composite": {
+   "lower": 0,
+   "higher": 4,
+   "equal": 17,
+   "undefined": 3
+  },
+  "H2_head_cusum_vs_tpm_only_effective": {
+   "lower": 16,
+   "higher": 0,
+   "equal": 3,
+   "undefined": 0
+  },
+  "H3_headfrozen_head_cusum_vs_tpm_only": {
+   "lower": 5,
+   "higher": 0,
+   "equal": 1,
+   "undefined": 0
+  },
+  "aux_head_max_vs_gated_composite": {
+   "lower": 0,
+   "higher": 4,
+   "equal": 17,
+   "undefined": 3
+  },
+  "aux_head_cusum_vs_head_max": {
+   "lower": 0,
+   "higher": 5,
+   "equal": 19,
+   "undefined": 0
+  },
+  "H1_holds": false,
+  "H2_holds": true,
+  "reserved_clean_guard_ok": true,
+  "reportable_as_improved": false
+ },
+ "clean_guard": [
+  {
+   "seed": 2026111021,
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2026111022,
+   "ok": true,
+   "benign_q": 0.04888888888888889,
+   "f1_loss": [
+    0.0012894650729980972,
+    -0.00015475882974824717
+   ]
+  },
+  {
+   "seed": 2026111023,
+   "ok": true,
+   "benign_q": 0.02666666666666667,
+   "f1_loss": [
+    -0.0026263755722079063,
+    8.726272515457989e-05
+   ]
+  },
+  {
+   "seed": 2026111024,
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2026111025,
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2026111026,
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "aggregate": [
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.12797502662756943
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.20335182125560528
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.20097156385599635
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 1.0,
+   "mean_full_final": 0.9994280812124678,
+   "mean_worst_peak": 1.0,
+   "mean_attacker_influence": 0.20001878992859826
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.12965852158181682
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.202875098808129
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.20049484140852006
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.9998093604041559,
+   "mean_full_final": 0.660852158993423,
+   "mean_worst_peak": 0.9998093604041559,
+   "mean_attacker_influence": 0.20001878992859826
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "iid",
+   "variant": "complete-trigger",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.04712801240551473
+  },
+  {
+   "cohort": "iid",
+   "variant": "complete-trigger",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.005127371273712737
+  },
+  {
+   "cohort": "iid",
+   "variant": "complete-trigger",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "complete-trigger",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.9790296444571537,
+   "mean_full_final": 0.4274139738823754,
+   "mean_worst_peak": 0.9790296444571537,
+   "mean_attacker_influence": 0.20001878992859826
+  },
+  {
+   "cohort": "iid",
+   "variant": "distributed",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.023450465575522328
+  },
+  {
+   "cohort": "iid",
+   "variant": "distributed",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "distributed",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "distributed",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.5858354780287865,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.5858354780287865,
+   "mean_attacker_influence": 0.20001878992859826
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.3163664093032123,
+   "mean_full_final": 0.1751977885806882,
+   "mean_worst_peak": 0.3163664093032123,
+   "mean_attacker_influence": 0.28781824410427115
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.4192164712610809,
+   "mean_full_final": 0.278619769326089,
+   "mean_worst_peak": 0.42665141549899915,
+   "mean_attacker_influence": 0.15783116565310465
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.37880087694214093,
+   "mean_full_final": 0.22066533218949577,
+   "mean_worst_peak": 0.37880087694214093,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.6665713468687446,
+   "mean_full_final": 0.5266418835192069,
+   "mean_worst_peak": 0.6665713468687446,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.32237155657230004,
+   "mean_full_final": 0.16585644838432942,
+   "mean_worst_peak": 0.32237155657230004,
+   "mean_attacker_influence": 0.2739364575251888
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.379277475931751,
+   "mean_full_final": 0.19912305785911733,
+   "mean_worst_peak": 0.379277475931751,
+   "mean_attacker_influence": 0.16300266051675305
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.37651320179201225,
+   "mean_full_final": 0.19540558574015823,
+   "mean_worst_peak": 0.37651320179201225,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive-headfrozen",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.6616147173767991,
+   "mean_full_final": 0.36583738442474506,
+   "mean_worst_peak": 0.6616147173767991,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "policy": "gated_composite",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": null
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "complete-trigger",
+   "policy": "gated_composite",
+   "complete": "2/3",
+   "mean_full_peak": 0.49985702030311696,
+   "mean_full_final": 0.48584501000857877,
+   "mean_worst_peak": 0.49985702030311696,
+   "mean_attacker_influence": 0.17754347036372783
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "complete-trigger",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.5456105233056906,
+   "mean_full_final": 0.33190353636450287,
+   "mean_worst_peak": 0.5456105233056906,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "complete-trigger",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.5456105233056906,
+   "mean_full_final": 0.33190353636450287,
+   "mean_worst_peak": 0.5456105233056906,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "complete-trigger",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.5456105233056906,
+   "mean_full_final": 0.33190353636450287,
+   "mean_worst_peak": 0.5456105233056906,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "distributed",
+   "policy": "gated_composite",
+   "complete": "1/3",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0,
+   "mean_attacker_influence": 0.017051419316393795
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "distributed",
+   "policy": "head_cusum",
+   "complete": "3/3",
+   "mean_full_peak": 0.378896196740063,
+   "mean_full_final": 0.22104661138118387,
+   "mean_worst_peak": 0.378896196740063,
+   "mean_attacker_influence": 0.17305524239007894
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "distributed",
+   "policy": "head_max",
+   "complete": "3/3",
+   "mean_full_peak": 0.3786102373462968,
+   "mean_full_final": 0.19111619483366696,
+   "mean_worst_peak": 0.3786102373462968,
+   "mean_attacker_influence": 0.162698917737221
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "distributed",
+   "policy": "tpm_only",
+   "complete": "3/3",
+   "mean_full_peak": 0.378896196740063,
+   "mean_full_final": 0.22104661138118387,
+   "mean_worst_peak": 0.378896196740063,
+   "mean_attacker_influence": 0.17305524239007894
+  }
+ ],
+ "cases": 120,
+ "definitions": "Report for the head-CUSUM live study (reads closed, verified, tested evidence).\n\nDefinitions follow docs/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:\n* worst-trigger ASR(r) = max(full-trigger ASR, every component-trigger ASR) on test.\n* paired peak harm = max over rounds of worst(attacked, r) - worst(own-policy clean, r);\n  undefined when either history is incomplete (never treated as zero).\n* effective TPM-only control: at round 10 or 15, worst-trigger ASR >= clean + 0.20\n  with clean macro-F1 loss <= 0.05 vs the paired TPM-only clean history.\nUsage: report_head_cusum_study.py [--lab PATH] [--out PATH]\n"
+}
