@@ -40,7 +40,7 @@ future experiments stays in `artifacts/`.
 `m5-secure-multiround-local-test-v1` (starting model), `revision-bounded-influence-v1`
 (clipping limits), `revision-clean-gate-calibration-v1` (clean histories, training protocol),
 `revision-dba-three-seed-v1`, `revision-trigger-probe-live` (main result, cases already
-archived per case), `ton-fl-gate-v1`, retired v1/factorial records, everything under ~300 MB.
+archived per case), `revision-trigger-probe-evasion-live` (cases archived per case), retired v1/factorial records, everything under ~300 MB.
 For `revision-head-gate-v2`, `revision-head-gate-v2-confirm`, `revision-capped-final-v1` and
 `revision-gate-trajectories-v1` the `partitions/` (needed for partition-distinctness checks),
 protocols, models and summaries stay; their case evidence moves.
