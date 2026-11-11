@@ -1,0 +1,1041 @@
+{
+ "hypotheses": {
+  "K1_probek_adds_to_clipping": {
+   "lower": 19,
+   "higher": 1,
+   "equal": 4,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2027710001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4183585930797827
+    },
+    {
+     "seed": 2027710001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.18444380897912496
+    },
+    {
+     "seed": 2027710001,
+     "variant": "adaptive",
+     "a": 0.721475550471833,
+     "b": 0.7494995710609094
+    },
+    {
+     "seed": 2027711001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.2610809265084358
+    },
+    {
+     "seed": 2027711001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.1429796968830426
+    },
+    {
+     "seed": 2027711001,
+     "variant": "adaptive",
+     "a": 0.5041464112096082,
+     "b": 0.7843866171003717
+    },
+    {
+     "seed": 2027712001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.29939948527309124
+    },
+    {
+     "seed": 2027712001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.14812696597083214
+    },
+    {
+     "seed": 2027712001,
+     "variant": "adaptive",
+     "a": 0.6425507577923935,
+     "b": 0.7380611953102659
+    },
+    {
+     "seed": 2027713001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.26937374892765226
+    },
+    {
+     "seed": 2027713001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.14212181870174434
+    },
+    {
+     "seed": 2027713001,
+     "variant": "adaptive",
+     "a": 0.3840434658278524,
+     "b": 0.6399771232484988
+    },
+    {
+     "seed": 2027720001,
+     "variant": "pair-dba",
+     "a": 0.33056905919359447,
+     "b": 0.9988561624249357
+    },
+    {
+     "seed": 2027720001,
+     "variant": "evasive",
+     "a": 0.5390334572490706,
+     "b": 0.9957106090935087
+    },
+    {
+     "seed": 2027720001,
+     "variant": "adaptive",
+     "a": 1.0,
+     "b": 1.0
+    },
+    {
+     "seed": 2027721001,
+     "variant": "pair-dba",
+     "a": 0.0017157563625965072,
+     "b": 0.07778095510437517
+    },
+    {
+     "seed": 2027721001,
+     "variant": "evasive",
+     "a": 0.04804117815270231,
+     "b": 0.040892193308550186
+    },
+    {
+     "seed": 2027721001,
+     "variant": "adaptive",
+     "a": 0.44609665427509293,
+     "b": 0.44609665427509293
+    },
+    {
+     "seed": 2027722001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4343723191306834
+    },
+    {
+     "seed": 2027722001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.32256219616814413
+    },
+    {
+     "seed": 2027722001,
+     "variant": "adaptive",
+     "a": 0.4927080354589648,
+     "b": 0.4927080354589648
+    },
+    {
+     "seed": 2027723001,
+     "variant": "pair-dba",
+     "a": 0.02573634543894767,
+     "b": 0.7903917643694596
+    },
+    {
+     "seed": 2027723001,
+     "variant": "evasive",
+     "a": 0.02573634543894767,
+     "b": 0.708035458964827
+    },
+    {
+     "seed": 2027723001,
+     "variant": "adaptive",
+     "a": 0.9997140406062339,
+     "b": 0.9997140406062339
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "probek+bounded",
+   "b": "tpm_only+bounded",
+   "text": "probek+bounded lower paired peak harm than clipping alone, all attacks (majority of defined comparisons)"
+  },
+  "K2_probek_dba_and_evasive": {
+   "lower": 15,
+   "higher": 1,
+   "equal": 0,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2027710001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4183585930797827
+    },
+    {
+     "seed": 2027710001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.18444380897912496
+    },
+    {
+     "seed": 2027711001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.2610809265084358
+    },
+    {
+     "seed": 2027711001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.1429796968830426
+    },
+    {
+     "seed": 2027712001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.29939948527309124
+    },
+    {
+     "seed": 2027712001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.14812696597083214
+    },
+    {
+     "seed": 2027713001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.26937374892765226
+    },
+    {
+     "seed": 2027713001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.14212181870174434
+    },
+    {
+     "seed": 2027720001,
+     "variant": "pair-dba",
+     "a": 0.33056905919359447,
+     "b": 0.9988561624249357
+    },
+    {
+     "seed": 2027720001,
+     "variant": "evasive",
+     "a": 0.5390334572490706,
+     "b": 0.9957106090935087
+    },
+    {
+     "seed": 2027721001,
+     "variant": "pair-dba",
+     "a": 0.0017157563625965072,
+     "b": 0.07778095510437517
+    },
+    {
+     "seed": 2027721001,
+     "variant": "evasive",
+     "a": 0.04804117815270231,
+     "b": 0.040892193308550186
+    },
+    {
+     "seed": 2027722001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4343723191306834
+    },
+    {
+     "seed": 2027722001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.32256219616814413
+    },
+    {
+     "seed": 2027723001,
+     "variant": "pair-dba",
+     "a": 0.02573634543894767,
+     "b": 0.7903917643694596
+    },
+    {
+     "seed": 2027723001,
+     "variant": "evasive",
+     "a": 0.02573634543894767,
+     "b": 0.708035458964827
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "probek+bounded",
+   "b": "tpm_only+bounded",
+   "text": "same, restricted to the attacks the probe targets (ordinary and probe-aware pair DBA)"
+  },
+  "K3_probek_vs_reference": {
+   "lower": 17,
+   "higher": 0,
+   "equal": 1,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2027710001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4392336288247069
+    },
+    {
+     "seed": 2027710001,
+     "variant": "adaptive",
+     "a": 0.721475550471833,
+     "b": 1.0
+    },
+    {
+     "seed": 2027711001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.26622819559622535
+    },
+    {
+     "seed": 2027711001,
+     "variant": "adaptive",
+     "a": 0.5041464112096082,
+     "b": 1.0
+    },
+    {
+     "seed": 2027712001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.31770088647412065
+    },
+    {
+     "seed": 2027712001,
+     "variant": "adaptive",
+     "a": 0.6425507577923935,
+     "b": 1.0
+    },
+    {
+     "seed": 2027713001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.27966828710323133
+    },
+    {
+     "seed": 2027713001,
+     "variant": "adaptive",
+     "a": 0.3840434658278524,
+     "b": 1.0
+    },
+    {
+     "seed": 2027720001,
+     "variant": "pair-dba",
+     "a": 0.33056905919359447,
+     "b": 0.9997140406062339
+    },
+    {
+     "seed": 2027720001,
+     "variant": "evasive",
+     "a": 0.5390334572490706,
+     "b": 0.996568487274807
+    },
+    {
+     "seed": 2027720001,
+     "variant": "adaptive",
+     "a": 1.0,
+     "b": 1.0
+    },
+    {
+     "seed": 2027721001,
+     "variant": "adaptive",
+     "a": 0.44609665427509293,
+     "b": 0.9859879897054619
+    },
+    {
+     "seed": 2027722001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.44581069488132685
+    },
+    {
+     "seed": 2027722001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.27938232770946525
+    },
+    {
+     "seed": 2027722001,
+     "variant": "adaptive",
+     "a": 0.4927080354589648,
+     "b": 1.0
+    },
+    {
+     "seed": 2027723001,
+     "variant": "pair-dba",
+     "a": 0.02573634543894767,
+     "b": 0.7331998856162425
+    },
+    {
+     "seed": 2027723001,
+     "variant": "evasive",
+     "a": 0.02573634543894767,
+     "b": 0.5530454675436088
+    },
+    {
+     "seed": 2027723001,
+     "variant": "adaptive",
+     "a": 0.9997140406062339,
+     "b": 1.0
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "probek+bounded",
+   "b": "tpm_only+fedavg",
+   "text": "probek+bounded lower paired peak harm than TPM-only FedAvg in effective controls (majority)"
+  },
+  "K4_probek_vs_deployed_probe": {
+   "lower": 6,
+   "higher": 1,
+   "equal": 9,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2027710001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027710001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027711001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027711001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027712001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027712001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027713001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027713001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027720001,
+     "variant": "pair-dba",
+     "a": 0.33056905919359447,
+     "b": 0.6654275092936803
+    },
+    {
+     "seed": 2027720001,
+     "variant": "evasive",
+     "a": 0.5390334572490706,
+     "b": 0.9894195024306549
+    },
+    {
+     "seed": 2027721001,
+     "variant": "pair-dba",
+     "a": 0.0017157563625965072,
+     "b": 0.015727766657134688
+    },
+    {
+     "seed": 2027721001,
+     "variant": "evasive",
+     "a": 0.04804117815270231,
+     "b": 0.032027452101801544
+    },
+    {
+     "seed": 2027722001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.14469545324563912
+    },
+    {
+     "seed": 2027722001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.0
+    },
+    {
+     "seed": 2027723001,
+     "variant": "pair-dba",
+     "a": 0.02573634543894767,
+     "b": 0.030311695739205034
+    },
+    {
+     "seed": 2027723001,
+     "variant": "evasive",
+     "a": 0.02573634543894767,
+     "b": 0.5244495281670003
+    }
+   ],
+   "holds_majority_lower": false,
+   "a": "probek+bounded",
+   "b": "probe+bounded",
+   "text": "descriptive: per-key vs deployed raw probe (undefined if probe+bounded fails the guard)"
+  }
+ },
+ "clean_guard": [
+  {
+   "seed": 2027710001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.004641433362200242,
+    -0.0027100413578290405
+   ]
+  },
+  {
+   "seed": 2027710001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.004641433362200242,
+    -0.0027100413578290405
+   ]
+  },
+  {
+   "seed": 2027710001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.004641433362200242,
+    -0.0027100413578290405
+   ]
+  },
+  {
+   "seed": 2027711001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027711001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027711001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027712001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0029379980632155966
+   ]
+  },
+  {
+   "seed": 2027712001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0029379980632155966
+   ]
+  },
+  {
+   "seed": 2027712001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0029379980632155966
+   ]
+  },
+  {
+   "seed": 2027713001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0030457428530450414,
+    0.0032873413429647114
+   ]
+  },
+  {
+   "seed": 2027713001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0030457428530450414,
+    0.0032873413429647114
+   ]
+  },
+  {
+   "seed": 2027713001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0030457428530450414,
+    0.0032873413429647114
+   ]
+  },
+  {
+   "seed": 2027720001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0004392320746340328,
+    -0.000701646149085855
+   ]
+  },
+  {
+   "seed": 2027720001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0004392320746340328,
+    -0.000701646149085855
+   ]
+  },
+  {
+   "seed": 2027720001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0004392320746340328,
+    -0.000701646149085855
+   ]
+  },
+  {
+   "seed": 2027721001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.000989820699571764,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027721001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.000989820699571764,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027721001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.000989820699571764,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027722001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0002999432726659146
+   ]
+  },
+  {
+   "seed": 2027722001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0002999432726659146
+   ]
+  },
+  {
+   "seed": 2027722001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0002999432726659146
+   ]
+  },
+  {
+   "seed": 2027723001,
+   "arm": "probe+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.00020396962983415534,
+    -0.0016134062172364905
+   ]
+  },
+  {
+   "seed": 2027723001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.00020396962983415534,
+    -0.0016134062172364905
+   ]
+  },
+  {
+   "seed": 2027723001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.00020396962983415534,
+    -0.0016134062172364905
+   ]
+  }
+ ],
+ "aggregate": [
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.4586788676008007,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.6371890191592794
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.3372891049470975,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.5630540463254218
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.4938518730340292,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.7279811266800115
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 1.0,
+   "mean_full_final": 0.9997855304546754,
+   "mean_worst_peak": 1.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0050042893909064915,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.154418072633686
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.009007720903631684,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.16149556762939662
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.050829282241921646,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.3120531884472405
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.08457249070631971,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.32570774949957104
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.7346296825850729,
+   "mean_full_final": 0.39569631112382037,
+   "mean_worst_peak": 0.7346296825850729
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.7346296825850729,
+   "mean_full_final": 0.3526594223620246,
+   "mean_worst_peak": 0.7346296825850729
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.7346296825850729,
+   "mean_full_final": 0.39569631112382037,
+   "mean_worst_peak": 0.7346296825850729
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.9964969974263654,
+   "mean_full_final": 0.6150986559908493,
+   "mean_worst_peak": 0.9964969974263654
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.09758364312267657,
+   "mean_full_final": 0.09751215327423506,
+   "mean_worst_peak": 0.11517014583929082
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.09758364312267657,
+   "mean_full_final": 0.09751215327423506,
+   "mean_worst_peak": 0.11517014583929082
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.09758364312267657,
+   "mean_full_final": 0.09751215327423506,
+   "mean_worst_peak": 0.11517014583929082
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.005433228481555619,
+   "mean_full_final": 0.0030740634829854157,
+   "mean_worst_peak": 0.02509293680297398
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.3798255647698027,
+   "mean_full_final": 0.21053760366028024,
+   "mean_worst_peak": 0.40098655990849297
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.15692021732913924,
+   "mean_full_final": 0.11302545038604518,
+   "mean_worst_peak": 0.18615956534172148
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.5074349442379182,
+   "mean_full_final": 0.2522876751501287,
+   "mean_worst_peak": 0.527166142407778
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.4583214183585931,
+   "mean_full_final": 0.22126108092650842,
+   "mean_worst_peak": 0.4804832713754647
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "probe+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.21454103517300543,
+   "mean_full_final": 0.06162424935659137,
+   "mean_worst_peak": 0.22676579925650558
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.10623391478410066,
+   "mean_full_final": 0.06412639405204461,
+   "mean_worst_peak": 0.12424935659136402
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.5564769802688019,
+   "mean_full_final": 0.15377466399771234,
+   "mean_worst_peak": 0.575564769802688
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.5449671146697169,
+   "mean_full_final": 0.05947955390334573,
+   "mean_worst_peak": 0.5624106376894481
+  }
+ ],
+ "reference": "tpm_only+fedavg",
+ "cases": 128,
+ "attacker_data_share": {
+  "2027710001": 0.1999718151071026,
+  "2027711001": 0.1999718151071026,
+  "2027712001": 0.1999718151071026,
+  "2027713001": 0.1999718151071026,
+  "2027720001": 0.25338218714768884,
+  "2027721001": 0.07708568207440812,
+  "2027722001": 0.10893461104847801,
+  "2027723001": 0.14458850056369785
+ },
+ "definitions": "Report for the head-CUSUM live study (reads closed, verified, tested evidence).\n\nDefinitions follow docs/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:\n* worst-trigger ASR(r) = max(full-trigger ASR, every component-trigger ASR) on test.\n* paired peak harm = max over rounds of worst(attacked, r) - worst(own-policy clean, r);\n  undefined when either history is incomplete (never treated as zero).\n* effective TPM-only control: at round 10 or 15, worst-trigger ASR >= clean + 0.20\n  with clean macro-F1 loss <= 0.05 vs the paired TPM-only clean history.\nUsage: report_head_cusum_study.py [--lab PATH] [--out PATH]\n"
+}

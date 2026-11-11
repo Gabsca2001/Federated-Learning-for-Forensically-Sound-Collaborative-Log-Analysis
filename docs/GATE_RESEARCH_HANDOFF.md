@@ -14,6 +14,7 @@ Branch `revision/head-gate-studies` (not pushed). Read this first in a new sessi
 | Geometric head gates (v1 head_cusum, v2 step-normalized, v3 round-relative) have unstable false positives (persistent per honest client) | documented; stop rule applied | `results/revision-head-cusum-gate-v1`, `-head-gate-v2-exploratory`, `-v2-confirm`, `-v3-dev` |
 | Bug: `_dirichlet_assignments` seed+attempt → consecutive seeds can share partitions | erratum; new studies check distinctness | `results/revision-head-cusum-gate-v1/README.md` |
 | **Probe vs probe-aware AND-trigger attacker (live)**: both probe arms fail the clean guard (honest client excluded 2 / 5 consecutive rounds); pair-probe clean-max thresholds ≈1 (inert). Pair attacks: clipping gives no protection in non-IID (peaks 48–100%) | predeclared live, hypotheses undefined (arms not qualified) | `results/revision-trigger-probe-evasion-live/README.md` |
+| **Per-key normalised probe (probek, x2 clean max per feature/value) vs pair DBA / evasive / adaptive (live, confirmatory)**: all arms pass the guard; K1-K3 hold (adds to clipping, beats reference); non-IID peaks 55.6->10.6 (DBA), 50.7->15.7 (evasive); adaptive attacker not stopped (non-IID 73.5% in all bounded arms) and causes honest exclusions up to 5 consecutive rounds in 2/8 runs; evasive controls weak (3/8) | predeclared live, confirmed with stated limits | `results/revision-probe-keynorm-confirm/README.md` |
 
 Probe development (detection, generality to 4 unseen triggers, threshold severity, AND-trigger
 evasion offline): `results/revision-trigger-probe-dev/README.md`, `results/revision-trigger-probe-thresholds/`.
@@ -31,11 +32,10 @@ evasion offline): `results/revision-trigger-probe-dev/README.md`, `results/revis
 
 ## Next planned experiment
 
-Done: probe-aware live study (`results/revision-trigger-probe-evasion-live/`). Open: (1) the probe's
-honest-flag stability (fails the 2-consecutive-round rule on fresh partitions; consider a
-persistence-aware rule declared on clean data only, e.g. per-client decay); (2) a discriminative
-pair-probe score (clean honest models already reach ≈1); (3) non-IID pair attacks defeat clipping
-(evasive peaks up to 100%) — the live evidence that the probe layer is needed. Optional: swtpm.
+Done: probe-aware live study and per-key probe confirmation (`results/revision-probe-keynorm-confirm/`).
+Open: (1) the adaptive interpolation attacker evades probek (4/240 quarantined) and drives honest
+persistent exclusions; a guard under attacked conditions is needed; (2) a stronger evasive live
+attacker (3/8 effective controls); (3) discriminative pair-probe score. Optional: swtpm.
 
 ## Environment notes (important)
 
