@@ -1,0 +1,78 @@
+{
+ "q98": {
+  "thresholds": {
+   "iid": 0.48065058889512063,
+   "non-iid": 0.6915311273135165
+  },
+  "clean_rate": 0.017333333333333333,
+  "clean_longest_consecutive": 5,
+  "benign_rate_attacked_runs": 0.014583333333333334,
+  "attacker_detection": {
+   "iid|adaptive": "19/150",
+   "iid|adaptive-headfrozen": "59/150",
+   "iid|complete-trigger": "150/150",
+   "iid|distributed": "150/150",
+   "non-iid|adaptive": "11/150",
+   "non-iid|adaptive-headfrozen": "25/150",
+   "non-iid|complete-trigger": "137/150",
+   "non-iid|distributed": "135/150"
+  }
+ },
+ "q995": {
+  "thresholds": {
+   "iid": 0.5406618059450364,
+   "non-iid": 0.8109927089175547
+  },
+  "clean_rate": 0.005333333333333333,
+  "clean_longest_consecutive": 3,
+  "benign_rate_attacked_runs": 0.0033333333333333335,
+  "attacker_detection": {
+   "iid|adaptive": "17/150",
+   "iid|adaptive-headfrozen": "55/150",
+   "iid|complete-trigger": "150/150",
+   "iid|distributed": "150/150",
+   "non-iid|adaptive": "6/150",
+   "non-iid|adaptive-headfrozen": "15/150",
+   "non-iid|complete-trigger": "111/150",
+   "non-iid|distributed": "98/150"
+  }
+ },
+ "max": {
+  "thresholds": {
+   "iid": 0.6085249579360629,
+   "non-iid": 0.8827818283791363
+  },
+  "clean_rate": 0.0,
+  "clean_longest_consecutive": 0,
+  "benign_rate_attacked_runs": 0.0008333333333333334,
+  "attacker_detection": {
+   "iid|adaptive": "15/150",
+   "iid|adaptive-headfrozen": "47/150",
+   "iid|complete-trigger": "150/150",
+   "iid|distributed": "150/150",
+   "non-iid|adaptive": "4/150",
+   "non-iid|adaptive-headfrozen": "9/150",
+   "non-iid|complete-trigger": "69/150",
+   "non-iid|distributed": "74/150"
+  }
+ },
+ "max_x1.1": {
+  "thresholds": {
+   "iid": 0.6693774537296692,
+   "non-iid": 0.97106001121705
+  },
+  "clean_rate": 0.0,
+  "clean_longest_consecutive": 0,
+  "benign_rate_attacked_runs": 0.0,
+  "attacker_detection": {
+   "iid|adaptive": "14/150",
+   "iid|adaptive-headfrozen": "38/150",
+   "iid|complete-trigger": "150/150",
+   "iid|distributed": "150/150",
+   "non-iid|adaptive": "1/150",
+   "non-iid|adaptive-headfrozen": "1/150",
+   "non-iid|complete-trigger": "1/150",
+   "non-iid|distributed": "37/150"
+  }
+ }
+}
