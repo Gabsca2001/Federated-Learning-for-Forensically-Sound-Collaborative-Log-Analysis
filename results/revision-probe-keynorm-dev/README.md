@@ -7,7 +7,7 @@ models: 12 verified clean TPM-only calibration histories, plus the 172 archived 
 rule chosen here must be confirmed on fresh partitions.
 Scripts: `scripts/revision_probe_persistence_dev.py` (→ `../revision-probe-persistence-dev/`),
 `scripts/revision_probe_keynorm_dev.py`, `scripts/revision_probe_keynorm_split.py`.
-Probe vectors: `vectors.json` (not committed, about 0.3 GB; it can be regenerated).
+Probe vectors: `vectors.json` (18 MB, not committed; regenerable with `extract`).
 Consistency check: the deployed rule replayed from the recomputed vectors reproduces the
 recorded decisions exactly (65 honest flags, 18/172 cases with ≥2 consecutive exclusions).
 
