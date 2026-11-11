@@ -30,7 +30,45 @@ IID assignment, especially late in training when honest updates become small and
 The exploratory attack-containment results therefore cannot be presented as confirmed;
 they hold for the assignments on which they were measured. No threshold was changed.
 
-Likely cause (hypothesis, not tested): z-scores are relative to fixed clean references,
+## Clipping confirmation (qualified arms, declared before evaluation)
+
+Declaration: [DECLARATION-BEFORE-EVALUATION.md](DECLARATION-BEFORE-EVALUATION.md)
+(sha256 `d48594ea…`). 80 cases (8 fresh assignments × 2 qualified arms × 5 conditions),
+all complete, all independently reconstructed; test opened after verification.
+Report: `clipping-report/`.
+
+| Hypothesis | lower | higher | equal | Result |
+|---|---:|---:|---:|---|
+| **K1** clipping vs FedAvg, all attacked variants | **29** | 1 | 2 | **confirmed** |
+| K2 effective reference controls only | 28 | 1 | 0 | confirmed |
+| per variant: adaptive | 8 | 0 | 0 | |
+| per variant: adaptive, head frozen | 8 | 0 | 0 | |
+| per variant: distributed DBA | 7 | 0 | 1 | |
+| per variant: complete-trigger DBA | 6 | 1 | 1 | |
+
+Clean budgets held on all 8 reserved clean assignments (no benign cost).
+
+Mean test full-trigger peak / final ASR (%), 4 assignments per cell:
+
+| Cohort | Attack | FedAvg | Clipping |
+|---|---|---:|---:|
+| IID | distributed | 55.0 / 0.0 | 38.2 / 0.0 |
+| IID | complete-trigger | 96.8 / 38.7 | 95.9 / 36.3 |
+| IID | adaptive | 100.0 / 100.0 | **44.0 / 0.0** |
+| IID | adaptive, head frozen | 100.0 / 73.0 | **11.4 / 0.0** |
+| non-IID | distributed | 30.8 / 0.0 | 29.7 / 0.0 |
+| non-IID | complete-trigger | 55.1 / 32.6 | 54.8 / 26.4 |
+| non-IID | adaptive | 90.2 / 60.7 | **51.4 / 3.1** |
+| non-IID | adaptive, head frozen | 88.9 / 53.1 | **37.0 / 0.8** |
+
+Per-tensor clipping is confirmed on independent assignments as a cost-free defence that
+consistently reduces harm, strongly against scaled (adaptive) updates (final ASR ≈ 0)
+and only marginally against complete-trigger DBA, whose poisoned updates are not larger
+than benign ones. It is not a complete backdoor defence (peaks of 11–96% remain).
+
+## Likely cause of the head_v2 guard failure
+
+Hypothesis (not tested): z-scores are relative to fixed clean references,
 while the natural spread of honest updates changes across partitions and rounds. A
 round-relative scale (peers of the same round) would address this, but would be a new
 development study.
