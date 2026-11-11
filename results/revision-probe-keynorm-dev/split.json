@@ -1,0 +1,205 @@
+{
+ "raw (deployed)": {
+  "clean_honest": "16/15300",
+  "clean_longest": 2,
+  "clean_cases_failing": "4/68",
+  "failing": [
+   "non-iid-s2027603001-probe+bounded-clean",
+   "non-iid-s2027603001-probe2+bounded-clean",
+   "non-iid-s2027603001-tpm_only+bounded-clean",
+   "non-iid-s2027603001-tpm_only+fedavg-clean"
+  ],
+  "attacked_honest": "49/18720",
+  "attacked_honest_by_variant_gate": {
+   "adaptive|probe": "7/1440",
+   "adaptive|tpm_only": "15/2880",
+   "complete-trigger|probe": "1/1440",
+   "complete-trigger|tpm_only": "2/2880",
+   "distributed|probe": "1/1440",
+   "distributed|tpm_only": "2/2880",
+   "evasive|tpm_only": "12/2880",
+   "pair-dba|tpm_only": "9/2880"
+  },
+  "attacker_detection": {
+   "evasion|evasive|iid": "218/240",
+   "evasion|evasive|non-iid": "69/240",
+   "evasion|pair-dba|iid": "240/240",
+   "evasion|pair-dba|non-iid": "113/240",
+   "probe-live|adaptive|iid": "6/360",
+   "probe-live|adaptive|non-iid": "5/360",
+   "probe-live|complete-trigger|iid": "360/360",
+   "probe-live|complete-trigger|non-iid": "276/360",
+   "probe-live|distributed|iid": "360/360",
+   "probe-live|distributed|non-iid": "199/360"
+  }
+ },
+ "per-key x1.0": {
+  "clean_honest": "336/15300",
+  "clean_longest": 15,
+  "clean_cases_failing": "34/68",
+  "failing": [
+   "iid-s2027511001-probe+bounded-clean",
+   "iid-s2027511001-tpm_only+bounded-clean",
+   "iid-s2027513001-probe+bounded-clean",
+   "iid-s2027513001-tpm_only+bounded-clean",
+   "iid-s2027513001-tpm_only+fedavg-clean",
+   "non-iid-s2027520001-probe+bounded-clean",
+   "non-iid-s2027520001-tpm_only+bounded-clean",
+   "non-iid-s2027520001-tpm_only+fedavg-clean",
+   "non-iid-s2027522001-probe+bounded-clean",
+   "non-iid-s2027522001-tpm_only+bounded-clean",
+   "non-iid-s2027522001-tpm_only+fedavg-clean",
+   "non-iid-s2027523001-probe+bounded-clean",
+   "non-iid-s2027523001-tpm_only+bounded-clean",
+   "non-iid-s2027523001-tpm_only+fedavg-clean",
+   "non-iid-s2027502001-tpm_only+fedavg-clean",
+   "non-iid-s2027503001-probe+bounded-clean",
+   "non-iid-s2027503001-tpm_only+bounded-clean",
+   "non-iid-s2027503001-tpm_only+fedavg-clean",
+   "iid-s2027612001-tpm_only+bounded-clean",
+   "non-iid-s2027620001-tpm_only+bounded-clean",
+   "non-iid-s2027620001-tpm_only+fedavg-clean",
+   "non-iid-s2027621001-tpm_only+bounded-clean",
+   "non-iid-s2027621001-tpm_only+fedavg-clean",
+   "non-iid-s2027622001-tpm_only+bounded-clean",
+   "non-iid-s2027622001-tpm_only+fedavg-clean",
+   "iid-s2027600001-probe+bounded-clean",
+   "iid-s2027600001-probe2+bounded-clean",
+   "iid-s2027600001-tpm_only+bounded-clean",
+   "iid-s2027600001-tpm_only+fedavg-clean",
+   "non-iid-s2027602001-tpm_only+fedavg-clean",
+   "non-iid-s2027603001-probe+bounded-clean",
+   "non-iid-s2027603001-probe2+bounded-clean",
+   "non-iid-s2027603001-tpm_only+bounded-clean",
+   "non-iid-s2027603001-tpm_only+fedavg-clean"
+  ],
+  "attacked_honest": "1385/18720",
+  "attacked_honest_by_variant_gate": {
+   "adaptive|probe": "108/1440",
+   "adaptive|tpm_only": "625/2880",
+   "complete-trigger|probe": "30/1440",
+   "complete-trigger|tpm_only": "121/2880",
+   "distributed|probe": "37/1440",
+   "distributed|tpm_only": "126/2880",
+   "evasive|tpm_only": "189/2880",
+   "pair-dba|tpm_only": "149/2880"
+  },
+  "attacker_detection": {
+   "evasion|evasive|iid": "240/240",
+   "evasion|evasive|non-iid": "228/240",
+   "evasion|pair-dba|iid": "240/240",
+   "evasion|pair-dba|non-iid": "240/240",
+   "probe-live|adaptive|iid": "59/360",
+   "probe-live|adaptive|non-iid": "12/360",
+   "probe-live|complete-trigger|iid": "360/360",
+   "probe-live|complete-trigger|non-iid": "360/360",
+   "probe-live|distributed|iid": "360/360",
+   "probe-live|distributed|non-iid": "360/360"
+  }
+ },
+ "per-key x1.25": {
+  "clean_honest": "147/15300",
+  "clean_longest": 14,
+  "clean_cases_failing": "15/68",
+  "failing": [
+   "non-iid-s2027520001-probe+bounded-clean",
+   "non-iid-s2027520001-tpm_only+bounded-clean",
+   "non-iid-s2027520001-tpm_only+fedavg-clean",
+   "non-iid-s2027522001-probe+bounded-clean",
+   "non-iid-s2027522001-tpm_only+bounded-clean",
+   "non-iid-s2027522001-tpm_only+fedavg-clean",
+   "non-iid-s2027502001-tpm_only+fedavg-clean",
+   "non-iid-s2027621001-tpm_only+bounded-clean",
+   "non-iid-s2027621001-tpm_only+fedavg-clean",
+   "non-iid-s2027622001-tpm_only+bounded-clean",
+   "non-iid-s2027622001-tpm_only+fedavg-clean",
+   "iid-s2027600001-probe+bounded-clean",
+   "iid-s2027600001-probe2+bounded-clean",
+   "iid-s2027600001-tpm_only+bounded-clean",
+   "iid-s2027600001-tpm_only+fedavg-clean"
+  ],
+  "attacked_honest": "987/18720",
+  "attacked_honest_by_variant_gate": {
+   "adaptive|probe": "89/1440",
+   "adaptive|tpm_only": "537/2880",
+   "complete-trigger|probe": "15/1440",
+   "complete-trigger|tpm_only": "80/2880",
+   "distributed|probe": "16/1440",
+   "distributed|tpm_only": "83/2880",
+   "evasive|tpm_only": "81/2880",
+   "pair-dba|tpm_only": "86/2880"
+  },
+  "attacker_detection": {
+   "evasion|evasive|iid": "240/240",
+   "evasion|evasive|non-iid": "222/240",
+   "evasion|pair-dba|iid": "240/240",
+   "evasion|pair-dba|non-iid": "240/240",
+   "probe-live|adaptive|iid": "59/360",
+   "probe-live|adaptive|non-iid": "12/360",
+   "probe-live|complete-trigger|iid": "360/360",
+   "probe-live|complete-trigger|non-iid": "360/360",
+   "probe-live|distributed|iid": "360/360",
+   "probe-live|distributed|non-iid": "360/360"
+  }
+ },
+ "per-key x1.5": {
+  "clean_honest": "23/15300",
+  "clean_longest": 2,
+  "clean_cases_failing": "1/68",
+  "failing": [
+   "non-iid-s2027520001-tpm_only+fedavg-clean"
+  ],
+  "attacked_honest": "653/18720",
+  "attacked_honest_by_variant_gate": {
+   "adaptive|probe": "63/1440",
+   "adaptive|tpm_only": "359/2880",
+   "complete-trigger|probe": "5/1440",
+   "complete-trigger|tpm_only": "60/2880",
+   "distributed|probe": "9/1440",
+   "distributed|tpm_only": "64/2880",
+   "evasive|tpm_only": "53/2880",
+   "pair-dba|tpm_only": "40/2880"
+  },
+  "attacker_detection": {
+   "evasion|evasive|iid": "240/240",
+   "evasion|evasive|non-iid": "222/240",
+   "evasion|pair-dba|iid": "240/240",
+   "evasion|pair-dba|non-iid": "240/240",
+   "probe-live|adaptive|iid": "41/360",
+   "probe-live|adaptive|non-iid": "12/360",
+   "probe-live|complete-trigger|iid": "360/360",
+   "probe-live|complete-trigger|non-iid": "360/360",
+   "probe-live|distributed|iid": "360/360",
+   "probe-live|distributed|non-iid": "360/360"
+  }
+ },
+ "per-key x2.0": {
+  "clean_honest": "0/15300",
+  "clean_longest": 0,
+  "clean_cases_failing": "0/68",
+  "failing": [],
+  "attacked_honest": "377/18720",
+  "attacked_honest_by_variant_gate": {
+   "adaptive|probe": "26/1440",
+   "adaptive|tpm_only": "227/2880",
+   "complete-trigger|probe": "1/1440",
+   "complete-trigger|tpm_only": "24/2880",
+   "distributed|probe": "3/1440",
+   "distributed|tpm_only": "22/2880",
+   "evasive|tpm_only": "48/2880",
+   "pair-dba|tpm_only": "26/2880"
+  },
+  "attacker_detection": {
+   "evasion|evasive|iid": "240/240",
+   "evasion|evasive|non-iid": "222/240",
+   "evasion|pair-dba|iid": "240/240",
+   "evasion|pair-dba|non-iid": "240/240",
+   "probe-live|adaptive|iid": "29/360",
+   "probe-live|adaptive|non-iid": "12/360",
+   "probe-live|complete-trigger|iid": "360/360",
+   "probe-live|complete-trigger|non-iid": "360/360",
+   "probe-live|distributed|iid": "360/360",
+   "probe-live|distributed|non-iid": "360/360"
+  }
+ }
+}

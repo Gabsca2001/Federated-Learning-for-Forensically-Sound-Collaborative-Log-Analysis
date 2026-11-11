@@ -1,0 +1,1024 @@
+{
+ "report": {
+  "raw clean-max (deployed)": {
+   "honest": 65,
+   "honest_rate": 0.0019106407995296885,
+   "longest_honest_run": 5,
+   "cases_failing": "18/172",
+   "failing": [
+    "iid-s2027511001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-probe+bounded-adaptive",
+    "non-iid-s2027520001-tpm_only+bounded-adaptive",
+    "non-iid-s2027520001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-probe+bounded-adaptive",
+    "non-iid-s2027522001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027523001-probe+bounded-adaptive",
+    "non-iid-s2027523001-tpm_only+bounded-adaptive",
+    "iid-s2027611001-tpm_only+bounded-pair-dba",
+    "iid-s2027611001-tpm_only+fedavg-pair-dba",
+    "iid-s2027612001-tpm_only+bounded-pair-dba",
+    "iid-s2027612001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027622001-tpm_only+bounded-evasive",
+    "non-iid-s2027622001-tpm_only+fedavg-evasive",
+    "non-iid-s2027603001-probe+bounded-clean",
+    "non-iid-s2027603001-probe2+bounded-clean",
+    "non-iid-s2027603001-tpm_only+bounded-clean",
+    "non-iid-s2027603001-tpm_only+fedavg-clean"
+   ],
+   "attacker_detection": {
+    "evasion|evasive|iid": "218/240",
+    "evasion|evasive|non-iid": "69/240",
+    "evasion|pair-dba|iid": "240/240",
+    "evasion|pair-dba|non-iid": "113/240",
+    "probe-live|adaptive|iid": "6/360",
+    "probe-live|adaptive|non-iid": "5/360",
+    "probe-live|complete-trigger|iid": "360/360",
+    "probe-live|complete-trigger|non-iid": "276/360",
+    "probe-live|distributed|iid": "360/360",
+    "probe-live|distributed|non-iid": "199/360"
+   },
+   "honest_flag_features": {
+    "12": 53,
+    "1": 7,
+    "13": 2,
+    "0": 2,
+    "14": 1
+   },
+   "attacker_flag_features": {
+    "17": 528,
+    "12": 333,
+    "3": 246,
+    "24": 186,
+    "15": 167,
+    "13": 141,
+    "22": 108,
+    "0": 77
+   }
+  },
+  "per-key, floor 0.05": {
+   "honest": 1864,
+   "honest_rate": 0.05479129923574368,
+   "longest_honest_run": 15,
+   "cases_failing": "97/172",
+   "failing": [
+    "iid-s2027510001-probe+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-complete-trigger",
+    "iid-s2027510001-tpm_only+bounded-distributed",
+    "iid-s2027510001-tpm_only+fedavg-adaptive",
+    "iid-s2027510001-tpm_only+fedavg-complete-trigger",
+    "iid-s2027510001-tpm_only+fedavg-distributed",
+    "iid-s2027511001-probe+bounded-clean",
+    "iid-s2027511001-tpm_only+bounded-clean",
+    "iid-s2027511001-tpm_only+fedavg-adaptive",
+    "iid-s2027512001-tpm_only+fedavg-adaptive",
+    "iid-s2027513001-probe+bounded-clean",
+    "iid-s2027513001-tpm_only+bounded-clean",
+    "iid-s2027513001-tpm_only+fedavg-adaptive",
+    "iid-s2027513001-tpm_only+fedavg-clean",
+    "non-iid-s2027520001-probe+bounded-adaptive",
+    "non-iid-s2027520001-probe+bounded-clean",
+    "non-iid-s2027520001-probe+bounded-complete-trigger",
+    "non-iid-s2027520001-probe+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+bounded-adaptive",
+    "non-iid-s2027520001-tpm_only+bounded-clean",
+    "non-iid-s2027520001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027520001-tpm_only+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-tpm_only+fedavg-clean",
+    "non-iid-s2027520001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027520001-tpm_only+fedavg-distributed",
+    "non-iid-s2027521001-probe+bounded-adaptive",
+    "non-iid-s2027521001-tpm_only+bounded-adaptive",
+    "non-iid-s2027521001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-probe+bounded-adaptive",
+    "non-iid-s2027522001-probe+bounded-clean",
+    "non-iid-s2027522001-probe+bounded-complete-trigger",
+    "non-iid-s2027522001-probe+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+bounded-adaptive",
+    "non-iid-s2027522001-tpm_only+bounded-clean",
+    "non-iid-s2027522001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027522001-tpm_only+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-tpm_only+fedavg-clean",
+    "non-iid-s2027522001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027522001-tpm_only+fedavg-distributed",
+    "non-iid-s2027523001-probe+bounded-adaptive",
+    "non-iid-s2027523001-probe+bounded-clean",
+    "non-iid-s2027523001-probe+bounded-distributed",
+    "non-iid-s2027523001-tpm_only+bounded-adaptive",
+    "non-iid-s2027523001-tpm_only+bounded-clean",
+    "non-iid-s2027523001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027523001-tpm_only+bounded-distributed",
+    "non-iid-s2027523001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027523001-tpm_only+fedavg-clean",
+    "non-iid-s2027523001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027523001-tpm_only+fedavg-distributed",
+    "non-iid-s2027502001-tpm_only+fedavg-clean",
+    "non-iid-s2027503001-probe+bounded-clean",
+    "non-iid-s2027503001-tpm_only+bounded-clean",
+    "non-iid-s2027503001-tpm_only+fedavg-clean",
+    "iid-s2027610001-tpm_only+bounded-evasive",
+    "iid-s2027610001-tpm_only+bounded-pair-dba",
+    "iid-s2027610001-tpm_only+fedavg-evasive",
+    "iid-s2027610001-tpm_only+fedavg-pair-dba",
+    "iid-s2027611001-tpm_only+bounded-evasive",
+    "iid-s2027611001-tpm_only+bounded-pair-dba",
+    "iid-s2027611001-tpm_only+fedavg-evasive",
+    "iid-s2027611001-tpm_only+fedavg-pair-dba",
+    "iid-s2027612001-tpm_only+bounded-clean",
+    "iid-s2027612001-tpm_only+bounded-evasive",
+    "iid-s2027612001-tpm_only+bounded-pair-dba",
+    "iid-s2027612001-tpm_only+fedavg-evasive",
+    "iid-s2027612001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027620001-tpm_only+bounded-clean",
+    "non-iid-s2027620001-tpm_only+bounded-evasive",
+    "non-iid-s2027620001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027620001-tpm_only+fedavg-clean",
+    "non-iid-s2027620001-tpm_only+fedavg-evasive",
+    "non-iid-s2027620001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027621001-tpm_only+bounded-clean",
+    "non-iid-s2027621001-tpm_only+bounded-evasive",
+    "non-iid-s2027621001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027621001-tpm_only+fedavg-clean",
+    "non-iid-s2027621001-tpm_only+fedavg-evasive",
+    "non-iid-s2027621001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027622001-tpm_only+bounded-clean",
+    "non-iid-s2027622001-tpm_only+bounded-evasive",
+    "non-iid-s2027622001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027622001-tpm_only+fedavg-clean",
+    "non-iid-s2027622001-tpm_only+fedavg-evasive",
+    "non-iid-s2027622001-tpm_only+fedavg-pair-dba",
+    "iid-s2027600001-probe+bounded-clean",
+    "iid-s2027600001-probe2+bounded-clean",
+    "iid-s2027600001-tpm_only+bounded-clean",
+    "iid-s2027600001-tpm_only+fedavg-clean",
+    "non-iid-s2027602001-tpm_only+fedavg-clean",
+    "non-iid-s2027603001-probe+bounded-clean",
+    "non-iid-s2027603001-probe2+bounded-clean",
+    "non-iid-s2027603001-tpm_only+bounded-clean",
+    "non-iid-s2027603001-tpm_only+fedavg-clean"
+   ],
+   "attacker_detection": {
+    "evasion|evasive|iid": "240/240",
+    "evasion|evasive|non-iid": "233/240",
+    "evasion|pair-dba|iid": "240/240",
+    "evasion|pair-dba|non-iid": "240/240",
+    "probe-live|adaptive|iid": "67/360",
+    "probe-live|adaptive|non-iid": "13/360",
+    "probe-live|complete-trigger|iid": "360/360",
+    "probe-live|complete-trigger|non-iid": "360/360",
+    "probe-live|distributed|iid": "360/360",
+    "probe-live|distributed|non-iid": "360/360"
+   },
+   "honest_flag_features": {
+    "11": 473,
+    "17": 314,
+    "14": 246,
+    "13": 222,
+    "1": 89,
+    "12": 83
+   },
+   "attacker_flag_features": {
+    "17": 871,
+    "22": 311,
+    "15": 298,
+    "24": 225,
+    "3": 221,
+    "13": 207,
+    "21": 75,
+    "1": 66
+   }
+  },
+  "per-key, floor 0.1": {
+   "honest": 1721,
+   "honest_rate": 0.050587889476778364,
+   "longest_honest_run": 15,
+   "cases_failing": "97/172",
+   "failing": [
+    "iid-s2027510001-probe+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-complete-trigger",
+    "iid-s2027510001-tpm_only+bounded-distributed",
+    "iid-s2027510001-tpm_only+fedavg-adaptive",
+    "iid-s2027510001-tpm_only+fedavg-complete-trigger",
+    "iid-s2027510001-tpm_only+fedavg-distributed",
+    "iid-s2027511001-probe+bounded-clean",
+    "iid-s2027511001-tpm_only+bounded-clean",
+    "iid-s2027511001-tpm_only+fedavg-adaptive",
+    "iid-s2027512001-tpm_only+fedavg-adaptive",
+    "iid-s2027513001-probe+bounded-clean",
+    "iid-s2027513001-tpm_only+bounded-clean",
+    "iid-s2027513001-tpm_only+fedavg-adaptive",
+    "iid-s2027513001-tpm_only+fedavg-clean",
+    "non-iid-s2027520001-probe+bounded-adaptive",
+    "non-iid-s2027520001-probe+bounded-clean",
+    "non-iid-s2027520001-probe+bounded-complete-trigger",
+    "non-iid-s2027520001-probe+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+bounded-adaptive",
+    "non-iid-s2027520001-tpm_only+bounded-clean",
+    "non-iid-s2027520001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027520001-tpm_only+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-tpm_only+fedavg-clean",
+    "non-iid-s2027520001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027520001-tpm_only+fedavg-distributed",
+    "non-iid-s2027521001-probe+bounded-adaptive",
+    "non-iid-s2027521001-tpm_only+bounded-adaptive",
+    "non-iid-s2027521001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-probe+bounded-adaptive",
+    "non-iid-s2027522001-probe+bounded-clean",
+    "non-iid-s2027522001-probe+bounded-complete-trigger",
+    "non-iid-s2027522001-probe+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+bounded-adaptive",
+    "non-iid-s2027522001-tpm_only+bounded-clean",
+    "non-iid-s2027522001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027522001-tpm_only+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-tpm_only+fedavg-clean",
+    "non-iid-s2027522001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027522001-tpm_only+fedavg-distributed",
+    "non-iid-s2027523001-probe+bounded-adaptive",
+    "non-iid-s2027523001-probe+bounded-clean",
+    "non-iid-s2027523001-probe+bounded-distributed",
+    "non-iid-s2027523001-tpm_only+bounded-adaptive",
+    "non-iid-s2027523001-tpm_only+bounded-clean",
+    "non-iid-s2027523001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027523001-tpm_only+bounded-distributed",
+    "non-iid-s2027523001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027523001-tpm_only+fedavg-clean",
+    "non-iid-s2027523001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027523001-tpm_only+fedavg-distributed",
+    "non-iid-s2027502001-tpm_only+fedavg-clean",
+    "non-iid-s2027503001-probe+bounded-clean",
+    "non-iid-s2027503001-tpm_only+bounded-clean",
+    "non-iid-s2027503001-tpm_only+fedavg-clean",
+    "iid-s2027610001-tpm_only+bounded-evasive",
+    "iid-s2027610001-tpm_only+bounded-pair-dba",
+    "iid-s2027610001-tpm_only+fedavg-evasive",
+    "iid-s2027610001-tpm_only+fedavg-pair-dba",
+    "iid-s2027611001-tpm_only+bounded-evasive",
+    "iid-s2027611001-tpm_only+bounded-pair-dba",
+    "iid-s2027611001-tpm_only+fedavg-evasive",
+    "iid-s2027611001-tpm_only+fedavg-pair-dba",
+    "iid-s2027612001-tpm_only+bounded-clean",
+    "iid-s2027612001-tpm_only+bounded-evasive",
+    "iid-s2027612001-tpm_only+bounded-pair-dba",
+    "iid-s2027612001-tpm_only+fedavg-evasive",
+    "iid-s2027612001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027620001-tpm_only+bounded-clean",
+    "non-iid-s2027620001-tpm_only+bounded-evasive",
+    "non-iid-s2027620001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027620001-tpm_only+fedavg-clean",
+    "non-iid-s2027620001-tpm_only+fedavg-evasive",
+    "non-iid-s2027620001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027621001-tpm_only+bounded-clean",
+    "non-iid-s2027621001-tpm_only+bounded-evasive",
+    "non-iid-s2027621001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027621001-tpm_only+fedavg-clean",
+    "non-iid-s2027621001-tpm_only+fedavg-evasive",
+    "non-iid-s2027621001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027622001-tpm_only+bounded-clean",
+    "non-iid-s2027622001-tpm_only+bounded-evasive",
+    "non-iid-s2027622001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027622001-tpm_only+fedavg-clean",
+    "non-iid-s2027622001-tpm_only+fedavg-evasive",
+    "non-iid-s2027622001-tpm_only+fedavg-pair-dba",
+    "iid-s2027600001-probe+bounded-clean",
+    "iid-s2027600001-probe2+bounded-clean",
+    "iid-s2027600001-tpm_only+bounded-clean",
+    "iid-s2027600001-tpm_only+fedavg-clean",
+    "non-iid-s2027602001-tpm_only+fedavg-clean",
+    "non-iid-s2027603001-probe+bounded-clean",
+    "non-iid-s2027603001-probe2+bounded-clean",
+    "non-iid-s2027603001-tpm_only+bounded-clean",
+    "non-iid-s2027603001-tpm_only+fedavg-clean"
+   ],
+   "attacker_detection": {
+    "evasion|evasive|iid": "240/240",
+    "evasion|evasive|non-iid": "228/240",
+    "evasion|pair-dba|iid": "240/240",
+    "evasion|pair-dba|non-iid": "240/240",
+    "probe-live|adaptive|iid": "59/360",
+    "probe-live|adaptive|non-iid": "12/360",
+    "probe-live|complete-trigger|iid": "360/360",
+    "probe-live|complete-trigger|non-iid": "360/360",
+    "probe-live|distributed|iid": "360/360",
+    "probe-live|distributed|non-iid": "360/360"
+   },
+   "honest_flag_features": {
+    "11": 471,
+    "17": 262,
+    "14": 247,
+    "13": 183,
+    "1": 88,
+    "0": 83
+   },
+   "attacker_flag_features": {
+    "17": 869,
+    "15": 298,
+    "22": 291,
+    "24": 224,
+    "3": 221,
+    "13": 207,
+    "1": 64,
+    "21": 62
+   }
+  },
+  "per-key, floor 0.2": {
+   "honest": 1177,
+   "honest_rate": 0.03459729570840682,
+   "longest_honest_run": 15,
+   "cases_failing": "81/172",
+   "failing": [
+    "iid-s2027510001-probe+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-complete-trigger",
+    "iid-s2027510001-tpm_only+bounded-distributed",
+    "iid-s2027510001-tpm_only+fedavg-adaptive",
+    "iid-s2027510001-tpm_only+fedavg-complete-trigger",
+    "iid-s2027510001-tpm_only+fedavg-distributed",
+    "iid-s2027511001-tpm_only+fedavg-adaptive",
+    "iid-s2027512001-tpm_only+fedavg-adaptive",
+    "iid-s2027513001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-probe+bounded-adaptive",
+    "non-iid-s2027520001-probe+bounded-clean",
+    "non-iid-s2027520001-probe+bounded-complete-trigger",
+    "non-iid-s2027520001-probe+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+bounded-adaptive",
+    "non-iid-s2027520001-tpm_only+bounded-clean",
+    "non-iid-s2027520001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027520001-tpm_only+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-tpm_only+fedavg-clean",
+    "non-iid-s2027520001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027520001-tpm_only+fedavg-distributed",
+    "non-iid-s2027521001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-probe+bounded-adaptive",
+    "non-iid-s2027522001-probe+bounded-clean",
+    "non-iid-s2027522001-probe+bounded-complete-trigger",
+    "non-iid-s2027522001-probe+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+bounded-adaptive",
+    "non-iid-s2027522001-tpm_only+bounded-clean",
+    "non-iid-s2027522001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027522001-tpm_only+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-tpm_only+fedavg-clean",
+    "non-iid-s2027522001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027522001-tpm_only+fedavg-distributed",
+    "non-iid-s2027523001-probe+bounded-adaptive",
+    "non-iid-s2027523001-probe+bounded-clean",
+    "non-iid-s2027523001-tpm_only+bounded-adaptive",
+    "non-iid-s2027523001-tpm_only+bounded-clean",
+    "non-iid-s2027523001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027523001-tpm_only+fedavg-clean",
+    "non-iid-s2027503001-probe+bounded-clean",
+    "non-iid-s2027503001-tpm_only+bounded-clean",
+    "non-iid-s2027503001-tpm_only+fedavg-clean",
+    "iid-s2027610001-tpm_only+bounded-evasive",
+    "iid-s2027610001-tpm_only+bounded-pair-dba",
+    "iid-s2027610001-tpm_only+fedavg-evasive",
+    "iid-s2027610001-tpm_only+fedavg-pair-dba",
+    "iid-s2027611001-tpm_only+bounded-evasive",
+    "iid-s2027611001-tpm_only+bounded-pair-dba",
+    "iid-s2027611001-tpm_only+fedavg-evasive",
+    "iid-s2027611001-tpm_only+fedavg-pair-dba",
+    "iid-s2027612001-tpm_only+bounded-clean",
+    "iid-s2027612001-tpm_only+bounded-evasive",
+    "iid-s2027612001-tpm_only+bounded-pair-dba",
+    "iid-s2027612001-tpm_only+fedavg-evasive",
+    "iid-s2027612001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027620001-tpm_only+bounded-clean",
+    "non-iid-s2027620001-tpm_only+bounded-evasive",
+    "non-iid-s2027620001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027620001-tpm_only+fedavg-clean",
+    "non-iid-s2027620001-tpm_only+fedavg-evasive",
+    "non-iid-s2027620001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027621001-tpm_only+bounded-clean",
+    "non-iid-s2027621001-tpm_only+bounded-evasive",
+    "non-iid-s2027621001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027621001-tpm_only+fedavg-clean",
+    "non-iid-s2027621001-tpm_only+fedavg-evasive",
+    "non-iid-s2027621001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027622001-tpm_only+bounded-clean",
+    "non-iid-s2027622001-tpm_only+bounded-evasive",
+    "non-iid-s2027622001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027622001-tpm_only+fedavg-clean",
+    "non-iid-s2027622001-tpm_only+fedavg-evasive",
+    "non-iid-s2027622001-tpm_only+fedavg-pair-dba",
+    "iid-s2027600001-probe2+bounded-clean",
+    "non-iid-s2027602001-tpm_only+fedavg-clean",
+    "non-iid-s2027603001-probe+bounded-clean",
+    "non-iid-s2027603001-probe2+bounded-clean",
+    "non-iid-s2027603001-tpm_only+bounded-clean",
+    "non-iid-s2027603001-tpm_only+fedavg-clean"
+   ],
+   "attacker_detection": {
+    "evasion|evasive|iid": "240/240",
+    "evasion|evasive|non-iid": "222/240",
+    "evasion|pair-dba|iid": "240/240",
+    "evasion|pair-dba|non-iid": "240/240",
+    "probe-live|adaptive|iid": "29/360",
+    "probe-live|adaptive|non-iid": "12/360",
+    "probe-live|complete-trigger|iid": "360/360",
+    "probe-live|complete-trigger|non-iid": "360/360",
+    "probe-live|distributed|iid": "360/360",
+    "probe-live|distributed|non-iid": "360/360"
+   },
+   "honest_flag_features": {
+    "11": 465,
+    "14": 232,
+    "13": 99,
+    "0": 82,
+    "17": 78,
+    "8": 48
+   },
+   "attacker_flag_features": {
+    "17": 858,
+    "15": 294,
+    "22": 264,
+    "24": 223,
+    "3": 212,
+    "13": 205,
+    "11": 76,
+    "21": 61
+   }
+  },
+  "per-key, floor 0.3": {
+   "honest": 984,
+   "honest_rate": 0.02892416225749559,
+   "longest_honest_run": 15,
+   "cases_failing": "76/172",
+   "failing": [
+    "iid-s2027510001-probe+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-adaptive",
+    "iid-s2027510001-tpm_only+bounded-complete-trigger",
+    "iid-s2027510001-tpm_only+bounded-distributed",
+    "iid-s2027510001-tpm_only+fedavg-adaptive",
+    "iid-s2027510001-tpm_only+fedavg-complete-trigger",
+    "iid-s2027510001-tpm_only+fedavg-distributed",
+    "iid-s2027511001-tpm_only+fedavg-adaptive",
+    "iid-s2027512001-tpm_only+fedavg-adaptive",
+    "iid-s2027513001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-probe+bounded-adaptive",
+    "non-iid-s2027520001-probe+bounded-clean",
+    "non-iid-s2027520001-probe+bounded-complete-trigger",
+    "non-iid-s2027520001-probe+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+bounded-adaptive",
+    "non-iid-s2027520001-tpm_only+bounded-clean",
+    "non-iid-s2027520001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027520001-tpm_only+bounded-distributed",
+    "non-iid-s2027520001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027520001-tpm_only+fedavg-clean",
+    "non-iid-s2027520001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027520001-tpm_only+fedavg-distributed",
+    "non-iid-s2027521001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-probe+bounded-adaptive",
+    "non-iid-s2027522001-probe+bounded-clean",
+    "non-iid-s2027522001-tpm_only+bounded-adaptive",
+    "non-iid-s2027522001-tpm_only+bounded-clean",
+    "non-iid-s2027522001-tpm_only+bounded-complete-trigger",
+    "non-iid-s2027522001-tpm_only+bounded-distributed",
+    "non-iid-s2027522001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027522001-tpm_only+fedavg-clean",
+    "non-iid-s2027522001-tpm_only+fedavg-complete-trigger",
+    "non-iid-s2027522001-tpm_only+fedavg-distributed",
+    "non-iid-s2027523001-probe+bounded-adaptive",
+    "non-iid-s2027523001-probe+bounded-clean",
+    "non-iid-s2027523001-tpm_only+bounded-adaptive",
+    "non-iid-s2027523001-tpm_only+bounded-clean",
+    "non-iid-s2027523001-tpm_only+fedavg-adaptive",
+    "non-iid-s2027523001-tpm_only+fedavg-clean",
+    "non-iid-s2027503001-probe+bounded-clean",
+    "non-iid-s2027503001-tpm_only+bounded-clean",
+    "non-iid-s2027503001-tpm_only+fedavg-clean",
+    "iid-s2027610001-tpm_only+bounded-evasive",
+    "iid-s2027610001-tpm_only+fedavg-evasive",
+    "iid-s2027611001-tpm_only+bounded-evasive",
+    "iid-s2027611001-tpm_only+bounded-pair-dba",
+    "iid-s2027611001-tpm_only+fedavg-evasive",
+    "iid-s2027611001-tpm_only+fedavg-pair-dba",
+    "iid-s2027612001-tpm_only+bounded-evasive",
+    "iid-s2027612001-tpm_only+bounded-pair-dba",
+    "iid-s2027612001-tpm_only+fedavg-evasive",
+    "iid-s2027612001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027620001-tpm_only+bounded-clean",
+    "non-iid-s2027620001-tpm_only+bounded-evasive",
+    "non-iid-s2027620001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027620001-tpm_only+fedavg-clean",
+    "non-iid-s2027620001-tpm_only+fedavg-evasive",
+    "non-iid-s2027620001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027621001-tpm_only+bounded-clean",
+    "non-iid-s2027621001-tpm_only+bounded-evasive",
+    "non-iid-s2027621001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027621001-tpm_only+fedavg-clean",
+    "non-iid-s2027621001-tpm_only+fedavg-evasive",
+    "non-iid-s2027621001-tpm_only+fedavg-pair-dba",
+    "non-iid-s2027622001-tpm_only+bounded-clean",
+    "non-iid-s2027622001-tpm_only+bounded-evasive",
+    "non-iid-s2027622001-tpm_only+bounded-pair-dba",
+    "non-iid-s2027622001-tpm_only+fedavg-clean",
+    "non-iid-s2027622001-tpm_only+fedavg-evasive",
+    "non-iid-s2027622001-tpm_only+fedavg-pair-dba",
+    "iid-s2027600001-probe2+bounded-clean",
+    "non-iid-s2027602001-tpm_only+fedavg-clean",
+    "non-iid-s2027603001-probe+bounded-clean",
+    "non-iid-s2027603001-probe2+bounded-clean",
+    "non-iid-s2027603001-tpm_only+bounded-clean",
+    "non-iid-s2027603001-tpm_only+fedavg-clean"
+   ],
+   "attacker_detection": {
+    "evasion|evasive|iid": "240/240",
+    "evasion|evasive|non-iid": "222/240",
+    "evasion|pair-dba|iid": "240/240",
+    "evasion|pair-dba|non-iid": "240/240",
+    "probe-live|adaptive|iid": "21/360",
+    "probe-live|adaptive|non-iid": "11/360",
+    "probe-live|complete-trigger|iid": "360/360",
+    "probe-live|complete-trigger|non-iid": "360/360",
+    "probe-live|distributed|iid": "360/360",
+    "probe-live|distributed|non-iid": "360/360"
+   },
+   "honest_flag_features": {
+    "11": 419,
+    "14": 208,
+    "0": 86,
+    "13": 70,
+    "22": 41,
+    "17": 33
+   },
+   "attacker_flag_features": {
+    "17": 858,
+    "15": 262,
+    "22": 257,
+    "3": 226,
+    "24": 223,
+    "13": 205,
+    "11": 64,
+    "21": 61
+   }
+  }
+ },
+ "clean_key_max": {
+  "iid": [
+   0.0,
+   0.0,
+   0.146383,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.30903,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.130118,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.019069,
+   0.445878,
+   0.2765000000000001,
+   0.0,
+   0.050477,
+   0.608525,
+   0.0,
+   0.0,
+   0.0,
+   0.005609,
+   0.515984,
+   0.135726,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.026921,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "non-iid": [
+   0.0,
+   0.015143,
+   0.50645,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.010656,
+   0.379136,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.171621,
+   0.587773,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.020191,
+   0.295569,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.171621,
+   0.600113,
+   0.409983,
+   0.130679,
+   0.600673,
+   0.882782,
+   0.0,
+   0.0,
+   0.0,
+   0.182838,
+   0.8087489999999999,
+   0.416153,
+   0.010656,
+   0.010095,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.112731,
+   0.056646,
+   0.0,
+   0.0,
+   0.0,
+   0.147504,
+   0.334268,
+   0.00673,
+   0.0,
+   0.0,
+   0.0,
+   0.009534,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "raw_clean_max": {
+  "iid": 0.608525,
+  "non-iid": 0.882782
+ },
+ "keys": [
+  [
+   0,
+   3.0
+  ],
+  [
+   0,
+   6.0
+  ],
+  [
+   0,
+   12.0
+  ],
+  [
+   1,
+   3.0
+  ],
+  [
+   1,
+   6.0
+  ],
+  [
+   1,
+   12.0
+  ],
+  [
+   2,
+   3.0
+  ],
+  [
+   2,
+   6.0
+  ],
+  [
+   2,
+   12.0
+  ],
+  [
+   3,
+   3.0
+  ],
+  [
+   3,
+   6.0
+  ],
+  [
+   3,
+   12.0
+  ],
+  [
+   4,
+   3.0
+  ],
+  [
+   4,
+   6.0
+  ],
+  [
+   4,
+   12.0
+  ],
+  [
+   5,
+   3.0
+  ],
+  [
+   5,
+   6.0
+  ],
+  [
+   5,
+   12.0
+  ],
+  [
+   6,
+   3.0
+  ],
+  [
+   6,
+   6.0
+  ],
+  [
+   6,
+   12.0
+  ],
+  [
+   7,
+   3.0
+  ],
+  [
+   7,
+   6.0
+  ],
+  [
+   7,
+   12.0
+  ],
+  [
+   8,
+   3.0
+  ],
+  [
+   8,
+   6.0
+  ],
+  [
+   8,
+   12.0
+  ],
+  [
+   9,
+   3.0
+  ],
+  [
+   9,
+   6.0
+  ],
+  [
+   9,
+   12.0
+  ],
+  [
+   10,
+   3.0
+  ],
+  [
+   10,
+   6.0
+  ],
+  [
+   10,
+   12.0
+  ],
+  [
+   11,
+   3.0
+  ],
+  [
+   11,
+   6.0
+  ],
+  [
+   11,
+   12.0
+  ],
+  [
+   12,
+   3.0
+  ],
+  [
+   12,
+   6.0
+  ],
+  [
+   12,
+   12.0
+  ],
+  [
+   13,
+   3.0
+  ],
+  [
+   13,
+   6.0
+  ],
+  [
+   13,
+   12.0
+  ],
+  [
+   14,
+   3.0
+  ],
+  [
+   14,
+   6.0
+  ],
+  [
+   14,
+   12.0
+  ],
+  [
+   15,
+   3.0
+  ],
+  [
+   15,
+   6.0
+  ],
+  [
+   15,
+   12.0
+  ],
+  [
+   16,
+   3.0
+  ],
+  [
+   16,
+   6.0
+  ],
+  [
+   16,
+   12.0
+  ],
+  [
+   17,
+   3.0
+  ],
+  [
+   17,
+   6.0
+  ],
+  [
+   17,
+   12.0
+  ],
+  [
+   18,
+   3.0
+  ],
+  [
+   18,
+   6.0
+  ],
+  [
+   18,
+   12.0
+  ],
+  [
+   19,
+   3.0
+  ],
+  [
+   19,
+   6.0
+  ],
+  [
+   19,
+   12.0
+  ],
+  [
+   20,
+   3.0
+  ],
+  [
+   20,
+   6.0
+  ],
+  [
+   20,
+   12.0
+  ],
+  [
+   21,
+   3.0
+  ],
+  [
+   21,
+   6.0
+  ],
+  [
+   21,
+   12.0
+  ],
+  [
+   22,
+   3.0
+  ],
+  [
+   22,
+   6.0
+  ],
+  [
+   22,
+   12.0
+  ],
+  [
+   23,
+   3.0
+  ],
+  [
+   23,
+   6.0
+  ],
+  [
+   23,
+   12.0
+  ],
+  [
+   24,
+   3.0
+  ],
+  [
+   24,
+   6.0
+  ],
+  [
+   24,
+   12.0
+  ]
+ ]
+}
