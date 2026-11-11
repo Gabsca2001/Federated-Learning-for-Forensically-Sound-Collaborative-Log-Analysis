@@ -13,7 +13,7 @@ Branch `revision/head-gate-studies` (not pushed). Read this first in a new sessi
 | probe + clipping are complementary (probe: DBA; clipping: adaptive) | live | same |
 | Geometric head gates (v1 head_cusum, v2 step-normalized, v3 round-relative) have unstable false positives (persistent per honest client) | documented; stop rule applied | `results/revision-head-cusum-gate-v1`, `-head-gate-v2-exploratory`, `-v2-confirm`, `-v3-dev` |
 | Bug: `_dirichlet_assignments` seed+attempt → consecutive seeds can share partitions | erratum; new studies check distinctness | `results/revision-head-cusum-gate-v1/README.md` |
-| ToN-IoT: Data24 DBA does not transfer (ineffective under stable config) | negative, development only | `results/ton-fl-gate-dev/README.md` |
+| **Probe vs probe-aware AND-trigger attacker (live)**: both probe arms fail the clean guard (honest client excluded 2 / 5 consecutive rounds); pair-probe clean-max thresholds ≈1 (inert). Pair attacks: clipping gives no protection in non-IID (peaks 48–100%) | predeclared live, hypotheses undefined (arms not qualified) | `results/revision-trigger-probe-evasion-live/README.md` |
 
 Probe development (detection, generality to 4 unseen triggers, threshold severity, AND-trigger
 evasion offline): `results/revision-trigger-probe-dev/README.md`, `results/revision-trigger-probe-thresholds/`.
@@ -31,11 +31,11 @@ evasion offline): `results/revision-trigger-probe-dev/README.md`, `results/revis
 
 ## Next planned experiment
 
-Live study of the probe against a **probe-aware attacker** (AND-trigger on feature pairs that
-hides single-feature shortcuts), with the pair probe if needed; predeclare hypotheses and the
-revised guard rule (Q ≤5%, mass ≥90%, no honest client excluded 2 consecutive rounds, F1 ≤2 pt).
-Offline evidence says evasion costs the attacker most of its effect (0–15% ASR) and a pair probe
-recovers the true pairs. Optional later: swtpm live integration of probe+clipping.
+Done: probe-aware live study (`results/revision-trigger-probe-evasion-live/`). Open: (1) the probe's
+honest-flag stability (fails the 2-consecutive-round rule on fresh partitions; consider a
+persistence-aware rule declared on clean data only, e.g. per-client decay); (2) a discriminative
+pair-probe score (clean honest models already reach ≈1); (3) non-IID pair attacks defeat clipping
+(evasive peaks up to 100%) — the live evidence that the probe layer is needed. Optional: swtpm.
 
 ## Environment notes (important)
 

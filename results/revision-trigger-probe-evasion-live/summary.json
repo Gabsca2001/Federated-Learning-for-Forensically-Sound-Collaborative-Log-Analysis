@@ -1,0 +1,253 @@
+{
+ "hypotheses": {
+  "E1_single_probe_vs_aware_attacker": {
+   "lower": 0,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 8,
+   "pairs": [],
+   "holds_majority_lower": false,
+   "a": "probe+bounded",
+   "b": "tpm_only+bounded",
+   "text": "unchanged single-feature probe + clipping: lower paired peak harm than clipping alone against the evasive attacker (majority of defined comparisons)"
+  },
+  "E2_pair_probe_vs_aware_attacker": {
+   "lower": 0,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 8,
+   "pairs": [],
+   "holds_majority_lower": false,
+   "a": "probe2+bounded",
+   "b": "tpm_only+bounded",
+   "text": "single+pair probe + clipping: lower paired peak harm than clipping alone against the evasive attacker (majority)"
+  },
+  "E3_pair_probe_vs_reference": {
+   "lower": 0,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 10,
+   "pairs": [],
+   "holds_majority_lower": false,
+   "a": "probe2+bounded",
+   "b": "tpm_only+fedavg",
+   "text": "single+pair probe + clipping: lower paired peak harm than TPM-only FedAvg in effective controls (majority)"
+  },
+  "E4_positive_control_pair_dba": {
+   "lower": 0,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 8,
+   "pairs": [],
+   "holds_majority_lower": false,
+   "a": "probe+bounded",
+   "b": "tpm_only+bounded",
+   "text": "positive control: single probe + clipping beats clipping alone on the ordinary (non-evasive) pair DBA (majority)"
+  }
+ },
+ "clean_guard": [
+  {
+   "seed": 2027610001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027611001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.003971626237336934,
+    -0.001989930579189836
+   ]
+  },
+  {
+   "seed": 2027612001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0003416233888899889
+   ]
+  },
+  {
+   "seed": 2027613001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0017604509735204,
+    -0.004316121844299969
+   ]
+  },
+  {
+   "seed": 2027620001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0005539792156493695,
+    0.0009127089103839747
+   ]
+  },
+  {
+   "seed": 2027621001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0006038830911057058,
+    -0.01056240935244146
+   ]
+  },
+  {
+   "seed": 2027622001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.009608643891055535,
+    -0.006388598641976495
+   ]
+  },
+  {
+   "seed": 2027623001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.002810544228387779
+   ]
+  }
+ ],
+ "aggregate": [
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.014655418930511867,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.17572204746925937
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.03174149270803546,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.18380040034315126
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.14626822991135258,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.3896196740062911
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.1737918215613383,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.39905633400057194
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.00028595939376608524,
+   "mean_full_final": 0.00021446954532456392,
+   "mean_worst_peak": 0.00028595939376608524
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.5498999142121819,
+   "mean_full_final": 0.2486416928796111,
+   "mean_worst_peak": 0.5498999142121819
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.47426365456105235,
+   "mean_full_final": 0.25,
+   "mean_worst_peak": 0.47426365456105235
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.5145839290820704,
+   "mean_full_final": 0.2479982842436374,
+   "mean_worst_peak": 0.5145839290820704
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.489991421218187,
+   "mean_full_final": 0.2479982842436374,
+   "mean_worst_peak": 0.489991421218187
+  }
+ ],
+ "reference": "tpm_only+fedavg",
+ "cases": 48,
+ "attacker_data_share": {
+  "2027610001": 0.1999718151071026,
+  "2027611001": 0.1999718151071026,
+  "2027612001": 0.20011273957158962,
+  "2027613001": 0.1999718151071026,
+  "2027620001": 0.3826099210822999,
+  "2027621001": 0.221815107102593,
+  "2027622001": 0.19687147688838783,
+  "2027623001": 0.08272266065388952
+ },
+ "definitions": "Report for the head-CUSUM live study (reads closed, verified, tested evidence).\n\nDefinitions follow docs/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:\n* worst-trigger ASR(r) = max(full-trigger ASR, every component-trigger ASR) on test.\n* paired peak harm = max over rounds of worst(attacked, r) - worst(own-policy clean, r);\n  undefined when either history is incomplete (never treated as zero).\n* effective TPM-only control: at round 10 or 15, worst-trigger ASR >= clean + 0.20\n  with clean macro-F1 loss <= 0.05 vs the paired TPM-only clean history.\nUsage: report_head_cusum_study.py [--lab PATH] [--out PATH]\n"
+}
