@@ -1,0 +1,350 @@
+{
+ "thresholds": {
+  "iid": {
+   "threshold": 5.809935785457855,
+   "observations": 1350
+  },
+  "non-iid": {
+   "threshold": 6.791918387775143,
+   "observations": 1350
+  }
+ },
+ "clean": {
+  "v2_guard": {
+   "iid-s2027000001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 4,
+    "worst_mass2": 1.0,
+    "worst_mass3": 0.7333709131905299,
+    "run2": 0,
+    "run3": 1
+   },
+   "iid-s2027001001": {
+    "n": 225,
+    "q2": 5,
+    "q3": 5,
+    "worst_mass2": 0.9333427282976324,
+    "worst_mass3": 0.8000281848928974,
+    "run2": 2,
+    "run3": 1
+   },
+   "non-iid-s2027002001": {
+    "n": 225,
+    "q2": 2,
+    "q3": 0,
+    "worst_mass2": 0.693348365276212,
+    "worst_mass3": 1.0,
+    "run2": 2,
+    "run3": 0
+   },
+   "non-iid-s2027003001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 0,
+    "worst_mass2": 1.0,
+    "worst_mass3": 1.0,
+    "run2": 0,
+    "run3": 0
+   }
+  },
+  "v2_exploratory_clean": {
+   "iid-s2027010001": {
+    "n": 225,
+    "q2": 7,
+    "q3": 10,
+    "worst_mass2": 0.866685456595265,
+    "worst_mass3": 0.866685456595265,
+    "run2": 4,
+    "run3": 5
+   },
+   "iid-s2027011001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 28,
+    "worst_mass2": 1.0,
+    "worst_mass3": 0.6667136414881624,
+    "run2": 0,
+    "run3": 8
+   },
+   "iid-s2027012001": {
+    "n": 225,
+    "q2": 2,
+    "q3": 2,
+    "worst_mass2": 0.9333427282976324,
+    "worst_mass3": 0.9333427282976324,
+    "run2": 2,
+    "run3": 1
+   },
+   "iid-s2027013001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 1,
+    "worst_mass2": 1.0,
+    "worst_mass3": 0.9333427282976324,
+    "run2": 0,
+    "run3": 1
+   },
+   "iid-s2027014001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 1,
+    "worst_mass2": 1.0,
+    "worst_mass3": 0.9333427282976324,
+    "run2": 0,
+    "run3": 1
+   },
+   "non-iid-s2027020001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 0,
+    "worst_mass2": 1.0,
+    "worst_mass3": 1.0,
+    "run2": 0,
+    "run3": 0
+   },
+   "non-iid-s2027021001": {
+    "n": 225,
+    "q2": 2,
+    "q3": 0,
+    "worst_mass2": 0.9177001127395716,
+    "worst_mass3": 1.0,
+    "run2": 1,
+    "run3": 0
+   },
+   "non-iid-s2027022001": {
+    "n": 225,
+    "q2": 1,
+    "q3": 0,
+    "worst_mass2": 0.9010710259301015,
+    "worst_mass3": 1.0,
+    "run2": 1,
+    "run3": 0
+   },
+   "non-iid-s2027023001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 0,
+    "worst_mass2": 1.0,
+    "worst_mass3": 1.0,
+    "run2": 0,
+    "run3": 0
+   },
+   "non-iid-s2027024001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 0,
+    "worst_mass2": 1.0,
+    "worst_mass3": 1.0,
+    "run2": 0,
+    "run3": 0
+   }
+  },
+  "confirm_guard_tpm": {
+   "iid-s2027400001": {
+    "n": 225,
+    "q2": 15,
+    "q3": 5,
+    "worst_mass2": 0.7998872604284104,
+    "worst_mass3": 0.9332018038331454,
+    "run2": 3,
+    "run3": 4
+   },
+   "iid-s2027401001": {
+    "n": 225,
+    "q2": 2,
+    "q3": 8,
+    "worst_mass2": 0.9333427282976324,
+    "worst_mass3": 0.866685456595265,
+    "run2": 2,
+    "run3": 4
+   },
+   "non-iid-s2027402001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 0,
+    "worst_mass2": 1.0,
+    "worst_mass3": 1.0,
+    "run2": 0,
+    "run3": 0
+   },
+   "non-iid-s2027403001": {
+    "n": 225,
+    "q2": 1,
+    "q3": 1,
+    "worst_mass2": 0.9825253664036077,
+    "worst_mass3": 0.9825253664036077,
+    "run2": 1,
+    "run3": 1
+   }
+  },
+  "confirm_guard_failing_head_v2": {
+   "iid-s2027400001": {
+    "n": 225,
+    "q2": 25,
+    "q3": 7,
+    "worst_mass2": 0.7332299887260428,
+    "worst_mass3": 0.9332018038331454,
+    "run2": 7,
+    "run3": 5
+   },
+   "iid-s2027401001": {
+    "n": 225,
+    "q2": 2,
+    "q3": 9,
+    "worst_mass2": 0.9333427282976324,
+    "worst_mass3": 0.866685456595265,
+    "run2": 2,
+    "run3": 7
+   },
+   "non-iid-s2027402001": {
+    "n": 225,
+    "q2": 0,
+    "q3": 0,
+    "worst_mass2": 1.0,
+    "worst_mass3": 1.0,
+    "run2": 0,
+    "run3": 0
+   },
+   "non-iid-s2027403001": {
+    "n": 225,
+    "q2": 1,
+    "q3": 1,
+    "worst_mass2": 0.9825253664036077,
+    "worst_mass3": 0.9825253664036077,
+    "run2": 1,
+    "run3": 1
+   }
+  }
+ },
+ "attacked": {
+  "iid|adaptive|head_v2+fedavg": {
+   "att": 150,
+   "att2": 0,
+   "att3": 26,
+   "ben": 600,
+   "ben2": 2,
+   "ben3": 11
+  },
+  "iid|adaptive-headfrozen|head_v2+fedavg": {
+   "att": 150,
+   "att2": 0,
+   "att3": 13,
+   "ben": 600,
+   "ben2": 2,
+   "ben3": 28
+  },
+  "iid|complete-trigger|head_v2+fedavg": {
+   "att": 150,
+   "att2": 150,
+   "att3": 147,
+   "ben": 600,
+   "ben2": 3,
+   "ben3": 7
+  },
+  "iid|distributed|head_v2+fedavg": {
+   "att": 150,
+   "att2": 150,
+   "att3": 150,
+   "ben": 600,
+   "ben2": 3,
+   "ben3": 8
+  },
+  "iid|adaptive|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 150,
+   "att3": 150,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 10
+  },
+  "iid|adaptive-headfrozen|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 150,
+   "att3": 150,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 13
+  },
+  "iid|complete-trigger|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 150,
+   "att3": 144,
+   "ben": 600,
+   "ben2": 2,
+   "ben3": 5
+  },
+  "iid|distributed|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 150,
+   "att3": 150,
+   "ben": 600,
+   "ben2": 1,
+   "ben3": 7
+  },
+  "non-iid|adaptive|head_v2+fedavg": {
+   "att": 150,
+   "att2": 7,
+   "att3": 11,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 0
+  },
+  "non-iid|adaptive-headfrozen|head_v2+fedavg": {
+   "att": 150,
+   "att2": 17,
+   "att3": 13,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 1
+  },
+  "non-iid|complete-trigger|head_v2+fedavg": {
+   "att": 150,
+   "att2": 0,
+   "att3": 0,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 0
+  },
+  "non-iid|distributed|head_v2+fedavg": {
+   "att": 150,
+   "att2": 0,
+   "att3": 0,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 2
+  },
+  "non-iid|adaptive|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 97,
+   "att3": 51,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 0
+  },
+  "non-iid|adaptive-headfrozen|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 76,
+   "att3": 37,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 0
+  },
+  "non-iid|complete-trigger|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 0,
+   "att3": 0,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 0
+  },
+  "non-iid|distributed|tpm_only+fedavg": {
+   "att": 150,
+   "att2": 0,
+   "att3": 0,
+   "ben": 600,
+   "ben2": 0,
+   "ben3": 2
+  }
+ }
+}
