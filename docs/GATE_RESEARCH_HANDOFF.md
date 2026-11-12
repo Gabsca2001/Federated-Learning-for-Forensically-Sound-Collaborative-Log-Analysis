@@ -15,6 +15,7 @@ Branch `revision/head-gate-studies` (not pushed). Read this first in a new sessi
 | Bug: `_dirichlet_assignments` seed+attempt → consecutive seeds can share partitions | erratum; new studies check distinctness | `results/revision-head-cusum-gate-v1/README.md` |
 | **Probe vs probe-aware AND-trigger attacker (live)**: both probe arms fail the clean guard (honest client excluded 2 / 5 consecutive rounds); pair-probe clean-max thresholds ≈1 (inert). Pair attacks: clipping gives no protection in non-IID (peaks 48–100%) | predeclared live, hypotheses undefined (arms not qualified) | `results/revision-trigger-probe-evasion-live/README.md` |
 | **Per-key normalised probe (probek, x2 clean max per feature/value) vs pair DBA / evasive / adaptive (live, confirmatory)**: all arms pass the guard; K1-K3 hold (adds to clipping, beats reference); non-IID peaks 55.6->10.6 (DBA), 50.7->15.7 (evasive); adaptive attacker not stopped (non-IID 73.5% in all bounded arms) and causes honest exclusions up to 5 consecutive rounds in 2/8 runs; evasive controls weak (3/8) | predeclared live, confirmed with stated limits | `results/revision-probe-keynorm-confirm/README.md` |
+| **Global-model probe with rollback (probekg: drift vs initial model > 1.5x clean max per key -> keep previous global) on top of probek + clipping (live, confirmatory)**: all arms pass the guard; G1-G4 hold (adaptive peak 52-84% -> 21-28%, final 0; 0 honest exclusions in attacked runs; no clean rollback). Cost: learning stalls during adaptive attack (F1 r10 up to -15 pt, recovered by r15) | predeclared live, confirmed with stated limits | `results/revision-global-probe-confirm/README.md` |
 
 Probe development (detection, generality to 4 unseen triggers, threshold severity, AND-trigger
 evasion offline): `results/revision-trigger-probe-dev/README.md`, `results/revision-trigger-probe-thresholds/`.
@@ -32,10 +33,9 @@ evasion offline): `results/revision-trigger-probe-dev/README.md`, `results/revis
 
 ## Next planned experiment
 
-Done: probe-aware live study and per-key probe confirmation (`results/revision-probe-keynorm-confirm/`).
-Open: (1) the adaptive interpolation attacker evades probek (4/240 quarantined) and drives honest
-persistent exclusions; a guard under attacked conditions is needed; (2) a stronger evasive live
-attacker (3/8 effective controls); (3) discriminative pair-probe score. Optional: swtpm.
+Done: probe-aware, per-key and global-rollback live studies. Open: (1) probe/rollback decisions are not yet
+in the signed evidence graph; (2) drift-spreading / slow-drift adaptive attackers vs the global probe;
+(3) a second dataset; (4) discriminative pair-probe score. Optional: swtpm.
 
 ## Environment notes (important)
 

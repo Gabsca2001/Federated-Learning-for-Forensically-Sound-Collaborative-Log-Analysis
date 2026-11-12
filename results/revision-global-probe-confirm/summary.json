@@ -1,0 +1,891 @@
+{
+ "hypotheses": {
+  "G1_rollback_vs_adaptive": {
+   "lower": 7,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 1,
+   "pairs": [
+    {
+     "seed": 2027810001,
+     "variant": "adaptive",
+     "a": 0.26422647983986275,
+     "b": 0.748069774092079
+    },
+    {
+     "seed": 2027811001,
+     "variant": "adaptive",
+     "a": 0.2856734343723191,
+     "b": 0.426079496711467
+    },
+    {
+     "seed": 2027812001,
+     "variant": "adaptive",
+     "a": 0.31226765799256506,
+     "b": 0.6997426365456105
+    },
+    {
+     "seed": 2027813001,
+     "variant": "adaptive",
+     "a": 0.37060337432084645,
+     "b": 0.7695167286245354
+    },
+    {
+     "seed": 2027820001,
+     "variant": "adaptive",
+     "a": 0.24392336288247068,
+     "b": 1.0
+    },
+    {
+     "seed": 2027822001,
+     "variant": "adaptive",
+     "a": 0.01315413211323992,
+     "b": 0.929368029739777
+    },
+    {
+     "seed": 2027823001,
+     "variant": "adaptive",
+     "a": 0.9545324563911924,
+     "b": 0.9997140406062339
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "probekg+bounded",
+   "b": "probek+bounded",
+   "text": "probekg+bounded lower paired peak harm than probek+bounded under the adaptive attack (majority)"
+  },
+  "G2_full_defence_vs_clipping": {
+   "lower": 24,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2027810001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.3677437803831856
+    },
+    {
+     "seed": 2027810001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.17843866171003717
+    },
+    {
+     "seed": 2027810001,
+     "variant": "adaptive",
+     "a": 0.26422647983986275,
+     "b": 0.9842722333428653
+    },
+    {
+     "seed": 2027811001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.3171289676865885
+    },
+    {
+     "seed": 2027811001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.1564197883900486
+    },
+    {
+     "seed": 2027811001,
+     "variant": "adaptive",
+     "a": 0.2856734343723191,
+     "b": 0.46125250214469543
+    },
+    {
+     "seed": 2027812001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.332284815556191
+    },
+    {
+     "seed": 2027812001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.18301401201029455
+    },
+    {
+     "seed": 2027812001,
+     "variant": "adaptive",
+     "a": 0.31226765799256506,
+     "b": 0.7374892765227338
+    },
+    {
+     "seed": 2027813001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4435230197311982
+    },
+    {
+     "seed": 2027813001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.18644552473548756
+    },
+    {
+     "seed": 2027813001,
+     "variant": "adaptive",
+     "a": 0.37060337432084645,
+     "b": 0.8106948813268516
+    },
+    {
+     "seed": 2027820001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.5887903917643694
+    },
+    {
+     "seed": 2027820001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.46668573062625107
+    },
+    {
+     "seed": 2027820001,
+     "variant": "adaptive",
+     "a": 0.24392336288247068,
+     "b": 1.0
+    },
+    {
+     "seed": 2027821001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 1.0
+    },
+    {
+     "seed": 2027821001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.9997140406062339
+    },
+    {
+     "seed": 2027821001,
+     "variant": "adaptive",
+     "a": 0.218187017443523,
+     "b": 1.0
+    },
+    {
+     "seed": 2027822001,
+     "variant": "pair-dba",
+     "a": 0.002573634543894767,
+     "b": 0.4675436088075493
+    },
+    {
+     "seed": 2027822001,
+     "variant": "evasive",
+     "a": 0.03517300543322848,
+     "b": 0.27366313983414353
+    },
+    {
+     "seed": 2027822001,
+     "variant": "adaptive",
+     "a": 0.01315413211323992,
+     "b": 0.929368029739777
+    },
+    {
+     "seed": 2027823001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.9785530454675436
+    },
+    {
+     "seed": 2027823001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.9305118673148413
+    },
+    {
+     "seed": 2027823001,
+     "variant": "adaptive",
+     "a": 0.9545324563911924,
+     "b": 0.9997140406062339
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "probekg+bounded",
+   "b": "tpm_only+bounded",
+   "text": "probekg+bounded lower paired peak harm than clipping alone, all attacks (majority)"
+  },
+  "G3_full_defence_vs_reference": {
+   "lower": 20,
+   "higher": 0,
+   "equal": 0,
+   "undefined": 0,
+   "pairs": [
+    {
+     "seed": 2027810001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.37803831855876463
+    },
+    {
+     "seed": 2027810001,
+     "variant": "adaptive",
+     "a": 0.26422647983986275,
+     "b": 1.0
+    },
+    {
+     "seed": 2027811001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.311981698598799
+    },
+    {
+     "seed": 2027811001,
+     "variant": "adaptive",
+     "a": 0.2856734343723191,
+     "b": 1.0
+    },
+    {
+     "seed": 2027812001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.45896482699456675
+    },
+    {
+     "seed": 2027812001,
+     "variant": "adaptive",
+     "a": 0.31226765799256506,
+     "b": 1.0
+    },
+    {
+     "seed": 2027813001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.4501000857878181
+    },
+    {
+     "seed": 2027813001,
+     "variant": "adaptive",
+     "a": 0.37060337432084645,
+     "b": 1.0
+    },
+    {
+     "seed": 2027820001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.6436945953674578
+    },
+    {
+     "seed": 2027820001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.466399771232485
+    },
+    {
+     "seed": 2027820001,
+     "variant": "adaptive",
+     "a": 0.24392336288247068,
+     "b": 1.0
+    },
+    {
+     "seed": 2027821001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 1.0
+    },
+    {
+     "seed": 2027821001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.9997140406062339
+    },
+    {
+     "seed": 2027821001,
+     "variant": "adaptive",
+     "a": 0.218187017443523,
+     "b": 1.0
+    },
+    {
+     "seed": 2027822001,
+     "variant": "pair-dba",
+     "a": 0.002573634543894767,
+     "b": 0.4423791821561338
+    },
+    {
+     "seed": 2027822001,
+     "variant": "evasive",
+     "a": 0.03517300543322848,
+     "b": 0.26136688590220186
+    },
+    {
+     "seed": 2027822001,
+     "variant": "adaptive",
+     "a": 0.01315413211323992,
+     "b": 1.0
+    },
+    {
+     "seed": 2027823001,
+     "variant": "pair-dba",
+     "a": 0.0,
+     "b": 0.9785530454675436
+    },
+    {
+     "seed": 2027823001,
+     "variant": "evasive",
+     "a": 0.0,
+     "b": 0.9453817557906777
+    },
+    {
+     "seed": 2027823001,
+     "variant": "adaptive",
+     "a": 0.9545324563911924,
+     "b": 1.0
+    }
+   ],
+   "holds_majority_lower": true,
+   "a": "probekg+bounded",
+   "b": "tpm_only+fedavg",
+   "text": "probekg+bounded lower paired peak harm than TPM-only FedAvg in effective controls (majority)"
+  }
+ },
+ "clean_guard": [
+  {
+   "seed": 2027810001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0012645960342393403,
+    -0.0013492003423942744
+   ]
+  },
+  {
+   "seed": 2027810001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0012645960342393403,
+    -0.0013492003423942744
+   ]
+  },
+  {
+   "seed": 2027810001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0012645960342393403,
+    -0.0013492003423942744
+   ]
+  },
+  {
+   "seed": 2027811001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0017645367542815649,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027811001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0017645367542815649,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027811001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0017645367542815649,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027812001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.001264603364191208,
+    -0.0017604523882633893
+   ]
+  },
+  {
+   "seed": 2027812001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.001264603364191208,
+    -0.0017604523882633893
+   ]
+  },
+  {
+   "seed": 2027812001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.001264603364191208,
+    -0.0017604523882633893
+   ]
+  },
+  {
+   "seed": 2027813001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.00016422410562222378
+   ]
+  },
+  {
+   "seed": 2027813001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.00016422410562222378
+   ]
+  },
+  {
+   "seed": 2027813001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.00016422410562222378
+   ]
+  },
+  {
+   "seed": 2027820001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.003198170751496976,
+    -0.00010320954198328458
+   ]
+  },
+  {
+   "seed": 2027820001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.003198170751496976,
+    -0.00010320954198328458
+   ]
+  },
+  {
+   "seed": 2027820001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.003198170751496976,
+    -0.00010320954198328458
+   ]
+  },
+  {
+   "seed": 2027821001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0003397531884449245,
+    -0.00010413090193939212
+   ]
+  },
+  {
+   "seed": 2027821001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0003397531884449245,
+    -0.00010413090193939212
+   ]
+  },
+  {
+   "seed": 2027821001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    -0.0003397531884449245,
+    -0.00010413090193939212
+   ]
+  },
+  {
+   "seed": 2027822001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0001788699878504385
+   ]
+  },
+  {
+   "seed": 2027822001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0001788699878504385
+   ]
+  },
+  {
+   "seed": 2027822001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    -0.0001788699878504385
+   ]
+  },
+  {
+   "seed": 2027823001,
+   "arm": "probek+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027823001,
+   "arm": "probekg+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "seed": 2027823001,
+   "arm": "tpm_only+bounded",
+   "ok": true,
+   "benign_q": 0.0,
+   "f1_loss": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "aggregate": [
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.5228767515012869,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.660852158993423
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.20932227623677438,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.30819273663139835
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.6923791821561338,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.7484272233342866
+  },
+  {
+   "cohort": "iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 1.0,
+   "mean_full_final": 0.9997140406062339,
+   "mean_worst_peak": 1.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.01537031741492708,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.17607949671146697
+  },
+  {
+   "cohort": "iid",
+   "variant": "evasive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.034958535887903916,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.184586788676008
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.0
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.1359736917357735,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.3651701458392908
+  },
+  {
+   "cohort": "iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.2342007434944238,
+   "mean_full_final": 0.0,
+   "mean_worst_peak": 0.39977123248498714
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "probek+bounded",
+   "complete": "3/4",
+   "mean_full_peak": 0.8444380897912497,
+   "mean_full_final": 0.49633018778000193,
+   "mean_worst_peak": 0.976360690115337
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.27830997998284246,
+   "mean_full_final": 0.00014297969688304262,
+   "mean_worst_peak": 0.3574492422076065
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.8833285673434372,
+   "mean_full_final": 0.49513869030597657,
+   "mean_worst_peak": 0.9822705175865027
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "adaptive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 1.0,
+   "mean_full_final": 0.8627394909922791,
+   "mean_worst_peak": 1.0
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0007863883328567343,
+   "mean_full_final": 0.0007863883328567343,
+   "mean_worst_peak": 0.006505576208178439
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0007863883328567343,
+   "mean_full_final": 0.0007863883328567343,
+   "mean_worst_peak": 0.006505576208178439
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0007863883328567343,
+   "mean_full_final": 0.0007863883328567343,
+   "mean_worst_peak": 0.006505576208178439
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "clean",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.0005719187875321705,
+   "mean_full_final": 0.0005719187875321705,
+   "mean_worst_peak": 0.006362596511295396
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0005004289390906491,
+   "mean_full_final": 0.0005004289390906491,
+   "mean_worst_peak": 0.008864741206748641
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.0005004289390906491,
+   "mean_full_final": 0.0005004289390906491,
+   "mean_worst_peak": 0.008864741206748641
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.5990849299399486,
+   "mean_full_final": 0.28674578209894197,
+   "mean_worst_peak": 0.6676436945953674
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "evasive",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.5784958535887904,
+   "mean_full_final": 0.28417214755504716,
+   "mean_worst_peak": 0.6682156133828996
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "probek+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.00021446954532456392,
+   "mean_full_final": 0.00021446954532456392,
+   "mean_worst_peak": 0.0017157563625965113
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "probekg+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.00021446954532456392,
+   "mean_full_final": 0.00021446954532456392,
+   "mean_worst_peak": 0.0017157563625965113
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+bounded",
+   "complete": "4/4",
+   "mean_full_peak": 0.6396911638547327,
+   "mean_full_final": 0.21611381183871892,
+   "mean_worst_peak": 0.7587217615098656
+  },
+  {
+   "cohort": "non-iid",
+   "variant": "pair-dba",
+   "arm": "tpm_only+fedavg",
+   "complete": "4/4",
+   "mean_full_peak": 0.6108092650843581,
+   "mean_full_final": 0.2207606519874178,
+   "mean_worst_peak": 0.7661567057477838
+  }
+ ],
+ "reference": "tpm_only+fedavg",
+ "cases": 128,
+ "attacker_data_share": {
+  "2027810001": 0.1999718151071026,
+  "2027811001": 0.1999718151071026,
+  "2027812001": 0.1999718151071026,
+  "2027813001": 0.20011273957158962,
+  "2027820001": 0.20997745208568208,
+  "2027821001": 0.2583145434047351,
+  "2027822001": 0.14416572717023676,
+  "2027823001": 0.2197012401352875
+ },
+ "definitions": "Report for the head-CUSUM live study (reads closed, verified, tested evidence).\n\nDefinitions follow docs/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:\n* worst-trigger ASR(r) = max(full-trigger ASR, every component-trigger ASR) on test.\n* paired peak harm = max over rounds of worst(attacked, r) - worst(own-policy clean, r);\n  undefined when either history is incomplete (never treated as zero).\n* effective TPM-only control: at round 10 or 15, worst-trigger ASR >= clean + 0.20\n  with clean macro-F1 loss <= 0.05 vs the paired TPM-only clean history.\nUsage: report_head_cusum_study.py [--lab PATH] [--out PATH]\n"
+}
