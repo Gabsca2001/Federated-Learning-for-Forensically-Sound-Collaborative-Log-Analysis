@@ -1,0 +1,3976 @@
+{
+ "scales": {
+  "iid": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.000561,
+   0.233875,
+   -0.03421199999999991,
+   0.0,
+   0.001122,
+   0.353898,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.28323,
+   0.05720700000000001,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "non-iid": [
+   0.0,
+   0.0,
+   0.014582,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.000561,
+   0.30903,
+   0.00168299999999999,
+   0.0,
+   0.015704,
+   0.672462,
+   0.0,
+   0.0,
+   0.0,
+   0.142457,
+   0.285474,
+   0.031969000000000025,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.000561,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "report": {
+  "floor 0.05, x1.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "1/2",
+    "evasion|probe+bounded|non-iid": "1/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "1/2",
+    "evasion|tpm_only+bounded|iid": "2/6",
+    "evasion|tpm_only+bounded|non-iid": "2/6",
+    "evasion|tpm_only+fedavg|iid": "2/6",
+    "evasion|tpm_only+fedavg|non-iid": "1/6",
+    "keynorm|probe+bounded|iid": "2/6",
+    "keynorm|probe+bounded|non-iid": "1/6",
+    "keynorm|probek+bounded|iid": "2/6",
+    "keynorm|probek+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+bounded|iid": "2/6",
+    "keynorm|tpm_only+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+fedavg|iid": "2/6",
+    "keynorm|tpm_only+fedavg|non-iid": "1/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      7,
+      6,
+      8,
+      8
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "3/4",
+     "first_round": [
+      7,
+      6,
+      null,
+      8
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      8,
+      9,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "3/4",
+     "first_round": [
+      5,
+      9,
+      null,
+      14
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      7,
+      2,
+      10
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      7,
+      2,
+      10
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      4,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      4,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      4,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      10,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      7,
+      8,
+      9,
+      8
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      7,
+      8,
+      9,
+      8
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      5,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      8,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      5,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      5,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      4,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      4,
+      null,
+      5
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      4,
+      null,
+      6
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 574,
+    "14": 207,
+    "8": 80,
+    "3": 30,
+    "5": 17,
+    "22": 13,
+    "12": 11,
+    "0": 5
+   }
+  },
+  "floor 0.05, x1.5": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "1/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "1/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "1/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "1/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "1/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "1/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      8,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      5,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      6,
+      6,
+      9,
+      8
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      6,
+      6,
+      9,
+      8
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      2,
+      10,
+      5,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      5,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      4,
+      5,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      5,
+      6,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      4,
+      5,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      5,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      5,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      5,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      8,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      11,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      7,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      7,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      6,
+      6,
+      8,
+      8
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      6,
+      6,
+      7,
+      7
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      10,
+      7,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      12,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      2,
+      7,
+      null,
+      10
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 300,
+    "8": 70,
+    "14": 47,
+    "3": 30,
+    "22": 13,
+    "5": 12,
+    "12": 7,
+    "0": 5
+   }
+  },
+  "floor 0.05, x2.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "1/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "1/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "1/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "1/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "1/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "1/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      5,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      10
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      2,
+      10,
+      6,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      6,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      8,
+      9,
+      9
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      9,
+      9,
+      9,
+      9
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      8,
+      9,
+      8
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      5,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      11,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      null,
+      10,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      10,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      12,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      3,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      10,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 160,
+    "8": 70,
+    "3": 30,
+    "22": 12,
+    "5": 12,
+    "12": 7,
+    "0": 3
+   }
+  },
+  "floor 0.05, x3.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      4,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      10,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      7
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      7
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      7
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      6,
+      1,
+      2
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      5,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      5,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 94,
+    "8": 64,
+    "3": 30,
+    "22": 11,
+    "0": 3
+   }
+  },
+  "floor 0.1, x1.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "1/2",
+    "evasion|probe+bounded|non-iid": "1/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "1/2",
+    "evasion|tpm_only+bounded|iid": "2/6",
+    "evasion|tpm_only+bounded|non-iid": "1/6",
+    "evasion|tpm_only+fedavg|iid": "2/6",
+    "evasion|tpm_only+fedavg|non-iid": "1/6",
+    "keynorm|probe+bounded|iid": "1/6",
+    "keynorm|probe+bounded|non-iid": "1/6",
+    "keynorm|probek+bounded|iid": "1/6",
+    "keynorm|probek+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+bounded|iid": "1/6",
+    "keynorm|tpm_only+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+fedavg|iid": "1/6",
+    "keynorm|tpm_only+fedavg|non-iid": "1/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      5,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      10,
+      2,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      2,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      6,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      6,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      6,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      12,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      9,
+      null,
+      5
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      8,
+      null,
+      6
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 618,
+    "14": 58,
+    "8": 51,
+    "3": 29,
+    "22": 12,
+    "5": 11,
+    "12": 10,
+    "0": 3
+   }
+  },
+  "floor 0.1, x1.5": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      7,
+      9,
+      8
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      6,
+      9,
+      8
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      5,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      5,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      4,
+      5,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      5,
+      6,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      4,
+      5,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      7,
+      6,
+      8,
+      8
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      6,
+      6,
+      7,
+      7
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      10
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      1,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 314,
+    "8": 50,
+    "3": 29,
+    "14": 17,
+    "22": 11,
+    "0": 3
+   }
+  },
+  "floor 0.1, x2.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      10
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      6,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      6,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      8,
+      9,
+      9
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      9,
+      9,
+      9,
+      9
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      8,
+      9,
+      8
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      7,
+      2,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      null,
+      10,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 164,
+    "8": 50,
+    "3": 29,
+    "22": 11,
+    "0": 3
+   }
+  },
+  "floor 0.1, x3.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      7,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      null,
+      2,
+      2
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 63,
+    "3": 29,
+    "8": 28,
+    "22": 10,
+    "0": 1
+   }
+  },
+  "floor 0.2, x1.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "1/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "2/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "2/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "1/6",
+    "keynorm|probe+bounded|non-iid": "1/6",
+    "keynorm|probek+bounded|iid": "1/6",
+    "keynorm|probek+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+bounded|iid": "1/6",
+    "keynorm|tpm_only+bounded|non-iid": "1/6",
+    "keynorm|tpm_only+fedavg|iid": "1/6",
+    "keynorm|tpm_only+fedavg|non-iid": "1/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      2,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      2,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      6,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      6,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      6,
+      null,
+      2
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      9,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      15,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      9,
+      null,
+      5
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      8,
+      null,
+      6
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 680,
+    "14": 68,
+    "3": 11,
+    "22": 11,
+    "8": 8,
+    "12": 4
+   }
+  },
+  "floor 0.2, x1.5": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      7,
+      9,
+      8
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      6,
+      9,
+      8
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      5,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      5,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      4,
+      5,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      5,
+      6,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      4,
+      4,
+      5,
+      5
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "3/4",
+     "first_round": [
+      1,
+      7,
+      null,
+      4
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      7,
+      6,
+      8,
+      8
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      6,
+      6,
+      7,
+      7
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      10
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      1,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 374,
+    "14": 18,
+    "3": 11,
+    "22": 10,
+    "8": 8
+   }
+  },
+  "floor 0.2, x2.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      null,
+      10,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      null,
+      9,
+      null,
+      10
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      6,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      6,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      8,
+      9,
+      9
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      9,
+      9,
+      9,
+      9
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "4/4",
+     "first_round": [
+      8,
+      8,
+      9,
+      8
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "2/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      6
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      7,
+      4,
+      1
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      9,
+      null,
+      10,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      3,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      2,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 212,
+    "3": 11,
+    "22": 10,
+    "8": 4,
+    "14": 1
+   }
+  },
+  "floor 0.2, x3.0": {
+   "clean_runs_alarmed": {
+    "evasion|probe+bounded|iid": "0/2",
+    "evasion|probe+bounded|non-iid": "0/2",
+    "evasion|probe2+bounded|iid": "0/2",
+    "evasion|probe2+bounded|non-iid": "0/2",
+    "evasion|tpm_only+bounded|iid": "0/6",
+    "evasion|tpm_only+bounded|non-iid": "0/6",
+    "evasion|tpm_only+fedavg|iid": "0/6",
+    "evasion|tpm_only+fedavg|non-iid": "0/6",
+    "keynorm|probe+bounded|iid": "0/6",
+    "keynorm|probe+bounded|non-iid": "0/6",
+    "keynorm|probek+bounded|iid": "0/6",
+    "keynorm|probek+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+bounded|iid": "0/6",
+    "keynorm|tpm_only+bounded|non-iid": "0/6",
+    "keynorm|tpm_only+fedavg|iid": "0/6",
+    "keynorm|tpm_only+fedavg|non-iid": "0/6"
+   },
+   "attacked_runs_alarmed": {
+    "evasion|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      10,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "evasion|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|iid|tpm_only+fedavg": {
+     "runs": "4/4",
+     "first_round": [
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    "keynorm|adaptive|non-iid|probe+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|non-iid|probek+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      9,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+bounded": {
+     "runs": "1/4",
+     "first_round": [
+      6,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|adaptive|non-iid|tpm_only+fedavg": {
+     "runs": "2/4",
+     "first_round": [
+      1,
+      null,
+      null,
+      7
+     ]
+    },
+    "keynorm|evasive|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|evasive|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probe+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|probek+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+bounded": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "keynorm|pair-dba|non-iid|tpm_only+fedavg": {
+     "runs": "0/4",
+     "first_round": [
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   "alarm_features": {
+    "11": 70,
+    "3": 11,
+    "22": 7,
+    "8": 3
+   }
+  }
+ }
+}
