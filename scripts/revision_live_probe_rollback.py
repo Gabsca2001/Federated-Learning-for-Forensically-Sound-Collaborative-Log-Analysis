@@ -25,6 +25,8 @@ def omitted(*args):return False
 
 
 def internal(stage,branch,number):
+    global BRANCHES
+    BRANCHES=tuple(json.loads(Path('/evidence/reserved-protocol-before-training.json').read_text())['branches'])
     legacy.BRANCHES=BRANCHES;legacy.ROUNDS=ROUNDS;legacy.TRUST_CONFIG=TRUST_CONFIG
     legacy.CONFIG=Path('/evidence/config/federation.yaml')
     root=Path('/evidence');campaign=root/'branches'/branch
@@ -71,6 +73,8 @@ def internal(stage,branch,number):
 def host(args):
     root = Path(__file__).resolve().parents[1]
     lab = (root / args.workspace).resolve()
+    global BRANCHES
+    BRANCHES = tuple(json.loads((lab / 'reserved-protocol-before-training.json').read_text())['branches'])
     assert lab.is_relative_to(root / "artifacts")
     lab.mkdir(parents=True, exist_ok=True)
     log = lab / "logs"
@@ -218,7 +222,7 @@ def host(args):
             state.mkdir(parents=True, exist_ok=True)
             socket = lab / "tpm-sockets" / c
             socket.mkdir(parents=True, exist_ok=True)
-            name = f"revision-probe-rollback-tpm-20261112-v1-{c}"
+            name = f"{lab.name}-tpm-{c}"
             exists = (
                 subprocess.run(
                     ["docker", "inspect", name], capture_output=True, check=False
@@ -286,10 +290,16 @@ def host(args):
 
 
 SOURCE_LAB = 'artifacts/revision-live-bounded-tpm-v2'
-MODES = {'clean': 'enforce', 'active': 'enforce', 'rollback': 'rollback_only'}
+VARIANTS = {
+    'bounded': ({'clean': 'enforce', 'active': 'enforce', 'rollback': 'rollback_only'}, 'active.yaml'),
+    # Declared after the bounded case showed no live rollback: same DBA, plain FedAvg + retreat envelope
+    # (no clipping), client probe audit-only, rollback enforced. Threshold and attack unchanged.
+    'fedavg': ({'fedavg-rollback': 'rollback_only'}, 'control.yaml'),
+}
 
 
-def prepare(workspace):
+def prepare(workspace, variant='bounded'):
+    MODES, source_cfg = VARIANTS[variant]
     """Host-side: copy the bounded case inputs, add the frozen probe policy, reserve the protocol."""
     import numpy as np
     import yaml
@@ -322,14 +332,14 @@ def prepare(workspace):
                     'global_scales': 'results/revision-global-probe-confirm/calibration/global-scales.json'},
     }
     (lab / 'config' / POLICY_FILE).write_text(json.dumps(policy, indent=1, sort_keys=True) + '\n')
-    base_cfg = yaml.safe_load((src / 'config/active.yaml').read_text())
+    base_cfg = yaml.safe_load((src / 'config' / source_cfg).read_text())
     for branch, mode in MODES.items():
         cfg = json.loads(json.dumps(base_cfg)); cfg['runtime_admission']['policy_id'] = f'live-probe-rollback-{branch}-v1'
         cfg['runtime_admission']['probe_policy'] = {'profile': PROFILE, 'mode': mode, 'policy_sha256': sha(lab / 'config' / POLICY_FILE)}
         (lab / 'config' / f'{branch}.yaml').write_text(yaml.safe_dump(cfg, sort_keys=True))
     save(lab / 'reserved-protocol-before-training.json', {
         'case_role': 'Mechanism demonstration on emulated TPMs: probe and rollback decisions appear in the signed derivation graph and verify offline. Not an efficacy study.',
-        'branches': list(BRANCHES), 'rounds': ROUNDS, 'probe_modes': MODES,
+        'branches': list(MODES), 'rounds': ROUNDS, 'probe_modes': MODES, 'variant': variant, 'source_config': source_cfg,
         'attack_plan': json.loads((lab / 'config/dba-plan.json').read_text()),
         'implementation_sha256': implementation_sha256(),
         'config_files': {str(p.relative_to(lab)): sha(p) for p in sorted((lab / 'config').rglob('*')) if p.is_file()},
@@ -339,9 +349,9 @@ def prepare(workspace):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--stage');p.add_argument('--branch',default='clean');p.add_argument('--round',type=int,default=1)
-    p.add_argument('--image',default='revision-live-probe-rollback:20261112-v1');p.add_argument('--workspace',default='artifacts/revision-live-probe-rollback-v1')
+    p.add_argument('--variant',default='bounded');p.add_argument('--image',default='revision-live-probe-rollback:20261112-v1');p.add_argument('--workspace',default='artifacts/revision-live-probe-rollback-v1')
     args=p.parse_args()
-    if args.stage=='prepare': prepare(args.workspace)
+    if args.stage=='prepare': prepare(args.workspace, args.variant)
     elif args.stage: print(json.dumps(internal(args.stage,args.branch,args.round),indent=2),flush=True)
     else:host(args)
 

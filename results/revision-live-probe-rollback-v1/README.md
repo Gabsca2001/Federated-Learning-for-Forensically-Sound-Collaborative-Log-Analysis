@@ -54,3 +54,23 @@ All of it is opt-in: nothing changes unless `runtime_admission.probe_policy` is 
 already keep the global drift far below the threshold even when the DBA updates are admitted. The
 `rejected_candidate` branch of the graph is therefore covered by unit tests only, not by a signed
 live round.
+
+## Second live case: no clipping (declared after the first case, threshold and attack unchanged)
+
+* Lab: `artifacts/revision-live-probe-rollback-fedavg-v1`, run with `--variant fedavg`.
+* Configuration: the same DBA under plain FedAvg with the original retreat envelope (`control.yaml`).
+  The client probe only records (`rollback_only`).
+* All 5 rounds and the campaign verified.
+
+Result: **no rollback** (drift scores 0.15, 0, 0, 0, 0.20; threshold 1.5).
+
+* The three attackers were admitted only in round 1.
+* In rounds 2–3 the retreat envelope quarantined them (round 3 admitted client03 alone).
+* So the backdoor never had enough admitted mass to move the global model. This is case 1:
+  the attack was contained upstream, and the global probe correctly stayed silent.
+  It is not a missed detection.
+
+The rollback path therefore remains covered by unit tests only. A live rollback would need an
+attack that passes every client-level control, such as the adaptive attacker of the research
+engine. The signed profile does not implement such an attacker. The threshold was not lowered and
+the attack was not strengthened to force a rollback.
