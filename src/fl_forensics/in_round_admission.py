@@ -56,6 +56,7 @@ from .in_round_admission_models import (
 from .live_bounded_aggregation import backend as aggregation_backend
 from .live_bounded_aggregation import label as aggregation_label
 from .live_bounded_aggregation import materialize as materialize_bounded
+from .live_probe_gate import apply_client_probe, apply_rollback
 from .preprocessing import derived_json_bytes
 from .real_attestation_failure import active_target_for_round
 from .secure_round import (
@@ -123,6 +124,8 @@ def _implementation_sha256() -> str:
                 "live_envelope.py",
                 "bounded_aggregation.py",
                 "live_bounded_aggregation.py",
+                "probe_gate.py",
+                "live_probe_gate.py",
                 "partition_training_binding.py",
                 "byzantine.py",
                 "composite_admission.py",
@@ -242,6 +245,10 @@ def install_in_round_contract(
         from .live_envelope import install_assets
 
         install_assets(public_workspace, config_path)
+    if load_yaml(config_path)[0].get("runtime_admission", {}).get("probe_policy") is not None:
+        from .live_probe_gate import install_policy
+
+        install_policy(public_workspace, config_path)
     contract = build_in_round_contract(
         config_path=config_path, partition_manifest=partition_manifest
     )
@@ -962,6 +969,10 @@ def admit_and_aggregate_in_round(
             statistical_state=statistical_state,
             create=True,
         )
+    statistical_state = apply_client_probe(
+        workspace=workspace, records=records, base=base, validation_rows=validation_rows,
+        statistical_state=statistical_state, create=True,
+    )
     decisions = _load_or_create_runtime_decisions(
         workspace=workspace,
         records=records,
@@ -1011,6 +1022,9 @@ def admit_and_aggregate_in_round(
         decisions=decisions,
         records=records,
         aggregate_override=aggregation_backend(workspace, dependencies()[4]),
+    )
+    global_model = apply_rollback(
+        workspace=workspace, base=base, candidate=global_model, validation_rows=validation_rows, create=True
     )
     model_bytes = derived_json_bytes(global_model)
     model_sha256 = sha256_bytes(model_bytes)
@@ -1196,6 +1210,10 @@ def verify_in_round_secure_round(
                 statistical_state=statistical_state,
                 create=False,
             )
+        statistical_state = apply_client_probe(
+            workspace=workspace, records=records, base=base, validation_rows=validation_rows,
+            statistical_state=statistical_state, create=False,
+        )
         decisions = _load_or_create_runtime_decisions(
             workspace=workspace,
             records=records,
@@ -1211,6 +1229,9 @@ def verify_in_round_secure_round(
             decisions=decisions,
             records=records,
             aggregate_override=aggregation_backend(workspace, dependencies()[4]),
+        )
+        recomputed_model = apply_rollback(
+            workspace=workspace, base=base, candidate=recomputed_model, validation_rows=validation_rows, create=False
         )
         quarantined = [
             (item, path)

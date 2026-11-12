@@ -400,7 +400,12 @@ def _calculate(
             ):
                 raise CounterfactualError("failed historical round claims coefficients")
         from .live_bounded_aggregation import enabled as bounded_enabled
+        from .live_probe_gate import enabled as probe_enabled
 
+        if probe_enabled(round_workspace):
+            raise CounterfactualError(
+                "probe/rollback-profile removals change peer medians and the rollback decision; counterfactual replay is unsupported (fail closed)"
+            )
         if bounded_enabled(round_workspace):
             raise CounterfactualError(
                 "bounded-profile removals require the explicit clipped-delta adapter; legacy raw-update counterfactual aggregation is unsupported"

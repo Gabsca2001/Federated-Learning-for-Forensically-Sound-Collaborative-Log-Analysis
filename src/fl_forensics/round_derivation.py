@@ -438,6 +438,23 @@ def _graph(
                 (contract, bounded_node, "dec"),
             }
         )
+    from .live_probe_gate import CLIENT_RESULT, POLICY_FILE, REJECTED, ROLLBACK_RESULT
+    from .live_probe_gate import enabled as probe_enabled
+
+    probe_node, probe_clients = None, set()
+    if probe_enabled(workspace):
+        policy_node = node("probe_policy", sha256_file(workspace / "public" / POLICY_FILE))
+        probe_node = node("probe_gate_derivation", sha256_file(workspace / CLIENT_RESULT))
+        probe_clients = set(load_json(workspace / CLIENT_RESULT)["bundles"])
+        edges.update({(policy_node, probe_node, "dec"), (validation, probe_node, "num")})
+        if checkpoint_hash is not None:
+            rollback = load_json(workspace / ROLLBACK_RESULT)
+            global_node = node("global_probe_decision", sha256_file(workspace / ROLLBACK_RESULT))
+            edges.update({(policy_node, global_node, "dec"), (validation, global_node, "num"), (global_node, target, "dec")})
+            if rollback["rollback"]:
+                rejected = node("rejected_candidate", sha256_file(workspace / REJECTED))
+                prior = node("base_model", context.core.base_model_sha256)
+                edges.update({(bounded_node or score, rejected, "num"), (rejected, global_node, "num"), (prior, target, "num")})
     by_id = {item.submission_id: item for item in inventory.core.entries}
     for item in dispositions:
         entry = by_id[item.submission_id]
@@ -462,6 +479,8 @@ def _graph(
             )
             if item.participated_in_scoring:
                 edges.update({(bundle, score, "num"), (score, decision, "dec")})
+            if probe_node is not None and item.client_id in probe_clients:
+                edges.update({(bundle, probe_node, "num"), (probe_node, decision, "dec")})
         if checkpoint_hash is not None and Decimal(item.effective_weight_decimal) > 0:
             edges.update({(bundle, bounded_node or target, "num"), (decision, target, "dec")})
         elif checkpoint_hash is not None and item.decision_sha256 is not None:
@@ -702,6 +721,12 @@ def verify_failed_round_derivation(
             statistical_state=statistical,
             create=False,
         )
+    from .live_probe_gate import apply_client_probe
+
+    statistical = apply_client_probe(
+        workspace=workspace, records=records, base=base, validation_rows=rows,
+        statistical_state=statistical, create=False,
+    )
     decisions = _load_or_create_runtime_decisions(
         workspace=workspace,
         records=records,

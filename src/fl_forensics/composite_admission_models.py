@@ -15,6 +15,7 @@ PolicyName = Literal[
     "sequential",
     "gated_composite",
     "observable_envelope",
+    "probe_keynorm",
 ]
 DecisionStatus = Literal[
     "accepted",
