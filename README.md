@@ -56,8 +56,10 @@ fixture is an artifact-contract check, not a reference training campaign.
 
 Dataset downloads, M2–M3 reconstruction and profile-specific runtime commands
 are documented in [Reproducibility](docs/guide/REPRODUCIBILITY.md). Existing output
-paths are protected. Neither `make` nor the documentation checks launch attack
-campaigns, acquire timestamps or modify the manuscript implicitly.
+paths are protected. `make experiments` lists the targets that re-run the
+completed studies (gate and probe studies, external datasets, M6 replays); a
+campaign starts only when its target is named, and no target acquires
+timestamps or modifies the manuscript.
 
 ## Evidence and interpretation
 

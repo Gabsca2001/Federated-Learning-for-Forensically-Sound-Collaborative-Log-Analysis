@@ -36,6 +36,7 @@ help:
 	@printf '%s\n' \
 	  'Repository entry points (no campaign starts by default):' \
 	  '  make help              Show entry points and path variables' \
+	  '  make experiments       List the targets that re-run completed experiments' \
 	  '' \
 	  'Documentation and retained evidence:' \
 	  '  make docs-check        Check maintained docs, catalogues and retained Markdown' \
@@ -76,7 +77,7 @@ help:
 	  'Path variables: VENV, PYTHON, CLI, STUDY, DATA24_SOURCE, M2_AUDIT, M2_DATA,' \
 	  'M2_BASELINE, M3_IID_PARTITION, M3_NON_IID_PARTITION, M3_IID_RUN, M3_NON_IID_RUN,' \
 	  'DEMO_INPUT and DEMO_WORKSPACE. Generation targets refuse existing outputs.' \
-	  'M4-M8 and research campaign execution remains profile-specific; see docs/README.md.'
+	  'M4-M8 deployments remain profile-specific; see docs/README.md.'
 
 setup:
 	if [[ ! -x "$(PYTHON)" ]]; then
@@ -299,3 +300,230 @@ ton-iot-f1-study:
 	  exit 2
 	fi
 	"$(PYTHON)" scripts/run_ton_iot_f1_study.py --workspace "$(TON_IOT_F1_WORKSPACE)" --parent "$(TON_IOT_TARGET_WORKSPACE)" --transfer "$(TON_IOT_TRANSFER)"
+
+# ---------------------------------------------------------------------------------------------
+# Experiment reproduction. Each target re-runs a completed study with its own controller.
+# The controllers refuse to write into an existing workspace: archive or move the old one first,
+# or pass LAB= where the controller supports it. Training phases are long; WORKERS defaults
+# to 2 to fit the WSL memory limit.
+WORKERS ?= 2
+PHASE ?=
+REPORT_ARGS ?=
+REPORT_DIR ?= artifacts/reports
+
+.PHONY: experiments gate-factorial head-cusum head-v2 head-v2-confirm trigger-probe probe-evasion
+.PHONY: probe-keynorm global-probe live-probe-rollback clean-gate-calibration severe-tail-gate
+.PHONY: gate-trajectories gate-mechanism-audit mass-safety
+.PHONY: multisource-fl multisource-confirmation two-view-confirmation unsw-generalization
+.PHONY: unsw-s0-confirmation label-efficiency lofo domain-adaptation domain-adaptation-controls
+.PHONY: prototype-reanchoring ton-iot-robust-transfer m6-policy-sensitivity-replay m6-adaptive-frozen-verify
+
+PHASE_USAGE = printf 'Set PHASE to one of: %s\n' "$(1)" >&2; exit 2
+
+experiments:
+	@printf '%s\n' \
+	  'Experiment reproduction targets (see docs/guide/REPRODUCIBILITY.md):' \
+	  '' \
+	  'Phased gate and probe studies: make <target> PHASE=<phase> [WORKERS=2] [LAB=...]' \
+	  '  Order: calibrate -> prepare -> guard -> verify-guard -> guard-decide -> evaluation' \
+	  '         -> verify-evaluation -> test -> report (only the phases a study has)' \
+	  '  gate-factorial        Gate x aggregation factorial (negative)' \
+	  '  head-cusum            Head-aware CUSUM gate (retired)' \
+	  '  head-v2               head_v2 gate, exploratory study (retired)' \
+	  '  head-v2-confirm       head_v2 + clipping, confirmatory (guard not passed)' \
+	  '  trigger-probe         Behavioural trigger probe + clipping, live' \
+	  '  probe-evasion         Probe vs probe-aware attacker' \
+	  '  probe-keynorm         Per-key normalised probe, confirmatory' \
+	  '  global-probe          Global-model probe with rollback, confirmatory' \
+	  '  live-probe-rollback   Signed swtpm live case (Docker; LAB=fresh workspace)' \
+	  '' \
+	  'Single-pipeline studies:' \
+	  '  clean-gate-calibration  severe-tail-gate  gate-trajectories  gate-mechanism-audit  mass-safety' \
+	  '' \
+	  'External-dataset studies (each refuses if its frozen protocol digest differs):' \
+	  '  multisource-fl  multisource-confirmation  two-view-confirmation  unsw-generalization' \
+	  '  unsw-s0-confirmation  label-efficiency  lofo  domain-adaptation  domain-adaptation-controls' \
+	  '  prototype-reanchoring  ton-iot-robust-transfer PHASE=train|evaluate' \
+	  '  ToN-IoT preflight, windows, target retraining and F1 assessment: see make help' \
+	  '' \
+	  'Milestone replays: m6-policy-sensitivity-replay  m6-adaptive-frozen-verify' \
+	  '' \
+	  'Inputs moved to the external SSD: make restore-artifact ARCHIVE=<name> (SHA-256 checked first)' \
+	  '' \
+	  'Not available as targets: the M4-M8 deployments and the admission and containment studies' \
+	  'in results/admission/. Their controllers are kept in each publication folder and follow' \
+	  'the procedure described in that README.'
+
+gate-factorial: LAB ?= artifacts/revision-gate-aggregation-factorial-v1
+gate-factorial: check
+	case "$(PHASE)" in
+	  prepare|guard|guard-decide|evaluation) "$(PYTHON)" scripts/revision_gate_aggregation_factorial.py "$(PHASE)" --lab "$(LAB)" --workers "$(WORKERS)";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$(LAB)" --out "$(REPORT_DIR)/gate-factorial" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,prepare guard guard-decide evaluation report);;
+	esac
+
+head-cusum: LAB ?= artifacts/revision-head-cusum-gate-v1
+head-cusum: check
+	case "$(PHASE)" in
+	  prepare|fit|guard|guard-decide|evaluation) "$(PYTHON)" scripts/revision_head_cusum_study.py "$(PHASE)" --lab "$(LAB)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_head_cusum_audit.py guard --lab "$(LAB)";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_head_cusum_audit.py evaluation --lab "$(LAB)";;
+	  test) "$(PYTHON)" scripts/revision_head_cusum_test.py --lab "$(LAB)" --workers "$(WORKERS)";;
+	  report) "$(PYTHON)" scripts/report_head_cusum_study.py --lab "$(LAB)" --out "$(REPORT_DIR)/head-cusum";;
+	  *) $(call PHASE_USAGE,prepare fit guard verify-guard guard-decide evaluation verify-evaluation test report);;
+	esac
+
+head-v2: LAB ?= artifacts/revision-head-gate-v2
+head-v2: check
+	case "$(PHASE)" in
+	  prepare|fit|guard|guard-decide|evaluation) "$(PYTHON)" scripts/revision_head_v2_study.py "$(PHASE)" --lab "$(LAB)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_head_v2_audit.py guard --lab "$(LAB)";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_head_v2_audit.py evaluation --lab "$(LAB)";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$(LAB)" --out "$(REPORT_DIR)/head-v2" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,prepare fit guard verify-guard guard-decide evaluation verify-evaluation report);;
+	esac
+
+head-v2-confirm: LAB ?= artifacts/revision-head-gate-v2-confirm
+head-v2-confirm: check
+	case "$(PHASE)" in
+	  prepare|guard|guard-decide|evaluation) "$(PYTHON)" scripts/revision_head_v2_confirm.py "$(PHASE)" --lab "$(LAB)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_head_v2_audit.py guard --lab "$(LAB)";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_head_v2_audit.py evaluation --lab "$(LAB)";;
+	  test) "$(PYTHON)" scripts/revision_head_cusum_test.py --lab "$(LAB)" --workers "$(WORKERS)";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$(LAB)" --out "$(REPORT_DIR)/head-v2-confirm" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,prepare guard verify-guard guard-decide evaluation verify-evaluation test report);;
+	esac
+
+trigger-probe: LAB ?= artifacts/revision-trigger-probe-live
+trigger-probe: check
+	case "$(PHASE)" in
+	  prepare|guard|guard-decide|evaluation) "$(PYTHON)" scripts/revision_probe_study.py "$(PHASE)" --lab "$(LAB)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_probe_audit.py guard --lab "$(LAB)";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_probe_audit.py evaluation --lab "$(LAB)";;
+	  test) "$(PYTHON)" scripts/revision_head_cusum_test.py --lab "$(LAB)" --workers "$(WORKERS)";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$(LAB)" --out "$(REPORT_DIR)/trigger-probe" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,prepare guard verify-guard guard-decide evaluation verify-evaluation test report);;
+	esac
+
+# These three controllers use a fixed workspace: move the existing one aside before a fresh run.
+probe-evasion: check
+	L=artifacts/revision-trigger-probe-evasion-live
+	case "$(PHASE)" in
+	  calibrate|prepare|guard|guard-decide|evaluation|test) "$(PYTHON)" scripts/revision_probe_evasion_study.py "$(PHASE)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_probe_evasion_audit.py guard --lab "$$L";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_probe_evasion_audit.py evaluation --lab "$$L";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$$L" --out "$(REPORT_DIR)/probe-evasion" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,calibrate prepare guard verify-guard guard-decide evaluation verify-evaluation test report);;
+	esac
+
+probe-keynorm: check
+	L=artifacts/revision-probe-keynorm-confirm
+	case "$(PHASE)" in
+	  calibrate|prepare|guard|guard-decide|evaluation|test) "$(PYTHON)" scripts/revision_probe_keynorm_study.py "$(PHASE)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_probe_keynorm_audit.py guard --lab "$$L";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_probe_keynorm_audit.py evaluation --lab "$$L";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$$L" --out "$(REPORT_DIR)/probe-keynorm" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,calibrate prepare guard verify-guard guard-decide evaluation verify-evaluation test report);;
+	esac
+
+global-probe: check
+	L=artifacts/revision-global-probe-confirm
+	case "$(PHASE)" in
+	  calibrate|prepare|guard|guard-decide|evaluation|test) "$(PYTHON)" scripts/revision_global_probe_study.py "$(PHASE)" --workers "$(WORKERS)";;
+	  verify-guard) "$(PYTHON)" scripts/revision_global_probe_audit.py guard --lab "$$L";;
+	  verify-evaluation) "$(PYTHON)" scripts/revision_global_probe_audit.py evaluation --lab "$$L";;
+	  report) "$(PYTHON)" scripts/report_arm_study.py --lab "$$L" --out "$(REPORT_DIR)/global-probe" $(REPORT_ARGS);;
+	  *) $(call PHASE_USAGE,calibrate prepare guard verify-guard guard-decide evaluation verify-evaluation test report);;
+	esac
+
+live-probe-rollback: check
+	if [[ -z "$(LAB)" || -e "$(LAB)" ]]; then
+	  printf 'Set LAB to a fresh workspace under artifacts/ (Docker and the probe-rollback image are required).\n' >&2
+	  exit 2
+	fi
+	"$(PYTHON)" scripts/revision_live_probe_rollback.py --stage prepare --workspace "$(LAB)" --variant "$${VARIANT:-bounded}"
+	"$(PYTHON)" scripts/revision_live_probe_rollback.py --workspace "$(LAB)" --variant "$${VARIANT:-bounded}"
+
+clean-gate-calibration: check
+	"$(PYTHON)" scripts/revision_clean_gate_study.py pipeline --workers "$(WORKERS)"
+	"$(PYTHON)" scripts/revision_clean_gate_audit.py evaluation --workers "$(WORKERS)"
+	"$(PYTHON)" scripts/report_clean_gate_study.py
+
+severe-tail-gate: check
+	"$(PYTHON)" scripts/revision_severe_gate_study.py pipeline --workers "$(WORKERS)"
+	"$(PYTHON)" scripts/check_severe_models.py
+	"$(PYTHON)" scripts/report_severe_gate.py
+	"$(PYTHON)" scripts/check_severe_publication.py
+
+gate-trajectories: check
+	"$(PYTHON)" scripts/revision_gate_trajectories.py prepare
+	"$(PYTHON)" scripts/revision_gate_trajectories.py run --workers "$(WORKERS)"
+	"$(PYTHON)" scripts/revision_gate_trajectories_audit.py --workers "$(WORKERS)"
+	"$(PYTHON)" scripts/report_gate_trajectories.py
+
+gate-mechanism-audit: check
+	"$(PYTHON)" scripts/revision_gate_mechanism_audit.py --verify
+
+mass-safety: check
+	"$(PYTHON)" scripts/revision_mass_safety_audit.py
+	"$(PYTHON)" scripts/finalize_mass_safety.py
+
+multisource-fl: check
+	"$(PYTHON)" scripts/multisource_fl.py
+multisource-confirmation: check
+	"$(PYTHON)" scripts/multisource_data24_confirmation.py
+two-view-confirmation: check
+	"$(PYTHON)" scripts/two_view_confirmation.py
+unsw-generalization: check
+	"$(PYTHON)" scripts/unsw_generalization.py
+unsw-s0-confirmation: check
+	"$(PYTHON)" scripts/unsw_s0_confirmation.py
+label-efficiency: check
+	"$(PYTHON)" scripts/label_efficiency.py
+lofo: check
+	"$(PYTHON)" scripts/label_efficiency_lofo.py
+domain-adaptation: check
+	"$(PYTHON)" scripts/domain_adaptation_eval.py
+domain-adaptation-controls: check
+	"$(PYTHON)" scripts/domain_adaptation_controls.py
+prototype-reanchoring: check
+	"$(PYTHON)" scripts/prototype_reanchoring.py
+
+ton-iot-robust-transfer: check
+	case "$(PHASE)" in
+	  train|evaluate) "$(PYTHON)" scripts/ton_iot_robust_transfer.py "$(PHASE)";;
+	  *) $(call PHASE_USAGE,train evaluate);;
+	esac
+
+m6-policy-sensitivity-replay: check
+	"$(PYTHON)" scripts/replay_m6_policy_sensitivity.py --verify
+
+m6-adaptive-frozen-verify: check
+	"$(PYTHON)" scripts/run_m6_adaptive_frozen.py verify
+
+# Restore an offloaded artifact from the external SSD after checking its SHA-256 against the manifest.
+ARCHIVE_DIR ?= /mnt/d/fl-artifacts-archive
+OFFLOAD_MANIFEST ?= results/records/artifact-offload/manifest.jsonl
+.PHONY: restore-artifact
+restore-artifact:
+	if [[ -z "$(ARCHIVE)" ]]; then
+	  printf 'Set ARCHIVE to an archive name listed in %s\n' "$(OFFLOAD_MANIFEST)" >&2
+	  exit 2
+	fi
+	file="$(ARCHIVE_DIR)/$(ARCHIVE).tar.gz"
+	if [[ ! -f "$$file" ]]; then
+	  printf 'Archive not found: %s (is D: mounted? see docs/records/ARTIFACT_OFFLOAD.md)\n' "$$file" >&2
+	  exit 2
+	fi
+	expected=$$("$(PYTHON)" -c 'import json,sys; rows=[json.loads(l) for l in open(sys.argv[1])]; print(next((r.get("archive_sha256") or r.get("sha256", "") for r in reversed(rows) if r["archive"].endswith("/"+sys.argv[2]+".tar.gz")), ""))' "$(OFFLOAD_MANIFEST)" "$(ARCHIVE)")
+	if [[ -z "$$expected" ]]; then
+	  printf 'No manifest entry for %s\n' "$(ARCHIVE)" >&2
+	  exit 2
+	fi
+	actual=$$(sha256sum "$$file" | cut -d' ' -f1)
+	if [[ "$$actual" != "$$expected" ]]; then
+	  printf 'SHA-256 mismatch for %s\n' "$$file" >&2
+	  exit 1
+	fi
+	tar -I pigz -xkf "$$file" -C artifacts
+	printf 'Restored %s into artifacts/ (existing files were kept).\n' "$(ARCHIVE)"

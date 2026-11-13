@@ -87,7 +87,49 @@ the V5 publication retains the exact resumed generator, fresh verifier and
 accounting scripts. Running its already-completed phase commands again is not
 a supported substitute for a fresh prespecified experiment.
 
-No convenience target launches a new attack campaign, deletes artifacts,
-changes Docker state, requests a timestamp or edits the manuscript. A full
-reproduction requires its named protocol, preserved inputs, compatible runtime,
-fresh output paths and an explicit storage budget.
+## Re-running completed experiments
+
+`make experiments` lists one target per study that can be re-run with its own
+controller. Nothing starts unless you name the target.
+
+```bash
+make experiments
+make probe-keynorm PHASE=calibrate
+make probe-keynorm PHASE=prepare
+make probe-keynorm PHASE=guard WORKERS=2
+make probe-keynorm PHASE=verify-guard
+make probe-keynorm PHASE=guard-decide
+make probe-keynorm PHASE=evaluation WORKERS=2
+make probe-keynorm PHASE=verify-evaluation
+make probe-keynorm PHASE=test
+make probe-keynorm PHASE=report
+```
+
+| Group | Targets | How they run |
+| --- | --- | --- |
+| Gate and probe studies | `gate-factorial`, `head-cusum`, `head-v2`, `head-v2-confirm`, `trigger-probe`, `probe-evasion`, `probe-keynorm`, `global-probe` | One phase at a time with `PHASE=`; a study only offers the phases it has |
+| Signed live case | `live-probe-rollback LAB=artifacts/<fresh>` | Needs Docker and the probe-rollback image |
+| Single-pipeline studies | `clean-gate-calibration`, `severe-tail-gate`, `gate-trajectories`, `gate-mechanism-audit`, `mass-safety` | Run, verify and report in sequence |
+| External datasets | `multisource-fl`, `multisource-confirmation`, `two-view-confirmation`, `unsw-generalization`, `unsw-s0-confirmation`, `label-efficiency`, `lofo`, `domain-adaptation`, `domain-adaptation-controls`, `prototype-reanchoring`, `ton-iot-robust-transfer PHASE=train\|evaluate` | Each controller refuses to run if its frozen protocol digest has changed |
+| Milestone replays | `m6-policy-sensitivity-replay`, `m6-adaptive-frozen-verify` | Re-verify stored M6 results |
+
+Things to know before a re-run:
+
+- Controllers never overwrite a finished study. Where the target accepts `LAB=`,
+  point it at a fresh folder. `probe-evasion`, `probe-keynorm` and `global-probe`
+  use a fixed folder, so move the existing one aside first.
+- Some inputs are on the external SSD. `make restore-artifact ARCHIVE=<name>`
+  checks the archive's SHA-256 against the offload manifest before extracting it
+  into `artifacts/`, and never replaces existing files. The
+  [offload record](../records/ARTIFACT_OFFLOAD.md) explains what is stored where.
+  For example, `gate-mechanism-audit` needs the M6 pilot campaigns restored first.
+- Training phases take hours. Keep `WORKERS` at 2 or below under the WSL memory limit.
+- A re-run is a fresh repetition under the same protocol, not a byte-for-byte
+  replay: the original evidence stays in its publication folder.
+
+The M4–M8 deployments and the studies in `results/admission/` have no Make
+target. Their controllers are kept inside each publication folder and follow
+the procedure described in its README.
+
+No target deletes artifacts, changes Docker state outside the live case,
+requests a timestamp or edits the manuscript.
