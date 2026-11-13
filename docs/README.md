@@ -1,6 +1,6 @@
 # Documentation index
 
-The maintained guide describes the repository state as of **9 November 2026**.
+The maintained guide describes the repository state as of **13 November 2026**.
 The following reading order separates system behavior, experimental findings
 and versioned evidence.
 
@@ -13,6 +13,8 @@ and versioned evidence.
 | Accepted email requirements | [Requirement correspondence](guide/REQUIREMENTS.md) |
 | Installation, Make targets and controlled execution | [Reproducibility](guide/REPRODUCIBILITY.md) |
 | Official ToN-IoT source and representation checks | [Independent-dataset preflight](TON_IOT_VALIDATION.md) |
+| Gate and probe research: what holds, what failed, what is open | [Gate research summary](records/GATE_RESEARCH_HANDOFF.md) |
+| Where large evidence is stored and how to restore it | [Artifact offload](records/ARTIFACT_OFFLOAD.md) |
 | Remaining work | [Implementation plan](IMPLEMENTATION_PLAN.md) |
 | Full list of original technical/protocol documents | [Reference catalogue](REFERENCE_INDEX.md) |
 | Retained experimental publications | [Results overview](../results/README.md) and [complete catalogue](../results/CATALOG.md) |
@@ -28,8 +30,18 @@ assumptions and release correspondence. The consolidation does not rewrite them.
 
 ## Reading versioned documents
 
-The root of `docs/` also retains older milestone procedures, locked protocols,
-dated audits and profile-specific research reports. Those files are stable
-references, not parallel current guides. Their historical execution notes and
+Only the maintained pages sit at the top of `docs/`. Everything else is a
+stable versioned reference, grouped by theme:
+
+| Folder | Contents |
+| --- | --- |
+| `milestones/` | M3–M8 procedures and the Data24 dataset description |
+| `admission-gates/` | Admission, adaptive-attack, bounded-influence, envelope and gate study reports and protocols |
+| `formal/` | Theorems, derivations, coverage, semantic reviews and counterfactual replay |
+| `measurement/` | Overhead, runtime, attestation-failure, external generalisation and publication readiness |
+| `witness-chain/` | Submission evidence, witnesses and external TSA |
+| `records/` | Dated audits, supervisor updates, consolidation notes, the gate handoff and the offload record |
+
+These files are not parallel current guides. Their historical execution notes and
 test totals must be read within the stated release. Later outcomes are indexed
 through the maintained guides rather than appended repeatedly to old reports.

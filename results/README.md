@@ -1,5 +1,19 @@
 # Published result snapshots
 
+Since 13 November 2026 the studies are grouped by theme:
+
+| Folder | Contents |
+| --- | --- |
+| [`milestones/`](milestones/) | M3–M8 snapshots, overhead and the historical M6 adaptive campaigns |
+| [`admission/`](admission/) | Admission policies, containment, coherent-gradient and retrospective-group studies |
+| [`gates-probes/`](gates-probes/) | Gate calibration, head gates, severe-tail and capped-final studies, trigger probes, clipping and global rollback |
+| [`chain-witness/`](chain-witness/) | Attested chain, witnesses, external TSA and formal correspondence |
+| [`external-data/`](external-data/) | Data22, ToN-IoT, UNSW-NB15 and multi-source transfer studies |
+| [`records/`](records/) | Storage retirement, artifact offload and relocation records |
+
+The [catalogue](CATALOG.md) lists every study. Each study README states whether its
+result is confirmed (frozen protocol), exploratory, negative or retired.
+
 This directory contains small, sanitized result snapshots intended for direct inspection on
 GitHub. It is distinct from `artifacts/`, which remains ignored because it contains generated
 evidence, models, private trust state, and large recovery packages.
@@ -146,3 +160,31 @@ its aggregate mean. See the [detailed interpretation](../docs/admission-gates/M6
 ## Updated experimental evidence overview
 
 See [Experimental Evidence Overview](EXPERIMENTAL_EVIDENCE_OVERVIEW.md) for the current research classification and evidence catalog.
+
+## Gate and probe studies (November 2026)
+
+Live confirmatory studies on Data24, each with a protocol frozen before the run:
+
+- [Per-key normalised trigger probe](gates-probes/revision-probe-keynorm-confirm/README.md): all arms pass
+  the clean guard; it removes DBA in IID and non-IID partitions. The adaptive attacker is not stopped.
+- [Global-model probe with rollback](gates-probes/revision-global-probe-confirm/README.md): adaptive peak
+  falls from 52–84% to 21–28%, no honest exclusions, but learning stalls during the attack.
+- [Trigger probe with clipping](gates-probes/revision-trigger-probe-live/README.md) and
+  [head_v2 with clipping](gates-probes/revision-head-gate-v2-confirm/README.md): clipping contains scaled
+  attacks; the head_v2 gate itself did not pass its guard.
+- Negative or undefined: [probe-aware attacker](gates-probes/revision-trigger-probe-evasion-live/README.md)
+  (both probe arms failed the clean guard), [head-aware CUSUM](gates-probes/revision-head-cusum-gate-v1/README.md)
+  and the head-gate development studies (persistent false positives on honest clients).
+- [Signed live case](gates-probes/revision-live-probe-rollback-v1/README.md): probe and rollback inside the
+  signed secure profile; a mechanism demonstration, not an efficacy study.
+
+The [gate research summary](../docs/records/GATE_RESEARCH_HANDOFF.md) keeps the full picture.
+
+## External-dataset studies (November 2026)
+
+- Confirmed under frozen protocols: [UNSW-NB15 session S0 transfer](external-data/revision-unsw-s0-confirmation-v1/README.md)
+  and [multi-source federation on held-out Data24](external-data/revision-multisource-data24-confirmation-v1/README.md).
+- [Two-view confirmation](external-data/revision-two-view-confirmation-v1/README.md) and the
+  [UNSW-NB15 generalisation tests](external-data/revision-unsw-generalization-v1/README.md) give the context.
+- ToN-IoT: frozen transfer and the chronological F1 extensions were unsuccessful; see
+  [ToN-IoT validation](../docs/TON_IOT_VALIDATION.md).

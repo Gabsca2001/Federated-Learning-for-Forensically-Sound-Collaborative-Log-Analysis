@@ -1,6 +1,6 @@
 # Gate / defence research: handoff (2026-11-11)
 
-Branch `revision/head-gate-studies` (not pushed). Read this first in a new session.
+Branch `revision/head-gate-studies`. This page summarises the gate research: what holds, what failed and what is still open.
 
 ## What is established (all on Data24, software trust assumption)
 
@@ -33,8 +33,9 @@ evasion offline): `results/gates-probes/revision-trigger-probe-dev/README.md`, `
 
 ## Next planned experiment
 
-Done: probe-aware, per-key and global-rollback live studies. Open: (1) probe/rollback decisions are not yet
-in the signed evidence graph; (2) drift-spreading / slow-drift adaptive attackers vs the global probe;
+Done: probe-aware, per-key and global-rollback live studies. Since then the probe and the rollback have become opt-in nodes of the signed derivation graph
+(commit 26b6a26, `results/gates-probes/revision-live-probe-rollback-v1`); the live rollback never
+triggered and is covered by unit tests. Open: (1) a live case in which the rollback fires; (2) drift-spreading / slow-drift adaptive attackers vs the global probe;
 (3) a second dataset; (4) discriminative pair-probe score. Optional: swtpm.
 
 ## Environment notes (important)
@@ -42,8 +43,8 @@ in the signed evidence graph; (2) drift-spreading / slow-drift adaptive attacker
 * Windows Git Bash strips `$VAR` in inline `wsl.exe ... bash -lc '...'` commands: put logic in a
   script file and run `MSYS_NO_PATHCONV=1 wsl.exe -d ubuntu -- bash /mnt/c/.../script.sh`.
 * Run at most 2 training workers; no other heavy WSL job in parallel.
-* Disk: C: had 56 GB free after compaction. Old artifacts are archived on the external SSD
+* Disk: free space on C: is limited. Old artifacts are archived on the external SSD
   (`docs/records/ARTIFACT_OFFLOAD.md`, manifest `results/records/artifact-offload/manifest.jsonl`). After each
-  study: archive cases, `wsl -u root fstrim -v /`; compaction needs the Claude app, Docker and
-  VS Code closed and an admin PowerShell on C:\ running `C:\Users\scama\compact-wsl.ps1`.
+  study: archive cases, `wsl -u root fstrim -v /`; compaction needs every program that uses WSL (Docker, editors, terminals)
+  closed and an admin PowerShell on C:\ running `C:\Users\scama\compact-wsl.ps1`.
 * Never present exploratory results as confirmed; disclose guard failures and deviations.

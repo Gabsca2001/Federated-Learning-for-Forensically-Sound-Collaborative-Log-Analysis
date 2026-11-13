@@ -5,7 +5,7 @@ learning, authenticated contribution admission, retrospective investigation and
 evidence preservation. The implementation distinguishes provenance, effective
 numerical influence and attributed semantic assessment.
 
-The maintained documentation was consolidated on **9 November 2026**. The
+The maintained documentation was last reviewed on **13 November 2026**. The
 [documentation index](docs/README.md) is the main entry point; the
 [implementation status](docs/STATUS.md) records supported claims and open work.
 
@@ -31,6 +31,8 @@ Experimental defenses remain distinct profiles with their own evidence.
 | Accepted supervisor requirements and remaining obligations | [Requirement correspondence](docs/guide/REQUIREMENTS.md) |
 | Installation, verification and controlled execution | [Reproducibility](docs/guide/REPRODUCIBILITY.md) |
 | Official ToN-IoT acquisition, source-IP/novelty diagnosis and qualified F1 assessments | [Independent-dataset validation](docs/TON_IOT_VALIDATION.md) |
+| Admission gates, trigger probes, clipping and global rollback | [Gate research summary](docs/records/GATE_RESEARCH_HANDOFF.md) |
+| Transfer to UNSW-NB15 and multi-source federation | [External-dataset studies](results/README.md#external-dataset-studies-november-2026) |
 | All retained studies | [Results catalogue](results/CATALOG.md) |
 
 ## Local use
@@ -66,7 +68,9 @@ attack cases have complete selected groups and exact same-excluded-roster clean
 recovery after full-origin retraining. Remaining misses and ineffective
 norm-limited controls prevent a general automatic-exclusion claim.
 
-These results concern retrospective analysis. Earlier positive containment cases,
+The November 2026 gate studies on Data24 add three live results that held under their predeclared protocols, each with stated limits. Per-tensor clipping contains scaled adaptive attacks. A per-key normalised trigger probe removes distributed backdoors (DBA) in IID and non-IID partitions without excluding honest clients. A global-model probe with rollback cuts the adaptive attacker's peak, but learning stalls while the attack lasts. Geometric head gates were stopped because their false positives stuck to particular honest clients, and the probe-aware attacker study could not be scored because both probe arms failed the clean guard. The probe and the rollback are now opt-in nodes of the signed derivation graph; in the swtpm live case the rollback never triggered, so that path is covered by unit tests only.
+
+The V5 results concern retrospective analysis. Earlier positive containment cases,
 negative gate/aggregation studies, literature adaptations and interrupted runs
 remain available in the [results overview](results/README.md). A verified report
 establishes its declared checks; it does not imply successful defense criteria.
@@ -84,12 +88,16 @@ not. Software-TPM validation does not establish physical-TPM deployment.
 | `configs/` | Profile-specific contracts and schemas |
 | `scripts/` | Runtime orchestration, research adapters and repository checks |
 | `tests/` | Unit, integration, tamper and verifier checks |
-| `docs/` | Maintained guide plus stable versioned references |
-| `results/` | Retained study publications and the complete catalogue |
+| `docs/` | Maintained guide at the top; versioned references grouped in `milestones/`, `admission-gates/`, `formal/`, `measurement/`, `witness-chain/` and `records/` |
+| `results/` | Study publications grouped in `milestones/`, `admission/`, `gates-probes/`, `chain-witness/`, `external-data/` and `records/`, plus the complete catalogue |
 | `artifacts/` | Local runtime evidence, trust state and preserved releases |
 | `data/` | Controlled local dataset inputs |
 
 Many local research files have not been committed. Catalogue membership is not a
 claim that an artifact is tracked, sanitized for public release or independently
-authenticated. Historical evidence retains its original paths and bytes; the
+authenticated. Historical evidence keeps its original bytes. The folders were
+regrouped by theme on 13 November 2026; every move is listed in
+[`results/records/relocation-20261113.json`](results/records/relocation-20261113.json),
+and paths written inside frozen evidence still use the old layout. Large completed-study
+evidence lives on an external disk ([offload record](docs/records/ARTIFACT_OFFLOAD.md)). The
 [maintenance policy](docs/guide/MAINTENANCE.md) defines the documentation boundary.

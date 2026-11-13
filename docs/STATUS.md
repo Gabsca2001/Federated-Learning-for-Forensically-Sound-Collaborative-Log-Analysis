@@ -1,6 +1,6 @@
 # Implementation status
 
-Status date: **9 November 2026**. This is the maintained state summary. Dated
+Status date: **13 November 2026**. This is the maintained state summary. Dated
 protocols and reports describe their own releases; their historical "pending",
 "running" or "current" statements are not live process indicators.
 
@@ -14,6 +14,8 @@ protocols and reports describe their own releases; their historical "pending",
 | Multiround investigation | Authenticated checkpoint/product graph, structural blast radius, direct interventions and genuine corrected-parent retraining | [Graph](formal/MULTIROUND_DERIVATION.md), [replay](formal/COUNTERFACTUAL_REPLAY.md) |
 | DBA and comparisons | Distributed/full triggers, individual components, matched-input baselines and separately qualified gradient-history studies | [Experimental findings](guide/EXPERIMENTS.md) |
 | ToN-IoT diagnosis | Benign-reference kNN hybrid: native macro-F1 0.9086/FPR1.87%, MITM17-20/130; common-minute F1 0.6812 with 20% FPR; general novel-family performance remains weak; 74 focused passes | [Independent-dataset validation](TON_IOT_VALIDATION.md) |
+| Clipping, trigger probe and global rollback | Live confirmatory studies on Data24: clipping contains scaled adaptive attacks; the per-key probe removes DBA with no honest exclusions; global rollback limits the adaptive attacker but stalls learning during the attack. Opt-in nodes in the signed derivation graph; the live rollback never triggered | [Gate research summary](records/GATE_RESEARCH_HANDOFF.md), [per-key probe](../results/gates-probes/revision-probe-keynorm-confirm/README.md), [global rollback](../results/gates-probes/revision-global-probe-confirm/README.md), [signed live case](../results/gates-probes/revision-live-probe-rollback-v1/README.md) |
+| Transfer to unseen networks | Data24-trained federated classifier on UNSW-NB15 session S0 and multi-source federation on held-out Data24, both confirmed under frozen protocols; other external runs are exploratory | [UNSW S0](../results/external-data/revision-unsw-s0-confirmation-v1/README.md), [multi-source](../results/external-data/revision-multisource-data24-confirmation-v1/README.md) |
 | V5 retrospective groups | Utility-risk separation, clean-calibrated repeated magnitude episodes, new allocations and full-origin removal controls | [V5 publication](../results/admission/revision-episodic-attribution-recovery-v1/README.md) |
 
 ## Findings that constrain claims
@@ -49,6 +51,11 @@ be pooled as a single defense success rate.
   checkpoint discrepancy remains documented. See [ToN-IoT validation](TON_IOT_VALIDATION.md).
 - General automatic attacker exclusion, norm-limited successful evasion and
   robust out-of-distribution calibration remain unvalidated.
+- Gate research: the adaptive attacker is not stopped by the probe alone (non-IID
+  peak 73.5% in every bounded arm) and can cause honest exclusions; geometric head
+  gates are retired; the probe-aware attacker study is undefined because the probe
+  arms failed the clean guard. Slow-drift attackers against the global probe and a
+  second dataset for the gates remain open.
 - FedGradTrace retains 25 complete histories and seven reproduced numerical
   failures under qualified interpretations, rather than a complete original
   system reproduction.
