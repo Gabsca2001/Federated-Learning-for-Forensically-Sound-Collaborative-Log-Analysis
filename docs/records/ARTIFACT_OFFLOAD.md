@@ -55,6 +55,10 @@ future experiments stays in `artifacts/`.
 rollback), `revision-live-probe-rollback-v1` and `revision-live-probe-rollback-fedavg-v1`
 (study still in progress), `revision-head-cusum-gate-v1` (evaluation awaiting approval),
 `maintenance/`, `ton-iot-robust-transfer-v1`, and everything under ~300 MB.
+`ton-iot-transfer-20261109`, `ton-iot-host-20261109` and `mail-audit-inputs-20261106` hold
+inputs that used to live in a working folder outside the repository. They were copied in
+byte for byte on 2026-11-13, and the ToN-IoT, domain-adaptation and mail-audit scripts now
+read them from `artifacts/`.
 For every study in the PRIOR chain (`capped-final-v1`, `gate-trajectories-v1`, `head-gate-v2`,
 `head-gate-v2-confirm`, `trigger-probe-live`, `trigger-probe-evasion-live`,
 `probe-keynorm-confirm`, `global-probe-confirm`), `partitions/` stays on C: because the

@@ -113,10 +113,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument(
         "--ton-iot",
         type=Path,
-        default=Path(
-            "/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1"
-            "/output/ton-iot-transfer-20261109/windows/occurrence-windows.json"
-        ),
+        default=root / "artifacts/ton-iot-transfer-20261109/windows/occurrence-windows.json",
     )
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args(argv)

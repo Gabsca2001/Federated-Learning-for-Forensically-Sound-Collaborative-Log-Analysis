@@ -6,7 +6,7 @@ from pathlib import Path
 from fl_forensics.round_derivation import implementation_sha256
 
 ROOT=Path(__file__).resolve().parents[1]
-WIN=Path('/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1')
+WIN=Path(__file__).resolve().parents[1]/'artifacts/mail-audit-inputs-20261106'
 LOCAL=WIN/'output/mass-safety-mail-audit-20261106'
 OUT=ROOT/'results/records/revision-mail-requirements-status-20261106'
 def read(path):return json.loads(path.read_text(encoding='utf-8-sig'))
@@ -71,7 +71,7 @@ def main():
         'output/mass-safety-mail-audit-20261106/feasibility-certificates.json',
     ]
     pins={name:sha(WIN/name) for name in references}
-    mail_paths=[Path('/mnt/c/Users/scama/.codex/attachments')/folder/'Pasted text.txt' for folder in
+    mail_paths=[WIN/'mails'/folder/'Pasted text.txt' for folder in
         ('70152b64-6d6e-455f-9a64-c1404d00b597','095d6d4c-485f-4f39-9cfa-bd11b2606b65')]
     mails={str(path):sha(path) for path in mail_paths}
     original=Path('/mnt/c/Users/scama/Downloads/Proposta_modello_formale_derivazione_Gabriele_Scamardo.docx')

@@ -503,9 +503,7 @@ def ablation_effects(results: dict[str, Any], view: str = "occurrence") -> dict[
 def main(argv: list[str] | None = None) -> int:
     root = Path(__file__).resolve().parents[1]
     out_default = root / "artifacts/ton-iot-robust-transfer-v1"
-    transfer = Path(
-        "/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/ton-iot-transfer-20261109"
-    )
+    transfer = root / "artifacts/ton-iot-transfer-20261109"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=("train", "evaluate"))
     parser.add_argument("--output", type=Path, default=out_default)

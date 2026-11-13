@@ -19,10 +19,7 @@ from fl_forensics.external_generalization import _model_from_export
 from fl_forensics.preprocessing import FEATURE_NAMES
 
 ROOT = Path(__file__).resolve().parents[1]
-TRANSFER = Path(
-    "/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1"
-    "/output/ton-iot-transfer-20261109"
-)
+TRANSFER = ROOT / "artifacts/ton-iot-transfer-20261109"
 MODEL_SHA256 = "39075d9cbf7c45248c475ae3ddfb66f0e032d55cc210eba2a9e97c19e3d594e5"
 BASELINE_DATES = {
     "data22": ("2022-01-09", "2022-01-10", "2022-01-11", "2022-01-12"),

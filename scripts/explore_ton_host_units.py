@@ -29,7 +29,7 @@ import explore_view_b_variants as vb
 import multisource_fl as ms
 
 OUT = dae.ROOT / "artifacts/explore-ton-host-units-v1"
-NPZ = Path("/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1/output/ton-iot-host-20261109/windows/host-windows.npz")
+NPZ = Path(__file__).resolve().parents[1] / "artifacts/ton-iot-host-20261109/windows/host-windows.npz"
 
 
 def main() -> int:
