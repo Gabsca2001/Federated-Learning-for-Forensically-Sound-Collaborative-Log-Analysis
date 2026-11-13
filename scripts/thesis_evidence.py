@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import glob
+import hashlib
 import json
 import subprocess
 import sys
@@ -54,10 +55,15 @@ def main(argv=None) -> int:
                      '--root', str(root)], capture_output=True, text=True)
                 status = 'CHECKSUM  ' if result.returncode == 0 else 'FAILED    '
                 failures += result.returncode != 0
+            elif (Path(match) / 'protocol.sha256').is_file() and (Path(match) / 'protocol.md').is_file():
+                recorded = (Path(match) / 'protocol.sha256').read_text(encoding='utf-8').split()[0]
+                actual = hashlib.sha256((Path(match) / 'protocol.md').read_bytes()).hexdigest()
+                status = 'PROTOCOL  ' if recorded == actual else 'FAILED    '
+                failures += recorded != actual
             else:
                 status = 'PRESENT   '
             print(f'{status}{rel}')
-    print(f'\n{failures} problem(s). PRESENT entries rely on their own profile verifier; '
+    print(f'\n{failures} problem(s). PROTOCOL entries match their frozen protocol digest; PRESENT entries rely on their own profile verifier; '
           'ARCHIVED entries are on the external SSD and checked by SHA-256 when restored.')
     return 1 if failures else 0
 
