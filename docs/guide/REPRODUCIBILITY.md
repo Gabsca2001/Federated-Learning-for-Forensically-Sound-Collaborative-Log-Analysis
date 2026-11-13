@@ -90,7 +90,7 @@ a supported substitute for a fresh prespecified experiment.
 ## Re-running completed experiments
 
 `make experiments` lists one target per study that can be re-run with its own
-controller. Nothing starts unless you name the target.
+controller. Nothing starts unless the target is named.
 
 ```bash
 make experiments
@@ -113,11 +113,11 @@ make probe-keynorm PHASE=report
 | External datasets | `multisource-fl`, `multisource-confirmation`, `two-view-confirmation`, `unsw-generalization`, `unsw-s0-confirmation`, `label-efficiency`, `lofo`, `domain-adaptation`, `domain-adaptation-controls`, `prototype-reanchoring`, `ton-iot-robust-transfer PHASE=train\|evaluate` | Each controller refuses to run if its frozen protocol digest has changed |
 | Milestone replays | `m6-policy-sensitivity-replay`, `m6-adaptive-frozen-verify` | Re-verify stored M6 results |
 
-Things to know before a re-run:
+Before a re-run:
 
 - Controllers never overwrite a finished study. Where the target accepts `LAB=`,
-  point it at a fresh folder. `probe-evasion`, `probe-keynorm` and `global-probe`
-  use a fixed folder, so move the existing one aside first.
+  it should point to a fresh folder. `probe-evasion`, `probe-keynorm` and
+  `global-probe` use a fixed folder, which has to be moved aside first.
 - Some inputs are on the external SSD. `make restore-artifact ARCHIVE=<name>`
   checks the archive's SHA-256 against the offload manifest before extracting it
   into `artifacts/`, and never replaces existing files. The
