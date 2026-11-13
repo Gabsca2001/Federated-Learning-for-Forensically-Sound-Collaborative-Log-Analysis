@@ -51,4 +51,4 @@ The shared system definition and its exact assumptions are retained in
 [SYSTEM_MODEL.md](../SYSTEM_MODEL.md), with the
 [profile correspondence](../SYSTEM_PROFILE_CORRESPONDENCE.md) and
 [integration report](../UNIFIED_CHAIN_VALIDATION.md). Mathematical statements
-remain in the [formal reference](../FORMAL_MODEL_THEOREMS.md).
+remain in the [formal reference](../formal/FORMAL_MODEL_THEOREMS.md).

@@ -1,6 +1,6 @@
 """Report for the head-CUSUM live study (reads closed, verified, tested evidence).
 
-Definitions follow docs/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:
+Definitions follow docs/admission-gates/HEAD_CUSUM_STUDY_PROTOCOL.md, fixed before training:
 * worst-trigger ASR(r) = max(full-trigger ASR, every component-trigger ASR) on test.
 * paired peak harm = max over rounds of worst(attacked, r) - worst(own-policy clean, r);
   undefined when either history is incomplete (never treated as zero).
@@ -74,7 +74,7 @@ def paired_harm(att, clean):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--lab', type=Path, default=ROOT / 'artifacts/revision-head-cusum-gate-v1')
-    ap.add_argument('--out', type=Path, default=ROOT / 'results/revision-head-cusum-gate-v1')
+    ap.add_argument('--out', type=Path, default=ROOT / 'results/gates-probes/revision-head-cusum-gate-v1')
     a = ap.parse_args(); lab, out = a.lab, a.out
     if (out / 'summary.json').exists():
         raise SystemExit('Report exists; write a new destination')

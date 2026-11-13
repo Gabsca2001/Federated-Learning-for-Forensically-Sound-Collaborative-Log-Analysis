@@ -6,7 +6,7 @@ import hashlib,json
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/'artifacts/revision-severe-tail-gate-v1'
-OUT=ROOT/'results/revision-admission-mass-feasibility-v1'
+OUT=ROOT/'results/gates-probes/revision-admission-mass-feasibility-v1'
 LOCAL=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'mass-safety-mail-audit-20261106')
 def read(path):return json.loads(path.read_text())
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()

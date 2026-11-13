@@ -7,7 +7,7 @@ IMAGE="flforensics-m6-adaptive-live-v1:latest"
 IMAGE_ID="sha256:c5fdc9897569c01651e5af83be32f10bd63ff53d8a3288fe2391544a7cc9e1f0"
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
-    output=ROOT/"results/m6-numeric-runtime-preflight-v1";output.mkdir(exist_ok=False)
+    output=ROOT/"results/milestones/m6-numeric-runtime-preflight-v1";output.mkdir(exist_ok=False)
     actual=subprocess.check_output(["docker","image","inspect",IMAGE,"--format","{{.Id}}"],text=True).strip()
     if actual!=IMAGE_ID:raise ValueError("Runtime image changed")
     cases=[(1,f"client{i:02d}") for i in range(1,16)]+[(10,c) for c in ["client01","client02","client15"]]

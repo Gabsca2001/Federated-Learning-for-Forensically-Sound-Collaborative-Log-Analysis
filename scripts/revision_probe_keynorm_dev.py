@@ -1,7 +1,7 @@
 """Offline development: per-key normalisation of the single-feature probe.
 
 DEVELOPMENT ONLY (validation rows, recorded models; no training, no test split).
-Motivation (results/revision-probe-persistence-dev): 53/65 honest probe flags fall on
+Motivation (results/gates-probes/revision-probe-persistence-dev): 53/65 honest probe flags fall on
 feature 12, a 'natural' shortcut whose strength varies across honest clients.
 Rule studied: excess_k = shortcut_k - round peer median_k for each key k = (feature, value);
 normalised score = max_k excess_k / s_k, with s_k = max(clean maximum of excess_k in the

@@ -5,7 +5,7 @@ on the server's clean validation attack rows; shortcut = increase in the benign 
 For every key k = (j, v): excess_k = shortcut_k - round peer median_k; normalised score =
 max_k excess_k / s_k, where s_k = max(clean maximum of excess_k in the cohort, FLOOR) is
 fitted only on verified clean histories. Quarantine when the score exceeds MULTIPLIER.
-Rationale and development: results/revision-probe-keynorm-dev (natural shortcuts such as
+Rationale and development: results/gates-probes/revision-probe-keynorm-dev (natural shortcuts such as
 feature 12 vary across honest clients; one global threshold cannot separate them).
 """
 from __future__ import annotations

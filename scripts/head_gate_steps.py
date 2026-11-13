@@ -1,6 +1,6 @@
 """Head gate v2: step-normalized, per-round, non-compensatory indicators.
 
-Development evidence (offline, recorded trajectories only): results/revision-head-gate-v2b-dev.
+Development evidence (offline, recorded trajectories only): results/gates-probes/revision-head-gate-v2b-dev.
 v1 excluded an honest client holding 34% of the data in every round because it
 takes proportionally more local SGD steps (epochs * ceil(n / batch)), so its delta
 is longer and farther from its peers. v2 divides each delta by its local step

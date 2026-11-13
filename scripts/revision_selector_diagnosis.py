@@ -21,7 +21,7 @@ from fl_forensics.federated_model import arrays_from_export
 from fl_forensics.canonical import sha256_file
 
 R=source.R;P=source.D;S=P/'source-evidence'
-D=R/'results/revision-selector-diagnosis-v1'
+D=R/'results/admission/revision-selector-diagnosis-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'selector-diagnosis-20261107')
 
 def guard():

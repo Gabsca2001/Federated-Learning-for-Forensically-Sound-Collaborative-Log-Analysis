@@ -14,7 +14,7 @@ from fl_forensics.composite_admission_models import TrustSignal, StatisticalSign
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs/m6-policy-sensitivity-replay-v1.json"
-OUT = ROOT / "results/m6-policy-sensitivity-replay-v1"
+OUT = ROOT / "results/milestones/m6-policy-sensitivity-replay-v1"
 
 def sha(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()

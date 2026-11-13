@@ -20,7 +20,7 @@ from fl_forensics.federated_partitioning import _dirichlet_assignments
 from fl_forensics.federated_model import arrays_from_export
 from fl_forensics.canonical import sha256_file
 
-R=prior.R;D=R/'results/revision-attribution-origin-recovery-v1'
+R=prior.R;D=R/'results/admission/revision-attribution-origin-recovery-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'attribution-recovery-20261107')
 ASSIGN={6122001:['client02','client08','client15'],6123001:['client03','client07','client11']}
 FIT=prior.FIT;CAL=prior.CAL

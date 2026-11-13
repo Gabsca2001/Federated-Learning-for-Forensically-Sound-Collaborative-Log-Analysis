@@ -3,7 +3,7 @@ from pathlib import Path
 import json,subprocess,hashlib
 import yaml
 ROOT=Path(__file__).resolve().parents[1]
-out=ROOT/'results/m6-adaptive-multiseed-preflight-v1';out.mkdir(exist_ok=True)
+out=ROOT/'results/milestones/m6-adaptive-multiseed-preflight-v1';out.mkdir(exist_ok=True)
 plan=json.loads((ROOT/'configs/m6-adaptive-paired-s342593-v1.json').read_text())
 paths=[m['path'] for m in yaml.safe_load((ROOT/'configs/trust.yaml').read_text())['measurements']]
 probe='import json,hashlib;from pathlib import Path;paths='+repr(paths)+';print(json.dumps({p:hashlib.sha256((Path("/app")/p).read_bytes()).hexdigest() for p in paths}))'

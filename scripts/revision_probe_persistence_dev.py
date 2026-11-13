@@ -11,7 +11,7 @@ Rules (threshold t per cohort; flag_r = score_r > t, with feature f_r):
 * persist k/w: quarantine at round r when flagged and, within rounds r-w+1..r, the client
   was flagged with the same feature f_r in at least k rounds (value ignored).
 Thresholds: pinned clean max (deployed) and q98 of the same calibration
-(results/revision-trigger-probe-thresholds/thresholds.json).
+(results/gates-probes/revision-trigger-probe-thresholds/thresholds.json).
 Metrics: honest client-rounds quarantined (clean cases and honest clients of attacked
 cases), longest consecutive honest exclusion, guard-rule failures per case (>=2
 consecutive), attacker client-rounds quarantined in rounds 1-10 per study/attack/cohort.
@@ -29,7 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 STUDIES = ('revision-trigger-probe-live', 'revision-trigger-probe-evasion-live')
-THR = json.loads((ROOT / 'results/revision-trigger-probe-thresholds/thresholds.json').read_text())
+THR = json.loads((ROOT / 'results/gates-probes/revision-trigger-probe-thresholds/thresholds.json').read_text())
 RULES = [('base', 1, 1), ('persist 2/2', 2, 2), ('persist 2/3', 2, 3), ('persist 3/3', 3, 3), ('persist 3/4', 3, 4)]
 
 

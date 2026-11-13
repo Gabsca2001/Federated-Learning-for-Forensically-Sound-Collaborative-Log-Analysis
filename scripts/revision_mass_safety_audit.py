@@ -29,15 +29,15 @@ def write_csv(path,rows):
 def main():
     assert not LAB.exists(),'Preserve prior audit'
     protocol=read(SOURCE/'evaluation/protocol-before-training.json');study.assert_locks(protocol)
-    publication=read(ROOT/'results/revision-severe-tail-gate-v1/publication-verification.json')
+    publication=read(ROOT/'results/gates-probes/revision-severe-tail-gate-v1/publication-verification.json')
     assert publication['status']=='verified'
-    assert publication['summary_sha256']==sha256_file(ROOT/'results/revision-severe-tail-gate-v1/summary.json')
+    assert publication['summary_sha256']==sha256_file(ROOT/'results/gates-probes/revision-severe-tail-gate-v1/summary.json')
     LAB.mkdir()
     locks={str(p.relative_to(ROOT)):sha256_file(p) for p in (
         ROOT/'scripts/admission_mass_safety.py',Path(__file__),ROOT/'tests/test_admission_mass_safety.py')}
     plan=dict(profile='retrospective-fedavg-mass-safety-audit-v1',posthoc=True,
         source_verified_sha256=sha256_file(SOURCE/'evaluation/verified/summary.json'),
-        source_publication_sha256=sha256_file(ROOT/'results/revision-severe-tail-gate-v1/publication-verification.json'),
+        source_publication_sha256=sha256_file(ROOT/'results/gates-probes/revision-severe-tail-gate-v1/publication-verification.json'),
         policies={k:p.record() for k,p in POLICIES.items()},source_locks=locks,
         threshold_rationale='The4/5 per-round mass floor is the existing severe-study guard. k=3 is the declared three-of-fifteen identity budget.1/3 is a declared conservative influence allocation, not a learned cutoff or a backdoor theorem. Both fixed policies are reported; none is selected by attack outcomes.',
         inference='All source outcomes were already observed. This is a retrospective mechanism/availability audit, not held-out security validation. Later source checkpoints after a deferral are not defended continuations.',

@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[1]
 LAB=ROOT/'artifacts/revision-admission-mass-safety-v1'
 OLD=ROOT/'artifacts/revision-severe-tail-gate-v1'
-OUT=ROOT/'results/revision-admission-mass-safety-v1'
+OUT=ROOT/'results/gates-probes/revision-admission-mass-safety-v1'
 LOCAL=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'mass-safety-mail-audit-20261106')
 
 
@@ -31,7 +31,7 @@ def main():
     for name,digest in read(LAB/'inventory.json')['files'].items():assert sha(LAB/name)==digest
     assert sha(OLD/'evaluation/verified/summary.json')==p['source_verified_sha256']
     for relative,digest in read(OLD/'protocol-before-clean-fitting.json')['source_locks'].items():assert sha(ROOT/relative)==digest
-    assert sha(ROOT/'results/revision-severe-tail-gate-v1/publication-verification.json')==p['source_publication_sha256']
+    assert sha(ROOT/'results/gates-probes/revision-severe-tail-gate-v1/publication-verification.json')==p['source_publication_sha256']
     source=read(OLD/'evaluation/verified/summary.json')['cases']
     published=table('rounds.csv');cases=table('cases.csv');aggregate=table('aggregate.csv')
     lookup={(r['case'],r['guard'],int(r['round'])):r for r in published}

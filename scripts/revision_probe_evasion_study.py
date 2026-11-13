@@ -47,7 +47,7 @@ from fl_forensics.secure_round import _model_from_export
 
 ROOT = base.ROOT
 LAB = ROOT / 'artifacts/revision-trigger-probe-evasion-live'
-RESULTS = ROOT / 'results/revision-trigger-probe-evasion-live'
+RESULTS = ROOT / 'results/gates-probes/revision-trigger-probe-evasion-live'
 PAIR_THRESHOLDS_FILE = RESULTS / 'calibration/pair-thresholds.json'
 PAIRS = [[3, 18], [8, 15], [11, 22]]
 TRIGGER_VALUE = 6.0

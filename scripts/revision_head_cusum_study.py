@@ -186,7 +186,7 @@ def prepare():
         candidates=CANDIDATES, evaluation_arms=EVAL_ARMS, variants=VARIANTS,
         training=clean_root['training'], runtime_admission=clean_root['runtime_admission'], partitions=partitions,
         source_snapshots=clean_root['source_snapshots'], source_locks=source_locks(), environment=environment(),
-        development_evidence='results/revision-tensor-indicators-v1 (offline replay; rule chosen on seeds 342593/343593, '
+        development_evidence='results/admission/revision-tensor-indicators-v1 (offline replay; rule chosen on seeds 342593/343593, '
                              'holdout 344593/345593). The rule below is frozen from that study without change.',
         candidate=dict(features=list(hg.FEATURES), directions=hg.DIRECTIONS, knn=hg.KNN, head_prefix=hg.HEAD_PREFIX,
                        score='maximum adverse robust z over features (non-compensatory, uncapped)',

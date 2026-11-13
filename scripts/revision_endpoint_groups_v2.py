@@ -25,7 +25,7 @@ from fl_forensics.federated_model import arrays_from_export,dependencies
 from fl_forensics.canonical import sha256_file
 from fl_forensics.round_derivation import implementation_sha256
 
-R=source.R;B=source.D;D=R/'results/revision-endpoint-retrospective-groups-v2'
+R=source.R;B=source.D;D=R/'results/admission/revision-endpoint-retrospective-groups-v2'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'endpoint-groups-20261107')
 FIT=[6117001,6118001];CAL=[6119001,6120001,6121001]
 
@@ -81,7 +81,7 @@ def prepare():
         core_implementation_sha256=implementation_sha256(),
         clean_pool_manifest_sha256=sha256_file(R/'artifacts/revision-capped-final-v1/partitions/6116106/manifest.json'),
         fit_allocation_seeds=FIT,calibration_allocation_seeds=CAL,cases=cases,allocation_preflight=allocation_records,
-        previous_blocked_attempt_protocol_sha256=sha256_file(R/'results/revision-endpoint-retrospective-groups-v1/protocol-before-observation.json'),
+        previous_blocked_attempt_protocol_sha256=sha256_file(R/'results/admission/revision-endpoint-retrospective-groups-v1/protocol-before-observation.json'),
         allocation_guard='Seed intervals are separated by1000 to avoid overlapping retry ranges; actual membership uniqueness, population equality and fit/calibration/evaluation separation are checked before training. The failed adjacent-seed v1 attempt is preserved.',
         allocation='Five new in-memory Dirichlet alpha=.3 allocations, minimum32 rows/client,15 clients, from the same pinned7096 training occurrences. No new dataset copies; allocation digests and counts retained. Disjoint campaign allocations, not disjoint populations or independent-data validation.',
         clean_training='Ten coherent full-batch gradient rounds, eta.001, same initial checkpoint and common pooled loss as the source. Fit2 clean allocations, calibrate3 separate clean allocations, evaluate2 separate source clean allocations plus4 effective raw attacked histories.',

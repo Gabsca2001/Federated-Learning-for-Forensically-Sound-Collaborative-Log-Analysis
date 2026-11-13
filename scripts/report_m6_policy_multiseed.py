@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results/m6-active-policy-multiseed-v1"
+OUT = ROOT / "results/milestones/m6-active-policy-multiseed-v1"
 SEEDS = [341593, 342593, 343593, 344593, 345593]
 POLICIES = ["gated_composite", "sequential"]
 CONDITIONS = ["clean", "disagreement"]

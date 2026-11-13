@@ -1,6 +1,6 @@
 """EXPLORATORY: two-view site-relative systems on ToN-IoT source-host x minute units.
 
-Units: the verified 80,172 host windows of results/revision-ton-iot-host-windows-v1 (same
+Units: the verified 80,172 host windows of results/external-data/revision-ton-iot-host-windows-v1 (same
 25-feature contract). Baseline (label-free, assumed normal): units of 2019-04-02/03.
 Test: units of the attack dates (2019-04-23 .. 29), where benign and attack hosts share
 minutes; secondary view restricted to minutes containing at least one attack unit.

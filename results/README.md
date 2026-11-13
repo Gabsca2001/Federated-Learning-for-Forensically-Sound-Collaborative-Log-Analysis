@@ -6,42 +6,42 @@ evidence, models, private trust state, and large recovery packages.
 
 ## Available snapshot
 
-- [M3 paired multi-seed v2](m3-multiseed-v2/README.md): five verified paired IID/non-IID
+- [M3 paired multi-seed v2](milestones/m3-multiseed-v2/README.md): five verified paired IID/non-IID
   FedAvg repetitions, confidence intervals, client-local comparisons, and a compact figure.
-- [Reference local-test v1](reference-local-test-v1/README.md): selected M5 learning metrics
+- [Reference local-test v1](milestones/reference-local-test-v1/README.md): selected M5 learning metrics
   and figures, the six-case M7 investigation report, and the final M8 verification receipt.
-- [M4–M8 offline overhead v1](overhead-local-test-v1/README.md): 13 verified warm-process
+- [M4–M8 offline overhead v1](milestones/overhead-local-test-v1/README.md): 13 verified warm-process
   stages, raw summary statistics, compact CSV, receipt, and logarithmic latency figure.
-- [M4–M5 containerized runtime overhead v1](runtime-overhead-local-test-v1/README.md): three
+- [M4–M5 containerized runtime overhead v1](milestones/runtime-overhead-local-test-v1/README.md): three
   fresh 15-`swtpm` trials, mTLS/Quote/ESK and secure-round timings, compact CSVs, receipt, and
   runtime latency figure.
-- [M5 external Data22 generalization v1](m5-external-generalization-local-test-v1/README.md):
+- [M5 external Data22 generalization v1](milestones/m5-external-generalization-local-test-v1/README.md):
   verified binary/shared-label transfer metrics, confusion matrices, feature-shift evidence,
   and a two-burst Discovery window-alignment stress test.
-- [M5 in-round composite campaign v1](m5-in-round-composite-local-test-v1/README.md): verified
+- [M5 in-round composite campaign v1](milestones/m5-in-round-composite-local-test-v1/README.md): verified
   30-round TPM/statistical admission over newly trained contributions, selected-checkpoint
   metrics, and clean-run intervention explanations by round, client, scalar indicator, named
   model tensor, policy counterfactual, and effective aggregation influence.
-- [M6 joint TPM/statistical admission v1](m6-composite-admission-local-test-v1/README.md):
+- [M6 joint TPM/statistical admission v1](milestones/m6-composite-admission-local-test-v1/README.md):
   clean-calibrated policy comparison, per-client risk/status table, and controlled 2x2
   trust/statistics disagreement matrix.
-- [M6 contribution-decision explanations v1](m6-contribution-explanations-local-test-v1/README.md):
+- [M6 contribution-decision explanations v1](milestones/m6-contribution-explanations-local-test-v1/README.md):
   per-client policy/tensor drivers plus clipping, trimmed-mean, MultiKrum, and Bulyan treatment
   traces reconstructed from the same frozen updates.
-- [M6 live TPM/statistical disagreement v1](m6-trust-statistical-disagreement-local-test-v1/README.md):
+- [M6 live TPM/statistical disagreement v1](milestones/m6-trust-statistical-disagreement-local-test-v1/README.md):
   verified 30-round training-time 2x2 disagreement experiment, paired policy outcomes, safe
   intervention costs, selected-model utility, and sanitized source bindings.
-- [M6 live contribution-decision explanations v1](m6-live-contribution-explanations-local-test-v1/README.md):
+- [M6 live contribution-decision explanations v1](milestones/m6-live-contribution-explanations-local-test-v1/README.md):
   independently verified explanations for all 450 deployed training decisions, including exact
   policy margins, named tensor drivers, retained FedAvg weight, aggregate influence, deterministic
   cases, and sanitized provenance bindings.
-- [M4/M6 real post-training TPM failure v1](m6-real-attestation-failure-local-test-v1/README.md):
+- [M4/M6 real post-training TPM failure v1](milestones/m6-real-attestation-failure-local-test-v1/README.md):
   authentic non-conforming `swtpm` Quote, signed failed appraisal, fail-closed contribution
   decision, zero-weight FedAvg exclusion, paired clean effects, and all 450 sanitized outcomes.
-- [M7 investigation of the M6 disagreement checkpoint](m7-m6-disagreement-investigation-local-test-v1/README.md):
+- [M7 investigation of the M6 disagreement checkpoint](milestones/m7-m6-disagreement-investigation-local-test-v1/README.md):
   16 label-independent cases with verified prediction, Integrated Gradients, prototype geometry,
   ATT&CK outcomes, four compact figures, and sanitized bindings to the selected M6 checkpoint.
-- [M8 closure of the M6 disagreement experiment](m8-m6-disagreement-preservation-local-test-v1/README.md):
+- [M8 closure of the M6 disagreement experiment](milestones/m8-m6-disagreement-preservation-local-test-v1/README.md):
   final offline-verified M6→M7→M8 lineage, thesis-oriented metrics, per-policy/round/client
   accounting, canonical receipt, cryptographic bindings, and two compact figures.
 
@@ -73,15 +73,15 @@ Keep three outcomes separate:
 
 ### Targeted reconnaissance-to-benign experiments
 
-- [Frozen pilot](m6-adaptive-frozen-pilot-v1/README.md): one frozen round and 66 validation-oracle queries. Targeted ASR stayed at zero, although the selected candidate reduced validation macro-F1 by 1.019 percentage points. This is a finite-search negative result, not a live trajectory or test evaluation.
-- [Signed live smoke](m6-adaptive-live-smoke-v2/README.md): one live round with three newly TPM-signed malicious updates. Validation ASR rose from 0 to 1 on the initial model. This confirms the signing/admission path for an adaptive proposal; the starting model was weak and no test set or mature model was evaluated.
-- [Paired adaptive v4](m6-adaptive-paired-v4/README.md): one seed, matched clean and targeted-adaptive runs of 30 rounds each, with attack from round 11. Selected test ASR was 0/669 in both arms, and no attacked round met the validation success threshold. This objective did not succeed in this run; that does not mean there were no other classification errors.
-- [Targeted five-seed extension](m6-adaptive-multiseed-v1/README.md): five paired seeds and 300 rounds overall. Selected test ASR remained 0/669 in both arms for every seed. Mean adaptive-minus-clean test macro-F1 difference was +0.4038 percentage points. This is descriptive evidence from a small number of seeds on the same dataset, not a significance test or proof of general robustness.
+- [Frozen pilot](milestones/m6-adaptive-frozen-pilot-v1/README.md): one frozen round and 66 validation-oracle queries. Targeted ASR stayed at zero, although the selected candidate reduced validation macro-F1 by 1.019 percentage points. This is a finite-search negative result, not a live trajectory or test evaluation.
+- [Signed live smoke](milestones/m6-adaptive-live-smoke-v2/README.md): one live round with three newly TPM-signed malicious updates. Validation ASR rose from 0 to 1 on the initial model. This confirms the signing/admission path for an adaptive proposal; the starting model was weak and no test set or mature model was evaluated.
+- [Paired adaptive v4](milestones/m6-adaptive-paired-v4/README.md): one seed, matched clean and targeted-adaptive runs of 30 rounds each, with attack from round 11. Selected test ASR was 0/669 in both arms, and no attacked round met the validation success threshold. This objective did not succeed in this run; that does not mean there were no other classification errors.
+- [Targeted five-seed extension](milestones/m6-adaptive-multiseed-v1/README.md): five paired seeds and 300 rounds overall. Selected test ASR remained 0/669 in both arms for every seed. Mean adaptive-minus-clean test macro-F1 difference was +0.4038 percentage points. This is descriptive evidence from a small number of seeds on the same dataset, not a significance test or proof of general robustness.
 
 ### Untargeted all-class degradation experiments
 
-- [Objective/policy frozen pilot](m6-adaptive-objectives-ablation-v1/README.md): targeted and untargeted searches under gated-composite and TPM-only, with one signed round and 66 queries per cell. For the untargeted objective, validation degradation was 0.675 points with gated-composite and 25.297 points with TPM-only. This shows that the statistical filter constrained this finite validation search on this particular round. No test data or live multiround training were used; TPM-only still retains TPM trust and signature checks.
-- [Untargeted live four-seed extension](m6-adaptive-untargeted-multiseed-v1/README.md): four seeds, four matched arms per seed, 30 rounds per arm, and attacks in rounds 11-30. This is the latest live experiment and the most relevant result for the untargeted objective.
+- [Objective/policy frozen pilot](milestones/m6-adaptive-objectives-ablation-v1/README.md): targeted and untargeted searches under gated-composite and TPM-only, with one signed round and 66 queries per cell. For the untargeted objective, validation degradation was 0.675 points with gated-composite and 25.297 points with TPM-only. This shows that the statistical filter constrained this finite validation search on this particular round. No test data or live multiround training were used; TPM-only still retains TPM trust and signature checks.
+- [Untargeted live four-seed extension](milestones/m6-adaptive-untargeted-multiseed-v1/README.md): four seeds, four matched arms per seed, 30 rounds per arm, and attacks in rounds 11-30. This is the latest live experiment and the most relevant result for the untargeted objective.
 
 ### What the latest live result says
 
@@ -93,19 +93,19 @@ Admission is a separate result. Across 240 malicious client-round contributions 
 
 For selected-checkpoint test performance, loss is clean macro-F1 minus adaptive macro-F1, so positive means the adaptive checkpoint scored lower. The four-seed means are +0.000552 for gated-composite and +0.013886 for TPM-only. However, the TPM-only adaptive checkpoint for seed 342593 was selected at round 10, before the attack began in round 11; it is not a poisoned selected checkpoint. Across the three additional seeds alone, mean losses are nearly equal: +0.000674 gated-composite and +0.000734 TPM-only. The test averages therefore show no consistent replicated advantage for either policy.
 
-Post-attack validation trajectories show a much larger gap under TPM-only than under gated-composite, but the attacker search and checkpoint selection both use that same validation signal. Treat this as a descriptive mechanism check, not an independent endpoint or significance result. The four seeds use UWF-ZeekData24 with different training/partition seeds; they are not four independent datasets. See the [full interpretation and per-seed table](../docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md), then inspect the linked CSVs and figures before quoting a summary number.
+Post-attack validation trajectories show a much larger gap under TPM-only than under gated-composite, but the attacker search and checkpoint selection both use that same validation signal. Treat this as a descriptive mechanism check, not an independent endpoint or significance result. The four seeds use UWF-ZeekData24 with different training/partition seeds; they are not four independent datasets. See the [full interpretation and per-seed table](../docs/admission-gates/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md), then inspect the linked CSVs and figures before quoting a summary number.
 
 ## Additional completed research snapshots (status 2026-09-29)
 
-- [Active-policy pilot](m6-active-policy-pilot-v1/README.md): initial paired policy runs.
-- [Five-seed active-policy comparison](m6-active-policy-multiseed-v1/README.md): 20 verified campaigns; paired intervals include zero.
-- [Fixed-signal sensitivity](m6-policy-sensitivity-replay-v1/README.md): seven variants, replay only.
-- [Live +10% downweight sensitivity](m6-live-downplus10-v1/README.md): ten new campaigns; reference policy retained.
-- [Frozen adaptive pilot](m6-adaptive-frozen-pilot-v1/README.md): no targeted success within the fixed 66-query budget.
-- [Signed adaptive smoke](m6-adaptive-live-smoke-v2/README.md): round-1 validation success; not a mature-model/test result.
-- [Paired adaptive v4](m6-adaptive-paired-v4/README.md): 60 verified rounds; selected-checkpoint test ASR 0/669 in both arms.
-- [Numerical runtime preflight](m6-numeric-runtime-preflight-v1/summary.json): 36 independent container probes.
-- [Preserved v3 numerical incident](m6-adaptive-paired-v3-reproducibility-incident/diagnosis.json): stopped before adaptive treatment and test evaluation.
+- [Active-policy pilot](milestones/m6-active-policy-pilot-v1/README.md): initial paired policy runs.
+- [Five-seed active-policy comparison](milestones/m6-active-policy-multiseed-v1/README.md): 20 verified campaigns; paired intervals include zero.
+- [Fixed-signal sensitivity](milestones/m6-policy-sensitivity-replay-v1/README.md): seven variants, replay only.
+- [Live +10% downweight sensitivity](milestones/m6-live-downplus10-v1/README.md): ten new campaigns; reference policy retained.
+- [Frozen adaptive pilot](milestones/m6-adaptive-frozen-pilot-v1/README.md): no targeted success within the fixed 66-query budget.
+- [Signed adaptive smoke](milestones/m6-adaptive-live-smoke-v2/README.md): round-1 validation success; not a mature-model/test result.
+- [Paired adaptive v4](milestones/m6-adaptive-paired-v4/README.md): 60 verified rounds; selected-checkpoint test ASR 0/669 in both arms.
+- [Numerical runtime preflight](milestones/m6-numeric-runtime-preflight-v1/summary.json): 36 independent container probes.
+- [Preserved v3 numerical incident](milestones/m6-adaptive-paired-v3-reproducibility-incident/diagnosis.json): stopped before adaptive treatment and test evaluation.
 
 These are dated snapshots. Their future-work paragraphs describe what remained at
 publication time; the index above and current protocol documentation describe today's
@@ -119,29 +119,29 @@ these newer extensions. No private keys, full updates or dataset records are pub
 
 The report READMEs below preserve their original wording because published manifests bind their bytes. Use this status map for work completed after those snapshots:
 
-- The five-seed active-policy reports proposed threshold sensitivity and adaptive testing. Follow-ups include the [fixed-signal sensitivity replay](m6-policy-sensitivity-replay-v1/README.md), the [live +10% downweight campaign](m6-live-downplus10-v1/README.md), and the adaptive campaigns summarized above. The original gated-composite policy remains the reference.
-- The frozen targeted pilot and signed smoke called for a paired multiround evaluation. That work is recorded in [paired adaptive v4](m6-adaptive-paired-v4/README.md) and the [five-seed targeted extension](m6-adaptive-multiseed-v1/README.md). The selected test targeted ASR stayed at 0/669; this targeted finding does not apply to the different untargeted objective.
-- The [objective/policy frozen pilot](m6-adaptive-objectives-ablation-v1/README.md) proposed a live multiseed untargeted evaluation. That follow-up is complete in the [four-seed live report](m6-adaptive-untargeted-multiseed-v1/README.md); treat it as descriptive, not a significance test.
-- In the [M8 closure report](m8-m6-disagreement-preservation-local-test-v1/README.md), M8.1-M8.5 are the five assurance stages; M8.6 is the final-lineage verification that closes the chain.
+- The five-seed active-policy reports proposed threshold sensitivity and adaptive testing. Follow-ups include the [fixed-signal sensitivity replay](milestones/m6-policy-sensitivity-replay-v1/README.md), the [live +10% downweight campaign](milestones/m6-live-downplus10-v1/README.md), and the adaptive campaigns summarized above. The original gated-composite policy remains the reference.
+- The frozen targeted pilot and signed smoke called for a paired multiround evaluation. That work is recorded in [paired adaptive v4](milestones/m6-adaptive-paired-v4/README.md) and the [five-seed targeted extension](milestones/m6-adaptive-multiseed-v1/README.md). The selected test targeted ASR stayed at 0/669; this targeted finding does not apply to the different untargeted objective.
+- The [objective/policy frozen pilot](milestones/m6-adaptive-objectives-ablation-v1/README.md) proposed a live multiseed untargeted evaluation. That follow-up is complete in the [four-seed live report](milestones/m6-adaptive-untargeted-multiseed-v1/README.md); treat it as descriptive, not a significance test.
+- In the [M8 closure report](milestones/m8-m6-disagreement-preservation-local-test-v1/README.md), M8.1-M8.5 are the five assurance stages; M8.6 is the final-lineage verification that closes the chain.
 
 ## Adaptive extension completed — 2026-09-30
 
-[Five-seed paired analysis](m6-adaptive-multiseed-v1/README.md): all four new pairs verified; prior in-progress notes above are historical. Includes per-seed outcomes, separate four-new-seed statistics, four PNG/PDF figures, data and source/output hashes. No new model inference. This extension is not yet covered by an M8 recovery package.
+[Five-seed paired analysis](milestones/m6-adaptive-multiseed-v1/README.md): all four new pairs verified; prior in-progress notes above are historical. Includes per-seed outcomes, separate four-new-seed statistics, four PNG/PDF figures, data and source/output hashes. No new model inference. This extension is not yet covered by an M8 recovery package.
 
 ## Adaptive objective and policy ablation — 2026-09-30
 
-[Four-cell frozen-round pilot](m6-adaptive-objectives-ablation-v1/README.md), independently recomputed. The untargeted objective finds a 25.297 pp validation macro-F1 reduction under TPM-only and 0.675 pp under gated-composite. The result is validation-selected on one frozen round; it motivates, but does not replace, a new signed live multi-seed experiment.
+[Four-cell frozen-round pilot](milestones/m6-adaptive-objectives-ablation-v1/README.md), independently recomputed. The untargeted objective finds a 25.297 pp validation macro-F1 reduction under TPM-only and 0.675 pp under gated-composite. The result is validation-selected on one frozen round; it motivates, but does not replace, a new signed live multi-seed experiment.
 
 
 ## Untargeted live adaptive extension — completed 2026-10-03
 
-[Four-seed report and figures](m6-adaptive-untargeted-multiseed-v1/README.md):
+[Four-seed report and figures](milestones/m6-adaptive-untargeted-multiseed-v1/README.md):
 seeds 342593–345593 completed and verified four matched 30-round arms each.
 The report includes paired selected-checkpoint test losses, search success by
 policy and seed, admission counts with denominators, three PNG comparisons, and
 source-lock/completion receipts. Results are descriptive on one dataset; the
 342593 TPM-only adaptive checkpoint predates attack onset and strongly affects
-its aggregate mean. See the [detailed interpretation](../docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md).
+its aggregate mean. See the [detailed interpretation](../docs/admission-gates/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md).
 
 ## Updated experimental evidence overview
 

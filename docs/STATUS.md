@@ -9,12 +9,12 @@ protocols and reports describe their own releases; their historical "pending",
 | Area | Current scope | Evidence entry |
 | --- | --- | --- |
 | M2 to M8 integration | Shared contracts and a representative witnessed path through real M7 products and M8 recovery; profiles remain explicit | [System model](SYSTEM_MODEL.md), [selected-chain validation](UNIFIED_CHAIN_VALIDATION.md) |
-| Formal derivation | Provenance, decision dependency, effective weights and semantic review are distinct; manual proofs remain conditional | [Theorems](FORMAL_MODEL_THEOREMS.md), [final correspondence](../results/revision-final-formal-correspondence-v2/README.md) |
-| Input and submission coverage | Committed occurrence outcomes, receipt-relative inventory checks and separately witnessed eligibility | [Coverage](INGESTION_COVERAGE.md), [receipts](SUBMISSION_EVIDENCE.md), [external TSA](../results/revision-external-tsa-v2/README.md) |
-| Multiround investigation | Authenticated checkpoint/product graph, structural blast radius, direct interventions and genuine corrected-parent retraining | [Graph](MULTIROUND_DERIVATION.md), [replay](COUNTERFACTUAL_REPLAY.md) |
+| Formal derivation | Provenance, decision dependency, effective weights and semantic review are distinct; manual proofs remain conditional | [Theorems](formal/FORMAL_MODEL_THEOREMS.md), [final correspondence](../results/chain-witness/revision-final-formal-correspondence-v2/README.md) |
+| Input and submission coverage | Committed occurrence outcomes, receipt-relative inventory checks and separately witnessed eligibility | [Coverage](formal/INGESTION_COVERAGE.md), [receipts](witness-chain/SUBMISSION_EVIDENCE.md), [external TSA](../results/chain-witness/revision-external-tsa-v2/README.md) |
+| Multiround investigation | Authenticated checkpoint/product graph, structural blast radius, direct interventions and genuine corrected-parent retraining | [Graph](formal/MULTIROUND_DERIVATION.md), [replay](formal/COUNTERFACTUAL_REPLAY.md) |
 | DBA and comparisons | Distributed/full triggers, individual components, matched-input baselines and separately qualified gradient-history studies | [Experimental findings](guide/EXPERIMENTS.md) |
 | ToN-IoT diagnosis | Benign-reference kNN hybrid: native macro-F1 0.9086/FPR1.87%, MITM17-20/130; common-minute F1 0.6812 with 20% FPR; general novel-family performance remains weak; 74 focused passes | [Independent-dataset validation](TON_IOT_VALIDATION.md) |
-| V5 retrospective groups | Utility-risk separation, clean-calibrated repeated magnitude episodes, new allocations and full-origin removal controls | [V5 publication](../results/revision-episodic-attribution-recovery-v1/README.md) |
+| V5 retrospective groups | Utility-risk separation, clean-calibrated repeated magnitude episodes, new allocations and full-origin removal controls | [V5 publication](../results/admission/revision-episodic-attribution-recovery-v1/README.md) |
 
 ## Findings that constrain claims
 

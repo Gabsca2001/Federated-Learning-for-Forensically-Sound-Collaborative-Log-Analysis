@@ -7,8 +7,8 @@ set -u
 cd "$(dirname "$0")/.."
 DEST=/mnt/d/fl-artifacts-archive
 MANIFEST_D=$DEST/manifest.jsonl
-MANIFEST_REPO=results/artifact-offload/manifest.jsonl
-mkdir -p "$DEST" results/artifact-offload
+MANIFEST_REPO=results/records/artifact-offload/manifest.jsonl
+mkdir -p "$DEST" results/records/artifact-offload
 mountpoint -q /mnt/d || { echo "D: not mounted"; exit 1; }
 
 # kind:name[:keep_subdir]   whole = archive and remove all; keep = archive all, remove all but keep_subdir;

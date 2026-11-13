@@ -2,7 +2,7 @@
 
 Research adapter primitives, kept outside ``src/`` so locked historical studies
 keep their source pins. Development evidence:
-``results/revision-tensor-indicators-v1`` (offline, fixed trajectories).
+``results/admission/revision-tensor-indicators-v1`` (offline, fixed trajectories).
 
 Indicators are round-relative geometry of client deltas (local minus base model):
 whole-model relative norm, cosine to the coordinate median, mean distance to

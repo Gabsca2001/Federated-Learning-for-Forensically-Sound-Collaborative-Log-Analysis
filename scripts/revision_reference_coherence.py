@@ -21,8 +21,8 @@ from fl_forensics.secure_round import _model_from_export
 from fl_forensics.canonical import sha256_file
 
 R=Path(__file__).resolve().parents[1]
-S=R/'results/revision-fltrust-screen-v1';A=R/'artifacts/revision-capped-final-v1'
-D=R/'results/revision-reference-coherence-v1'
+S=R/'results/admission/revision-fltrust-screen-v1';A=R/'artifacts/revision-capped-final-v1'
+D=R/'results/admission/revision-reference-coherence-v1'
 M=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'defense-consolidation-20261107/coherence')
 
 def flat(v):return np.concatenate([a.ravel() for a in v])

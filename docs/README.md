@@ -20,10 +20,10 @@ and versioned evidence.
 
 ## Formal reference
 
-[Formal theorems](FORMAL_MODEL_THEOREMS.md), [round derivation](ROUND_DERIVATION.md),
-[committed-input coverage](INGESTION_COVERAGE.md), [semantic reviews](SEMANTIC_REVIEWS.md),
-[multiround derivation](MULTIROUND_DERIVATION.md) and
-[counterfactual replay](COUNTERFACTUAL_REPLAY.md) retain the exact definitions,
+[Formal theorems](formal/FORMAL_MODEL_THEOREMS.md), [round derivation](formal/ROUND_DERIVATION.md),
+[committed-input coverage](formal/INGESTION_COVERAGE.md), [semantic reviews](formal/SEMANTIC_REVIEWS.md),
+[multiround derivation](formal/MULTIROUND_DERIVATION.md) and
+[counterfactual replay](formal/COUNTERFACTUAL_REPLAY.md) retain the exact definitions,
 assumptions and release correspondence. The consolidation does not rewrite them.
 
 ## Reading versioned documents

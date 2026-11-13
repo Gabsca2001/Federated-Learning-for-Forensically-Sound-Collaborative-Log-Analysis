@@ -10,7 +10,7 @@ from revision_study_data import read
 from revision_dba_experiment import save
 from fl_forensics.canonical import sha256_file
 
-out=root/'results/revision-gate-trajectories-v1';lab=study.LAB
+out=root/'results/gates-probes/revision-gate-trajectories-v1';lab=study.LAB
 local=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'gate-trajectories-20261106')
 s=read(out/'summary.json');p=read(lab/'protocol-before-training.json')
 a={(r['cohort'],r['mode'],r['policy']):r for r in s['aggregate']}

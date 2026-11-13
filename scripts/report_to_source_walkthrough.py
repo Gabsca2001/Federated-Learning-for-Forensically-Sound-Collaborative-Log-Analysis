@@ -308,9 +308,9 @@ def main(argv: list[str] | None = None) -> int:
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case", default=DEFAULT_CASE)
-    parser.add_argument("--report-dir", type=Path, default=root / "results/reference-local-test-v1/m7")
+    parser.add_argument("--report-dir", type=Path, default=root / "results/milestones/reference-local-test-v1/m7")
     parser.add_argument("--source-root", type=Path, default=root / "data/raw/uwf-zeekdata24/parquet")
-    parser.add_argument("--output", type=Path, default=root / "results/revision-report-to-source-v1/walkthrough.json")
+    parser.add_argument("--output", type=Path, default=root / "results/chain-witness/revision-report-to-source-v1/walkthrough.json")
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args(argv)
     if args.output.exists() and not args.overwrite:

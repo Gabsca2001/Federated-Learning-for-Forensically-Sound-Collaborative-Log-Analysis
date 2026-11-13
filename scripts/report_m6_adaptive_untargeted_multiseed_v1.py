@@ -227,7 +227,7 @@ def collect():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path,
-                        default=ROOT / "results/m6-adaptive-untargeted-multiseed-v1")
+                        default=ROOT / "results/milestones/m6-adaptive-untargeted-multiseed-v1")
     args = parser.parse_args()
     out = args.output.resolve()
     per_arm, paired, rounds, admissions, searches, summary = collect()

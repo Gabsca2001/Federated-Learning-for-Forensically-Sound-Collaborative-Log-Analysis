@@ -23,7 +23,7 @@ from fl_forensics.preprocessing import derived_json_bytes
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/'artifacts/revision-capped-final-v1'
 M3=ROOT/'artifacts/m3-data24-parquet-iid-local-test-v1'
-DEST=ROOT/'results/revision-fltrust-screen-v1'
+DEST=ROOT/'results/admission/revision-fltrust-screen-v1'
 MIRROR=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'fltrust-screen-20261107/published')
 ROOT_SEEDS=(7110701,7110702,7110703)
 ROOT_METHODS=('sgd1','adam10')

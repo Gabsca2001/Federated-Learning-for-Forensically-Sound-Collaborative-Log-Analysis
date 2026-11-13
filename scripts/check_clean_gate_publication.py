@@ -6,7 +6,7 @@ import clean_gate_calibration as cal
 from revision_study_data import read
 from fl_forensics.canonical import sha256_file
 
-root=study.ROOT;lab=study.LAB;out=root/'results/revision-clean-gate-calibration-v1'
+root=study.ROOT;lab=study.LAB;out=root/'results/gates-probes/revision-clean-gate-calibration-v1'
 summary=read(out/'summary.json');study.assert_locks(read(lab/'protocol-before-clean-fitting.json'))
 cases=list(csv.DictReader((out/'cases.csv').open()));rows=list(csv.DictReader((out/'rounds.csv').open()))
 assert len(cases)==len({r['case'] for r in cases})==72

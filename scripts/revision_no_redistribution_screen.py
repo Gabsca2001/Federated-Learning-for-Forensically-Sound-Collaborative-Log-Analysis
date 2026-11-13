@@ -19,7 +19,7 @@ from fl_forensics.preprocessing import derived_json_bytes
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/'artifacts/revision-capped-final-v1'
-DEST=ROOT/'results/revision-no-redistribution-screen-v1'
+DEST=ROOT/'results/admission/revision-no-redistribution-screen-v1'
 MIRROR=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'no-redistribution-20261106/published')
 MAX_BYTES=64*1024**2
 MIN_FREE=8*1024**3

@@ -12,7 +12,7 @@ from fl_forensics.canonical import sha256_file
 from fl_forensics.federated_model import arrays_from_export,dependencies
 
 ROOT,LAB=study.ROOT,study.LAB
-OUT=ROOT/'results/revision-clean-gate-calibration-v1'
+OUT=ROOT/'results/gates-probes/revision-clean-gate-calibration-v1'
 LOCAL=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'gate-calibration-20261106')
 
 

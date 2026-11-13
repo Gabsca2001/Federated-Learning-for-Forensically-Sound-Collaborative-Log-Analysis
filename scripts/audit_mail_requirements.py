@@ -8,7 +8,7 @@ from fl_forensics.round_derivation import implementation_sha256
 ROOT=Path(__file__).resolve().parents[1]
 WIN=Path('/mnt/c/Users/scama/.codex/.chatgpt-projects/g-p-6a58cde903388191b9f85ecd023562c1')
 LOCAL=WIN/'output/mass-safety-mail-audit-20261106'
-OUT=ROOT/'results/revision-mail-requirements-status-20261106'
+OUT=ROOT/'results/records/revision-mail-requirements-status-20261106'
 def read(path):return json.loads(path.read_text(encoding='utf-8-sig'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def ws(path):

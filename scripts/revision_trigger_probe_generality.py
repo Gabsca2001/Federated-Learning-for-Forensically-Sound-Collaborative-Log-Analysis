@@ -54,7 +54,7 @@ def job(args):
               'trigger_values_decimal': {str(f): value for comp in comps for f in comp}, 'attack_rounds': list(range(1, 11))})
     pred, _ = predict(initial, val, deps); correct = [p == r['label'] for p, r in zip(pred, val)]
     X = probe.attack_matrix(val); ptensor, keys = probe.probe_tensor(X)
-    thr = json.loads((ROOT / 'results/revision-trigger-probe-dev/dev-report.json').read_text())['thresholds'][cohort]['threshold']
+    thr = json.loads((ROOT / 'results/gates-probes/revision-trigger-probe-dev/dev-report.json').read_text())['thresholds'][cohort]['threshold']
     model = initial; hist = []; clients = sorted(rows)
     for n in range(1, 16):
         exports = []

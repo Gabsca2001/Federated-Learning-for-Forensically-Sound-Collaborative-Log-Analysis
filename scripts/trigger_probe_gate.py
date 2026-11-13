@@ -6,7 +6,7 @@ the fraction predicted as the benign class. A client's score is its largest shor
 excess of the same round's peer median for that (j, v); quarantine when the score
 exceeds the cohort threshold (clean maximum from verified clean histories). The probe
 uses no attacker identity and no attack-plan feature or value. Development evidence:
-results/revision-trigger-probe-dev and results/revision-trigger-probe-thresholds.
+results/gates-probes/revision-trigger-probe-dev and results/revision-trigger-probe-thresholds.
 """
 from __future__ import annotations
 

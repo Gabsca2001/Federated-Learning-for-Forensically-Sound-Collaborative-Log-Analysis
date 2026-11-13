@@ -2,7 +2,7 @@
 from pathlib import Path
 import csv,json,hashlib,statistics
 root=Path(__file__).resolve().parents[1]
-out=root/'results/revision-gate-trajectories-v1'
+out=root/'results/gates-probes/revision-gate-trajectories-v1'
 s=json.loads((out/'summary.json').read_bytes())
 cases=list(csv.DictReader((out/'cases.csv').open()))
 rounds=list(csv.DictReader((out/'rounds.csv').open()))

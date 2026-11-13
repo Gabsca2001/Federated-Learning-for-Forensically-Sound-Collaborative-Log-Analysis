@@ -6,16 +6,16 @@ offline known-family benchmark demonstrates useful F1 under a different scope.
 
 | Stage | Finding | Evidence |
 | --- | --- | --- |
-| Official source preflight | 23 files and 22,339,021 rows, with source statistics and 25-feature correspondence checked | [Preflight](../results/revision-ton-iot-preflight-v1/README.md) |
-| Unchanged source transfer | 50.13% balanced accuracy and 99.72% false positives | [Frozen transfer](../results/revision-ton-iot-transfer-v1/README.md) |
-| Initial target training | Eighteen numerical FedAvg runs; start-only selection is historical | [Initial study](../results/revision-ton-iot-retraining-v1/README.md) |
-| Corrected chronological selection | End-time-bounded validation; primary 80.16% mean balanced accuracy with 9/30 benign false positives | [Correction](../results/revision-ton-iot-flow-end-v2/README.md) |
-| Chronological F1 extensions | Calibration, regularization, recent-label refits and novelty do not achieve useful F1 for both classes | [F1 assessment](../results/revision-ton-iot-f1-assessment-v1/README.md) |
-| Separate known-family benchmark | Mean macro-F1 0.9087, benign F1 0.8778, attack F1 0.9396 and 20.07% false positives across three federated seeds | [Known-family protocol and limits](../results/revision-ton-iot-f1-assessment-v1/README.md) |
+| Official source preflight | 23 files and 22,339,021 rows, with source statistics and 25-feature correspondence checked | [Preflight](../results/external-data/revision-ton-iot-preflight-v1/README.md) |
+| Unchanged source transfer | 50.13% balanced accuracy and 99.72% false positives | [Frozen transfer](../results/external-data/revision-ton-iot-transfer-v1/README.md) |
+| Initial target training | Eighteen numerical FedAvg runs; start-only selection is historical | [Initial study](../results/external-data/revision-ton-iot-retraining-v1/README.md) |
+| Corrected chronological selection | End-time-bounded validation; primary 80.16% mean balanced accuracy with 9/30 benign false positives | [Correction](../results/external-data/revision-ton-iot-flow-end-v2/README.md) |
+| Chronological F1 extensions | Calibration, regularization, recent-label refits and novelty do not achieve useful F1 for both classes | [F1 assessment](../results/external-data/revision-ton-iot-f1-assessment-v1/README.md) |
+| Separate known-family benchmark | Mean macro-F1 0.9087, benign F1 0.8778, attack F1 0.9396 and 20.07% false positives across three federated seeds | [Known-family protocol and limits](../results/external-data/revision-ton-iot-f1-assessment-v1/README.md) |
 
 ## Benign-reference host novelty extension
 
-The [host novelty study](../results/revision-ton-iot-host-novelty-v1/README.md)
+The [host novelty study](../results/external-data/revision-ton-iot-host-novelty-v1/README.md)
 fits kNN and Isolation Forest only on 10,000 benign training units, with a
 separate benign-only scaler. Thresholds use 6,485 benign validation units with
 a primary 1% empirical false-alert budget and a predeclared 5% sensitivity.
@@ -40,7 +40,7 @@ prior evidence, the classifier defaults and manuscript remain unchanged.
 
 ## Chronological source-IP/minute assessment
 
-The [source-IP window study](../results/revision-ton-iot-host-windows-v1/README.md)
+The [source-IP window study](../results/external-data/revision-ton-iot-host-windows-v1/README.md)
 uses the same corrected chronological minute assignments and reconstructs all
 7,934 original global windows exactly from 80,172 source-IP/minute aggregates.
 All 22,338,152 accepted occurrences remain accounted for. The finer grouping
@@ -66,7 +66,7 @@ unchanged. See the new report for unit boundaries, training cap and timing.
 
 ## Same-role benign robustness extension
 
-The subsequent [Benign robustness](../results/revision-ton-iot-benign-robustness-v1/README.md) audit locates most parent false positives in later
+The subsequent [Benign robustness](../results/external-data/revision-ton-iot-benign-robustness-v1/README.md) audit locates most parent false positives in later
 benign captures: only 0-1 false alerts among 456 benign windows from 4 April,
 but 110-119 among 122 later benign windows. All benign training windows are
 from 2-3 April. This capture-schedule confound limits interpretation of pooled
@@ -127,7 +127,7 @@ discrepancy remains documented in the original transfer evidence.
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/revision-ton-iot-f1-assessment-v1
+make evidence-check STUDY=results/external-data/revision-ton-iot-f1-assessment-v1
 ```
 
 The guarded `ton-iot-f1-study` target requires a fresh `TON_IOT_F1_WORKSPACE`,

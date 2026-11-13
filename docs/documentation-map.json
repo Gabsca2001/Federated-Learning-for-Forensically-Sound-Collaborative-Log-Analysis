@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed": "2026-11-09",
+  "reviewed": "2026-11-13",
   "maintained_pages": [
     "README.md",
     "docs/IMPLEMENTATION_PLAN.md",
@@ -17,7 +17,7 @@
   ],
   "references": [
     {
-      "path": "docs/ADMISSION_MASS_SAFETY.md",
+      "path": "docs/admission-gates/ADMISSION_MASS_SAFETY.md",
       "title": "Admission mass safety: implementation and retrospective validation",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
@@ -31,396 +31,396 @@
       "sha256": "36fa9a564a521bf2d849e7ae80ffab77fdf91eae57bb2521b416f5acd11660b4"
     },
     {
-      "path": "docs/ATTESTED_DBA_REPLAY.md",
+      "path": "docs/admission-gates/ATTESTED_DBA_REPLAY.md",
       "title": "Attacked multiround derivation and bounded counterfactual replay",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "699178b365ab4128d9e703972a5cdbe80a063f16aa208f5bd9090631cee2b8ad"
     },
     {
-      "path": "docs/ATTESTED_LIVE_CHAIN.md",
+      "path": "docs/admission-gates/ATTESTED_LIVE_CHAIN.md",
       "title": "Live derivation campaign with swtpm",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "c7cf4a071c81c68c11e1380ef1f7eb10f5443b52ccf660042929999e43bc0601"
     },
     {
-      "path": "docs/BOUNDED_INFLUENCE_THEOREMS.md",
+      "path": "docs/admission-gates/BOUNDED_INFLUENCE_THEOREMS.md",
       "title": "Conditional influence bound for the containment profile",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "934c4321468e28c33c208b50f2283e5f81b9b75b046abf53d9fe1d36504d69be"
     },
     {
-      "path": "docs/BOUNDED_INFLUENCE_VALIDATION.md",
+      "path": "docs/admission-gates/BOUNDED_INFLUENCE_VALIDATION.md",
       "title": "Bounded influence: implementation, validation and live integration",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "8686683b0fcfede236728b897f664cee7864a63f02adf5a27ea80e210399c8e9"
+      "sha256": "6b5eb75158e4bcccb9fcf931b95e13e341d9a4620b4ce77ed3e1f885e386e00f"
     },
     {
-      "path": "docs/CAPPED_FINAL_AGGREGATION.md",
+      "path": "docs/admission-gates/CAPPED_FINAL_AGGREGATION.md",
       "title": "Explicit final coefficients: model and conditional guarantees",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "69fd945eb7100c7d32c87d7d06c86fd0fc7f3ba10e4dc44efb73ab7fee042c34"
     },
     {
-      "path": "docs/CAPPED_FINAL_RESULTS.md",
+      "path": "docs/admission-gates/CAPPED_FINAL_RESULTS.md",
       "title": "Capped-final aggregation: validated results and limits",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "69b77b2fef7fbab765dceae05b4fcdc63153db3486b19488eec26647f097c407"
+      "sha256": "ba6dac5bdde0cb56dcce4054873fc24abb6ed52ba0a83a5cfad4579bd5d5b353"
     },
     {
-      "path": "docs/COUNTERFACTUAL_REPLAY.md",
+      "path": "docs/formal/COUNTERFACTUAL_REPLAY.md",
       "title": "Counterfactuals and replay with retraining",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
-      "sha256": "06d41c01de027bff09d384828b4fff8b2be8f9d18b57b321b7bfd94cfdfc318a"
+      "sha256": "30b91116b543a747fcba81d060535fecbd58c3dac39af27c781fe58374a1e3b2"
     },
     {
-      "path": "docs/DATASET_UWF_ZEEKDATA24.md",
+      "path": "docs/milestones/DATASET_UWF_ZEEKDATA24.md",
       "title": "UWF-ZeekData24 dataset protocol",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
       "sha256": "b8e1bcbb77233b35238b8b9867a44a7bf0bf6d9afeac01cd56c614e60389c844"
     },
     {
-      "path": "docs/EMAIL_REQUIREMENTS_STATUS_20261106.md",
+      "path": "docs/records/EMAIL_REQUIREMENTS_STATUS_20261106.md",
       "title": "Email requirements: current implementation, evidence and remaining work",
       "group": "Dated requirement and consolidation records",
       "role": "versioned_reference",
-      "sha256": "97fdf08752dadf44eac7cd01d8d17849ddf4b48408f4cce814cae1ae7fd8336b"
+      "sha256": "856d0b65b00a72e33dc7f26b8aa782e283fb3ed0c80a5e844956561ba153018c"
     },
     {
-      "path": "docs/EXTERNAL_GENERALIZATION.md",
+      "path": "docs/measurement/EXTERNAL_GENERALIZATION.md",
       "title": "External UWF-ZeekData22 generalization",
       "group": "Measurement and deployment references",
       "role": "versioned_reference",
-      "sha256": "071f5b4fe992de503494252a6d64f7dc46ed61bc528357bc70e7c35985c53e9a"
+      "sha256": "c714698edd4e88401a515a38494f0d515aff52c2c6a8930a99627489679c8ecf"
     },
     {
-      "path": "docs/EXTERNAL_TSA_VALIDATION.md",
+      "path": "docs/witness-chain/EXTERNAL_TSA_VALIDATION.md",
       "title": "External TSA adoption: verified technical result and remaining administration",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
-      "sha256": "0b832ae713df7208f02eb0783cfa933106b285d51cb21b3babcc19b1df5078e3"
+      "sha256": "ef3572a4777bc50954d3a48d2e0cba0ca0ff345491707f9d9ae6c5bcc74aca7e"
     },
     {
-      "path": "docs/FORMAL_MODEL_REVIEW.md",
+      "path": "docs/formal/FORMAL_MODEL_REVIEW.md",
       "title": "Formal model: correspondence, proof obligations, and scope",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
-      "sha256": "1565d6181963b4a8e0694486aab04e89edd310002e78bc71bc2544f28761fe37"
+      "sha256": "2aebf1b0ba57c37c27657da29e887f984637e15152d5cd245f43db5f320e9fe7"
     },
     {
-      "path": "docs/FORMAL_MODEL_THEOREMS.md",
+      "path": "docs/formal/FORMAL_MODEL_THEOREMS.md",
       "title": "Formal derivation model: definitions, conditional theorems and proof correspondence",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
-      "sha256": "df095e7969c0e9024ddc0aacfd2b3c15a5ada5e53bcf176cf5be8866a15a2025"
+      "sha256": "0527cbbaeaca25f54e3756b9a4d20a15ba1b0934cd1886335c9dec1e42fe72a9"
     },
     {
-      "path": "docs/FORMAL_PROFILE_CORRESPONDENCE.md",
+      "path": "docs/formal/FORMAL_PROFILE_CORRESPONDENCE.md",
       "title": "Final formal-profile correspondence",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
       "sha256": "fad41f9a525f051e86100b06d0173f59da58b16b80c16e08e735efa1803a533b"
     },
     {
-      "path": "docs/GATE_MECHANISMS_AND_VALIDATION.md",
+      "path": "docs/admission-gates/GATE_MECHANISMS_AND_VALIDATION.md",
       "title": "Admission gates: mechanisms, supported claims and discriminating validation",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "5695ce1847233f255108805e39d995063aeaa3a0404dce7191f5f3d65768c8a6"
+      "sha256": "d135b8f6d2a146c484d87e01a7a3e6a127aa4e964952c3e5d9d5a0eeb6cd46c5"
     },
     {
-      "path": "docs/INDEPENDENT_CONTAINMENT_VALIDATION.md",
+      "path": "docs/admission-gates/INDEPENDENT_CONTAINMENT_VALIDATION.md",
       "title": "Frozen-profile independent validation",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "8d45555fa672e8b8acd84c0a9dfa6f181f3b72a837068476d42365b162f22d16"
     },
     {
-      "path": "docs/INDEPENDENT_SUBMISSION_WITNESS.md",
+      "path": "docs/witness-chain/INDEPENDENT_SUBMISSION_WITNESS.md",
       "title": "Independent receipt witness: registered-set profile",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
       "sha256": "82a39f26a5c4f541af02f06279223fa8572a0abbfd679d619179d63af1ca24b7"
     },
     {
-      "path": "docs/INGESTION_COVERAGE.md",
+      "path": "docs/formal/INGESTION_COVERAGE.md",
       "title": "Authenticated coverage of ingested source occurrences",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
       "sha256": "5869853ba3369e9c52467efe046d1b31bec4ab7220aa427e9b04a634bb7b4ef7"
     },
     {
-      "path": "docs/LIVE_ENVELOPE_VALIDATION.md",
+      "path": "docs/admission-gates/LIVE_ENVELOPE_VALIDATION.md",
       "title": "Bounded adaptive and live-TPM validation — 3 November 2026",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "270221095bf8823b5f44c302dabd152fd023052f4282ec682c81a305bf2660f2"
+      "sha256": "9760f2e12451112dde918bf7f7849aba82764b2a7923bcf46739690024a8535f"
     },
     {
-      "path": "docs/LOCAL_WITNESS_DEMONSTRATION.md",
+      "path": "docs/witness-chain/LOCAL_WITNESS_DEMONSTRATION.md",
       "title": "Local demonstration and independent laboratory deployment",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
       "sha256": "92f164836e863944871340c618b9fbcde193d2f799d4935051901c5825bd34f5"
     },
     {
-      "path": "docs/M6_ADAPTIVE_ATTACK.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_ATTACK.md",
       "title": "Adaptive targeted attack: implementation pilot",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "e9361dc38c553f4d108fe428178779cf08c5b39a94d73cd70d67a49489250946"
+      "sha256": "1c5fec72b58e7c8f800d8534b8d74de4ed09f1e4c196f3012df3654a64c90e89"
     },
     {
-      "path": "docs/M6_ADAPTIVE_MULTIROUND.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_MULTIROUND.md",
       "title": "Paired adaptive multiround protocol — 2026-09-28",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "8513eb64a2ec31244b33927445a8116e2fc77f10a04787f4287cfd991cff9d5c"
+      "sha256": "65aac3a371f004061316059ad2de6a3b9c937a3fb610573ee32bf9d429db1e55"
     },
     {
-      "path": "docs/M6_ADAPTIVE_MULTISEED_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_MULTISEED_V1.md",
       "title": "Adaptive multiseed extension v1 — prespecified 2026-09-29",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "df45e6ff5e8104d4f8862881f593b8a806e631f384d3c72bf44e0af1671b3546"
     },
     {
-      "path": "docs/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md",
       "title": "Adaptive objective and statistical-filter ablation v1",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "6316778f3d9365a827a8d30cd6430d9a2f85cbbe3ca769f9c4270dc732f13fb8"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md",
       "title": "M6 untargeted adaptive continuation branch — seed 342593",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "9af2b82f72fe930ff4309466c723ed7bef3e92defbcbff6148b7159156d29495"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md",
       "title": "M6 untargeted adaptive continuation branch — seed 342593",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "630fcafbd9cfe63f19a0dabff20d0c9e323896659c89fb893fc5d756d88f783a"
+      "sha256": "aeb9b2442ed76b90d263f4802a0dce3ccfacff5acec7c797bece73a4583f21ca"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md",
       "title": "M6 adaptive untargeted campaign: infrastructure recovery v1",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "d6de3c64f9839ca6ef832e664c5f91904c5a03fd5b82471e3aa4edd7df2800f7"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md",
       "title": "Untargeted adaptive live M6 campaign v1",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "643d01edea299e3b78e42e542d5fc3a69b9e7590206b54aac2e58839f99b24dd"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md",
       "title": "Untargeted adaptive M6: four-seed results",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "eae4990204f3398353a155a43d13f0045ffcece5256e313668ab585cb60b1ee8"
+      "sha256": "7dea4860da0696b1ee202883fb16c65a3e9ae64dddef25fbec7f7b5afbdc42c6"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md",
       "title": "M6 untargeted seed 343593 infrastructure recovery",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "de5545cc8997cbd7ac9bba0fbc7e757ebad35ce8b31dfcfe060bf61583ba7921"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md",
       "title": "Untargeted adaptive M6 seed extension v1",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "b169f27e3e9100e96fa6ffaba1e2a09b1c8623aa86cde6f81a410954b2c6935c"
     },
     {
-      "path": "docs/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md",
+      "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md",
       "title": "M6 adaptive untargeted campaign: seed 342593 continuation",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "7b152b0eb51853b76d28ad95bfcbf0c806588b9a8a7523c114ac6b8df5b55223"
+      "sha256": "d12ffc63ea26f1d78e9fadac33891a5fbecba6c56e9eddb6a38e6720bc72662a"
     },
     {
-      "path": "docs/M6_LIVE_SENSITIVITY.md",
+      "path": "docs/admission-gates/M6_LIVE_SENSITIVITY.md",
       "title": "Exploratory live downweight-threshold sensitivity",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "f9d21a5ab2e8b6d44880c5eceb7fb8327c18de7b6507232d156201922277b0a8"
+      "sha256": "f960a264f9f84e2954fc7f3d754ab2cbcd1a26d98553e6b10be1597dd6068499"
     },
     {
-      "path": "docs/M6_POLICY_PILOT.md",
+      "path": "docs/admission-gates/M6_POLICY_PILOT.md",
       "title": "Paired active-policy pilot",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "5ee571da956f6f99f25ad59e81a8ab58f5df03e822fbd1f549fca28a64ae144d"
+      "sha256": "e13ec45b7f2495b06c87f27ea9120356f4986249d3e817354f4c79a84fb11507"
     },
     {
-      "path": "docs/MILESTONE_3_FEDERATED_BASELINE.md",
+      "path": "docs/milestones/MILESTONE_3_FEDERATED_BASELINE.md",
       "title": "Milestone 3 — federated baseline contract",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
-      "sha256": "2379221cb2bbf1bc43269e16291cc6b0c8f639b28a8a51d53e87f96673f39268"
+      "sha256": "bd5b8f8a35046cf573740cd264fb725ac77bf871f951c85ab92a65027ea8987c"
     },
     {
-      "path": "docs/MILESTONE_3_PROTEAN.md",
+      "path": "docs/milestones/MILESTONE_3_PROTEAN.md",
       "title": "Milestone 3 extension — auditable PROTEAN evaluation",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
       "sha256": "5f3fb8b786c7d6b8ec38fd41bdf1430d926aea6e4f74780303c1d7c7e938a3d6"
     },
     {
-      "path": "docs/MILESTONE_4_TRUST_DEPLOYMENT.md",
+      "path": "docs/milestones/MILESTONE_4_TRUST_DEPLOYMENT.md",
       "title": "Milestone 4 — trust deployment and attestation contract",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
       "sha256": "329bad0a146c02d74ef201eebe94fa5c01f3aed7ba4026aa20440eb17c8ab032"
     },
     {
-      "path": "docs/MILESTONE_5_SECURE_MULTIROUND.md",
+      "path": "docs/milestones/MILESTONE_5_SECURE_MULTIROUND.md",
       "title": "Milestone 5 - secure multi-round campaign",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
       "sha256": "126364447adf2e9837214070ae26db71f4aa28f645e2ba6d0bcbb10f0ed88898"
     },
     {
-      "path": "docs/MILESTONE_5_SECURE_ROUND.md",
+      "path": "docs/milestones/MILESTONE_5_SECURE_ROUND.md",
       "title": "Milestone 5 — attestation-gated secure federated round",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
       "sha256": "37e53657d29a3a7213856d7502e78b7c4521c68728e3ba6d054e9328fd60e039"
     },
     {
-      "path": "docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md",
+      "path": "docs/milestones/MILESTONE_6_BYZANTINE_EXPERIMENTS.md",
       "title": "Milestone 6 — Byzantine experiments and robust aggregation",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
-      "sha256": "bec06710b9cfa08dd0c9b7870ffffc41c2bf4cade767c9bdde98ceea8c38cb09"
+      "sha256": "97d3a5355055ec42bc4975e5a82a2d92095b43e11a7eb9bcbbcda585127796c8"
     },
     {
-      "path": "docs/MILESTONE_7_INVESTIGATION.md",
+      "path": "docs/milestones/MILESTONE_7_INVESTIGATION.md",
       "title": "Milestone 7 — Investigation",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
-      "sha256": "7de435487698c11af281597d9655e3dfb76874b9950761265a9ffe114b7722b0"
+      "sha256": "df4077f25c2947299f57773f6a34cc84ffcebb50c2aa955eb56cd52ce07bc8a2"
     },
     {
-      "path": "docs/MILESTONE_8_PRESERVATION.md",
+      "path": "docs/milestones/MILESTONE_8_PRESERVATION.md",
       "title": "Milestone 8 — preservation, timestamping, and offline recovery",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
-      "sha256": "4476630a6e9cfd1b9482c9f64cb66178c23fdcbc6dbb8ad693596d7f1df86a13"
+      "sha256": "3f6f984bcb2cbbdb78ef54a0f48f9c2f47d69ed6b5861f491c0b7b61be281030"
     },
     {
-      "path": "docs/MULTIROUND_DERIVATION.md",
+      "path": "docs/formal/MULTIROUND_DERIVATION.md",
       "title": "Multiround derivation and structural blast radius",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
-      "sha256": "5a088c6fc8de31439e73ac162d0afd4cff2f4fa1258ba4f1ba96848ef0cd4c3f"
+      "sha256": "56d5182b3d73d6ac2a2c619203a350d14370597b578201ecb0785ae564462f5c"
     },
     {
-      "path": "docs/OVERHEAD_BENCHMARKING.md",
+      "path": "docs/measurement/OVERHEAD_BENCHMARKING.md",
       "title": "M4–M8 overhead benchmarking",
       "group": "Measurement and deployment references",
       "role": "versioned_reference",
-      "sha256": "a4aae4d4a0285bd83a1b8d6e8730e1d44bc3557e9b42eb8f3d9c772412e34cde"
+      "sha256": "b4d14076cffb015eca26214fe8ecc57302043782fcc500bd39593ff444f66c00"
     },
     {
-      "path": "docs/PERSISTENT_ENVELOPE_POLICY.md",
+      "path": "docs/admission-gates/PERSISTENT_ENVELOPE_POLICY.md",
       "title": "Experimental bounded-persistence envelope",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "888120fba5b4aeaa67b68c2d2864387de840ac5196e1c3ecb95841f1570af362"
     },
     {
-      "path": "docs/PUBLICATION_READINESS.md",
+      "path": "docs/measurement/PUBLICATION_READINESS.md",
       "title": "Publication readiness — reviewed 2026-09-29",
       "group": "Measurement and deployment references",
       "role": "versioned_reference",
-      "sha256": "cdd476d3492c8c7106a11d2f195625675c523b09c861329f293886bdbbcb23ca"
+      "sha256": "b235c21b66b172638bf8167484a698a39c19c8f423889e5204245ac26d6a112e"
     },
     {
-      "path": "docs/REAL_ATTESTATION_FAILURE.md",
+      "path": "docs/measurement/REAL_ATTESTATION_FAILURE.md",
       "title": "Real post-training TPM attestation failure",
       "group": "Measurement and deployment references",
       "role": "versioned_reference",
-      "sha256": "4e4ae85fc3daffd256d67d541dd372d946a69b2fb9703494c982d3e2a55387d8"
+      "sha256": "8f3789c443ad32b58287a2844cd0348e28fc83206424a9eb7ce4c14dcdbe65bc"
     },
     {
-      "path": "docs/RESEARCH_CONSOLIDATION_20261104.md",
+      "path": "docs/records/RESEARCH_CONSOLIDATION_20261104.md",
       "title": "Reserved research follow-up: scope and interpretation",
       "group": "Dated requirement and consolidation records",
       "role": "versioned_reference",
       "sha256": "7d8d9a0f2d637912afe153bc3b682077787bc5c3d33da7522e793a3d5e2e4faa"
     },
     {
-      "path": "docs/ROLLING_ENVELOPE_VALIDATION.md",
+      "path": "docs/admission-gates/ROLLING_ENVELOPE_VALIDATION.md",
       "title": "Rolling peak memory: validation and rejection",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "e623722bce952878ac6abce9ce55a92c0bd7c7706be9d7caddd5762a9fe2d01e"
+      "sha256": "99a686cb3481709ab5c37ad8c263769c7a2def54ea9ea8c273653d00aceb9f48"
     },
     {
-      "path": "docs/ROUND_DERIVATION.md",
+      "path": "docs/formal/ROUND_DERIVATION.md",
       "title": "Receipt-bound round derivation",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
       "sha256": "7f1e321976b2841a18e8ad0237cac82d52de58a9c94f5448353af6eaa33b9b43"
     },
     {
-      "path": "docs/RUNTIME_OVERHEAD_BENCHMARKING.md",
+      "path": "docs/measurement/RUNTIME_OVERHEAD_BENCHMARKING.md",
       "title": "M4–M5 containerized runtime-overhead benchmarking",
       "group": "Measurement and deployment references",
       "role": "versioned_reference",
-      "sha256": "ff9c25316a16e0839ddd842f4edb5999d4afbdcf481cf6cb84457799f8e5ed7e"
+      "sha256": "8958a577159ef24a409b3f240454e1c5330ef7bf835de4fc0e79f4f259c91d09"
     },
     {
-      "path": "docs/SEMANTIC_REVIEWS.md",
+      "path": "docs/formal/SEMANTIC_REVIEWS.md",
       "title": "Signed semantic reviews and append-only history",
       "group": "Formal definitions and verifier correspondence",
       "role": "versioned_reference",
       "sha256": "e3ecd26d1be70ac168151402ebceafac35ab6c51894e3a68a15f4e920a7afa52"
     },
     {
-      "path": "docs/SUBMISSION_EVIDENCE.md",
+      "path": "docs/witness-chain/SUBMISSION_EVIDENCE.md",
       "title": "Signed submission evidence and intake coverage",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
       "sha256": "ba8d4ebd92510da0f640b40280c658d20f810940279929baf9ce3dd12c968bbf"
     },
     {
-      "path": "docs/SUPERVISOR_REQUIREMENTS_AUDIT.md",
+      "path": "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT.md",
       "title": "Supervisor correspondence: implementation and evidence audit",
       "group": "Dated requirement and consolidation records",
       "role": "versioned_reference",
       "sha256": "0286a7e409b89d473833b5728bbde25b68f80c34fca067ae0449470098966244"
     },
     {
-      "path": "docs/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md",
+      "path": "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md",
       "title": "Supervisor-email correspondence audit — 4 November 2026",
       "group": "Dated requirement and consolidation records",
       "role": "versioned_reference",
-      "sha256": "6fea7b475770bf727a1cdf4ff5e04af20141680ed2f7cc04591cf6bb62d1b742"
+      "sha256": "ca2c9a90fa2560987abb573d256ee898a754d5ed3aba9111b91b9b7cb56564c2"
     },
     {
-      "path": "docs/SUPERVISOR_UPDATE_2026_09_29.md",
+      "path": "docs/records/SUPERVISOR_UPDATE_2026_09_29.md",
       "title": "Supervisor update evidence review — 2026-09-29",
       "group": "Dated requirement and consolidation records",
       "role": "versioned_reference",
-      "sha256": "268f54362081a7e464c3481511dd2b762a4fba5c06c3795be76686d9e57769f3"
+      "sha256": "bdc598a173caf7060548c2ceeecbf1277aa47f7840600bb07b91e1ce1e0105c5"
     },
     {
       "path": "docs/SYSTEM_MODEL.md",
@@ -444,37 +444,65 @@
       "sha256": "867c5a014e8ecfa9d7d71e960091c20cf7823b1288c67953c558fa8fdf191ce3"
     },
     {
-      "path": "docs/WITNESS_ADMINISTRATIVE_BOUNDARY.md",
+      "path": "docs/witness-chain/WITNESS_ADMINISTRATIVE_BOUNDARY.md",
       "title": "Administrative separation: decisive local audit",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
       "sha256": "82a41bf01eff438fee926f5bad641ad91e7b30517e88253eb724d91de97f5838"
     },
     {
-      "path": "docs/WITNESS_LIVE_ROUND.md",
+      "path": "docs/witness-chain/WITNESS_LIVE_ROUND.md",
       "title": "Closed-witness registration followed by live M5 admission",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
-      "sha256": "e2e636bb81fce131f471c9bf9802bbd106f8eacdc48102c1e2911b7aae0650ea"
+      "sha256": "a3bda604eb66f15d23e50da04539d11815cfc95aaade4b67d8aad372cf2f40b3"
     },
     {
-      "path": "docs/WITNESS_OPERATOR_RECOVERY.md",
+      "path": "docs/witness-chain/WITNESS_OPERATOR_RECOVERY.md",
       "title": "Witness operational handover: recovery, restart and local access checks",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
-      "sha256": "92106f70e50e29f5ef9c0ab33a0f363a789ea65b7a29e554e9d91eb6f18e3c8d"
+      "sha256": "2791323692bd356edc8ea4d3d9a83405b05f613f5ad8d4364729a4e1f4b37305"
     },
     {
-      "path": "docs/severe-tail-admission-research.md",
+      "path": "docs/admission-gates/severe-tail-admission-research.md",
       "title": "Severe-tail statistical admission: research specification",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
       "sha256": "bcb5fc0e5f4918ffca08b8f3c1f102adcfb51270b7c04079bdb04f281c39dcce"
+    },
+    {
+      "path": "docs/admission-gates/GATE_AGGREGATION_FACTORIAL_PROTOCOL.md",
+      "title": "Gate aggregation factorial study protocol",
+      "group": "Versioned admission and attack studies",
+      "role": "versioned_reference",
+      "sha256": "398b0262618db53643ac58355acde0196b07c5f078f22ef2fd9ac576b3ebd0e2"
+    },
+    {
+      "path": "docs/admission-gates/HEAD_CUSUM_STUDY_PROTOCOL.md",
+      "title": "Head-CUSUM gate study protocol",
+      "group": "Versioned admission and attack studies",
+      "role": "versioned_reference",
+      "sha256": "6f895ba4309243b31d5d7ea8bb027359491d5cc25f8c26de898c2eab51277e0a"
+    },
+    {
+      "path": "docs/records/ARTIFACT_OFFLOAD.md",
+      "title": "Artifact offload to the external SSD",
+      "group": "Dated requirement and consolidation records",
+      "role": "versioned_reference",
+      "sha256": "1333d5361afc130207195c86df0702a43821e8c1c5aa54054fed98cf95609bc9"
+    },
+    {
+      "path": "docs/records/GATE_RESEARCH_HANDOFF.md",
+      "title": "Gate research handoff",
+      "group": "Dated requirement and consolidation records",
+      "role": "versioned_reference",
+      "sha256": "2c6aae6af58c6102939f5efc3d3af986f3c1094c4bfc9c6de966200dcb097527"
     }
   ],
   "studies": [
     {
-      "path": "results/m3-multiseed-v2",
+      "path": "results/milestones/m3-multiseed-v2",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -482,7 +510,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m5-external-generalization-local-test-v1",
+      "path": "results/milestones/m5-external-generalization-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -490,7 +518,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m5-in-round-composite-local-test-v1",
+      "path": "results/milestones/m5-in-round-composite-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -498,7 +526,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-active-policy-multiseed-v1",
+      "path": "results/milestones/m6-active-policy-multiseed-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -506,7 +534,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-active-policy-pilot-v1",
+      "path": "results/milestones/m6-active-policy-pilot-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -514,7 +542,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-frozen-pilot-v1",
+      "path": "results/milestones/m6-adaptive-frozen-pilot-v1",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -522,7 +550,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-live-smoke-v2",
+      "path": "results/milestones/m6-adaptive-live-smoke-v2",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -530,7 +558,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-multiseed-preflight-v1",
+      "path": "results/milestones/m6-adaptive-multiseed-preflight-v1",
       "entry": null,
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -538,7 +566,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-multiseed-v1",
+      "path": "results/milestones/m6-adaptive-multiseed-v1",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -546,7 +574,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-objectives-ablation-v1",
+      "path": "results/milestones/m6-adaptive-objectives-ablation-v1",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -554,7 +582,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-paired-v3-reproducibility-incident",
+      "path": "results/milestones/m6-adaptive-paired-v3-reproducibility-incident",
       "entry": null,
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -562,7 +590,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-paired-v4",
+      "path": "results/milestones/m6-adaptive-paired-v4",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -570,7 +598,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-untargeted-multiseed-v1",
+      "path": "results/milestones/m6-adaptive-untargeted-multiseed-v1",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -578,7 +606,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-adaptive-untargeted-paired-s342593-v1-continuation-v3",
+      "path": "results/milestones/m6-adaptive-untargeted-paired-s342593-v1-continuation-v3",
       "entry": "README.md",
       "group": "Historical adaptive campaigns",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -586,7 +614,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-composite-admission-local-test-v1",
+      "path": "results/milestones/m6-composite-admission-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -594,7 +622,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-contribution-explanations-local-test-v1",
+      "path": "results/milestones/m6-contribution-explanations-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -602,7 +630,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-live-contribution-explanations-local-test-v1",
+      "path": "results/milestones/m6-live-contribution-explanations-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -610,7 +638,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-live-downplus10-v1",
+      "path": "results/milestones/m6-live-downplus10-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -618,7 +646,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-numeric-runtime-preflight-v1",
+      "path": "results/milestones/m6-numeric-runtime-preflight-v1",
       "entry": "summary.json",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -626,7 +654,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-policy-sensitivity-replay-v1",
+      "path": "results/milestones/m6-policy-sensitivity-replay-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -634,7 +662,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-real-attestation-failure-local-test-v1",
+      "path": "results/milestones/m6-real-attestation-failure-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -642,7 +670,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m6-trust-statistical-disagreement-local-test-v1",
+      "path": "results/milestones/m6-trust-statistical-disagreement-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -650,7 +678,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m7-m6-disagreement-investigation-local-test-v1",
+      "path": "results/milestones/m7-m6-disagreement-investigation-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -658,7 +686,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/m8-m6-disagreement-preservation-local-test-v1",
+      "path": "results/milestones/m8-m6-disagreement-preservation-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -666,7 +694,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/overhead-local-test-v1",
+      "path": "results/milestones/overhead-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -674,7 +702,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/reference-local-test-v1",
+      "path": "results/milestones/reference-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -682,7 +710,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-adaptive-live-validation-v1",
+      "path": "results/admission/revision-adaptive-live-validation-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -690,7 +718,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-admission-mass-feasibility-v1",
+      "path": "results/gates-probes/revision-admission-mass-feasibility-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Exact incompatibility under original mass constraints; transformed operators are separate.",
@@ -698,7 +726,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-admission-mass-safety-v1",
+      "path": "results/gates-probes/revision-admission-mass-safety-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -706,7 +734,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-attribution-origin-recovery-v1",
+      "path": "results/admission/revision-attribution-origin-recovery-v1",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "V4 origin replay; attribution misses and false members remain.",
@@ -714,7 +742,7 @@
       "checksum_index_sha256": "a47a792e6a86fb83a88a1b0206252d7efa12a34168333bb91f90d77219243d1d"
     },
     {
-      "path": "results/revision-baseline-validation-v1",
+      "path": "results/admission/revision-baseline-validation-v1",
       "entry": "README.md",
       "group": "Formal, integrated and comparison evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -722,7 +750,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-bounded-influence-validation-v1",
+      "path": "results/admission/revision-bounded-influence-validation-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -730,7 +758,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-capped-final-posthoc-v1",
+      "path": "results/gates-probes/revision-capped-final-posthoc-v1",
       "entry": null,
       "group": "Admission and containment studies",
       "scope": "Post-hoc coefficient redistribution diagnosis; not an ASR counterfactual.",
@@ -738,7 +766,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-capped-final-v1",
+      "path": "results/gates-probes/revision-capped-final-v1",
       "entry": "REPORT.md",
       "group": "Admission and containment studies",
       "scope": "108 completed histories; coefficient/clean conditions pass, poisoning-defense objective fails.",
@@ -746,7 +774,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-clean-gate-calibration-v1",
+      "path": "results/gates-probes/revision-clean-gate-calibration-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -754,7 +782,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-clean-reconstruction-and-groups-v1",
+      "path": "results/admission/revision-clean-reconstruction-and-groups-v1",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -762,7 +790,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-coherent-dba-v1",
+      "path": "results/admission/revision-coherent-dba-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -770,7 +798,7 @@
       "checksum_index_sha256": "226db568b8f0250af94c850b7bfb8047f19d6f529e4dce8b9fa9672b2f6d8e15"
     },
     {
-      "path": "results/revision-coherent-endpoint-dba-v1",
+      "path": "results/admission/revision-coherent-endpoint-dba-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Positive bounded containment for the declared endpoint family; residual model differences.",
@@ -778,7 +806,7 @@
       "checksum_index_sha256": "bb33712d7319e69ddbd849955acd0ab0036bfa46de15dea1653c75574fd07099"
     },
     {
-      "path": "results/revision-coherent-endpoint-feasibility-v1",
+      "path": "results/admission/revision-coherent-endpoint-feasibility-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Warm-parent attack-development probe; not a full trajectory result.",
@@ -786,7 +814,7 @@
       "checksum_index_sha256": "7841ac0927f2d668f8358af3baaf0249ebb6d112af1718285aa22fb20e894b14"
     },
     {
-      "path": "results/revision-coherent-gradient-pilot-v1",
+      "path": "results/admission/revision-coherent-gradient-pilot-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -794,7 +822,7 @@
       "checksum_index_sha256": "db691481a52d34b436b5c3835fcbfe197987cff8d8385c07f25d1a96f5c3ffa0"
     },
     {
-      "path": "results/revision-coherent-gradient-recovery-v1",
+      "path": "results/admission/revision-coherent-gradient-recovery-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Clean root expansion tests availability; no attack-resistance conclusion.",
@@ -802,7 +830,7 @@
       "checksum_index_sha256": "abf664f6b54f6212d9e2e79bf0184e5d38b6910ef84eb0a50908272298d3ac2f"
     },
     {
-      "path": "results/revision-current-evidence-policy-v1",
+      "path": "results/admission/revision-current-evidence-policy-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -810,7 +838,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-defense-consolidation-v1",
+      "path": "results/admission/revision-defense-consolidation-v1",
       "entry": "EXPERIMENT_MAP.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -818,7 +846,7 @@
       "checksum_index_sha256": "6ca459cd3ca7133db639216a3d33cca72de851812858b77bf054d23103901197"
     },
     {
-      "path": "results/revision-effective-influence-v1",
+      "path": "results/admission/revision-effective-influence-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -826,7 +854,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-endpoint-retrospective-groups-v1",
+      "path": "results/admission/revision-endpoint-retrospective-groups-v1",
       "entry": null,
       "group": "Retrospective groups and recovery",
       "scope": "Blocked allocation attempt retained; subsequent v2 is a distinct publication.",
@@ -834,7 +862,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-endpoint-retrospective-groups-v2",
+      "path": "results/admission/revision-endpoint-retrospective-groups-v2",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "Earlier selector transfer and late-round recovery limits.",
@@ -842,7 +870,7 @@
       "checksum_index_sha256": "3d0f5303c765e599e4d00360679ad3cd6620422a7bbe506240d9d6c7805674b8"
     },
     {
-      "path": "results/revision-episodic-attribution-recovery-v1",
+      "path": "results/admission/revision-episodic-attribution-recovery-v1",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "Latest V5 assessment; precision/recall trade-off, six conditional exact group recoveries; no automatic exclusion.",
@@ -850,7 +878,7 @@
       "checksum_index_sha256": "10c627a679d5ea112e4d7798ff93e0caa58e271ff02cba77463e8b15a04097a6"
     },
     {
-      "path": "results/revision-exact-group-projection-exploration-v1",
+      "path": "results/admission/revision-exact-group-projection-exploration-v1",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -858,7 +886,7 @@
       "checksum_index_sha256": "1526cf8ec4bbb45479673096e2438e67ab7e37eccbdf15bae4b411ffe2c41784"
     },
     {
-      "path": "results/revision-external-tsa-v2",
+      "path": "results/chain-witness/revision-external-tsa-v2",
       "entry": "README.md",
       "group": "Witness and time evidence",
       "scope": "External time authority demonstrated; independent witness administration remains absent.",
@@ -866,7 +894,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-final-formal-correspondence-v2",
+      "path": "results/chain-witness/revision-final-formal-correspondence-v2",
       "entry": "README.md",
       "group": "Formal, integrated and comparison evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -874,7 +902,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-fltrust-root-objective-diagnostic-v1",
+      "path": "results/admission/revision-fltrust-root-objective-diagnostic-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -882,7 +910,7 @@
       "checksum_index_sha256": "689e6ca4255a5ac4fc7a2dc071cc77948489a6dbdc096f634236e437fe24bc3c"
     },
     {
-      "path": "results/revision-fltrust-screen-v1",
+      "path": "results/admission/revision-fltrust-screen-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -890,7 +918,7 @@
       "checksum_index_sha256": "8a52119fd656a7d3fd458aa143894c7ce6d8c2991063e8a943a196f52de2d041"
     },
     {
-      "path": "results/revision-gate-mechanism-audit-v1",
+      "path": "results/gates-probes/revision-gate-mechanism-audit-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -898,7 +926,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-gate-trajectories-v1",
+      "path": "results/gates-probes/revision-gate-trajectories-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -906,7 +934,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-independent-containment-v1",
+      "path": "results/admission/revision-independent-containment-v1",
       "entry": "REPORT.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -914,7 +942,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-independent-witness-v1",
+      "path": "results/chain-witness/revision-independent-witness-v1",
       "entry": "summary.json",
       "group": "Witness and time evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -922,7 +950,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-independent-witness-v2",
+      "path": "results/chain-witness/revision-independent-witness-v2",
       "entry": "summary.json",
       "group": "Witness and time evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -930,7 +958,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-individual-envelope-v1",
+      "path": "results/admission/revision-individual-envelope-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -938,7 +966,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-mail-requirements-status-20261106",
+      "path": "results/records/revision-mail-requirements-status-20261106",
       "entry": "README.md",
       "group": "Formal, integrated and comparison evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -946,7 +974,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-no-redistribution-screen-v1",
+      "path": "results/admission/revision-no-redistribution-screen-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -954,7 +982,7 @@
       "checksum_index_sha256": "b1fecf66cf3aca7b0703f4c8e4d8643d1d0c507ab45ece9638cdfa43b7106408"
     },
     {
-      "path": "results/revision-normonly-endpoint-dba-v1",
+      "path": "results/admission/revision-normonly-endpoint-dba-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -962,7 +990,7 @@
       "checksum_index_sha256": "ef8b1faad0af0f325909a6a9e7e1c3283cac176dd49b652838228441f12a0d17"
     },
     {
-      "path": "results/revision-reference-coherence-v1",
+      "path": "results/admission/revision-reference-coherence-v1",
       "entry": "README.md",
       "group": "Numerical coherence and endpoint studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -970,7 +998,7 @@
       "checksum_index_sha256": "b8ca7266d17399e2473abc90a24580932a16df50850e3c40bed44ac5d1647fdb"
     },
     {
-      "path": "results/revision-research-closure-v1",
+      "path": "results/chain-witness/revision-research-closure-v1",
       "entry": "README.md",
       "group": "Formal, integrated and comparison evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -978,7 +1006,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-retrospective-groups-validation-v1",
+      "path": "results/admission/revision-retrospective-groups-validation-v1",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -986,7 +1014,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-rolling-envelope-validation-v1",
+      "path": "results/admission/revision-rolling-envelope-validation-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Candidate not promoted after adaptive replication failure.",
@@ -994,7 +1022,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-selector-diagnosis-v1",
+      "path": "results/admission/revision-selector-diagnosis-v1",
       "entry": "README.md",
       "group": "Retrospective groups and recovery",
       "scope": "Completed V4 diagnosis; utility risk and episode dilution; correction proposal is historical after V5.",
@@ -1002,7 +1030,7 @@
       "checksum_index_sha256": "b27db85f44e7ccaaee2beaf68e06b2ed36dfc0846adc49f6db9db86ed72bfb90"
     },
     {
-      "path": "results/revision-sequential-round-policy-v1",
+      "path": "results/admission/revision-sequential-round-policy-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -1010,7 +1038,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-severe-tail-gate-v1",
+      "path": "results/gates-probes/revision-severe-tail-gate-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Completed evaluation retains non-IID security and clean-mass failures.",
@@ -1018,7 +1046,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-state-conditioned-audit-v1",
+      "path": "results/admission/revision-state-conditioned-audit-v1",
       "entry": "README.md",
       "group": "Admission and containment studies",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -1026,7 +1054,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-unified-chain-v1",
+      "path": "results/chain-witness/revision-unified-chain-v1",
       "entry": "README.md",
       "group": "Formal, integrated and comparison evidence",
       "scope": "Representative witnessed M2–M8 integration, not a new efficacy campaign.",
@@ -1034,7 +1062,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-witness-admin-boundary-v1",
+      "path": "results/chain-witness/revision-witness-admin-boundary-v1",
       "entry": "REPORT.md",
       "group": "Witness and time evidence",
       "scope": "Local administrative independence is not established.",
@@ -1042,7 +1070,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-witness-operations-v1",
+      "path": "results/chain-witness/revision-witness-operations-v1",
       "entry": "README.md",
       "group": "Witness and time evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -1050,7 +1078,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-witness-round-v2",
+      "path": "results/chain-witness/revision-witness-round-v2",
       "entry": "README.md",
       "group": "Witness and time evidence",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -1058,7 +1086,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/runtime-overhead-local-test-v1",
+      "path": "results/milestones/runtime-overhead-local-test-v1",
       "entry": "README.md",
       "group": "Original milestone and overhead results",
       "scope": "Versioned evidence; conclusions and limitations remain those of the named report.",
@@ -1066,7 +1094,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/storage-retirement-20261106",
+      "path": "results/records/storage-retirement-20261106",
       "entry": "README.md",
       "group": "Storage retirement records",
       "scope": "Retirement inventory; not experimental evidence of efficacy.",
@@ -1074,7 +1102,7 @@
       "checksum_index_sha256": null
     },
     {
-      "path": "results/revision-ton-iot-preflight-v1",
+      "path": "results/external-data/revision-ton-iot-preflight-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Official 23-file acquisition and full record/25-feature preflight; no transfer or retraining result.",
@@ -1082,7 +1110,7 @@
       "checksum_index_sha256": "8e20d721151eac78c356df354a6ac84cbefa5e16e72aa93993e214f1ba4512ad"
     },
     {
-      "path": "results/revision-ton-iot-transfer-v1",
+      "path": "results/external-data/revision-ton-iot-transfer-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Verified frozen transfer fails through excessive false positives; duplicate collapse leaves binary decisions unchanged; checkpoint/version limits explicit.",
@@ -1090,7 +1118,7 @@
       "checksum_index_sha256": "b9788b6a69fd789d904c908bcad59ea57962bf8df480aaa4cb1f422fc2424c64"
     },
     {
-      "path": "results/revision-ton-iot-retraining-v1",
+      "path": "results/external-data/revision-ton-iot-retraining-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Initial window-start-only target selection, superseded by connection-end-bounded v2; original results retained.",
@@ -1098,7 +1126,7 @@
       "checksum_index_sha256": "4885b870ec69e4b45c5b5684f0d6ce40b3b797a7a3930bca4a61a9f6597d6bda"
     },
     {
-      "path": "results/revision-ton-iot-flow-end-v2",
+      "path": "results/external-data/revision-ton-iot-flow-end-v2",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Current end-time-bounded target selection; unchanged training, 15 validation exclusions and 5 changed selections; primary 80.16% balanced accuracy with 9/30 false positives.",
@@ -1106,7 +1134,7 @@
       "checksum_index_sha256": "f2b3e738714d372eb6afaf74bc758ff060e0398fd9dfb5dc060595ce0883095d"
     },
     {
-      "path": "results/revision-ton-iot-f1-assessment-v1",
+      "path": "results/external-data/revision-ton-iot-f1-assessment-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Chronological calibration/refit/novelty failures preserved; separate known-family benchmark reaches 0.9087 macro-F1 with 20.07% benign false positives; globally interleaved dates and shared hosts limit claims.",
@@ -1114,7 +1142,7 @@
       "checksum_index_sha256": "b28e46dfe167ff608c26c9ac6656158e4e5c22ed1dbf7e67665f3ad452a90e3c"
     },
     {
-      "path": "results/revision-ton-iot-benign-robustness-v1",
+      "path": "results/external-data/revision-ton-iot-benign-robustness-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Same-role threshold and feature controls; validation selects augmented, test macro-F1 0.9066, FPR 20.24%; benign capture-period confound documented; all configurations retained.",
@@ -1122,7 +1150,7 @@
       "checksum_index_sha256": "9701edd0ca6f386e300396a47bce4388e95104cf835dd34b0fe1c89f4a076d9c"
     },
     {
-      "path": "results/revision-ton-iot-host-windows-v1",
+      "path": "results/external-data/revision-ton-iot-host-windows-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Same chronological source-IP/minute assessment: native macro-F1 0.9079/FPR1.34%; common-minute F1 0.6583 remains weak; MITM localization and benign coincidences separated; 66 focused checks and two fresh replays.",
@@ -1130,15 +1158,303 @@
       "checksum_index_sha256": "5649b6f04648d514d4a63843c344da6c2a9905f31f4b325ccd3f244357fffac8"
     },
     {
-      "path": "results/revision-ton-iot-host-novelty-v1",
+      "path": "results/external-data/revision-ton-iot-host-novelty-v1",
       "entry": "README.md",
       "group": "Independent dataset validation",
       "scope": "Benign-reference host kNN/Isolation Forest controls: selected hybrid native macro-F1 0.9086/FPR1.87%, MITM17-20/130; 19 configurations, 74 focused checks; FPR tradeoffs and coincident alerts retained.",
       "flat_checksum_index": true,
       "checksum_index_sha256": "50c995bd488190caf140737edb210609816102b6832c2ce6c6ee90fbf2729186"
+    },
+    {
+      "path": "results/admission/revision-noncompensatory-replay-v1",
+      "entry": "README.md",
+      "group": "Admission and containment studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/admission/revision-tensor-indicators-v1",
+      "entry": "README.md",
+      "group": "Admission and containment studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-gate-aggregation-factorial-v1",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-global-probe-confirm",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-global-probe-dev",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-head-cusum-gate-v1",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-head-gate-v2-confirm",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-head-gate-v2-dev",
+      "entry": "",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-head-gate-v2-exploratory",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-head-gate-v2b-dev",
+      "entry": "",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-head-gate-v3-dev",
+      "entry": "",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-live-probe-rollback-v1",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-probe-keynorm-confirm",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-probe-keynorm-dev",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-probe-persistence-dev",
+      "entry": "",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-trigger-probe-dev",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-trigger-probe-evasion-live",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-trigger-probe-live",
+      "entry": "README.md",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/gates-probes/revision-trigger-probe-thresholds",
+      "entry": "",
+      "group": "Gate and probe studies",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/chain-witness/revision-formal-source-evidence-20261103",
+      "entry": "",
+      "group": "Witness and time evidence",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/chain-witness/revision-report-to-source-v1",
+      "entry": "README.md",
+      "group": "Witness and time evidence",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-domain-adaptation-controls-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-domain-adaptation-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-label-efficiency-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-lofo-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-multisource-data24-confirmation-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-multisource-fl-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-prototype-reanchoring-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-ton-iot-dataset-differences-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-ton-iot-robust-transfer-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-two-view-confirmation-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-unsw-generalization-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-unsw-nb15-preflight-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/external-data/revision-unsw-s0-confirmation-v1",
+      "entry": "README.md",
+      "group": "Independent dataset validation",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/records/artifact-offload",
+      "entry": "",
+      "group": "Storage retirement records",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
+    },
+    {
+      "path": "results/records/storage-retirement-20261110",
+      "entry": "README.md",
+      "group": "Storage retirement records",
+      "scope": "Registered 2026-11-13; status (confirmed, exploratory, negative or retired) is stated in its README.",
+      "flat_checksum_index": false,
+      "checksum_index_sha256": null
     }
   ],
-  "default_study": "results/revision-episodic-attribution-recovery-v1",
+  "default_study": "results/admission/revision-episodic-attribution-recovery-v1",
   "protected_markdown_sha256": {
     "AGENTS.md": "1e07de29e00d4939ea3ace793d6309049b941167856acc8e81494c69b3ecfd42",
     "artifacts/m7-investigation-report-m6-disagreement-test-first16-local-test-v1/report.md": "5bf3e8abb37117e3ad1444aff4b3382c63b51e5beb12165b2de098d35f7b5775",
@@ -1277,192 +1593,192 @@
     "artifacts/revision-thesis-release-v1/core-env/lib/python3.12/site-packages/numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md": "e7d4f4fb20358f314210a892ae17351e04993813646f697ec387385ca2a36918",
     "artifacts/m6-prototype-sensitivity-local-test-v1-report/summary.md": "a34f0e115548f961c2837f6ec774f70cbb3a24cb23603dee46a030595c939208",
     "artifacts/revision-unified-chain-20261105-v2/public-chain/products/report/report.md": "ae42a7f3ea344a24b80280ec9eb49fab6b52b2e9b2b2d32898cf09ea2fa7dd0e",
-    "docs/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md": "643d01edea299e3b78e42e542d5fc3a69b9e7590206b54aac2e58839f99b24dd",
-    "docs/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md": "630fcafbd9cfe63f19a0dabff20d0c9e323896659c89fb893fc5d756d88f783a",
-    "docs/COUNTERFACTUAL_REPLAY.md": "06d41c01de027bff09d384828b4fff8b2be8f9d18b57b321b7bfd94cfdfc318a",
-    "docs/INGESTION_COVERAGE.md": "5869853ba3369e9c52467efe046d1b31bec4ab7220aa427e9b04a634bb7b4ef7",
-    "docs/FORMAL_MODEL_REVIEW.md": "1565d6181963b4a8e0694486aab04e89edd310002e78bc71bc2544f28761fe37",
-    "docs/MILESTONE_3_PROTEAN.md": "5f3fb8b786c7d6b8ec38fd41bdf1430d926aea6e4f74780303c1d7c7e938a3d6",
-    "docs/EXTERNAL_TSA_VALIDATION.md": "0b832ae713df7208f02eb0783cfa933106b285d51cb21b3babcc19b1df5078e3",
-    "docs/WITNESS_LIVE_ROUND.md": "e2e636bb81fce131f471c9bf9802bbd106f8eacdc48102c1e2911b7aae0650ea",
-    "docs/SUBMISSION_EVIDENCE.md": "ba8d4ebd92510da0f640b40280c658d20f810940279929baf9ce3dd12c968bbf",
-    "docs/FORMAL_PROFILE_CORRESPONDENCE.md": "fad41f9a525f051e86100b06d0173f59da58b16b80c16e08e735efa1803a533b",
-    "docs/EMAIL_REQUIREMENTS_STATUS_20261106.md": "97fdf08752dadf44eac7cd01d8d17849ddf4b48408f4cce814cae1ae7fd8336b",
-    "docs/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md": "de5545cc8997cbd7ac9bba0fbc7e757ebad35ce8b31dfcfe060bf61583ba7921",
-    "docs/SUPERVISOR_REQUIREMENTS_AUDIT.md": "0286a7e409b89d473833b5728bbde25b68f80c34fca067ae0449470098966244",
-    "docs/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md": "d6de3c64f9839ca6ef832e664c5f91904c5a03fd5b82471e3aa4edd7df2800f7",
-    "docs/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md": "9af2b82f72fe930ff4309466c723ed7bef3e92defbcbff6148b7159156d29495",
-    "docs/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md": "b169f27e3e9100e96fa6ffaba1e2a09b1c8623aa86cde6f81a410954b2c6935c",
-    "docs/M6_ADAPTIVE_MULTIROUND.md": "8513eb64a2ec31244b33927445a8116e2fc77f10a04787f4287cfd991cff9d5c",
-    "docs/M6_ADAPTIVE_MULTISEED_V1.md": "df45e6ff5e8104d4f8862881f593b8a806e631f384d3c72bf44e0af1671b3546",
-    "docs/REAL_ATTESTATION_FAILURE.md": "4e4ae85fc3daffd256d67d541dd372d946a69b2fb9703494c982d3e2a55387d8",
-    "docs/SUPERVISOR_UPDATE_2026_09_29.md": "268f54362081a7e464c3481511dd2b762a4fba5c06c3795be76686d9e57769f3",
-    "docs/ROUND_DERIVATION.md": "7f1e321976b2841a18e8ad0237cac82d52de58a9c94f5448353af6eaa33b9b43",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md": "643d01edea299e3b78e42e542d5fc3a69b9e7590206b54aac2e58839f99b24dd",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md": "aeb9b2442ed76b90d263f4802a0dce3ccfacff5acec7c797bece73a4583f21ca",
+    "docs/formal/COUNTERFACTUAL_REPLAY.md": "30b91116b543a747fcba81d060535fecbd58c3dac39af27c781fe58374a1e3b2",
+    "docs/formal/INGESTION_COVERAGE.md": "5869853ba3369e9c52467efe046d1b31bec4ab7220aa427e9b04a634bb7b4ef7",
+    "docs/formal/FORMAL_MODEL_REVIEW.md": "2aebf1b0ba57c37c27657da29e887f984637e15152d5cd245f43db5f320e9fe7",
+    "docs/milestones/MILESTONE_3_PROTEAN.md": "5f3fb8b786c7d6b8ec38fd41bdf1430d926aea6e4f74780303c1d7c7e938a3d6",
+    "docs/witness-chain/EXTERNAL_TSA_VALIDATION.md": "ef3572a4777bc50954d3a48d2e0cba0ca0ff345491707f9d9ae6c5bcc74aca7e",
+    "docs/witness-chain/WITNESS_LIVE_ROUND.md": "a3bda604eb66f15d23e50da04539d11815cfc95aaade4b67d8aad372cf2f40b3",
+    "docs/witness-chain/SUBMISSION_EVIDENCE.md": "ba8d4ebd92510da0f640b40280c658d20f810940279929baf9ce3dd12c968bbf",
+    "docs/formal/FORMAL_PROFILE_CORRESPONDENCE.md": "fad41f9a525f051e86100b06d0173f59da58b16b80c16e08e735efa1803a533b",
+    "docs/records/EMAIL_REQUIREMENTS_STATUS_20261106.md": "856d0b65b00a72e33dc7f26b8aa782e283fb3ed0c80a5e844956561ba153018c",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md": "de5545cc8997cbd7ac9bba0fbc7e757ebad35ce8b31dfcfe060bf61583ba7921",
+    "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT.md": "0286a7e409b89d473833b5728bbde25b68f80c34fca067ae0449470098966244",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md": "d6de3c64f9839ca6ef832e664c5f91904c5a03fd5b82471e3aa4edd7df2800f7",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md": "9af2b82f72fe930ff4309466c723ed7bef3e92defbcbff6148b7159156d29495",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md": "b169f27e3e9100e96fa6ffaba1e2a09b1c8623aa86cde6f81a410954b2c6935c",
+    "docs/admission-gates/M6_ADAPTIVE_MULTIROUND.md": "65aac3a371f004061316059ad2de6a3b9c937a3fb610573ee32bf9d429db1e55",
+    "docs/admission-gates/M6_ADAPTIVE_MULTISEED_V1.md": "df45e6ff5e8104d4f8862881f593b8a806e631f384d3c72bf44e0af1671b3546",
+    "docs/measurement/REAL_ATTESTATION_FAILURE.md": "8f3789c443ad32b58287a2844cd0348e28fc83206424a9eb7ce4c14dcdbe65bc",
+    "docs/records/SUPERVISOR_UPDATE_2026_09_29.md": "bdc598a173caf7060548c2ceeecbf1277aa47f7840600bb07b91e1ce1e0105c5",
+    "docs/formal/ROUND_DERIVATION.md": "7f1e321976b2841a18e8ad0237cac82d52de58a9c94f5448353af6eaa33b9b43",
     "docs/SYSTEM_PROFILE_CORRESPONDENCE.md": "c2b726f557fd784d7c0e04f7f858e696308528c1e3f140919fad1dde9aa881db",
-    "docs/EXTERNAL_GENERALIZATION.md": "071f5b4fe992de503494252a6d64f7dc46ed61bc528357bc70e7c35985c53e9a",
-    "docs/PERSISTENT_ENVELOPE_POLICY.md": "888120fba5b4aeaa67b68c2d2864387de840ac5196e1c3ecb95841f1570af362",
-    "docs/OVERHEAD_BENCHMARKING.md": "a4aae4d4a0285bd83a1b8d6e8730e1d44bc3557e9b42eb8f3d9c772412e34cde",
-    "docs/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md": "6316778f3d9365a827a8d30cd6430d9a2f85cbbe3ca769f9c4270dc732f13fb8",
-    "docs/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md": "6fea7b475770bf727a1cdf4ff5e04af20141680ed2f7cc04591cf6bb62d1b742",
+    "docs/measurement/EXTERNAL_GENERALIZATION.md": "c714698edd4e88401a515a38494f0d515aff52c2c6a8930a99627489679c8ecf",
+    "docs/admission-gates/PERSISTENT_ENVELOPE_POLICY.md": "888120fba5b4aeaa67b68c2d2864387de840ac5196e1c3ecb95841f1570af362",
+    "docs/measurement/OVERHEAD_BENCHMARKING.md": "b4d14076cffb015eca26214fe8ecc57302043782fcc500bd39593ff444f66c00",
+    "docs/admission-gates/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md": "6316778f3d9365a827a8d30cd6430d9a2f85cbbe3ca769f9c4270dc732f13fb8",
+    "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md": "ca2c9a90fa2560987abb573d256ee898a754d5ed3aba9111b91b9b7cb56564c2",
     "docs/SYSTEM_MODEL.md": "0e552a0c325bb7b7ef9396234f5131334a72b8e331e4b66e150af763ccff6527",
-    "docs/RESEARCH_CONSOLIDATION_20261104.md": "7d8d9a0f2d637912afe153bc3b682077787bc5c3d33da7522e793a3d5e2e4faa",
-    "docs/ADMISSION_MASS_SAFETY.md": "d2c4295b426414253e79c723b87cb7f771b00500f63ac83abe2b4f9942d0922c",
-    "docs/SEMANTIC_REVIEWS.md": "e3ecd26d1be70ac168151402ebceafac35ab6c51894e3a68a15f4e920a7afa52",
-    "docs/MILESTONE_5_SECURE_ROUND.md": "37e53657d29a3a7213856d7502e78b7c4521c68728e3ba6d054e9328fd60e039",
-    "docs/MILESTONE_3_FEDERATED_BASELINE.md": "2379221cb2bbf1bc43269e16291cc6b0c8f639b28a8a51d53e87f96673f39268",
-    "docs/INDEPENDENT_CONTAINMENT_VALIDATION.md": "8d45555fa672e8b8acd84c0a9dfa6f181f3b72a837068476d42365b162f22d16",
-    "docs/ATTESTED_DBA_REPLAY.md": "699178b365ab4128d9e703972a5cdbe80a063f16aa208f5bd9090631cee2b8ad",
-    "docs/ATTESTED_LIVE_CHAIN.md": "c7cf4a071c81c68c11e1380ef1f7eb10f5443b52ccf660042929999e43bc0601",
-    "docs/DATASET_UWF_ZEEKDATA24.md": "b8e1bcbb77233b35238b8b9867a44a7bf0bf6d9afeac01cd56c614e60389c844",
-    "docs/GATE_MECHANISMS_AND_VALIDATION.md": "5695ce1847233f255108805e39d995063aeaa3a0404dce7191f5f3d65768c8a6",
-    "docs/MILESTONE_8_PRESERVATION.md": "4476630a6e9cfd1b9482c9f64cb66178c23fdcbc6dbb8ad693596d7f1df86a13",
-    "docs/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md": "eae4990204f3398353a155a43d13f0045ffcece5256e313668ab585cb60b1ee8",
-    "docs/MILESTONE_6_BYZANTINE_EXPERIMENTS.md": "bec06710b9cfa08dd0c9b7870ffffc41c2bf4cade767c9bdde98ceea8c38cb09",
+    "docs/records/RESEARCH_CONSOLIDATION_20261104.md": "7d8d9a0f2d637912afe153bc3b682077787bc5c3d33da7522e793a3d5e2e4faa",
+    "docs/admission-gates/ADMISSION_MASS_SAFETY.md": "d2c4295b426414253e79c723b87cb7f771b00500f63ac83abe2b4f9942d0922c",
+    "docs/formal/SEMANTIC_REVIEWS.md": "e3ecd26d1be70ac168151402ebceafac35ab6c51894e3a68a15f4e920a7afa52",
+    "docs/milestones/MILESTONE_5_SECURE_ROUND.md": "37e53657d29a3a7213856d7502e78b7c4521c68728e3ba6d054e9328fd60e039",
+    "docs/milestones/MILESTONE_3_FEDERATED_BASELINE.md": "bd5b8f8a35046cf573740cd264fb725ac77bf871f951c85ab92a65027ea8987c",
+    "docs/admission-gates/INDEPENDENT_CONTAINMENT_VALIDATION.md": "8d45555fa672e8b8acd84c0a9dfa6f181f3b72a837068476d42365b162f22d16",
+    "docs/admission-gates/ATTESTED_DBA_REPLAY.md": "699178b365ab4128d9e703972a5cdbe80a063f16aa208f5bd9090631cee2b8ad",
+    "docs/admission-gates/ATTESTED_LIVE_CHAIN.md": "c7cf4a071c81c68c11e1380ef1f7eb10f5443b52ccf660042929999e43bc0601",
+    "docs/milestones/DATASET_UWF_ZEEKDATA24.md": "b8e1bcbb77233b35238b8b9867a44a7bf0bf6d9afeac01cd56c614e60389c844",
+    "docs/admission-gates/GATE_MECHANISMS_AND_VALIDATION.md": "d135b8f6d2a146c484d87e01a7a3e6a127aa4e964952c3e5d9d5a0eeb6cd46c5",
+    "docs/milestones/MILESTONE_8_PRESERVATION.md": "3f6f984bcb2cbbdb78ef54a0f48f9c2f47d69ed6b5861f491c0b7b61be281030",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md": "7dea4860da0696b1ee202883fb16c65a3e9ae64dddef25fbec7f7b5afbdc42c6",
+    "docs/milestones/MILESTONE_6_BYZANTINE_EXPERIMENTS.md": "97d3a5355055ec42bc4975e5a82a2d92095b43e11a7eb9bcbbcda585127796c8",
     "docs/UNIFIED_CHAIN_VALIDATION.md": "867c5a014e8ecfa9d7d71e960091c20cf7823b1288c67953c558fa8fdf191ce3",
-    "docs/M6_ADAPTIVE_ATTACK.md": "e9361dc38c553f4d108fe428178779cf08c5b39a94d73cd70d67a49489250946",
-    "docs/MILESTONE_7_INVESTIGATION.md": "7de435487698c11af281597d9655e3dfb76874b9950761265a9ffe114b7722b0",
-    "docs/WITNESS_OPERATOR_RECOVERY.md": "92106f70e50e29f5ef9c0ab33a0f363a789ea65b7a29e554e9d91eb6f18e3c8d",
-    "docs/MILESTONE_4_TRUST_DEPLOYMENT.md": "329bad0a146c02d74ef201eebe94fa5c01f3aed7ba4026aa20440eb17c8ab032",
+    "docs/admission-gates/M6_ADAPTIVE_ATTACK.md": "1c5fec72b58e7c8f800d8534b8d74de4ed09f1e4c196f3012df3654a64c90e89",
+    "docs/milestones/MILESTONE_7_INVESTIGATION.md": "df4077f25c2947299f57773f6a34cc84ffcebb50c2aa955eb56cd52ce07bc8a2",
+    "docs/witness-chain/WITNESS_OPERATOR_RECOVERY.md": "2791323692bd356edc8ea4d3d9a83405b05f613f5ad8d4364729a4e1f4b37305",
+    "docs/milestones/MILESTONE_4_TRUST_DEPLOYMENT.md": "329bad0a146c02d74ef201eebe94fa5c01f3aed7ba4026aa20440eb17c8ab032",
     "docs/ARCHITECTURE.md": "36fa9a564a521bf2d849e7ae80ffab77fdf91eae57bb2521b416f5acd11660b4",
-    "docs/PUBLICATION_READINESS.md": "cdd476d3492c8c7106a11d2f195625675c523b09c861329f293886bdbbcb23ca",
-    "docs/BOUNDED_INFLUENCE_VALIDATION.md": "8686683b0fcfede236728b897f664cee7864a63f02adf5a27ea80e210399c8e9",
-    "docs/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md": "7b152b0eb51853b76d28ad95bfcbf0c806588b9a8a7523c114ac6b8df5b55223",
-    "docs/ROLLING_ENVELOPE_VALIDATION.md": "e623722bce952878ac6abce9ce55a92c0bd7c7706be9d7caddd5762a9fe2d01e",
-    "docs/FORMAL_MODEL_THEOREMS.md": "df095e7969c0e9024ddc0aacfd2b3c15a5ada5e53bcf176cf5be8866a15a2025",
-    "docs/M6_LIVE_SENSITIVITY.md": "f9d21a5ab2e8b6d44880c5eceb7fb8327c18de7b6507232d156201922277b0a8",
-    "docs/MULTIROUND_DERIVATION.md": "5a088c6fc8de31439e73ac162d0afd4cff2f4fa1258ba4f1ba96848ef0cd4c3f",
-    "docs/LOCAL_WITNESS_DEMONSTRATION.md": "92f164836e863944871340c618b9fbcde193d2f799d4935051901c5825bd34f5",
-    "docs/INDEPENDENT_SUBMISSION_WITNESS.md": "82a39f26a5c4f541af02f06279223fa8572a0abbfd679d619179d63af1ca24b7",
-    "docs/CAPPED_FINAL_RESULTS.md": "69b77b2fef7fbab765dceae05b4fcdc63153db3486b19488eec26647f097c407",
-    "docs/BOUNDED_INFLUENCE_THEOREMS.md": "934c4321468e28c33c208b50f2283e5f81b9b75b046abf53d9fe1d36504d69be",
-    "docs/MILESTONE_5_SECURE_MULTIROUND.md": "126364447adf2e9837214070ae26db71f4aa28f645e2ba6d0bcbb10f0ed88898",
-    "docs/CAPPED_FINAL_AGGREGATION.md": "69fd945eb7100c7d32c87d7d06c86fd0fc7f3ba10e4dc44efb73ab7fee042c34",
-    "docs/LIVE_ENVELOPE_VALIDATION.md": "270221095bf8823b5f44c302dabd152fd023052f4282ec682c81a305bf2660f2",
-    "docs/RUNTIME_OVERHEAD_BENCHMARKING.md": "ff9c25316a16e0839ddd842f4edb5999d4afbdcf481cf6cb84457799f8e5ed7e",
-    "docs/WITNESS_ADMINISTRATIVE_BOUNDARY.md": "82a41bf01eff438fee926f5bad641ad91e7b30517e88253eb724d91de97f5838",
-    "docs/M6_POLICY_PILOT.md": "5ee571da956f6f99f25ad59e81a8ab58f5df03e822fbd1f549fca28a64ae144d",
-    "docs/severe-tail-admission-research.md": "bcb5fc0e5f4918ffca08b8f3c1f102adcfb51270b7c04079bdb04f281c39dcce",
-    "results/m6-real-attestation-failure-local-test-v1/target-explanation.md": "03c1ed90c374c676feb9a43c02c8e6e832b3b4851c92d7c593bf21276d469827",
-    "results/m6-real-attestation-failure-local-test-v1/README.md": "50073f4861f3e412a74a3bcec6b95709a3fd62efec52fed7543c0f326c705b96",
-    "results/revision-witness-admin-boundary-v1/REPORT.md": "82a41bf01eff438fee926f5bad641ad91e7b30517e88253eb724d91de97f5838",
-    "results/revision-clean-gate-calibration-v1/README.md": "2a4f1c35ceff9d7416fab924e9038cb482d243d7096136bbaf8b14b1730a90cf",
-    "results/revision-capped-final-v1/CAP_PROJECTION_MODEL.md": "11573de3359e9a931ec6a2f9e2295434b3f28c568ad53908ee0a72f61d8d8664",
-    "results/revision-capped-final-v1/REPORT.md": "48ac83c4e4522da5d4903e972b5f337d9b6b5c20653bcfbb2408c9e3e112f372",
-    "results/revision-capped-final-v1/GATE_DEFAULTS.md": "15033d6e19dcb2e6d19f6b26e3cffea83aead57fd30dbbdbf1509d00c894cdce",
-    "results/revision-selector-diagnosis-v1/README.md": "a3424bf4ca731568debea892f8325ececaca48683e1e8bc45d097649a5b244c2",
-    "results/revision-selector-diagnosis-v1/CORRECTION_SPECIFICATION.md": "86dd06e1fa32fae406da2e405995a7ccd3a90966c69fe9d3d44a57da077b4e43",
-    "results/m5-external-generalization-local-test-v1/README.md": "cf27fc0675d5ca655044cb343a26179c8f50736dabadc2cb84a141940c78c024",
-    "results/m6-trust-statistical-disagreement-local-test-v1/README.md": "4baf6b52f71878d6e964aa2c8bce66738216828aa4e821152da16c761b513a8b",
-    "results/revision-gate-trajectories-v1/README.md": "302d49535f249dccf97f5f6411792c53de67019dad9c61d4ab2564e8e8d7401d",
-    "results/revision-fltrust-screen-v1/README.md": "dc35adf42a85895b8e923393ce146ab9c2c6a99792e4526afd2eef87df3ab0ba",
-    "results/revision-gate-mechanism-audit-v1/README.md": "cbdb58bbcd31d568ffc954014b8ba243b7670ceb65b49f15beef238c77ae0a72",
-    "results/m6-live-contribution-explanations-local-test-v1/README.md": "cc47f685c7e4f094f1e117a1ddbfab2f911a0371c45fbf417397fc018a84d69d",
-    "results/m6-live-contribution-explanations-local-test-v1/case-studies.md": "54d6a41b1646edb5b01ba20b310f688c51cd3f570a8415f1303094f105d20c3e",
-    "results/m6-adaptive-objectives-ablation-v1/README.md": "183b24b4af43e323f6c31e46b8cd46a3a8636184b723b81b7c5396805da402c4",
-    "results/revision-individual-envelope-v1/README.md": "4e09c3869114159a48a60b42ea34b75d308dac3832fa3d7f992358c85f99d774",
-    "results/revision-effective-influence-v1/README.md": "40c7dd991809199f2b2e746d2366af164df8b98153902d3346ef7549c1fcc514",
-    "results/m8-m6-disagreement-preservation-local-test-v1/README.md": "7abb37a39db04f225bd2a0770ee09ae7103102cc11f6f39fbf6d4883d5c3dc47",
-    "results/revision-episodic-attribution-recovery-v1/README.md": "998150bfb9a6fe24e764cec89a028726132929e14eeaa64f0ac0cea0ca167a20",
-    "results/revision-episodic-attribution-recovery-v1/GROUP_INTERPRETATION.md": "2c20d0ca9edb753e2f94e90329a2fbb1abc8ea2f36f6f125a72d673f834d7287",
-    "results/revision-normonly-endpoint-dba-v1/README.md": "b654cb8eaf928b4c519ca6dbcc2319bdd4e4d08ef47a7721eebf55cff54e2e50",
-    "results/revision-normonly-endpoint-dba-v1/METHODOLOGY.md": "112cceaaab474fd674eede296d2f500dd73c8cd6e4d29335585981c0604b768f",
-    "results/revision-normonly-endpoint-dba-v1/NEXT_STEPS.md": "0b039580074faed53678cd1f7a62acd11dcc67ff200dd8b9bff7aa4aee5c6c82",
-    "results/revision-reference-coherence-v1/README.md": "a98fa196b1587e4b7faf299770cfcc2245627bb976f55909b24d4c6294940c54",
-    "results/revision-endpoint-retrospective-groups-v2/README.md": "2330d5459d3201d705baa25975a75dc9672c0352d7349a9fe46865670da575b8",
-    "results/revision-endpoint-retrospective-groups-v2/NEXT_STEPS.md": "d661b8c198620aad7457de5bb1e929c14e477034da2fb1ec36a5a309899e508e",
-    "results/m6-policy-sensitivity-replay-v1/README.md": "f483d400d18477b2b1ce129b034c45be31615e6a00b4896fbe4fc581a64d0a12",
-    "results/revision-research-closure-v1/README.md": "7d8d9a0f2d637912afe153bc3b682077787bc5c3d33da7522e793a3d5e2e4faa",
-    "results/revision-research-closure-v1/current-property-bindings.md": "48ecc6d801e46ac27cf7ed9e2b77994d6eb2409ee585273f86d85769b1a64c4f",
-    "results/m6-adaptive-paired-v4/README.md": "d888625d3221cd590e04a0b2425a739ee1d47d2a220b5e67b1809bd0b6bdb5ab",
-    "results/runtime-overhead-local-test-v1/README.md": "59d8dc732cf77345b2acedd7af72bed48c36d1f5578db4faf729322238cdaa74",
-    "results/revision-coherent-endpoint-feasibility-v1/README.md": "c77c23d87c8295953eb4e31a57e6383de9d3a0203f11559c437ab065e9e94b88",
-    "results/revision-unified-chain-v1/README.md": "867c5a014e8ecfa9d7d71e960091c20cf7823b1288c67953c558fa8fdf191ce3",
-    "results/revision-unified-chain-v1/SYSTEM_MODEL.md": "0e552a0c325bb7b7ef9396234f5131334a72b8e331e4b66e150af763ccff6527",
-    "results/revision-unified-chain-v1/profile-correspondence.md": "c2b726f557fd784d7c0e04f7f858e696308528c1e3f140919fad1dde9aa881db",
-    "results/m6-adaptive-untargeted-paired-s342593-v1-continuation-v3/README.md": "fdb4a53cc46a3e93d6360bedf660412c435eaf2d25288e99a1b1b395c3b26af1",
-    "results/storage-retirement-20261106/README.md": "1ea37a89103b7558374569a5248c79373b0e20c1859afc7f58286017bad816fe",
-    "results/storage-retirement-20261106/REPORT.md": "6eee5bafdb253d818577cd28e1828d85c773b9c4721d40259ba855cdd432a25d",
-    "results/storage-retirement-20261106/historical-summary/README.md": "efae8d100a67666e7f15c5ad385a058f2e202d7a105a7dcafdc07678a9356605",
-    "results/revision-clean-reconstruction-and-groups-v1/README.md": "8389a7e7a7d41e1d2c2948e52cbf7249f4bdb47b3d1ec75f021b81bb9d73ac5d",
-    "results/m7-m6-disagreement-investigation-local-test-v1/README.md": "ce1d961d0c6e5d1a8a4ad18168617668774ccac4762b8d8378734f196d9c5b22",
-    "results/revision-baseline-validation-v1/BASELINE_DBA_VALIDATION.md": "94b2bb2dbcd6b068992b14f238bc7ccf6e5212ad144e9154e7963483d795b7fd",
-    "results/revision-baseline-validation-v1/TEST_ENDPOINT_SUMMARIES.md": "100d44433f4f919ce72dbb33d151e1abf6f0fabf0d6e5d1976c83525e9469eb2",
-    "results/revision-baseline-validation-v1/README.md": "94b2bb2dbcd6b068992b14f238bc7ccf6e5212ad144e9154e7963483d795b7fd",
-    "results/revision-baseline-validation-v1/SECONDARY_TEST_SUMMARIES.md": "6aeb2351cf6a6ffae0f9619bbc22df255df0b8967066e1bd87a4650c5c6dd31f",
-    "results/revision-baseline-validation-v1/REPRODUCE.md": "5d2e86ccd9a84caf7a2c126b4ca0b927b0e58e895952c6c91fdcf7b3dfdf8145",
-    "results/revision-retrospective-groups-validation-v1/RETROSPECTIVE_GROUP_VALIDATION.md": "ef043ec4062bfd5ddefa6be035e03286552e03e64bf43b360e55feb17c40c752",
-    "results/revision-retrospective-groups-validation-v1/README.md": "ef043ec4062bfd5ddefa6be035e03286552e03e64bf43b360e55feb17c40c752",
-    "results/revision-retrospective-groups-validation-v1/REPRODUCE.md": "beb2960ce0a203411b237def6475f908c545806fdaf0ff23252b7c6e90e799bb",
-    "results/revision-retrospective-groups-validation-v1/PAIR_MEMBERSHIP_DIAGNOSIS.md": "082e63f272883d7bdd86204d9bd22e25bde9b5445450e37535a22674e6113537",
-    "results/revision-retrospective-groups-validation-v1/TEST_SELECTED_ENDPOINTS.md": "8e9695e07d521a5483fc84c3dbd35370945bc08bada71a4adbadb3e8504c0b2d",
-    "results/m6-active-policy-pilot-v1/README.md": "793b332c49e2d66662829cbd1866a521644ef492c30c2d007ce4f40c4cbd66d3",
-    "results/revision-witness-round-v2/README.md": "94011fc0aa6ea67addc46cfb7db0cde5986a43a93f9533fa4497efcaa65fd60b",
-    "results/revision-witness-round-v2/runtime-portability-note.md": "a7b47ef94bd8099b8371d6bb9136cb479c5cb76e9f77199b651ddc0a2517151e",
-    "results/m3-multiseed-v2/README.md": "c1a2f19ec6437dd7a3b0b3cb69ccf94416a9e9787b02cb36e985c481f8daf7f3",
-    "results/revision-mail-requirements-status-20261106/README.md": "97fdf08752dadf44eac7cd01d8d17849ddf4b48408f4cce814cae1ae7fd8336b",
-    "results/revision-exact-group-projection-exploration-v1/README.md": "559300db9f513c32c349488eee3f0dd246fef833956dcb02f26c4800ab7a91fe",
-    "results/reference-local-test-v1/README.md": "50c6183c71da5ba979e193dbc74fe28ddcd63885416916cbab63166d5259de07",
-    "results/reference-local-test-v1/m7/report.md": "a836f83cad31724a6ce4d5b70f13b0e83156ae61e0905f7a07e4e3e2665cf6cd",
-    "results/m6-adaptive-frozen-pilot-v1/README.md": "8cc8e793193d9c00a9ce3339327864e2bfd6910d1a9d05567fa58df78c6a2eaa",
-    "results/overhead-local-test-v1/README.md": "ad3e9923114b5d28ef5564e4768349ece0839b1302acbad6217142e263580a91",
-    "results/m6-adaptive-untargeted-multiseed-v1/README.md": "c8c4c9ee7b8df0187215da104a7e340701a9ed92aa881509ba5ccbefc881748f",
-    "results/revision-admission-mass-feasibility-v1/README.md": "03b55cc19baa131dc1ee166295b85e9aa6d0505b79e8e46f5ca53dad93698f66",
-    "results/revision-coherent-endpoint-dba-v1/README.md": "d220924eb8f365457c9978d801be98672e284246fc6b984608cb2c4a0a0e09df",
-    "results/revision-coherent-endpoint-dba-v1/DBA_EMAIL_AGREEMENT.md": "a2d1d870511abdaf2cfa777ed9d98fe3622cd6c260f8a4dfbbbfe0d21f039211",
-    "results/revision-final-formal-correspondence-v2/CURRENT_RELEASE_PROOF_ANNEX.md": "9f93767e5c7cbe0e2f72b681706932e91b31981223ae3aaf41787eb813c43f01",
-    "results/revision-final-formal-correspondence-v2/README.md": "eb3abe92cff09aec5d05054f5bd103b396968d6f0f0efda6e9e3a62f70993b67",
-    "results/revision-final-formal-correspondence-v2/FORMAL_CORRESPONDENCE_CLOSURE.md": "eb3abe92cff09aec5d05054f5bd103b396968d6f0f0efda6e9e3a62f70993b67",
-    "results/revision-final-formal-correspondence-v2/THESIS_HANDOFF.md": "0e385efcbd3367045e589d37d80bc3755ce1ff7edcecab1efad2451011d17afb",
-    "results/revision-final-formal-correspondence-v2/REFINEMENTS_AND_BOUNDARIES.md": "90f98f323ab55f4ea1e6d23cf39578719be6bc6bc34ecc7685f1b901938599af",
-    "results/revision-final-formal-correspondence-v2/REPRODUCE.md": "b1c68b75d9420401bb41ef5ea22bda0e54c6e68401390c25753652fe8723dc8c",
-    "results/revision-final-formal-correspondence-v2/PROPERTY_CODE_EVIDENCE_MATRIX.md": "f669a1ba5e5aaf1b4e83b981272f1d2372768a372d5f1764a250ffe72896f497",
-    "results/revision-coherent-gradient-pilot-v1/README.md": "468e1ad1fc5280d93bc236248f52193ffe57cea60a89c02bc576754e7c4f39b6",
-    "results/revision-defense-consolidation-v1/EXPERIMENT_MAP.md": "151c655ec5963bb0c1eba7f4ec507c7bd21c93492c7de1843996ad796f818010",
-    "results/m6-adaptive-live-smoke-v2/README.md": "f9fa866891bea71f87d96c62e1349b68222404ab4a27859b85ae884f8c748672",
-    "results/m6-contribution-explanations-local-test-v1/README.md": "c8824740524ad5a08261a8bf439afa277430d0bfdb1177cb72d0f209ebda6234",
-    "results/revision-sequential-round-policy-v1/README.md": "3101b7318898839746c1a23de97923cf87811a6dc004d83c3e684dda76dd35f2",
-    "results/revision-current-evidence-policy-v1/README.md": "ecad5bcf09ce168739ef1e79ffd49df57162496d570ecd343b4dc4f75a6eb878",
-    "results/revision-coherent-dba-v1/README.md": "46d702b21058dd05e2d32cad391a6454b0352cc63bc7f52f46767c7b18cc1d7f",
-    "results/revision-independent-containment-v1/REPORT.md": "8d45555fa672e8b8acd84c0a9dfa6f181f3b72a837068476d42365b162f22d16",
-    "results/revision-independent-containment-v1/EMAIL_REQUIREMENTS_AUDIT.md": "5b30b947db36e7f4d46f5164aca4e9a80ca0b663186177ad200a6a35b09ad651",
-    "results/revision-no-redistribution-screen-v1/README.md": "23de70640c39586a8e50115268cba4295c197dd3272864d5eac6429c4b622e10",
-    "results/m5-in-round-composite-local-test-v1/README.md": "f896c0d07b7486ebef2d3fd33bbc14a612e0a1fa72e9d15d6adc6a2a241fa416",
-    "results/m5-in-round-composite-local-test-v1/intervention-explanations.md": "c82604c8a424d77c59afdacae220cf7c210f26f422ef3bd55b648cac841b662e",
-    "results/revision-coherent-gradient-recovery-v1/README.md": "7c44fb80b46e40ffc175268c5f9311dd16e37e1458cee44b4d636d9511e4bfc0",
-    "results/revision-bounded-influence-validation-v1/README.md": "ee5bb31eec5135ace7052327c743d4345d6adf3369fabdffc717258960a51d77",
-    "results/revision-bounded-influence-validation-v1/BOUNDED_INFLUENCE_PROOF.md": "934c4321468e28c33c208b50f2283e5f81b9b75b046abf53d9fe1d36504d69be",
-    "results/revision-bounded-influence-validation-v1/THESIS_HANDOFF.md": "09c95839248df11bf61b6134cc9390f766c75139d73e66d8587816f4717f8b36",
-    "results/revision-bounded-influence-validation-v1/REPORT.md": "ee5bb31eec5135ace7052327c743d4345d6adf3369fabdffc717258960a51d77",
-    "results/m6-adaptive-multiseed-v1/README.md": "efae8d100a67666e7f15c5ad385a058f2e202d7a105a7dcafdc07678a9356605",
-    "results/revision-fltrust-root-objective-diagnostic-v1/README.md": "7efe12c5f4efb3e4f47ac74ed490711476b3973bbae67fc2952ada43a0da995d",
-    "results/revision-rolling-envelope-validation-v1/README.md": "72a1f31038ff3a909f8d9684374809b6da7149a2a228e0d32570cf29cf45f704",
-    "results/revision-rolling-envelope-validation-v1/NEXT_STEP_DESIGN.md": "b05bb33f284ab4529caf77356049b008052b4bcdf9351ed5dfc86c038e228c01",
-    "results/revision-rolling-envelope-validation-v1/REPORT.md": "72a1f31038ff3a909f8d9684374809b6da7149a2a228e0d32570cf29cf45f704",
-    "results/m6-active-policy-multiseed-v1/README.md": "d34ba97d15fcc403876ff020f9ab5b91e0531fdacb03d78b36b21c9c9741ea62",
-    "results/revision-attribution-origin-recovery-v1/METHOD.md": "2d3d4a14fc123e608dff15c3a66ba14cfb59b05eff41dbe3303ac640dea4be47",
-    "results/revision-attribution-origin-recovery-v1/README.md": "f14d0dbeec796d5274b4d5709f095707fe2c2e3f743fadf559e203b09acebc69",
-    "results/revision-witness-operations-v1/README.md": "92106f70e50e29f5ef9c0ab33a0f363a789ea65b7a29e554e9d91eb6f18e3c8d",
-    "results/revision-witness-operations-v1/laboratory-procedure.md": "087f5624a1915f12441986d5605d345e4f401a786f9550f908e1d58e81a237f1",
-    "results/revision-adaptive-live-validation-v1/README.md": "486e8c24a2238a1e9f84206b76ac51d2bac5f6601fae463ebfb6740ca97bc972",
-    "results/revision-adaptive-live-validation-v1/CLOSURE_INTEGRITY_NOTE.md": "74602165d2aa3ace384fe826de9d95078268d8e39e8340fb2d15f1a4cb4f0b85",
-    "results/revision-adaptive-live-validation-v1/VALIDATION_REPORT.md": "486e8c24a2238a1e9f84206b76ac51d2bac5f6601fae463ebfb6740ca97bc972",
-    "results/revision-external-tsa-v2/laboratory-handover.md": "9c162ce0eb3ab46825119a15a91232a2f6cb45d3477c10340c9407a2cdde1a45",
-    "results/revision-external-tsa-v2/ADMINISTRATIVE_INDEPENDENCE.md": "40b2a231354dc71e84ed3799ab1a4899a6812f4ce1877d6030e0f16458100f0e",
-    "results/revision-external-tsa-v2/README.md": "cfdff80aad3f81958e6f50efb5fad117b83b3a00ba8e321483bfb80bf316009e",
-    "results/m6-live-downplus10-v1/README.md": "b573760ec16cf424b379f2785c981d2a56f25a37df1d3d38d6c06a95da10d035",
-    "results/revision-severe-tail-gate-v1/README.md": "491b1ac88144f69e488b0d17ea8b1aaea963f785e345518ddf61063a334c43c4",
-    "results/revision-severe-tail-gate-v1/SPECIFICATION.md": "bcb5fc0e5f4918ffca08b8f3c1f102adcfb51270b7c04079bdb04f281c39dcce",
-    "results/m6-composite-admission-local-test-v1/README.md": "21c46c9eda57cb09b3a138511bda58f9eb404fe0913a23df8508b50dfe7a8b90",
-    "results/revision-state-conditioned-audit-v1/README.md": "067c440157f0d838c32fb1c48633a20a87543ec4df49458bfae2c623b9655e7c",
-    "results/revision-admission-mass-safety-v1/README.md": "d2c4295b426414253e79c723b87cb7f771b00500f63ac83abe2b4f9942d0922c",
-    "results/revision-ton-iot-preflight-v1/README.md": "0981054e9b999e63fd9ea4b00526fcf68d2565b7d4ea2cd96b78fc5bd843bfc9",
-    "results/revision-ton-iot-transfer-v1/README.md": "9311139492c0dfc6bac5ad815baf2c4639ede2f520b44960a3c6a51b4a3a7345",
-    "results/revision-ton-iot-retraining-v1/README.md": "2c93daebe08ce968c3235ce76f084b69f3e5d1610057ffd92dad60fa332f32e8",
-    "results/revision-ton-iot-flow-end-v2/README.md": "06517d38e972f123d94e176672e71515eab7ae040beb8bb6e49117c85d7b250c",
-    "results/revision-ton-iot-f1-assessment-v1/README.md": "1b4e61765a401cf11c78b25a7a421fda807473e436d0ae3479809fc2c5bfef2c",
-    "results/revision-ton-iot-benign-robustness-v1/README.md": "e003246a4d8bf186416ecbcaa0b3c74f082f443b76bb4ec505ef8556e24e2772",
-    "results/revision-ton-iot-host-windows-v1/README.md": "e7829139642db1d8972d27e7f43d3bc643910e9c46443297e012cebe9bc41dd3",
-    "results/revision-ton-iot-host-novelty-v1/README.md": "cdee4ef29d26061150ad8158a850acf36bbacaf265eb99cd75a73141f2480e39"
+    "docs/measurement/PUBLICATION_READINESS.md": "b235c21b66b172638bf8167484a698a39c19c8f423889e5204245ac26d6a112e",
+    "docs/admission-gates/BOUNDED_INFLUENCE_VALIDATION.md": "6b5eb75158e4bcccb9fcf931b95e13e341d9a4620b4ce77ed3e1f885e386e00f",
+    "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md": "d12ffc63ea26f1d78e9fadac33891a5fbecba6c56e9eddb6a38e6720bc72662a",
+    "docs/admission-gates/ROLLING_ENVELOPE_VALIDATION.md": "99a686cb3481709ab5c37ad8c263769c7a2def54ea9ea8c273653d00aceb9f48",
+    "docs/formal/FORMAL_MODEL_THEOREMS.md": "0527cbbaeaca25f54e3756b9a4d20a15ba1b0934cd1886335c9dec1e42fe72a9",
+    "docs/admission-gates/M6_LIVE_SENSITIVITY.md": "f960a264f9f84e2954fc7f3d754ab2cbcd1a26d98553e6b10be1597dd6068499",
+    "docs/formal/MULTIROUND_DERIVATION.md": "56d5182b3d73d6ac2a2c619203a350d14370597b578201ecb0785ae564462f5c",
+    "docs/witness-chain/LOCAL_WITNESS_DEMONSTRATION.md": "92f164836e863944871340c618b9fbcde193d2f799d4935051901c5825bd34f5",
+    "docs/witness-chain/INDEPENDENT_SUBMISSION_WITNESS.md": "82a39f26a5c4f541af02f06279223fa8572a0abbfd679d619179d63af1ca24b7",
+    "docs/admission-gates/CAPPED_FINAL_RESULTS.md": "ba6dac5bdde0cb56dcce4054873fc24abb6ed52ba0a83a5cfad4579bd5d5b353",
+    "docs/admission-gates/BOUNDED_INFLUENCE_THEOREMS.md": "934c4321468e28c33c208b50f2283e5f81b9b75b046abf53d9fe1d36504d69be",
+    "docs/milestones/MILESTONE_5_SECURE_MULTIROUND.md": "126364447adf2e9837214070ae26db71f4aa28f645e2ba6d0bcbb10f0ed88898",
+    "docs/admission-gates/CAPPED_FINAL_AGGREGATION.md": "69fd945eb7100c7d32c87d7d06c86fd0fc7f3ba10e4dc44efb73ab7fee042c34",
+    "docs/admission-gates/LIVE_ENVELOPE_VALIDATION.md": "9760f2e12451112dde918bf7f7849aba82764b2a7923bcf46739690024a8535f",
+    "docs/measurement/RUNTIME_OVERHEAD_BENCHMARKING.md": "8958a577159ef24a409b3f240454e1c5330ef7bf835de4fc0e79f4f259c91d09",
+    "docs/witness-chain/WITNESS_ADMINISTRATIVE_BOUNDARY.md": "82a41bf01eff438fee926f5bad641ad91e7b30517e88253eb724d91de97f5838",
+    "docs/admission-gates/M6_POLICY_PILOT.md": "e13ec45b7f2495b06c87f27ea9120356f4986249d3e817354f4c79a84fb11507",
+    "docs/admission-gates/severe-tail-admission-research.md": "bcb5fc0e5f4918ffca08b8f3c1f102adcfb51270b7c04079bdb04f281c39dcce",
+    "results/milestones/m6-real-attestation-failure-local-test-v1/target-explanation.md": "03c1ed90c374c676feb9a43c02c8e6e832b3b4851c92d7c593bf21276d469827",
+    "results/milestones/m6-real-attestation-failure-local-test-v1/README.md": "50073f4861f3e412a74a3bcec6b95709a3fd62efec52fed7543c0f326c705b96",
+    "results/chain-witness/revision-witness-admin-boundary-v1/REPORT.md": "82a41bf01eff438fee926f5bad641ad91e7b30517e88253eb724d91de97f5838",
+    "results/gates-probes/revision-clean-gate-calibration-v1/README.md": "2a4f1c35ceff9d7416fab924e9038cb482d243d7096136bbaf8b14b1730a90cf",
+    "results/gates-probes/revision-capped-final-v1/CAP_PROJECTION_MODEL.md": "11573de3359e9a931ec6a2f9e2295434b3f28c568ad53908ee0a72f61d8d8664",
+    "results/gates-probes/revision-capped-final-v1/REPORT.md": "48ac83c4e4522da5d4903e972b5f337d9b6b5c20653bcfbb2408c9e3e112f372",
+    "results/gates-probes/revision-capped-final-v1/GATE_DEFAULTS.md": "15033d6e19dcb2e6d19f6b26e3cffea83aead57fd30dbbdbf1509d00c894cdce",
+    "results/admission/revision-selector-diagnosis-v1/README.md": "a3424bf4ca731568debea892f8325ececaca48683e1e8bc45d097649a5b244c2",
+    "results/admission/revision-selector-diagnosis-v1/CORRECTION_SPECIFICATION.md": "86dd06e1fa32fae406da2e405995a7ccd3a90966c69fe9d3d44a57da077b4e43",
+    "results/milestones/m5-external-generalization-local-test-v1/README.md": "cf27fc0675d5ca655044cb343a26179c8f50736dabadc2cb84a141940c78c024",
+    "results/milestones/m6-trust-statistical-disagreement-local-test-v1/README.md": "4baf6b52f71878d6e964aa2c8bce66738216828aa4e821152da16c761b513a8b",
+    "results/gates-probes/revision-gate-trajectories-v1/README.md": "302d49535f249dccf97f5f6411792c53de67019dad9c61d4ab2564e8e8d7401d",
+    "results/admission/revision-fltrust-screen-v1/README.md": "dc35adf42a85895b8e923393ce146ab9c2c6a99792e4526afd2eef87df3ab0ba",
+    "results/gates-probes/revision-gate-mechanism-audit-v1/README.md": "90d8b2e38ddd78c6af81e49bc3e0ae468e71ab6e7905aa6c2d5d64310ae36a47",
+    "results/milestones/m6-live-contribution-explanations-local-test-v1/README.md": "cc47f685c7e4f094f1e117a1ddbfab2f911a0371c45fbf417397fc018a84d69d",
+    "results/milestones/m6-live-contribution-explanations-local-test-v1/case-studies.md": "54d6a41b1646edb5b01ba20b310f688c51cd3f570a8415f1303094f105d20c3e",
+    "results/milestones/m6-adaptive-objectives-ablation-v1/README.md": "183b24b4af43e323f6c31e46b8cd46a3a8636184b723b81b7c5396805da402c4",
+    "results/admission/revision-individual-envelope-v1/README.md": "4e09c3869114159a48a60b42ea34b75d308dac3832fa3d7f992358c85f99d774",
+    "results/admission/revision-effective-influence-v1/README.md": "40c7dd991809199f2b2e746d2366af164df8b98153902d3346ef7549c1fcc514",
+    "results/milestones/m8-m6-disagreement-preservation-local-test-v1/README.md": "7abb37a39db04f225bd2a0770ee09ae7103102cc11f6f39fbf6d4883d5c3dc47",
+    "results/admission/revision-episodic-attribution-recovery-v1/README.md": "998150bfb9a6fe24e764cec89a028726132929e14eeaa64f0ac0cea0ca167a20",
+    "results/admission/revision-episodic-attribution-recovery-v1/GROUP_INTERPRETATION.md": "2c20d0ca9edb753e2f94e90329a2fbb1abc8ea2f36f6f125a72d673f834d7287",
+    "results/admission/revision-normonly-endpoint-dba-v1/README.md": "b654cb8eaf928b4c519ca6dbcc2319bdd4e4d08ef47a7721eebf55cff54e2e50",
+    "results/admission/revision-normonly-endpoint-dba-v1/METHODOLOGY.md": "112cceaaab474fd674eede296d2f500dd73c8cd6e4d29335585981c0604b768f",
+    "results/admission/revision-normonly-endpoint-dba-v1/NEXT_STEPS.md": "0b039580074faed53678cd1f7a62acd11dcc67ff200dd8b9bff7aa4aee5c6c82",
+    "results/admission/revision-reference-coherence-v1/README.md": "a98fa196b1587e4b7faf299770cfcc2245627bb976f55909b24d4c6294940c54",
+    "results/admission/revision-endpoint-retrospective-groups-v2/README.md": "2330d5459d3201d705baa25975a75dc9672c0352d7349a9fe46865670da575b8",
+    "results/admission/revision-endpoint-retrospective-groups-v2/NEXT_STEPS.md": "d661b8c198620aad7457de5bb1e929c14e477034da2fb1ec36a5a309899e508e",
+    "results/milestones/m6-policy-sensitivity-replay-v1/README.md": "f483d400d18477b2b1ce129b034c45be31615e6a00b4896fbe4fc581a64d0a12",
+    "results/chain-witness/revision-research-closure-v1/README.md": "7d8d9a0f2d637912afe153bc3b682077787bc5c3d33da7522e793a3d5e2e4faa",
+    "results/chain-witness/revision-research-closure-v1/current-property-bindings.md": "48ecc6d801e46ac27cf7ed9e2b77994d6eb2409ee585273f86d85769b1a64c4f",
+    "results/milestones/m6-adaptive-paired-v4/README.md": "d888625d3221cd590e04a0b2425a739ee1d47d2a220b5e67b1809bd0b6bdb5ab",
+    "results/milestones/runtime-overhead-local-test-v1/README.md": "59d8dc732cf77345b2acedd7af72bed48c36d1f5578db4faf729322238cdaa74",
+    "results/admission/revision-coherent-endpoint-feasibility-v1/README.md": "c77c23d87c8295953eb4e31a57e6383de9d3a0203f11559c437ab065e9e94b88",
+    "results/chain-witness/revision-unified-chain-v1/README.md": "867c5a014e8ecfa9d7d71e960091c20cf7823b1288c67953c558fa8fdf191ce3",
+    "results/chain-witness/revision-unified-chain-v1/SYSTEM_MODEL.md": "0e552a0c325bb7b7ef9396234f5131334a72b8e331e4b66e150af763ccff6527",
+    "results/chain-witness/revision-unified-chain-v1/profile-correspondence.md": "c2b726f557fd784d7c0e04f7f858e696308528c1e3f140919fad1dde9aa881db",
+    "results/milestones/m6-adaptive-untargeted-paired-s342593-v1-continuation-v3/README.md": "fdb4a53cc46a3e93d6360bedf660412c435eaf2d25288e99a1b1b395c3b26af1",
+    "results/records/storage-retirement-20261106/README.md": "1ea37a89103b7558374569a5248c79373b0e20c1859afc7f58286017bad816fe",
+    "results/records/storage-retirement-20261106/REPORT.md": "6eee5bafdb253d818577cd28e1828d85c773b9c4721d40259ba855cdd432a25d",
+    "results/records/storage-retirement-20261106/historical-summary/README.md": "28474efa626c5f4caa37bf8715296c6033902cd7bc38c5d0d41f6761cc21e898",
+    "results/admission/revision-clean-reconstruction-and-groups-v1/README.md": "8389a7e7a7d41e1d2c2948e52cbf7249f4bdb47b3d1ec75f021b81bb9d73ac5d",
+    "results/milestones/m7-m6-disagreement-investigation-local-test-v1/README.md": "ce1d961d0c6e5d1a8a4ad18168617668774ccac4762b8d8378734f196d9c5b22",
+    "results/admission/revision-baseline-validation-v1/BASELINE_DBA_VALIDATION.md": "94b2bb2dbcd6b068992b14f238bc7ccf6e5212ad144e9154e7963483d795b7fd",
+    "results/admission/revision-baseline-validation-v1/TEST_ENDPOINT_SUMMARIES.md": "100d44433f4f919ce72dbb33d151e1abf6f0fabf0d6e5d1976c83525e9469eb2",
+    "results/admission/revision-baseline-validation-v1/README.md": "94b2bb2dbcd6b068992b14f238bc7ccf6e5212ad144e9154e7963483d795b7fd",
+    "results/admission/revision-baseline-validation-v1/SECONDARY_TEST_SUMMARIES.md": "6aeb2351cf6a6ffae0f9619bbc22df255df0b8967066e1bd87a4650c5c6dd31f",
+    "results/admission/revision-baseline-validation-v1/REPRODUCE.md": "5d2e86ccd9a84caf7a2c126b4ca0b927b0e58e895952c6c91fdcf7b3dfdf8145",
+    "results/admission/revision-retrospective-groups-validation-v1/RETROSPECTIVE_GROUP_VALIDATION.md": "ef043ec4062bfd5ddefa6be035e03286552e03e64bf43b360e55feb17c40c752",
+    "results/admission/revision-retrospective-groups-validation-v1/README.md": "ef043ec4062bfd5ddefa6be035e03286552e03e64bf43b360e55feb17c40c752",
+    "results/admission/revision-retrospective-groups-validation-v1/REPRODUCE.md": "beb2960ce0a203411b237def6475f908c545806fdaf0ff23252b7c6e90e799bb",
+    "results/admission/revision-retrospective-groups-validation-v1/PAIR_MEMBERSHIP_DIAGNOSIS.md": "082e63f272883d7bdd86204d9bd22e25bde9b5445450e37535a22674e6113537",
+    "results/admission/revision-retrospective-groups-validation-v1/TEST_SELECTED_ENDPOINTS.md": "8e9695e07d521a5483fc84c3dbd35370945bc08bada71a4adbadb3e8504c0b2d",
+    "results/milestones/m6-active-policy-pilot-v1/README.md": "32d8b7ec543581c0f1c05340f14e661ec1be455d4e37e70b4f8de69a2f02a843",
+    "results/chain-witness/revision-witness-round-v2/README.md": "94011fc0aa6ea67addc46cfb7db0cde5986a43a93f9533fa4497efcaa65fd60b",
+    "results/chain-witness/revision-witness-round-v2/runtime-portability-note.md": "a7b47ef94bd8099b8371d6bb9136cb479c5cb76e9f77199b651ddc0a2517151e",
+    "results/milestones/m3-multiseed-v2/README.md": "c1a2f19ec6437dd7a3b0b3cb69ccf94416a9e9787b02cb36e985c481f8daf7f3",
+    "results/records/revision-mail-requirements-status-20261106/README.md": "97fdf08752dadf44eac7cd01d8d17849ddf4b48408f4cce814cae1ae7fd8336b",
+    "results/admission/revision-exact-group-projection-exploration-v1/README.md": "559300db9f513c32c349488eee3f0dd246fef833956dcb02f26c4800ab7a91fe",
+    "results/milestones/reference-local-test-v1/README.md": "50c6183c71da5ba979e193dbc74fe28ddcd63885416916cbab63166d5259de07",
+    "results/milestones/reference-local-test-v1/m7/report.md": "a836f83cad31724a6ce4d5b70f13b0e83156ae61e0905f7a07e4e3e2665cf6cd",
+    "results/milestones/m6-adaptive-frozen-pilot-v1/README.md": "8cc8e793193d9c00a9ce3339327864e2bfd6910d1a9d05567fa58df78c6a2eaa",
+    "results/milestones/overhead-local-test-v1/README.md": "ad3e9923114b5d28ef5564e4768349ece0839b1302acbad6217142e263580a91",
+    "results/milestones/m6-adaptive-untargeted-multiseed-v1/README.md": "c8c4c9ee7b8df0187215da104a7e340701a9ed92aa881509ba5ccbefc881748f",
+    "results/gates-probes/revision-admission-mass-feasibility-v1/README.md": "03b55cc19baa131dc1ee166295b85e9aa6d0505b79e8e46f5ca53dad93698f66",
+    "results/admission/revision-coherent-endpoint-dba-v1/README.md": "d220924eb8f365457c9978d801be98672e284246fc6b984608cb2c4a0a0e09df",
+    "results/admission/revision-coherent-endpoint-dba-v1/DBA_EMAIL_AGREEMENT.md": "a2d1d870511abdaf2cfa777ed9d98fe3622cd6c260f8a4dfbbbfe0d21f039211",
+    "results/chain-witness/revision-final-formal-correspondence-v2/CURRENT_RELEASE_PROOF_ANNEX.md": "9f93767e5c7cbe0e2f72b681706932e91b31981223ae3aaf41787eb813c43f01",
+    "results/chain-witness/revision-final-formal-correspondence-v2/README.md": "eb3abe92cff09aec5d05054f5bd103b396968d6f0f0efda6e9e3a62f70993b67",
+    "results/chain-witness/revision-final-formal-correspondence-v2/FORMAL_CORRESPONDENCE_CLOSURE.md": "eb3abe92cff09aec5d05054f5bd103b396968d6f0f0efda6e9e3a62f70993b67",
+    "results/chain-witness/revision-final-formal-correspondence-v2/THESIS_HANDOFF.md": "0e385efcbd3367045e589d37d80bc3755ce1ff7edcecab1efad2451011d17afb",
+    "results/chain-witness/revision-final-formal-correspondence-v2/REFINEMENTS_AND_BOUNDARIES.md": "90f98f323ab55f4ea1e6d23cf39578719be6bc6bc34ecc7685f1b901938599af",
+    "results/chain-witness/revision-final-formal-correspondence-v2/REPRODUCE.md": "b1c68b75d9420401bb41ef5ea22bda0e54c6e68401390c25753652fe8723dc8c",
+    "results/chain-witness/revision-final-formal-correspondence-v2/PROPERTY_CODE_EVIDENCE_MATRIX.md": "f669a1ba5e5aaf1b4e83b981272f1d2372768a372d5f1764a250ffe72896f497",
+    "results/admission/revision-coherent-gradient-pilot-v1/README.md": "468e1ad1fc5280d93bc236248f52193ffe57cea60a89c02bc576754e7c4f39b6",
+    "results/admission/revision-defense-consolidation-v1/EXPERIMENT_MAP.md": "151c655ec5963bb0c1eba7f4ec507c7bd21c93492c7de1843996ad796f818010",
+    "results/milestones/m6-adaptive-live-smoke-v2/README.md": "f9fa866891bea71f87d96c62e1349b68222404ab4a27859b85ae884f8c748672",
+    "results/milestones/m6-contribution-explanations-local-test-v1/README.md": "c8824740524ad5a08261a8bf439afa277430d0bfdb1177cb72d0f209ebda6234",
+    "results/admission/revision-sequential-round-policy-v1/README.md": "3101b7318898839746c1a23de97923cf87811a6dc004d83c3e684dda76dd35f2",
+    "results/admission/revision-current-evidence-policy-v1/README.md": "ecad5bcf09ce168739ef1e79ffd49df57162496d570ecd343b4dc4f75a6eb878",
+    "results/admission/revision-coherent-dba-v1/README.md": "46d702b21058dd05e2d32cad391a6454b0352cc63bc7f52f46767c7b18cc1d7f",
+    "results/admission/revision-independent-containment-v1/REPORT.md": "8d45555fa672e8b8acd84c0a9dfa6f181f3b72a837068476d42365b162f22d16",
+    "results/admission/revision-independent-containment-v1/EMAIL_REQUIREMENTS_AUDIT.md": "5b30b947db36e7f4d46f5164aca4e9a80ca0b663186177ad200a6a35b09ad651",
+    "results/admission/revision-no-redistribution-screen-v1/README.md": "23de70640c39586a8e50115268cba4295c197dd3272864d5eac6429c4b622e10",
+    "results/milestones/m5-in-round-composite-local-test-v1/README.md": "f896c0d07b7486ebef2d3fd33bbc14a612e0a1fa72e9d15d6adc6a2a241fa416",
+    "results/milestones/m5-in-round-composite-local-test-v1/intervention-explanations.md": "c82604c8a424d77c59afdacae220cf7c210f26f422ef3bd55b648cac841b662e",
+    "results/admission/revision-coherent-gradient-recovery-v1/README.md": "7c44fb80b46e40ffc175268c5f9311dd16e37e1458cee44b4d636d9511e4bfc0",
+    "results/admission/revision-bounded-influence-validation-v1/README.md": "ee5bb31eec5135ace7052327c743d4345d6adf3369fabdffc717258960a51d77",
+    "results/admission/revision-bounded-influence-validation-v1/BOUNDED_INFLUENCE_PROOF.md": "934c4321468e28c33c208b50f2283e5f81b9b75b046abf53d9fe1d36504d69be",
+    "results/admission/revision-bounded-influence-validation-v1/THESIS_HANDOFF.md": "09c95839248df11bf61b6134cc9390f766c75139d73e66d8587816f4717f8b36",
+    "results/admission/revision-bounded-influence-validation-v1/REPORT.md": "ee5bb31eec5135ace7052327c743d4345d6adf3369fabdffc717258960a51d77",
+    "results/milestones/m6-adaptive-multiseed-v1/README.md": "f385dd7aa5e17ea18917c9509b734f6705b4b95714118d91a60b4f8541b2575e",
+    "results/admission/revision-fltrust-root-objective-diagnostic-v1/README.md": "7efe12c5f4efb3e4f47ac74ed490711476b3973bbae67fc2952ada43a0da995d",
+    "results/admission/revision-rolling-envelope-validation-v1/README.md": "72a1f31038ff3a909f8d9684374809b6da7149a2a228e0d32570cf29cf45f704",
+    "results/admission/revision-rolling-envelope-validation-v1/NEXT_STEP_DESIGN.md": "b05bb33f284ab4529caf77356049b008052b4bcdf9351ed5dfc86c038e228c01",
+    "results/admission/revision-rolling-envelope-validation-v1/REPORT.md": "72a1f31038ff3a909f8d9684374809b6da7149a2a228e0d32570cf29cf45f704",
+    "results/milestones/m6-active-policy-multiseed-v1/README.md": "d34ba97d15fcc403876ff020f9ab5b91e0531fdacb03d78b36b21c9c9741ea62",
+    "results/admission/revision-attribution-origin-recovery-v1/METHOD.md": "2d3d4a14fc123e608dff15c3a66ba14cfb59b05eff41dbe3303ac640dea4be47",
+    "results/admission/revision-attribution-origin-recovery-v1/README.md": "f14d0dbeec796d5274b4d5709f095707fe2c2e3f743fadf559e203b09acebc69",
+    "results/chain-witness/revision-witness-operations-v1/README.md": "2791323692bd356edc8ea4d3d9a83405b05f613f5ad8d4364729a4e1f4b37305",
+    "results/chain-witness/revision-witness-operations-v1/laboratory-procedure.md": "da0e81819011bd1af804a95b52f583da76f8b7e83ebba3e14e3bc287b20c8164",
+    "results/admission/revision-adaptive-live-validation-v1/README.md": "486e8c24a2238a1e9f84206b76ac51d2bac5f6601fae463ebfb6740ca97bc972",
+    "results/admission/revision-adaptive-live-validation-v1/CLOSURE_INTEGRITY_NOTE.md": "74602165d2aa3ace384fe826de9d95078268d8e39e8340fb2d15f1a4cb4f0b85",
+    "results/admission/revision-adaptive-live-validation-v1/VALIDATION_REPORT.md": "486e8c24a2238a1e9f84206b76ac51d2bac5f6601fae463ebfb6740ca97bc972",
+    "results/chain-witness/revision-external-tsa-v2/laboratory-handover.md": "9c162ce0eb3ab46825119a15a91232a2f6cb45d3477c10340c9407a2cdde1a45",
+    "results/chain-witness/revision-external-tsa-v2/ADMINISTRATIVE_INDEPENDENCE.md": "40b2a231354dc71e84ed3799ab1a4899a6812f4ce1877d6030e0f16458100f0e",
+    "results/chain-witness/revision-external-tsa-v2/README.md": "cfdff80aad3f81958e6f50efb5fad117b83b3a00ba8e321483bfb80bf316009e",
+    "results/milestones/m6-live-downplus10-v1/README.md": "b573760ec16cf424b379f2785c981d2a56f25a37df1d3d38d6c06a95da10d035",
+    "results/gates-probes/revision-severe-tail-gate-v1/README.md": "491b1ac88144f69e488b0d17ea8b1aaea963f785e345518ddf61063a334c43c4",
+    "results/gates-probes/revision-severe-tail-gate-v1/SPECIFICATION.md": "bcb5fc0e5f4918ffca08b8f3c1f102adcfb51270b7c04079bdb04f281c39dcce",
+    "results/milestones/m6-composite-admission-local-test-v1/README.md": "21c46c9eda57cb09b3a138511bda58f9eb404fe0913a23df8508b50dfe7a8b90",
+    "results/admission/revision-state-conditioned-audit-v1/README.md": "067c440157f0d838c32fb1c48633a20a87543ec4df49458bfae2c623b9655e7c",
+    "results/gates-probes/revision-admission-mass-safety-v1/README.md": "d2c4295b426414253e79c723b87cb7f771b00500f63ac83abe2b4f9942d0922c",
+    "results/external-data/revision-ton-iot-preflight-v1/README.md": "90edba7383e4bc7899d6ec2938e7d92c3d4481b82e65674bcefd786f93acb4f9",
+    "results/external-data/revision-ton-iot-transfer-v1/README.md": "4341fd04c471fc887d87b0fc52ffedb8101b6dec57f322569f0e4d81c7a69b58",
+    "results/external-data/revision-ton-iot-retraining-v1/README.md": "a8b4c52e514f18af253f03706b5cfaf946fee73562977e2cf534a9a5ce0e80b1",
+    "results/external-data/revision-ton-iot-flow-end-v2/README.md": "f43c21ffb63fa0e585054bac8ec717d023a15a9044a555733a2426ec78b51bf3",
+    "results/external-data/revision-ton-iot-f1-assessment-v1/README.md": "e63839ec949f99bf1f86b7d3e11600f2dbaf2bad40bb3ace13cc7940cb638fd0",
+    "results/external-data/revision-ton-iot-benign-robustness-v1/README.md": "bbab416d0fa9e6eaa2187dc6575a6372230367b7ec9c224c1f4702e5da97756c",
+    "results/external-data/revision-ton-iot-host-windows-v1/README.md": "083159c420b056604fd6267e50c5133fc121e0b5089b774148fc8f3f3b2697bd",
+    "results/external-data/revision-ton-iot-host-novelty-v1/README.md": "51742192baf700e67d52adb8032f7abd7da7fdbdc93d6a3266898d0c21e1c98a"
   },
   "generated_pages": [
     "docs/REFERENCE_INDEX.md",

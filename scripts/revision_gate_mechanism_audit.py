@@ -67,7 +67,7 @@ def factor(status, rho):
 
 
 def active_sources(root, anchors):
-    path = root / "results/m6-active-policy-multiseed-v1/summary.json"
+    path = root / "results/milestones/m6-active-policy-multiseed-v1/summary.json"
     anchors[str(path.relative_to(root))] = sha(path)
     summary = read(path)
     for seed in range(341593, 345594, 1000):
@@ -82,8 +82,8 @@ def active_sources(root, anchors):
 
 
 def adaptive_sources(root, anchors):
-    path = root / "results/m6-adaptive-untargeted-multiseed-v1/summary.json"
-    report_manifest = root / "results/m6-adaptive-untargeted-multiseed-v1/manifest.json"
+    path = root / "results/milestones/m6-adaptive-untargeted-multiseed-v1/summary.json"
+    report_manifest = root / "results/milestones/m6-adaptive-untargeted-multiseed-v1/manifest.json"
     anchors[str(path.relative_to(root))] = sha(path)
     anchors[str(report_manifest.relative_to(root))] = sha(report_manifest)
     require(sha(path) == read(report_manifest)["summary_sha256"], "adaptive report mismatch")
@@ -253,7 +253,7 @@ def main():
     parser.add_argument("--verify", action="store_true")
     args = parser.parse_args()
     root = args.repo.resolve()
-    output = args.output or root / "results/revision-gate-mechanism-audit-v1"
+    output = args.output or root / "results/gates-probes/revision-gate-mechanism-audit-v1"
     payload = run(root)
     payload["implementation_sha256"] = {
         name: sha(root / name) for name in (

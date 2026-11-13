@@ -34,7 +34,7 @@ The default evidence check selects the completed V5 publication. Another study
 with a flat `file-checksums.json` index can be selected explicitly:
 
 ```bash
-make evidence-check STUDY=results/revision-attribution-origin-recovery-v1
+make evidence-check STUDY=results/admission/revision-attribution-origin-recovery-v1
 make smoke DEMO_WORKSPACE=artifacts/documentation-smoke-new
 ```
 

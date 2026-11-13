@@ -87,6 +87,10 @@ def owned_markdown(root: Path):
                 yield path
 
 
+# Study directories are grouped by theme one level below results/.
+RESULT_THEMES = frozenset({"milestones", "admission", "gates-probes", "chain-witness", "external-data", "records"})
+
+
 def read_map(root: Path) -> dict:
     mapping = json.loads((root / 'docs/documentation-map.json').read_text(encoding='utf-8'))
     if mapping['schema_version'] != 1:
@@ -146,7 +150,12 @@ def audit(root: Path, mapping: dict, scan_runtime: bool = False) -> dict:
                            unregistered=sorted(actual_docs - expected_docs),
                            missing=sorted(expected_docs - actual_docs)))
     expected_studies = {x['path'] for x in mapping['studies']}
-    actual_studies = {str(p.relative_to(root)) for p in (root / 'results').iterdir() if p.is_dir()}
+    actual_studies = set()
+    for p in (root / 'results').iterdir():
+        if not p.is_dir():
+            continue
+        children = [c for c in p.iterdir() if c.is_dir()] if p.name in RESULT_THEMES else [p]
+        actual_studies |= {str(c.relative_to(root)) for c in children}
     if actual_studies != expected_studies:
         errors.append(dict(kind='study_registration', unregistered=sorted(actual_studies - expected_studies),
                            missing=sorted(expected_studies - actual_studies)))

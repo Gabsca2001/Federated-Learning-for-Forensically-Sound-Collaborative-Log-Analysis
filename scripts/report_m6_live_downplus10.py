@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results/m6-live-downplus10-v1"
+OUT = ROOT / "results/milestones/m6-live-downplus10-v1"
 SEEDS = [341593, 342593, 343593, 344593, 345593]
 POLICIES = ["original", "downplus10"]
 CONDITIONS = ["clean", "disagreement"]

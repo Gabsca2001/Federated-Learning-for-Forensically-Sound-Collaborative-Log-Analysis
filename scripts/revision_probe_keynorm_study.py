@@ -2,7 +2,7 @@
 
 Wrapper around revision_probe_evasion_study.py / revision_probe_study.py (same engine, pair
 attack plan, evasive attack, guard rule, closure, test). Declared before training:
-* Rule frozen from development (results/revision-probe-keynorm-dev): per-key scale =
+* Rule frozen from development (results/gates-probes/revision-probe-keynorm-dev): per-key scale =
   max(clean maximum of the peer-relative excess, 0.1) per cohort, quarantine when the
   normalised score > 2. Scales refitted by `calibrate` on the 12 verified clean TPM-only
   histories of revision-clean-gate-calibration-v1 (same data the development used).
@@ -38,7 +38,7 @@ from fl_forensics.secure_round import _model_from_export
 
 ROOT = base.ROOT
 LAB = ROOT / 'artifacts/revision-probe-keynorm-confirm'
-RESULTS = ROOT / 'results/revision-probe-keynorm-confirm'
+RESULTS = ROOT / 'results/gates-probes/revision-probe-keynorm-confirm'
 SCALES_FILE = RESULTS / 'calibration/key-scales.json'
 ARMS = ('tpm_only+fedavg', 'tpm_only+bounded', 'probe+bounded', 'probek+bounded')
 VARIANTS = ('clean', 'pair-dba', 'evasive', 'adaptive')
@@ -233,7 +233,7 @@ def prepare():
                    thresholds_file=str(ps.THRESHOLDS_FILE.relative_to(ROOT)), thresholds_sha256=sha256_file(ps.THRESHOLDS_FILE)),
         probek=dict(floor=sc['floor'], multiplier=sc['multiplier'], scales=sc['scales'], rule=sc['rule'],
                     scales_file=str(SCALES_FILE.relative_to(ROOT)), scales_sha256=sha256_file(SCALES_FILE),
-                    development='results/revision-probe-keynorm-dev (multiplier chosen there with those data visible; frozen here)'),
+                    development='results/gates-probes/revision-probe-keynorm-dev (multiplier chosen there with those data visible; frozen here)'),
         partition_distinctness='checked within study and against surviving earlier gate studies incl. both probe live studies',
         endpoints='Paired worst-trigger peak harm (complete trigger and the three pairs); full peak/final test ASR; clean F1; failures undefined.',
         promotion='No automatic promotion. Seed is the repetition unit; one dataset (Data24).', new_TPM_Quotes=0)

@@ -14,7 +14,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 LAB = ROOT / 'artifacts/revision-capped-final-v1'
-DEST = ROOT / 'results/revision-capped-final-v1'
+DEST = ROOT / 'results/gates-probes/revision-capped-final-v1'
 OUT = (Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'capped-final-20261106')
 PIN = '13cb93e46e48eb4481a79979399a27f80b0d8b2e6a1c46fdcbe13844e78f8ddc'
 sys.path[:0] = [str(ROOT / 'scripts'), str(ROOT / 'src')]
@@ -343,7 +343,7 @@ def main():
         'actual_admission': 'tpm_only with prerequisite trust assumed passed in software'})
     shutil.copyfile(LAB / 'protocol-before-training.json', staging / 'protocol-before-training.json')
     shutil.copyfile(LAB / 'publication-contract-before-test.json', staging / 'publication-contract-before-test.json')
-    shutil.copyfile(ROOT / 'docs/CAPPED_FINAL_AGGREGATION.md', staging / 'CAP_PROJECTION_MODEL.md')
+    shutil.copyfile(ROOT / 'docs/admission-gates/CAPPED_FINAL_AGGREGATION.md', staging / 'CAP_PROJECTION_MODEL.md')
     if (OUT / 'GATE_DEFAULTS.md').exists():
         shutil.copyfile(OUT / 'GATE_DEFAULTS.md', staging / 'GATE_DEFAULTS.md')
     plot(staging, round_rows, clean_guards, comparisons)

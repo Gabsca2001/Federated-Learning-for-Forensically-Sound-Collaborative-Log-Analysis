@@ -203,8 +203,8 @@ def prepare():
         candidate=dict(policy=gs.POLICY, rule='per-round maximum adverse robust z of v1 head-aware indicators computed on deltas divided '
                        'by local SGD steps (epochs*ceil(n/batch)), rescaled by the round median; quarantine above the clean 98th '
                        'percentile, cohort-specific; no CUSUM, no exclusion state; mandatory trust veto unchanged',
-                       development='results/revision-head-gate-v2b-dev (offline, recorded trajectories); linear size correction '
-                                   'rejected (results/revision-head-gate-v2-dev)'),
+                       development='results/gates-probes/revision-head-gate-v2b-dev (offline, recorded trajectories); linear size correction '
+                                   'rejected (results/gates-probes/revision-head-gate-v2-dev)'),
         fitting=dict(references='revision-clean-gate-calibration-v1 fit TPM-only clean histories',
                      thresholds='revision-clean-gate-calibration-v1 calibration+selection TPM-only clean histories', target_rate='0.02'),
         guard=dict(seeds=STAGES['guard'], budgets=hs.BUDGETS, rule='An arm is evaluated only if on every guard assignment its clean '

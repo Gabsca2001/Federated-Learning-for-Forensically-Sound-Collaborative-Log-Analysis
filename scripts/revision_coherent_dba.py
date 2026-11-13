@@ -14,7 +14,7 @@ from fl_forensics.federated_model import dependencies,arrays_from_export
 from fl_forensics.distributed_backdoor import DistributedBackdoorPlan,poison_local_rows
 from fl_forensics.canonical import sha256_file
 
-R=pilot.R;D=R/'results/revision-coherent-dba-v1'
+R=pilot.R;D=R/'results/admission/revision-coherent-dba-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'coherent-dba-20261107')
 ASSIGNMENTS={6116104:['client01','client06','client13'],6116105:['client05','client10','client14']}
 MODES=('clean','distributed','complete-trigger','adaptive-distributed')
@@ -32,12 +32,12 @@ def check(p):
     assert locks()==p['source_locks']
     pp=read(pilot.D/'protocol-before-clean-training.json');op,old=pilot.check(pp)
     assert sha256_file(pilot.D/'protocol-before-clean-training.json')==p['coherent_source_protocol_sha256']
-    assert read(R/'results/revision-coherent-gradient-recovery-v1/verification.json')['all_recovery_branches_qualify']
+    assert read(R/'results/admission/revision-coherent-gradient-recovery-v1/verification.json')['all_recovery_branches_qualify']
     return pp,op,old
 
 def prepare():
     assert not D.exists();storage=guard();pp=read(pilot.D/'protocol-before-clean-training.json');op,old=pilot.check(pp)
-    recovered=read(R/'results/revision-coherent-gradient-recovery-v1/verification.json');assert recovered['all_recovery_branches_qualify']
+    recovered=read(R/'results/admission/revision-coherent-gradient-recovery-v1/verification.json');assert recovered['all_recovery_branches_qualify']
     tasks=[]
     for mode in MODES:
         for seed,attackers in ASSIGNMENTS.items():
@@ -132,7 +132,7 @@ def execute(task,p,pp,op,old,deps,*,expected=None,write=True):
                 if task['method']=='coherent_fedavg':known=read(pilot.D/'evidence/histories'/f"s{task['seed']}-coherent-fedavg/result.json")
                 else:
                     previous_root=7110703 if task['seed']==6116104 else 7110701
-                    known=read(R/'results/revision-coherent-gradient-recovery-v1/evidence/histories'/f"s{task['seed']}-coherent-fltrust-root{previous_root}/result.json")
+                    known=read(R/'results/admission/revision-coherent-gradient-recovery-v1/evidence/histories'/f"s{task['seed']}-coherent-fltrust-root{previous_root}/result.json")
                 match=next(r for r in known['journal'] if r['event']['decision']=='commit' and r['state_after']['last_committed_round']==number)
                 assert checkpoint==match['exported_checkpoint_sha256'],'Known clean numerical trajectory changed'
             model=next_model

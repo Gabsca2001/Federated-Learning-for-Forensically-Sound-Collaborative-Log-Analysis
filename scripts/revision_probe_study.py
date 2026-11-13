@@ -5,7 +5,7 @@ Variants: clean, distributed, complete-trigger, adaptive (the adaptive attacker'
 scores candidates after the complete defence, i.e. probe decisions and clipping).
 Probe: unchanged single-feature probe (trigger_probe_gate.py) on the server's validation
 attack rows; threshold = clean maximum per cohort from verified clean histories
-(results/revision-trigger-probe-thresholds/thresholds.json, pinned). No fitting here.
+(results/gates-probes/revision-trigger-probe-thresholds/thresholds.json, pinned). No fitting here.
 Stages: prepare -> guard (clean; revised rule) -> guard-decide -> evaluation; smoke.
 Software trust assumption; no new TPM Quotes.
 """
@@ -32,7 +32,7 @@ from fl_forensics.secure_round import _model_from_export
 
 ROOT = base.ROOT
 LAB = ROOT / 'artifacts/revision-trigger-probe-live'
-THRESHOLDS_FILE = ROOT / 'results/revision-trigger-probe-thresholds/thresholds.json'
+THRESHOLDS_FILE = ROOT / 'results/gates-probes/revision-trigger-probe-thresholds/thresholds.json'
 ORIGINAL_CONTEXT, ORIGINAL_STATE = base.context, base.gate_state
 GATE_POLICIES = ('tpm_only', 'sequential', 'gated_composite', tp.POLICY)
 ARMS = ('tpm_only+fedavg', 'tpm_only+bounded', 'probe+bounded')
@@ -150,7 +150,7 @@ def prepare():
         source_snapshots=clean_root['source_snapshots'], source_locks=source_locks(), environment=environment(), tensor_bounds=bounds,
         probe=dict(values=list(tp.VALUES), thresholds=thr, threshold_rule='clean maximum per cohort (zero honest flags in development)',
                    thresholds_file=str(THRESHOLDS_FILE.relative_to(ROOT)), thresholds_sha256=sha256_file(THRESHOLDS_FILE),
-                   development='results/revision-trigger-probe-dev (detection, generality, evasion); results/revision-trigger-probe-thresholds'),
+                   development='results/gates-probes/revision-trigger-probe-dev (detection, generality, evasion); results/gates-probes/revision-trigger-probe-thresholds'),
         partition_distinctness='checked within study and against surviving earlier gate studies; retired v1/factorial partitions cannot be compared',
         endpoints='Paired worst-trigger peak harm; full/component peak and final test ASR; clean F1; failures undefined; attacker data share.',
         promotion='No automatic promotion. Seed is the repetition unit; one dataset (Data24).', new_TPM_Quotes=0)

@@ -746,9 +746,9 @@ After `m8-verify-final-preservation` succeeds, regenerate this public view with:
 python scripts/render_m8_disagreement_preservation_summary.py \\
   --recovery-workspace artifacts/m8-recovery-m6-disagreement-local-test-v1 \\
   --accounting-workspace artifacts/m8-campaign-accounting-m6-disagreement-local-test-v1 \\
-  --m6-results results/m6-trust-statistical-disagreement-local-test-v1 \\
-  --m7-results results/m7-m6-disagreement-investigation-local-test-v1 \\
-  --output results/m8-m6-disagreement-preservation-local-test-v1
+  --m6-results results/milestones/m6-trust-statistical-disagreement-local-test-v1 \\
+  --m7-results results/milestones/m7-m6-disagreement-investigation-local-test-v1 \\
+  --output results/milestones/m8-m6-disagreement-preservation-local-test-v1
 ```
 
 The renderer intentionally reruns the offline recovery, accounting, and final-lineage checks

@@ -23,7 +23,7 @@ from fl_forensics.federated_model import arrays_from_export
 from fl_forensics.canonical import sha256_file
 from fl_forensics.distributed_backdoor import DistributedBackdoorPlan
 
-R=prior.R;D=R/'results/revision-episodic-attribution-recovery-v1'
+R=prior.R;D=R/'results/admission/revision-episodic-attribution-recovery-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'episode-attribution-20261107')
 ASSIGN={6124001:['client01','client09','client14'],6125001:['client04','client08','client12']}
 FIT=prior.FIT;CAL=prior.CAL

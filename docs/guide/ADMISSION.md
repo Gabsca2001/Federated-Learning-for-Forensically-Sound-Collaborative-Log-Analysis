@@ -32,7 +32,7 @@ no-warning settings, Sequential and Composite have the same contributor set on
 fixed inputs, while Composite can assign different weights. Their separately
 trained trajectories can consequently diverge.
 
-The [gate mechanism audit](../GATE_MECHANISMS_AND_VALIDATION.md) retains the
+The [gate mechanism audit](../admission-gates/GATE_MECHANISMS_AND_VALIDATION.md) retains the
 derivations, thresholds and observed warning coverage. Its hard-trust
 non-compensation property does not imply non-compensation among averaged
 statistical indicators. Downweighting does not necessarily reduce an attacker's

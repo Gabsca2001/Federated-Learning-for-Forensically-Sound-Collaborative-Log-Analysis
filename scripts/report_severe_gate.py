@@ -13,7 +13,7 @@ from fl_forensics.canonical import sha256_file
 from fl_forensics.federated_model import dependencies,arrays_from_export
 
 ROOT,LAB=study.ROOT,study.LAB
-OUT=ROOT/'results/revision-severe-tail-gate-v1'
+OUT=ROOT/'results/gates-probes/revision-severe-tail-gate-v1'
 LOCAL=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'severe-gate-20261106')
 METHODS=('tpm_only','gated_composite','mean_control','severe_gate')
 
@@ -369,7 +369,7 @@ def run(refresh=False):
         'clients,features13':'clients, features 13','at12,and':'at 12, and','queries0':'queries 0','uses3,497':'uses 3,497',
         'uses4,937':'uses 4,937','least20':'least 20','most5':'most 5','after10':'after 10','All33':'All 33'}.items():text=text.replace(before,after)
     (OUT/'README.md').write_text(text)
-    shutil.copy2(ROOT/'docs/severe-tail-admission-research.md',OUT/'SPECIFICATION.md')
+    shutil.copy2(ROOT/'docs/admission-gates/severe-tail-admission-research.md',OUT/'SPECIFICATION.md')
     shutil.copy2(LAB/'focused-tests.log',OUT/'focused-tests.log')
     if diagnosis:
         for path in (LAB/'posthoc-diagnosis').iterdir():

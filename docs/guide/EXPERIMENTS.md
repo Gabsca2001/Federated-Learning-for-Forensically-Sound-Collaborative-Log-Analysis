@@ -19,7 +19,7 @@ history study with literal formula interpretations and a normalized adaptation:
 25 of 32 histories complete and seven terminal numerical failures are reproduced.
 It is not reported as a complete original-system reproduction.
 
-The [dated requirement audit](../EMAIL_REQUIREMENTS_STATUS_20261106.md) records
+The [dated requirement audit](../records/EMAIL_REQUIREMENTS_STATUS_20261106.md) records
 those source-bound comparisons and the earlier Data22 transfer diagnosis. Data22
 development does not replace the deferred independent ToN-IoT evaluation.
 
@@ -27,15 +27,15 @@ development does not replace the deferred independent ToN-IoT evaluation.
 
 | Study | Supported finding | Limit |
 | --- | --- | --- |
-| [Gate mechanisms](../../results/revision-gate-mechanism-audit-v1/README.md) | Fixed-input policy equivalences, statistical compensation and normalized-mass effects are quantified | No universal winning original gate |
-| [Mass feasibility](../../results/revision-admission-mass-feasibility-v1/) | The specified retention/group-share targets are incompatible on the examined original non-IID mass contracts | A fail-closed guard does not supply training continuity |
-| [Capped-final](../CAPPED_FINAL_RESULTS.md) | 108 completed histories; transformed coefficients satisfy the ceiling and improve the declared clean conditions | The poisoning-defense objective fails; no promotion |
-| [Coherent endpoint DBA](../../results/revision-coherent-endpoint-dba-v1/README.md) | Four effective raw attacks have zero observed full/component ASR under the declared defended profile | All four final defended models still differ from their clean references |
-| [Late retrospective correction](../../results/revision-endpoint-retrospective-groups-v2/README.md) | Learned-endpoint attacks transfer poorly to earlier selectors; late correction leaves contamination | Later replay cannot erase earlier poisoned checkpoints |
+| [Gate mechanisms](../../results/gates-probes/revision-gate-mechanism-audit-v1/README.md) | Fixed-input policy equivalences, statistical compensation and normalized-mass effects are quantified | No universal winning original gate |
+| [Mass feasibility](../../results/gates-probes/revision-admission-mass-feasibility-v1/) | The specified retention/group-share targets are incompatible on the examined original non-IID mass contracts | A fail-closed guard does not supply training continuity |
+| [Capped-final](../admission-gates/CAPPED_FINAL_RESULTS.md) | 108 completed histories; transformed coefficients satisfy the ceiling and improve the declared clean conditions | The poisoning-defense objective fails; no promotion |
+| [Coherent endpoint DBA](../../results/admission/revision-coherent-endpoint-dba-v1/README.md) | Four effective raw attacks have zero observed full/component ASR under the declared defended profile | All four final defended models still differ from their clean references |
+| [Late retrospective correction](../../results/admission/revision-endpoint-retrospective-groups-v2/README.md) | Learned-endpoint attacks transfer poorly to earlier selectors; late correction leaves contamination | Later replay cannot erase earlier poisoned checkpoints |
 
 ## V4 diagnosis and V5 correction
 
-The [V4 diagnosis](../../results/revision-selector-diagnosis-v1/README.md) found
+The [V4 diagnosis](../../results/admission/revision-selector-diagnosis-v1/README.md) found
 that benign updates can genuinely reduce rare-class F1 at contaminated parents.
 Treating this utility risk as malicious identity created false members. A
 ten-round median also diluted intermittent five-round anomalies. V5 separates
@@ -73,7 +73,7 @@ qualified group-level effect, not proof of intentional collusion.
 
 Final clean macro-F1 loss to the original full-roster reference is 0.0302
 percentage points in the first allocation and zero in the second. Per-class and
-intermediate effects remain available. The [V5 report](../../results/revision-episodic-attribution-recovery-v1/README.md)
-and [group interpretation](../../results/revision-episodic-attribution-recovery-v1/GROUP_INTERPRETATION.md)
+intermediate effects remain available. The [V5 report](../../results/admission/revision-episodic-attribution-recovery-v1/README.md)
+and [group interpretation](../../results/admission/revision-episodic-attribution-recovery-v1/GROUP_INTERPRETATION.md)
 contain the protocols, tables, figures and residual limits. The study records
 40 focused test passes; it does not change the operational admission default.

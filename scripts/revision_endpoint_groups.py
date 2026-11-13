@@ -24,7 +24,7 @@ from fl_forensics.federated_model import arrays_from_export,dependencies
 from fl_forensics.canonical import sha256_file
 from fl_forensics.round_derivation import implementation_sha256
 
-R=source.R;B=source.D;D=R/'results/revision-endpoint-retrospective-groups-v1'
+R=source.R;B=source.D;D=R/'results/admission/revision-endpoint-retrospective-groups-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'endpoint-groups-20261107')
 FIT=[6116501,6116502];CAL=[6116503,6116504,6116505]
 

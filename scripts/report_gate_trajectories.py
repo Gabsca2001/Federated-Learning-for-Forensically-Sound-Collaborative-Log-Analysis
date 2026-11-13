@@ -13,7 +13,7 @@ from fl_forensics.canonical import sha256_file
 from fl_forensics.federated_model import arrays_from_export,dependencies
 
 ROOT,LAB=study.ROOT,study.LAB
-OUT=ROOT/'results/revision-gate-trajectories-v1'
+OUT=ROOT/'results/gates-probes/revision-gate-trajectories-v1'
 
 
 def write_csv(path,rows):

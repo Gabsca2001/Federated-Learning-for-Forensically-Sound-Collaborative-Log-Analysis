@@ -8,7 +8,7 @@ shortcut in excess of the round's peer median for the same (j, k, v). Threshold 
 maximum per cohort over verified clean histories (fitted before the study, pinned).
 The gate 'probe2' quarantines a client flagged by the single-feature probe OR by the
 pair probe. No attacker identity or attack-plan feature/value is used.
-Development: results/revision-trigger-probe-dev (evasion.json).
+Development: results/gates-probes/revision-trigger-probe-dev (evasion.json).
 """
 from __future__ import annotations
 

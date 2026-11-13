@@ -190,7 +190,7 @@ def test_public_verification_receipt_is_independent_of_host_path() -> None:
 
 
 def test_committed_snapshot_matches_its_manifest() -> None:
-    root = Path("results/m6-live-contribution-explanations-local-test-v1")
+    root = Path("results/milestones/m6-live-contribution-explanations-local-test-v1")
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["source_explanation_bundle_id"].startswith(
         "m6-live-contribution-explanations-"

@@ -17,7 +17,7 @@ from statistics import mean, median, stdev
 
 ROOT=Path(__file__).resolve().parents[1]
 LAB=ROOT/'artifacts/revision-severe-tail-gate-v1'
-OUT=ROOT/'results/revision-severe-tail-gate-v1'
+OUT=ROOT/'results/gates-probes/revision-severe-tail-gate-v1'
 LOCAL=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'severe-gate-20261106')
 METHODS=('tpm_only','gated_composite','mean_control','severe_gate')
 

@@ -12,7 +12,7 @@ from revision_dba_experiment import save,authenticate,model_with_arrays
 from fl_forensics.canonical import sha256_file
 from fl_forensics.federated_model import dependencies,arrays_from_export
 
-R=pilot.R;PRIMARY=pilot.D;D=R/'results/revision-coherent-gradient-recovery-v1'
+R=pilot.R;PRIMARY=pilot.D;D=R/'results/admission/revision-coherent-gradient-recovery-v1'
 
 def locks():
     return {str(p.relative_to(R)):sha256_file(p) for p in (R/'scripts/coherent_gradient_recovery.py',R/'scripts/revision_coherent_gradient_recovery.py',R/'tests/test_coherent_gradient_recovery.py')}

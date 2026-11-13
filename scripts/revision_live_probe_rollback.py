@@ -317,8 +317,8 @@ def prepare(workspace, variant='bounded'):
         shutil.copy(src / 'config' / name, lab / 'config' / name)
     shutil.copy(src / 'initial-model.json', lab / 'initial-model.json')
     cohort = json.loads((lab / 'partition/manifest.json').read_text())['partition_mode']
-    keyscales = json.loads((root / 'results/revision-probe-keynorm-confirm/calibration/key-scales.json').read_text())
-    gscales = json.loads((root / 'results/revision-global-probe-confirm/calibration/global-scales.json').read_text())
+    keyscales = json.loads((root / 'results/gates-probes/revision-probe-keynorm-confirm/calibration/key-scales.json').read_text())
+    gscales = json.loads((root / 'results/gates-probes/revision-global-probe-confirm/calibration/global-scales.json').read_text())
     torch = dependencies()[1]; initial = json.loads((lab / 'initial-model.json').read_text())
     rows = json.loads((lab / 'partition/server/splits/validation.json').read_text())['rows']['validation']
     stacked, keys, n = probe_inputs(rows)
@@ -328,8 +328,8 @@ def prepare(workspace, variant='bounded'):
         'client': {'floor': keyscales['floor'], 'multiplier': keyscales['multiplier'], 'scales': keyscales['scales'][cohort]},
         'global': {'floor': gscales['floor'], 'multiplier': gscales['multiplier'], 'scales': gscales['scales'][cohort],
                    'initial_model_sha256': sha(lab / 'initial-model.json'), 'initial_shortcuts': [[k[0], k[1], v] for k, v in init.items()]},
-        'sources': {'client_scales': 'results/revision-probe-keynorm-confirm/calibration/key-scales.json',
-                    'global_scales': 'results/revision-global-probe-confirm/calibration/global-scales.json'},
+        'sources': {'client_scales': 'results/gates-probes/revision-probe-keynorm-confirm/calibration/key-scales.json',
+                    'global_scales': 'results/gates-probes/revision-global-probe-confirm/calibration/global-scales.json'},
     }
     (lab / 'config' / POLICY_FILE).write_text(json.dumps(policy, indent=1, sort_keys=True) + '\n')
     base_cfg = yaml.safe_load((src / 'config' / source_cfg).read_text())

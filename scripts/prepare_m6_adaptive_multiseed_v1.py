@@ -55,8 +55,8 @@ The extension adds 240 rounds (eight arms) and 5,280 attack search queries, plus
 independent recomputation. It does not include a no-statistical-filter ablation or
 a different poisoning strategy; those require separately fixed protocols.
 '''
-with (ROOT/'docs/M6_ADAPTIVE_MULTISEED_V1.md').open('x') as f:f.write(protocol)
-files=[ROOT/p for p in plans]+[ROOT/'docs/M6_ADAPTIVE_MULTISEED_V1.md',ROOT/'scripts/run_m6_adaptive_paired_seed.py',ROOT/'scripts/run_m6_adaptive_multiseed_v1.py',ROOT/'scripts/verify_m6_adaptive_paired_v4.py',ROOT/'scripts/m6_adaptive_live_search.py',ROOT/'scripts/m6_adaptive_live_signing.py',ROOT/'scripts/m6_numeric_runtime.py',ROOT/'scripts/run_m4_swtpm.py',ROOT/'scripts/run_m5_secure_multiround.py',ROOT/'configs/m6-adaptive-frozen-pilot-v1.json',ROOT/'configs/in-round-admission.yaml',ROOT/'configs/secure-round.yaml',ROOT/'configs/trust.yaml',ROOT/'compose.m4.yaml',ROOT/'compose.m5.yaml',ROOT/'results/m6-numeric-runtime-preflight-v1/summary.json']
+with (ROOT/'docs/admission-gates/M6_ADAPTIVE_MULTISEED_V1.md').open('x') as f:f.write(protocol)
+files=[ROOT/p for p in plans]+[ROOT/'docs/admission-gates/M6_ADAPTIVE_MULTISEED_V1.md',ROOT/'scripts/run_m6_adaptive_paired_seed.py',ROOT/'scripts/run_m6_adaptive_multiseed_v1.py',ROOT/'scripts/verify_m6_adaptive_paired_v4.py',ROOT/'scripts/m6_adaptive_live_search.py',ROOT/'scripts/m6_adaptive_live_signing.py',ROOT/'scripts/m6_numeric_runtime.py',ROOT/'scripts/run_m4_swtpm.py',ROOT/'scripts/run_m5_secure_multiround.py',ROOT/'configs/m6-adaptive-frozen-pilot-v1.json',ROOT/'configs/in-round-admission.yaml',ROOT/'configs/secure-round.yaml',ROOT/'configs/trust.yaml',ROOT/'compose.m4.yaml',ROOT/'compose.m5.yaml',ROOT/'results/milestones/m6-numeric-runtime-preflight-v1/summary.json']
 files+=list((ROOT/'src/fl_forensics').glob('*.py'))
 for path in plans:
     p=read(ROOT/path);files.extend([ROOT/p['federation_config'],ROOT/p['partition']/'manifest.json',ROOT/p['partition']/'server/splits/validation.json'])

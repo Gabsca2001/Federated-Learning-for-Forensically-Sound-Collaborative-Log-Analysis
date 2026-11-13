@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results/revision-noncompensatory-replay-v1"
+OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results/admission/revision-noncompensatory-replay-v1"
 if (OUT / "replay-results.json").exists():
     sys.exit(f"refusing to overwrite existing evidence in {OUT}; pass a new output directory")
 OUT.mkdir(parents=True, exist_ok=True)

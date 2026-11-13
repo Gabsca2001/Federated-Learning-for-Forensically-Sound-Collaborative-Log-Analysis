@@ -1,7 +1,7 @@
 """Offline development: single-feature probe applied to the GLOBAL model.
 
 DEVELOPMENT ONLY (validation rows, recorded models; no training, no test split).
-Motivation (results/revision-probe-keynorm-confirm): the adaptive interpolation attacker
+Motivation (results/gates-probes/revision-probe-keynorm-confirm): the adaptive interpolation attacker
 evades the peer-relative probe; once the backdoor reaches the global model, the peer-relative
 rule flags honest clients that inherit it on the attacked features. Peer-relative scores cannot
 see a shortcut that every client shares, so this script measures the probe on the aggregate.

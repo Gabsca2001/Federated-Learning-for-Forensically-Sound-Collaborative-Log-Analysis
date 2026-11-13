@@ -79,7 +79,7 @@ def job(args):
     pred, _ = predict(initial, val, deps); correct = [p == r['label'] for p, r in zip(pred, val)]
     X = probe.attack_matrix(val); single, skeys = probe.probe_tensor(X)
     sub = X[np.random.default_rng(7).permutation(len(X))[:400]]; pairs, pkeys = pair_probe(sub)
-    sthr = json.loads((ROOT / 'results/revision-trigger-probe-dev/dev-report.json').read_text())['thresholds'][cohort]['threshold']
+    sthr = json.loads((ROOT / 'results/gates-probes/revision-trigger-probe-dev/dev-report.json').read_text())['thresholds'][cohort]['threshold']
     model = initial; hist = []; clients = sorted(rows)
     for n in range(1, 16):
         exports = []

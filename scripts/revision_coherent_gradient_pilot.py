@@ -17,7 +17,7 @@ from fl_forensics.secure_round import _model_from_export
 from fl_forensics.canonical import sha256_file
 
 R=Path(__file__).resolve().parents[1]
-D=R/'results/revision-coherent-gradient-pilot-v1'
+D=R/'results/admission/revision-coherent-gradient-pilot-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'coherent-gradient-20261107')
 ETA=.001;HORIZON=15
 
@@ -33,13 +33,13 @@ def locks():
     return {str(f.relative_to(R)):sha256_file(f) for f in paths}
 def check(p):
     assert locks()==p['source_locks'],'New protocol source drift'
-    op=read(R/'results/revision-fltrust-screen-v1/protocol-before-root-training.json');old=old_study.check(op)
-    assert sha256_file(R/'results/revision-fltrust-screen-v1/protocol-before-root-training.json')==p['prior_root_protocol_sha256']
+    op=read(R/'results/admission/revision-fltrust-screen-v1/protocol-before-root-training.json');old=old_study.check(op)
+    assert sha256_file(R/'results/admission/revision-fltrust-screen-v1/protocol-before-root-training.json')==p['prior_root_protocol_sha256']
     return op,old
 
 def prepare():
     assert not D.exists(),'Preserve previous pilot';storage=guard()
-    op=read(R/'results/revision-fltrust-screen-v1/protocol-before-root-training.json');old=old_study.check(op)
+    op=read(R/'results/admission/revision-fltrust-screen-v1/protocol-before-root-training.json');old=old_study.check(op)
     initial=read(Path(old['training']['base_model_path']));classes=initial['class_names'];population=None;weights=None
     for seed in (6116104,6116105):
         rows,counts,w=data_source.seed_data(seed,classes)
@@ -60,7 +60,7 @@ def prepare():
         tasks.append({'name':f's{seed}-coherent-fedavg','seed':seed,'method':'coherent_fedavg','root_seed':None})
         for root_seed in op['root_seeds']:
             tasks.append({'name':f's{seed}-coherent-fltrust-root{root_seed}','seed':seed,'method':'coherent_fltrust','root_seed':root_seed})
-    p={'profile':PROFILE,'source_locks':locks(),'prior_root_protocol_sha256':sha256_file(R/'results/revision-fltrust-screen-v1/protocol-before-root-training.json'),
+    p={'profile':PROFILE,'source_locks':locks(),'prior_root_protocol_sha256':sha256_file(R/'results/admission/revision-fltrust-screen-v1/protocol-before-root-training.json'),
         'loss_contract':loss,'loss_contract_sha256':digest(loss),'tasks':tasks,'maximum_committed_rounds':HORIZON,'learning_rate':ETA,
         'minimum_positive_contributors':QUORUM,'initial_model_path':old['training']['base_model_path'],'initial_model_sha256':old['training']['base_model_sha256'],
         'availability':'Stop on first failed quorum/undefined reference. Parent and committed round counter remain unchanged. No automatic retry with identical evidence, root-only fallback, lower quorum or reuse of stale gradients.',

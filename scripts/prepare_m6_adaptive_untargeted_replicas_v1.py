@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SEEDS = (343593, 344593, 345593)
 BASE_PLAN = ROOT / "configs/m6-adaptive-untargeted-paired-s342593-v1.json"
 BASE_LOCK = ROOT / "configs/m6-adaptive-untargeted-paired-s342593-v1.lock.json"
-DOC = ROOT / "docs/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md"
+DOC = ROOT / "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md"
 GENERATOR = ROOT / "scripts/prepare_m6_adaptive_untargeted_replicas_v1.py"
 
 def digest(data):

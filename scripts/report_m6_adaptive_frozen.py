@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
     source=ROOT/"artifacts/m6-adaptive-frozen-pilot-v1"
-    output=ROOT/"results/m6-adaptive-frozen-pilot-v1"
+    output=ROOT/"results/milestones/m6-adaptive-frozen-pilot-v1"
     summary=json.loads((source/"summary.json").read_text())
     queries=[json.loads(p.read_text()) for p in sorted(source.glob("queries/*/decision.json"))]
     if len(queries)!=summary["query_count"]: raise ValueError("Incomplete query inventory")

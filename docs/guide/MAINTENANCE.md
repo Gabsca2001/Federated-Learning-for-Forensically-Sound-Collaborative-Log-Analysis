@@ -69,8 +69,8 @@ have the following related navigation routes:
 
 | Preserved document | Related reference |
 | --- | --- |
-| `revision-final-formal-correspondence-v2/CURRENT_RELEASE_PROOF_ANNEX.md` | [Profile correspondence overview](../FORMAL_PROFILE_CORRESPONDENCE.md) |
-| `storage-retirement-20261106/historical-summary/README.md` | [Original multiround protocol](../M6_ADAPTIVE_MULTIROUND.md) |
+| `revision-final-formal-correspondence-v2/CURRENT_RELEASE_PROOF_ANNEX.md` | [Profile correspondence overview](../formal/FORMAL_PROFILE_CORRESPONDENCE.md) |
+| `storage-retirement-20261106/historical-summary/README.md` | [Original multiround protocol](../admission-gates/M6_ADAPTIVE_MULTIROUND.md) |
 
 These routes aid consultation; they do not substitute a current reference for
 the exact bytes committed by an earlier closure. Release verification continues

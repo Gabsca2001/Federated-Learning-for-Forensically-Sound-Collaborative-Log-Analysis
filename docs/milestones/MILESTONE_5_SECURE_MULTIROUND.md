@@ -1,0 +1,365 @@
+# Milestone 5 - secure multi-round campaign
+
+> **Optional witnessed intake, 2026-11-05:** policy v2 separates the signed
+> registration cutoff from live round expiry. The new witness-round adapter
+> and offline verifier bind the sealed eligible set to actual M5 decisions,
+> weights and checkpoint, with 752 passing core tests and two fresh 15-client
+> software-TPM cases. This is two one-round protocol cases, not another complete
+> 30-round utility or attack campaign. Default profiles and historical evidence
+> retain their original scope. Independent administration and production TSA
+> acceptance remain deployment assumptions. See [the contract](../witness-chain/WITNESS_LIVE_ROUND.md).
+
+> **Multiobjective pilot — 2026-09-30:** four validation-only searches over a signed frozen round.
+> Objectives: reconnaissance→benign and general degradation, with gated-composite and TPM-only;
+> 66 queries per cell, with independent verification completed. For the untargeted objective,
+> the selected drop is 0.675 pp with gated and 25.297 pp with TPM-only (predeclared threshold: 1 pp).
+> This is not evidence from test evaluation or live training; see the [report and plots](../../results/milestones/m6-adaptive-objectives-ablation-v1/README.md)
+> and the [protocol](../admission-gates/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
+
+
+> **Completion update — 2026-09-30:** all four adaptive extension pairs are verified.
+> The [five-seed report](../../results/milestones/m6-adaptive-multiseed-v1/README.md) includes paired endpoints,
+> trajectories and admission counts. Selected test ASR is 0/669 in both arms for every seed.
+> The mean adaptive-minus-clean macro-F1 difference is +0.4038 pp across all five
+> seeds (+0.1367 pp for the four new seeds). These are descriptive outcomes, not
+> proof of universal robustness or beneficial poisoning. Earlier running/pending
+> statements below are historical. The original locked protocol is unchanged.
+
+
+## Scope
+
+This extension turns the independently verified M5 round into a complete
+30-round learning campaign. The preserved reference uses the original
+all-or-nothing gate: each round retains the same 15-client attestation, ESK
+signature, admission, replay, tensor-validation, checkpoint-input, and
+independent FedAvg checks. A second opt-in profile now enforces joint
+TPM/statistical admission on newly produced updates before each aggregation.
+
+Round 1 starts from the deterministic random model defined by
+`configs/federation.yaml`. Round `r > 1` can start only when the previous
+checkpoint:
+
+- is signed by the same campaign coordinator;
+- belongs to the same campaign and round `r - 1`;
+- contains all 15 accepted inputs in the original profile, or at least the
+  policy minimum in the in-round composite profile;
+- commits to the exact global-model bytes used as round `r` base model.
+
+All rounds in one campaign must use the same admission profile and, in the
+composite case, the same bound policy contract.
+
+The new signed context contains the SHA-256 digest of the previous checkpoint.
+Consequently, every accepted bundle is transitively linked to all earlier
+checkpoints while still binding its own round, client, snapshot, attestation,
+base model, metrics, and tensor update.
+
+## Evaluation boundary
+
+Every global checkpoint is evaluated on the server validation snapshot. The
+highest validation macro-F1 is selected, with the earliest round used to break
+ties. Test, temporal-holdout, and client-local test rows are evaluated only
+after this selection. The round containers receive only each client's
+`clients/<client_id>/dataset.json`, which contains train and validation; the
+separate `evaluation/clients/<client_id>/test.json` is not mounted for training.
+The coordinator likewise reads `server/splits/validation.json` while examining
+rounds and does not open the isolated server test or temporal-holdout artifacts
+until selection is complete. Independent verification repeats inference to
+validate the preserved result. No test data can choose a round, update a model,
+or change hyperparameters.
+
+In the composite profile, candidate-update validation impact is also computed
+from that same isolated validation snapshot before aggregation. This is an
+admission signal, not test evaluation. The coordinator container mounts the
+validation snapshot read-only; test, temporal-holdout, and local-test snapshots
+remain unavailable until finalization.
+
+When the M3 partition includes the local-test contract, the selected global
+checkpoint is evaluated on every client-local domain. The per-client metrics and
+client-unweighted mean, population standard deviation, minimum, and maximum are
+included in the final evaluation committed by the coordinator signature.
+The coordinator also verifies that their disjoint union exactly reconstructs
+the server test split and rejects paths that escape the evaluation boundary.
+
+The final coordinator-signed campaign manifest commits to:
+
+- 30 ordered round contexts and checkpoints;
+- 450 accepted contributions (`30 × 15`);
+- every per-round validation artifact;
+- the selected checkpoint and global model;
+- the selected-checkpoint validation, pooled test, temporal-holdout, and, when
+  available, per-client local-test evaluation.
+
+## Fresh M4 state
+
+The measured source list changes in this extension. Recreate the M4 trust
+workspace and provision a new Compose namespace only after the implementation
+and unit tests are final. Do not delete an older namespace if it is needed as
+preserved evidence.
+
+Trust baseline `1.1` explicitly measures the Byzantine-statistics modules,
+composite and in-round admission modules and schemas, and the in-round policy.
+Restarting an `swtpm` enrolled against an older measurement log resets its PCRs
+but does not create a valid baseline for the new code.
+
+```bash
+export COMPOSE_PROJECT_NAME=flforensics_inround_smoke_v1
+export M4_TRUST_WORKSPACE="$PWD/artifacts/m4-trust-in-round-smoke-v1"
+export M4_NODE_ROOT="$PWD/artifacts/m4-nodes-in-round-smoke-v1"
+
+python scripts/run_m5_secure_round.py build \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1
+
+fl-forensics m4-init \
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --project-root .
+
+python scripts/run_m4_swtpm.py provision \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
+
+fl-forensics m4-enroll \
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
+
+fl-forensics m4-mtls-test \
+  --workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT"
+```
+
+The multi-round runner issues fresh M4 challenges and Quote evidence before
+round 1 and then every five rounds by default. Custom `--trust-workspace` and
+`--node-root` values are passed to both the Quote producer and verifier. The
+runner never deletes volumes or starts a missing TPM service.
+
+## Run or resume
+
+```bash
+python scripts/run_m5_secure_multiround.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --rounds 30 \
+  --workers 4 \
+  --attestation-refresh-interval 5
+```
+
+The runner is resumable. Completed checkpoints are independently verified and
+skipped. Byte-identical client submissions are idempotent. A context that has
+expired during an incomplete round must not be silently rewritten; preserve
+it for diagnosis and restart that round in a new campaign workspace.
+
+## In-round composite admission
+
+Pass `--in-round-admission-config configs/in-round-admission.yaml` to both
+`run` and `verify`. The per-round sequence becomes:
+
+1. refresh and appraise the M4 Quote when scheduled;
+2. sign the Round Context and the digest-bound admission contract;
+3. train each isolated client and TPM-sign its Update Bundle;
+4. revalidate identity, freshness, signature, digests, replay slot, and tensor schema;
+5. compute current update geometry and validation impact;
+6. sign an accept, downweight, or quarantine decision;
+7. run weighted FedAvg only on admitted inputs and verify it independently.
+
+For a disposable one-round smoke test, use:
+
+```bash
+python scripts/run_m5_secure_multiround.py run \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-in-round-composite-smoke-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --in-round-admission-config configs/in-round-admission.yaml \
+  --rounds 1 \
+  --workers 4 \
+  --attestation-refresh-interval 1
+
+python scripts/run_m5_secure_multiround.py verify \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-in-round-composite-smoke-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --in-round-admission-config configs/in-round-admission.yaml \
+  --rounds 1
+```
+
+The policy requires at least 10 of 15 non-zero-weight contributions. Falling
+below that number fails the round without creating a checkpoint. The current
+thresholds are copied from and identify the verified clean M6 calibration
+artifact; candidate labels are never used during runtime admission. A fresh
+baseline-`1.1` Docker/`swtpm` smoke run verified one complete round: 15/15
+contributions were accepted and trust, statistics, decisions, and aggregation
+were independently recomputed with zero errors. This is integration evidence;
+it is not a predictive-performance result.
+
+A separate fresh-baseline 30-round campaign was subsequently completed and
+independently verified. It contains 450 newly trained and TPM-signed
+contributions, selected round 25 using validation only, and produced isolated
+test macro-F1 `0.935467`. All trust signals passed. The composite policy fully
+accepted 369 contributions, retained 75 at half weight, and quarantined six.
+Because no Byzantine update was injected, the latter 81 actions are clean-run
+interventions rather than detected attacks. Five quarantines concern
+`client06`, one concerns `client11`, and the first intervention appears at
+round 10. The dominant statistical drivers are cosine-to-median and
+coordinate-median distance, indicating that the fixed clean reference is not
+invariant to the update geometry later in training.
+
+After the complete verifier reports zero errors, publish the compact result:
+
+```bash
+python scripts/render_in_round_campaign_summary.py \
+  --workspace artifacts/m5-in-round-composite-local-test-v1 \
+  --output results/milestones/m5-in-round-composite-local-test-v1 \
+  --condition clean-no-injected-attack
+```
+
+The generated summary binds the signed decision set and selected evaluation
+by SHA-256. It includes per-round and per-client CSVs, all 450 sanitized
+decision explanations, the validation/admission trajectory, client treatment,
+and selected-checkpoint confusion matrices. Each explanation contains exact
+threshold headroom, policy disagreement, ranked scalar drivers, top named
+tensor drivers, client/peer context, retained weight, aggregate influence, and
+score-level counterfactuals. A separate Markdown report narrates all 81 clean
+interventions. These are deterministic rule traces and update-vector
+attributions, not attack-label inference. This run measures clean-policy
+compatibility and false interventions; attack detection still requires a
+paired attacked execution.
+
+The round coordinator is not mounted with the server test, temporal holdout,
+or client-local test snapshots. After all round checkpoints have been written,
+the runner starts a separate network-disabled `finalizer` container. Only that
+container receives read-only mounts for the digest-bound evaluation snapshots,
+selects the checkpoint from stored validation metrics, and then evaluates the
+already-selected model on the isolated test material.
+
+Verify an already finalized campaign with:
+
+```bash
+python scripts/run_m5_secure_multiround.py verify \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --node-root "$M4_NODE_ROOT" \
+  --rounds 30
+```
+
+The acceptance result must report `status: verified`, `round_count: 30`,
+`accepted_contribution_count: 450`, no errors, and one validation-selected
+checkpoint.
+
+## Learning diagnostics
+
+After campaign verification:
+
+```bash
+python scripts/m5_campaign_report.py \
+  --workspace artifacts/m5-secure-multiround-local-test-v1 \
+  --trust-workspace "$M4_TRUST_WORKSPACE" \
+  --partition-workspace artifacts/m3-data24-parquet-iid-local-test-v1 \
+  --output artifacts/m5-secure-multiround-local-test-v1-report
+```
+
+The report contains global validation curves, client train/validation loss and
+macro-F1 across all local epochs, per-client validation and update-norm
+heatmaps, absolute and normalized selected validation/test/benign-only-holdout
+confusion matrices, one selected-checkpoint local-test confusion figure per
+client, a CSV export, and a SHA-256 report manifest. Campaign finalization,
+campaign verification, and the report command also print the three global
+matrices in their JSON output. The report refuses to run unless the whole secure
+campaign verifies, and its manifest covers files in nested per-client folders.
+
+## Completed original runtime gate
+
+The 15-client Docker campaign completed on the verified IID Parquet snapshot
+with the current local-test reference result. Every client passed its `swtpm`
+appraisal before contributing. Training and validation completed before the
+validation-selected checkpoint opened the pooled test, benign-only temporal
+holdout, or isolated per-client test snapshots. This workspace and its M7
+derivatives are preserved by the current M8 recovery package. Historical
+reference workspaces remain immutable and separately verifiable.
+
+- campaign ID: `campaign-aa22aafea800a7d59fe308fc`;
+- 30 verified rounds and 450 accepted TPM ESK-signed contributions;
+- zero quarantined contributions and zero campaign-verification errors;
+- validation-selected checkpoint: round 11;
+- selected validation macro-F1: `0.9483333731727267`;
+- selected test macro-F1: `0.9225672285470168`;
+- benign-only temporal-holdout accuracy: `0.9958333333333333`;
+- client-local test macro-F1, unweighted mean: `0.9284429268218769`;
+- client-local test macro-F1, population standard deviation: `0.03533358666804803`;
+- worst client-local test macro-F1: `0.8763479758828595`;
+- campaign manifest SHA-256:
+  `6a372239c3877dd2abd18b5671b856f00b6c20b8376beeee258b1d8e39d4fb8f`;
+- report manifest SHA-256:
+  `082baafe3008baa73da2e83e15df803fc3893feeae750fa9472720a249fcb8f4`.
+
+The selected secure checkpoint reproduces the validation and test metrics of
+the validation-selected clean M3 IID reference. This demonstrates that the M5
+signature, admission, replay, attestation, and checkpoint-chain controls did
+not change the deterministic FedAvg learning result. The temporal holdout is
+benign-only, so its multiclass macro-F1 is not interpreted as a six-class
+generalization score.
+
+## External post-selection evaluation
+
+The `m5-prepare-external-data`, `m5-verify-external-data`,
+`m5-evaluate-external`, and `m5-verify-external` commands extend the verified secure campaign
+with a separate UWF-ZeekData22 evaluation. The evaluated checkpoint can exist only after the
+M4 client trust gate, 30 admitted M5 rounds, and validation-only selection have all verified.
+Data22 remains outside client training, validation, selection, tuning, and threshold choice,
+and the evaluator applies the scaler already fitted on the Data24 training split.
+
+Data22 `discovery` has no output in the frozen six-class Data24 model. The experiment therefore
+keeps two scopes separate: binary benign/attack metrics use every external window, while the
+strict tactic view uses actual `benign` and `reconnaissance` windows and retains all six model
+predictions in a rectangular confusion matrix. Coverage and out-of-model labels are explicit;
+Discovery is never silently mapped to another tactic.
+
+The controlled run produced 10,128 windows. Its binary attack F1 is `0.0863309353`, balanced
+accuracy is `0.5261247936`, shared-label macro-F1 is `0.4968434657`, and `reconnaissance`
+recall is zero. The verifier independently reconstructed the source snapshot, campaign and
+selection, frozen-scaler predictions, metrics, and implementation binding with zero errors.
+This is a verified negative cross-domain result rather than a failure of execution.
+
+The separate `m5-stress-discovery` and `m5-verify-discovery-stress` commands test the two real
+Discovery temporal bursts under 12 alignments of the unchanged 60-second window. At least one
+segment is detected as attack for both bursts at every offset; all segments are detected in
+19/24 correlated burst-offset trials. Offset zero reproduces the three primary Discovery
+predictions exactly. Only the two bursts are independent, and Discovery remains outside the
+six-class head, so this cannot be reported as 24 independent samples or open-set tactic recall.
+
+See [External UWF-ZeekData22 generalization](../measurement/EXTERNAL_GENERALIZATION.md) for acquisition,
+commands, artifacts, verified results, and the claim boundary.
+
+## Active sequential ablation (2026-09-25)
+
+The new opt-in `configs/in-round-admission-sequential.yaml` uses the same calibration
+as the default gated-composite config, with sequential controlling actual admission.
+Sequential admits at full weight or quarantines; it does not use intermediate downweights.
+Both enforce integrity and observed-trust vetoes. Checkpoints explicitly record
+`FedAvg-sequential` or `FedAvg-gated-composite`, independently checked against the bound policy.
+Historical gated artifacts retain compatibility through the explicit prior-digest allowlist.
+
+`run_m5_secure_multiround.py --federation-config configs/<file>.yaml` passes the selected
+config into M5 initialization; the default is unchanged. Each new seed needs a matching
+CPU partition and fresh measured M4 state. [Protocol](../admission-gates/M6_POLICY_PILOT.md).
+
+## Five-seed active-policy gate completed — 2026-09-25
+
+This completion update supersedes the earlier in-progress checkpoints above. All 20
+30-round campaigns completed and passed their campaign verifiers (600 rounds, 9,000
+contribution decisions). Recovery retained previous artifacts. The final
+[report, figures and source-bound tables](../../results/milestones/m6-active-policy-multiseed-v1/README.md) are available.
+
+Mean test macro-F1: gated/sequential 0.942285/0.939303 clean and
+0.939053/0.936771 under controlled disagreement. Paired gated-minus-sequential
+95% t intervals include zero in both conditions: [-0.004490, 0.010455] and
+[-0.009307, 0.013869]. Superiority is not established. Both exclude 450/450
+declared-unsafe contributions per policy, while gated produces more benign
+quarantines and downweights. Trust-failure cells remain counterfactual.
+Five seed pairs are the statistical units; rounds and contributions are not
+independent repetitions. Subsequent threshold sensitivity replay and live campaigns,
+and the first paired adaptive v4 campaign, are now complete; four adaptive replicas
+remain in progress as of 2026-09-29. See the [current evidence review](../records/SUPERVISOR_UPDATE_2026_09_29.md).
+The existing M8 closures do not automatically cover these new runs.

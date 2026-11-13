@@ -7,7 +7,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 ROOT=Path(__file__).resolve().parents[1]
 PAIR=ROOT/'artifacts/m6-adaptive-paired-s341593-v4'
-OUT=ROOT/'results/m6-adaptive-paired-v4'
+OUT=ROOT/'results/milestones/m6-adaptive-paired-v4'
 SOURCES={}
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def read(p):

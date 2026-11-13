@@ -7,7 +7,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/"results/m6-adaptive-objectives-ablation-v1"
+OUT=ROOT/"results/milestones/m6-adaptive-objectives-ablation-v1"
 ART=ROOT/"artifacts/m6-adaptive-objectives-ablation-v1"
 RUNNER=ROOT/"scripts/run_m6_adaptive_objectives_ablation_v1.py"
 LOCK=ROOT/"configs/m6-adaptive-objectives-ablation-v1.lock.json"
@@ -123,7 +123,7 @@ evaluation endpoint; test metrics must not steer attack search or policy selecti
 
 ## Reproducibility
 
-Protocol: [M6_ADAPTIVE_OBJECTIVES_ABLATION_V1](../../docs/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
+Protocol: [M6_ADAPTIVE_OBJECTIVES_ABLATION_V1](../../docs/admission-gates/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md).
 The report manifest binds every query artifact, config, lock, runner and report output
 by SHA-256. Each cell's `summary.json` records the selection, query budget, trust/policy,
 source bindings and explicit no-test-access flag. The four independent `verify`

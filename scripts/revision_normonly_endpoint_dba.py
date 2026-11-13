@@ -15,7 +15,7 @@ from fl_forensics.federated_model import dependencies,arrays_from_export
 from fl_forensics.distributed_backdoor import DistributedBackdoorPlan,poison_local_rows
 from fl_forensics.canonical import sha256_file
 
-R=pilot.R;D=R/'results/revision-normonly-endpoint-dba-v1'
+R=pilot.R;D=R/'results/admission/revision-normonly-endpoint-dba-v1'
 O=(Path(os.environ["FL_FORENSICS_OUTPUT_ROOT"]) / 'normonly-dba-20261107')
 ASSIGNMENTS={6116104:['client01','client06','client13'],6116105:['client05','client10','client14']}
 MODES=('clean','distributed','complete-trigger')
@@ -33,7 +33,7 @@ def check(p):
     assert locks()==p['source_locks']
     pp=read(pilot.D/'protocol-before-clean-training.json');op,old=pilot.check(pp)
     assert sha256_file(pilot.D/'protocol-before-clean-training.json')==p['coherent_source_protocol_sha256']
-    assert read(R/'results/revision-coherent-gradient-recovery-v1/verification.json')['all_recovery_branches_qualify']
+    assert read(R/'results/admission/revision-coherent-gradient-recovery-v1/verification.json')['all_recovery_branches_qualify']
     import revision_coherent_endpoint_dba as prior
     q=read(prior.D/'protocol-before-training.json');prior.check(q)
     assert sha256_file(prior.D/'protocol-before-training.json')==p['comparator_protocol_sha256']
@@ -43,7 +43,7 @@ def check(p):
 
 def prepare():
     assert not D.exists();storage=guard();pp=read(pilot.D/'protocol-before-clean-training.json');op,old=pilot.check(pp)
-    recovered=read(R/'results/revision-coherent-gradient-recovery-v1/verification.json');assert recovered['all_recovery_branches_qualify']
+    recovered=read(R/'results/admission/revision-coherent-gradient-recovery-v1/verification.json');assert recovered['all_recovery_branches_qualify']
     tasks=[]
     for mode in MODES:
         for seed,attackers in ASSIGNMENTS.items():
@@ -66,11 +66,11 @@ def prepare():
        'trust_scope':'No fresh TPM Quote or client signature; no production M5 gradient adapter or proof that measured training permits Byzantine scaling is claimed.',
        'development':'Mechanism ablation after observed FLTrust containment. All seeds/modes retained, no retuning. Exploratory reused validation, not independent confirmation.',
        'ablation':'Remove only cosine direction weighting from the FLTrust operator: equal weights on all nonzero eligible deltas, each normalized to the unchanged trusted-root magnitude. Root data are still used for that magnitude. No sample-count weights. This does not establish root-free defense.',
-       'comparator_protocol_sha256':sha256_file(R/'results/revision-coherent-endpoint-dba-v1/protocol-before-training.json'),
-       'comparator_checksums_sha256':sha256_file(R/'results/revision-coherent-endpoint-dba-v1/file-checksums.json'),
+       'comparator_protocol_sha256':sha256_file(R/'results/admission/revision-coherent-endpoint-dba-v1/protocol-before-training.json'),
+       'comparator_checksums_sha256':sha256_file(R/'results/admission/revision-coherent-endpoint-dba-v1/file-checksums.json'),
        'attacker_optimizer':{'name':'Adam','epochs':10,'batch_size':128,'learning_rate':.001},
-       'development_probe_protocol_sha256':sha256_file(R/'results/revision-coherent-endpoint-feasibility-v1/protocol-before-endpoint-probe.json'),
-       'original_one_step_protocol_sha256':sha256_file(R/'results/revision-coherent-dba-v1/protocol-before-training.json'),
+       'development_probe_protocol_sha256':sha256_file(R/'results/admission/revision-coherent-endpoint-feasibility-v1/protocol-before-endpoint-probe.json'),
+       'original_one_step_protocol_sha256':sha256_file(R/'results/admission/revision-coherent-dba-v1/protocol-before-training.json'),
        'environment':environment(),'maximum_combined_output_bytes':64*1024**2,'minimum_host_free_bytes':8*1024**3,
        'storage':'Metadata,journals,query metrics and final committed checkpoints only; poisoning row-ID lists are committed by digest rather than copied. No duplicated datasets or per-round client tensors.',
        'storage_before':storage}

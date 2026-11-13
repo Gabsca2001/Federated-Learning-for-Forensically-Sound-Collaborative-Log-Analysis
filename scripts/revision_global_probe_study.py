@@ -3,7 +3,7 @@
 Wrapper around revision_probe_keynorm_study.py (same engine, pair attack plan, evasive and
 adaptive attacks, per-key client gate, clipping, guard rule, closure, test). Declared before training:
 * Client gate: unchanged probek (pinned scales of revision-probe-keynorm-confirm, x2).
-* Global probe, frozen from development (results/revision-global-probe-dev): after clipping
+* Global probe, frozen from development (results/gates-probes/revision-global-probe-dev): after clipping
   aggregation, drift_k = shortcut_k(candidate global) - shortcut_k(initial model of the case);
   scale s_k = max(clean max drift_k per cohort, 0.1) from the 12 verified clean TPM-only histories
   of revision-clean-gate-calibration-v1 (refitted by `calibrate`, pinned). If max_k drift_k/s_k > 1.5
@@ -40,7 +40,7 @@ from fl_forensics.secure_round import _model_from_export
 
 ROOT = base.ROOT
 LAB = ROOT / 'artifacts/revision-global-probe-confirm'
-RESULTS = ROOT / 'results/revision-global-probe-confirm'
+RESULTS = ROOT / 'results/gates-probes/revision-global-probe-confirm'
 GSCALES_FILE = RESULTS / 'calibration/global-scales.json'
 POLICY = 'probekg'
 FLOOR, MULTIPLIER = 0.1, 1.5
@@ -177,7 +177,7 @@ def calibrate(workers):
                   floor=FLOOR, multiplier=MULTIPLIER, scales=scales, histories=len(out), source=str(hs.CLEAN_SOURCE.relative_to(ROOT)),
                   source_training_complete_sha256=pins, uses_study_partitions=False)
     GSCALES_FILE.parent.mkdir(parents=True, exist_ok=True); GSCALES_FILE.write_text(json.dumps(report, indent=1) + '\n')
-    dev = json.loads((ROOT / 'results/revision-global-probe-dev/global-probe.json').read_text())['scales']
+    dev = json.loads((ROOT / 'results/gates-probes/revision-global-probe-dev/global-probe.json').read_text())['scales']
     match = all(np.allclose([s for _, _, s in scales[c]], dev[c], atol=1e-5) for c in scales)
     print('CALIBRATED ' + json.dumps(dict(histories=len(out), matches_development=bool(match))), flush=True)
 
@@ -192,7 +192,7 @@ def prepare():
              global_probe=dict(floor=g['floor'], multiplier=g['multiplier'], scales=g['scales'], rule=g['rule'],
                                action='rollback: the round global model equals the previous global model',
                                scales_file=str(GSCALES_FILE.relative_to(ROOT)), scales_sha256=sha256_file(GSCALES_FILE),
-                               development='results/revision-global-probe-dev (multiplier chosen there with those data visible; frozen here)'))
+                               development='results/gates-probes/revision-global-probe-dev (multiplier chosen there with those data visible; frozen here)'))
     (LAB / 'protocol-before-guard.json').unlink(); save(LAB / 'protocol-before-guard.json', p)
     (LAB / 'controller-frozen-global.py').write_bytes(Path(__file__).read_bytes())
     print('PREPARED ' + json.dumps(dict(protocol_sha256=sha256_file(LAB / 'protocol-before-guard.json'))), flush=True)

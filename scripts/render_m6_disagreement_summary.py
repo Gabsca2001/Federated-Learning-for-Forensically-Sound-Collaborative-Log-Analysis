@@ -813,7 +813,7 @@ def main() -> int:
     parser.add_argument(
         "--clean-summary",
         type=Path,
-        default=Path("results/m5-in-round-composite-local-test-v1/summary.json"),
+        default=Path("results/milestones/m5-in-round-composite-local-test-v1/summary.json"),
     )
     parser.add_argument("--replace-existing-snapshot", action="store_true")
     arguments = parser.parse_args()
