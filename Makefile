@@ -77,7 +77,7 @@ help:
 	  'Path variables: VENV, PYTHON, CLI, STUDY, DATA24_SOURCE, M2_AUDIT, M2_DATA,' \
 	  'M2_BASELINE, M3_IID_PARTITION, M3_NON_IID_PARTITION, M3_IID_RUN, M3_NON_IID_RUN,' \
 	  'DEMO_INPUT and DEMO_WORKSPACE. Generation targets refuse existing outputs.' \
-	  'M4-M8 deployments remain profile-specific; see docs/README.md.'
+	  'M4-M8 and the research studies: make experiments.'
 
 setup:
 	if [[ ! -x "$(PYTHON)" ]]; then
@@ -350,9 +350,17 @@ experiments:
 	  '' \
 	  'Inputs moved to the external SSD: make restore-artifact ARCHIVE=<name> (SHA-256 checked first)' \
 	  '' \
-	  'Not available as targets: the M4-M8 deployments and the admission and containment studies' \
-	  'in results/admission/. Their controllers are kept in each publication folder and follow' \
-	  'the procedure described in that README.'
+	  'M4-M8 reference chain (Docker + software TPMs; run in this order):' \
+	  '  m4                 Trust deployment, enrolment, mTLS, challenge and Quote' \
+	  '  m5-build, m5       Secure multi-round campaign, verification and report (right after m4)' \
+	  '  m6-disagreement    Trust/statistics disagreement campaign' \
+	  '  m6-frozen-comparison  Frozen model-replacement attackers vs robust aggregators' \
+	  '  m7                 Predictions, explanations, ATT&CK mapping and report (round 11, first 6 test cases)' \
+	  '  m8                 Preservation, Merkle tree, timestamp (contacts the TSA), recovery, accounting' \
+	  '  m4-stop, m5-verify, m8-verify  Stop TPM services without deleting state; re-verify' \
+	  '' \
+	  'Not available as targets: the admission and containment studies in results/admission/.' \
+	  'Their controllers are kept in each publication folder and follow that README.'
 
 gate-factorial: LAB ?= artifacts/revision-gate-aggregation-factorial-v1
 gate-factorial: check
@@ -527,3 +535,119 @@ restore-artifact:
 	fi
 	tar -I pigz -xkf "$$file" -C artifacts
 	printf 'Restored %s into artifacts/ (existing files were kept).\n' "$(ARCHIVE)"
+
+# ---------------------------------------------------------------------------------------------
+# M4-M8 reference chain, transcribed from docs/milestones/*.md (local-test-v1 profile).
+# Needs Docker Compose and software TPMs. Outputs must be fresh; TPM volumes are never deleted.
+COMPOSE_PROJECT_NAME ?= flforensics_local_test_v1
+M4_TRUST_WORKSPACE ?= $(CURDIR)/artifacts/m4-trust-local-test-v1
+M4_NODE_ROOT ?= $(CURDIR)/artifacts/m4-nodes-local-test-v1
+M5_CAMPAIGN ?= artifacts/m5-secure-multiround-local-test-v1
+M5_ROUNDS ?= 30
+M5_WORKERS ?= 4
+M5_ADMISSION_CONFIG ?=
+M6_DISAGREEMENT ?= artifacts/m6-trust-statistical-disagreement-local-test-v1
+M6_FROZEN ?= artifacts/m6-model-replacement-f3
+M6_SOURCE_ROUND ?= round-011
+M7_ROUND ?= round-011
+M7_FIRST ?= 6
+M7_PREDICTIONS ?= artifacts/m7-prediction-bundle-test-first6-local-test-v1
+M7_EXPLANATIONS ?= artifacts/m7-explanation-bundle-test-first6-local-test-v1
+M7_ATTACK ?= artifacts/m7-attack-mapping-test-first6-local-test-v1
+M7_REPORT ?= artifacts/m7-investigation-report-test-first6-local-test-v1
+M8_PRESERVATION ?= artifacts/m8-preservation-manifest-local-test-v1
+M8_MERKLE ?= artifacts/m8-merkle-tree-local-test-v1
+M8_TIMESTAMP ?= artifacts/m8-timestamp-anchor-local-test-v1
+M8_RECOVERY ?= artifacts/m8-recovery-export-local-test-v1
+M8_ACCOUNTING ?= artifacts/m8-campaign-invariant-accounting-local-test-v1
+
+M5_ADMISSION_ARG = $(if $(M5_ADMISSION_CONFIG),--in-round-admission-config $(M5_ADMISSION_CONFIG))
+FRESH = for path in $(1); do if [[ -e "$$path" || -L "$$path" ]]; then printf 'Refusing to reuse existing output: %s\n' "$$path" >&2; exit 2; fi; done
+NEEDS = for path in $(1); do if [[ ! -e "$$path" ]]; then printf 'Missing input %s (restore it with make restore-artifact, or run the earlier milestone)\n' "$$path" >&2; exit 2; fi; done
+
+.PHONY: m4 m4-stop m5-build m5 m5-verify m6-disagreement m6-frozen-comparison m7 m8 m8-verify
+
+m4: check
+	export COMPOSE_PROJECT_NAME="$(COMPOSE_PROJECT_NAME)"
+	$(call FRESH,"$(M4_TRUST_WORKSPACE)" "$(M4_NODE_ROOT)")
+	"$(CLI)" m4-verify-deployment --compose compose.m4.yaml --clients configs/clients.yaml
+	"$(CLI)" m4-init --workspace "$(M4_TRUST_WORKSPACE)" --project-root .
+	"$(PYTHON)" scripts/run_m4_swtpm.py provision --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)"
+	"$(CLI)" m4-enroll --workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)"
+	"$(CLI)" m4-mtls-test --workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)"
+	"$(CLI)" m4-challenge --workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)"
+	"$(PYTHON)" scripts/run_m4_swtpm.py quote --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)"
+	docker compose -f compose.m4.yaml --profile verify run --rm verifier
+
+m4-stop: check
+	export COMPOSE_PROJECT_NAME="$(COMPOSE_PROJECT_NAME)"
+	"$(PYTHON)" scripts/run_m4_swtpm.py stop --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)"
+
+m5-build: check
+	export COMPOSE_PROJECT_NAME="$(COMPOSE_PROJECT_NAME)"
+	$(call NEEDS,"$(M3_IID_PARTITION)")
+	"$(PYTHON)" scripts/run_m5_secure_round.py build --partition-workspace "$(M3_IID_PARTITION)"
+
+# Run right after make m4 without restarting the TPM services. The runner resumes a partial campaign.
+m5: check
+	export COMPOSE_PROJECT_NAME="$(COMPOSE_PROJECT_NAME)"
+	$(call NEEDS,"$(M3_IID_PARTITION)" "$(M4_TRUST_WORKSPACE)" "$(M4_NODE_ROOT)")
+	"$(PYTHON)" scripts/run_m5_secure_multiround.py run --partition-workspace "$(M3_IID_PARTITION)" --workspace "$(M5_CAMPAIGN)" --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)" --rounds "$(M5_ROUNDS)" --workers "$(M5_WORKERS)" --attestation-refresh-interval 5 $(M5_ADMISSION_ARG)
+	"$(PYTHON)" scripts/run_m5_secure_multiround.py verify --partition-workspace "$(M3_IID_PARTITION)" --workspace "$(M5_CAMPAIGN)" --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)" --rounds "$(M5_ROUNDS)" $(M5_ADMISSION_ARG)
+	"$(PYTHON)" scripts/m5_campaign_report.py --workspace "$(M5_CAMPAIGN)" --trust-workspace "$(M4_TRUST_WORKSPACE)" --partition-workspace "$(M3_IID_PARTITION)" --output "$(M5_CAMPAIGN)-report"
+
+m5-verify: check
+	"$(PYTHON)" scripts/run_m5_secure_multiround.py verify --partition-workspace "$(M3_IID_PARTITION)" --workspace "$(M5_CAMPAIGN)" --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)" --rounds "$(M5_ROUNDS)" $(M5_ADMISSION_ARG)
+
+m6-disagreement: check
+	export COMPOSE_PROJECT_NAME="$(COMPOSE_PROJECT_NAME)"
+	$(call FRESH,"$(M6_DISAGREEMENT)")
+	"$(PYTHON)" scripts/run_m6_disagreement_experiment.py run --partition-workspace "$(M3_IID_PARTITION)" --workspace "$(M6_DISAGREEMENT)" --trust-workspace "$(M4_TRUST_WORKSPACE)" --node-root "$(M4_NODE_ROOT)" --rounds 30 --workers "$(M5_WORKERS)" --attestation-refresh-interval 5
+
+m6-frozen-comparison: check
+	$(call FRESH,"$(M6_FROZEN)" "$(M6_FROZEN)-comparison")
+	$(call NEEDS,"$(M5_CAMPAIGN)/rounds/$(M6_SOURCE_ROUND)" "$(M4_TRUST_WORKSPACE)" "$(M3_IID_PARTITION)")
+	cfg=configs/byzantine-malicious-model-replacement.yaml
+	"$(CLI)" m6-freeze --source-round-workspace "$(M5_CAMPAIGN)/rounds/$(M6_SOURCE_ROUND)" --trust-workspace "$(M4_TRUST_WORKSPACE)" --partition-workspace "$(M3_IID_PARTITION)" --output "$(M6_FROZEN)" --attack model_replacement --f 3 --config "$$cfg"
+	"$(CLI)" m6-verify-frozen --workspace "$(M6_FROZEN)"
+	"$(CLI)" m6-compare --frozen-workspace "$(M6_FROZEN)" --partition-workspace "$(M3_IID_PARTITION)" --output "$(M6_FROZEN)-comparison" --config "$$cfg"
+	"$(CLI)" m6-verify --frozen-workspace "$(M6_FROZEN)" --partition-workspace "$(M3_IID_PARTITION)" --workspace "$(M6_FROZEN)-comparison" --config "$$cfg"
+
+m7: check
+	$(call FRESH,"$(M7_PREDICTIONS)" "$(M7_EXPLANATIONS)" "$(M7_ATTACK)" "$(M7_REPORT)")
+	$(call NEEDS,"$(M5_CAMPAIGN)/rounds/$(M7_ROUND)" "$(M2_DATA)" "$(M3_IID_PARTITION)" "$(M4_TRUST_WORKSPACE)")
+	R="$(M5_CAMPAIGN)/rounds/$(M7_ROUND)"
+	base=(--round-workspace "$$R" --trust-workspace "$(M4_TRUST_WORKSPACE)" --partition-workspace "$(M3_IID_PARTITION)" --dataset-workspace "$(M2_DATA)")
+	"$(CLI)" m7-predict "$${base[@]}" --output "$(M7_PREDICTIONS)" --split test --first "$(M7_FIRST)" --config configs/investigation.yaml
+	"$(CLI)" m7-verify-predictions "$${base[@]}" --workspace "$(M7_PREDICTIONS)" --config configs/investigation.yaml
+	"$(CLI)" m7-explain "$${base[@]}" --prediction-workspace "$(M7_PREDICTIONS)" --output "$(M7_EXPLANATIONS)" --prediction-config configs/investigation.yaml --config configs/investigation-explanations.yaml
+	"$(CLI)" m7-verify-explanations "$${base[@]}" --prediction-workspace "$(M7_PREDICTIONS)" --workspace "$(M7_EXPLANATIONS)" --prediction-config configs/investigation.yaml --config configs/investigation-explanations.yaml
+	"$(CLI)" m7-map-attack "$${base[@]}" --prediction-workspace "$(M7_PREDICTIONS)" --explanation-workspace "$(M7_EXPLANATIONS)" --output "$(M7_ATTACK)" --prediction-config configs/investigation.yaml --explanation-config configs/investigation-explanations.yaml --config configs/investigation-attack.yaml
+	"$(CLI)" m7-verify-attack "$${base[@]}" --prediction-workspace "$(M7_PREDICTIONS)" --explanation-workspace "$(M7_EXPLANATIONS)" --workspace "$(M7_ATTACK)" --prediction-config configs/investigation.yaml --explanation-config configs/investigation-explanations.yaml --config configs/investigation-attack.yaml
+	"$(CLI)" m7-report "$${base[@]}" --prediction-workspace "$(M7_PREDICTIONS)" --explanation-workspace "$(M7_EXPLANATIONS)" --attack-workspace "$(M7_ATTACK)" --output "$(M7_REPORT)" --prediction-config configs/investigation.yaml --explanation-config configs/investigation-explanations.yaml --attack-config configs/investigation-attack.yaml --config configs/investigation-report.yaml
+	"$(CLI)" m7-verify-report "$${base[@]}" --prediction-workspace "$(M7_PREDICTIONS)" --explanation-workspace "$(M7_EXPLANATIONS)" --attack-workspace "$(M7_ATTACK)" --workspace "$(M7_REPORT)" --prediction-config configs/investigation.yaml --explanation-config configs/investigation-explanations.yaml --attack-config configs/investigation-attack.yaml --config configs/investigation-report.yaml
+
+# M8 reads its M2-M7 inputs and its own workspace paths from the configs/*-local-test-v1.yaml files,
+# so the M8_* paths must match those files. m8-anchor-time contacts the TSA declared in
+# configs/timestamp-local-test-v1.yaml; make m8 therefore needs network access.
+m8: check
+	$(call FRESH,"$(M8_PRESERVATION)" "$(M8_MERKLE)" "$(M8_TIMESTAMP)" "$(M8_RECOVERY)" "$(M8_ACCOUNTING)")
+	"$(CLI)" m8-preserve --config configs/preservation-local-test-v1.yaml --output "$(M8_PRESERVATION)"
+	"$(CLI)" m8-verify-preservation --config configs/preservation-local-test-v1.yaml --workspace "$(M8_PRESERVATION)"
+	"$(CLI)" m8-build-merkle --config configs/merkle-local-test-v1.yaml --output "$(M8_MERKLE)"
+	"$(CLI)" m8-verify-merkle --config configs/merkle-local-test-v1.yaml --workspace "$(M8_MERKLE)"
+	"$(CLI)" m8-anchor-time --config configs/timestamp-local-test-v1.yaml --output "$(M8_TIMESTAMP)"
+	"$(CLI)" m8-verify-timestamp --config configs/timestamp-local-test-v1.yaml --workspace "$(M8_TIMESTAMP)"
+	"$(CLI)" m8-export-recovery --config configs/recovery-local-test-v1.yaml --output "$(M8_RECOVERY)"
+	"$(CLI)" m8-verify-recovery --workspace "$(M8_RECOVERY)"
+	"$(CLI)" m8-account-campaign --config configs/campaign-accounting-local-test-v1.yaml --output "$(M8_ACCOUNTING)"
+	"$(CLI)" m8-verify-campaign-accounting --workspace "$(M8_ACCOUNTING)" --recovery-workspace "$(M8_RECOVERY)"
+	"$(CLI)" m8-verify-final-preservation --recovery-workspace "$(M8_RECOVERY)" --accounting-workspace "$(M8_ACCOUNTING)"
+
+m8-verify: check
+	"$(CLI)" m8-verify-preservation --config configs/preservation-local-test-v1.yaml --workspace "$(M8_PRESERVATION)"
+	"$(CLI)" m8-verify-merkle --config configs/merkle-local-test-v1.yaml --workspace "$(M8_MERKLE)"
+	"$(CLI)" m8-verify-timestamp --config configs/timestamp-local-test-v1.yaml --workspace "$(M8_TIMESTAMP)"
+	"$(CLI)" m8-verify-recovery --workspace "$(M8_RECOVERY)"
+	"$(CLI)" m8-verify-campaign-accounting --workspace "$(M8_ACCOUNTING)" --recovery-workspace "$(M8_RECOVERY)"
+	"$(CLI)" m8-verify-final-preservation --recovery-workspace "$(M8_RECOVERY)" --accounting-workspace "$(M8_ACCOUNTING)"

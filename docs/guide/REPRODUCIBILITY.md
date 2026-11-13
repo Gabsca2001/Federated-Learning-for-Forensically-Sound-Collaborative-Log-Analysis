@@ -76,7 +76,7 @@ connections or model generalization.
 ## Profile-specific runtime and research
 
 M4–M8 deployments require explicit configuration, namespace, trust state and
-input evidence. The [reference catalogue](../REFERENCE_INDEX.md) links the
+input evidence; the Make targets below use the reference `local-test-v1` profile. The [reference catalogue](../REFERENCE_INDEX.md) links the
 original milestone procedures. The [framework guide](FRAMEWORK.md) identifies
 the selected witnessed integration profile.
 
@@ -127,9 +127,32 @@ Before a re-run:
 - A re-run is a fresh repetition under the same protocol, not a byte-for-byte
   replay: the original evidence stays in its publication folder.
 
-The M4–M8 deployments and the studies in `results/admission/` have no Make
-target. Their controllers are kept inside each publication folder and follow
-the procedure described in its README.
+## M4–M8 reference chain
 
-No target deletes artifacts, changes Docker state outside the live case,
-requests a timestamp or edits the manuscript.
+The milestone procedures in `docs/milestones/` are also available as targets,
+using the `local-test-v1` paths of the reference chain:
+
+```bash
+make m4
+make m5-build
+make m5
+make m6-disagreement
+make m6-frozen-comparison
+make m7
+make m8
+```
+
+`m4` deploys, enrols and attests the 15 software-TPM clients; `m5` must follow
+it without restarting the TPM services, then verifies the campaign and writes its
+report. `m7` investigates round 11 on the first six test cases. `m8` preserves,
+anchors, exports and accounts for the campaign; its timestamp step contacts the
+TSA declared in `configs/timestamp-local-test-v1.yaml`, so it needs network
+access. `m4-stop` stops the TPM services without deleting their state, and
+`m5-verify` and `m8-verify` re-check existing outputs. Every target refuses
+existing outputs and names any missing input.
+
+The studies in `results/admission/` have no Make target. Their controllers are
+kept inside each publication folder and follow the procedure described in its
+README.
+
+No target deletes artifacts or TPM volumes or edits the manuscript.
