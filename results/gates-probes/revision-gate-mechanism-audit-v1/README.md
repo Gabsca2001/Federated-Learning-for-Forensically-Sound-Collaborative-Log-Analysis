@@ -31,7 +31,7 @@ retain exactly the same clients on all 12,600 recorded inputs. There are 12,000
 admissible zero-trust-risk observations, 600 controlled failed-trust observations
 and no admissible warnings. Their quarantine thresholds are proportional; the
 additional observed mechanism is graded nominal weighting. See the
-[conditional derivation](../../../docs/admission-gates/GATE_MECHANISMS_AND_VALIDATION.md).
+[conditional derivation](../../docs/GATE_MECHANISMS_AND_VALIDATION.md).
 
 On the four **gated adaptive source trajectories**, during attack-active client
 slots only:
@@ -89,7 +89,7 @@ why that distinction matters.
 A defensible next study separates admission from numerical aggregation, uses
 matched-input controls plus independent live trajectories, and measures peak
 and final ASR, benign cost, exact participation, availability and total runtime.
-The [mechanism review and proposed protocol](../../../docs/admission-gates/GATE_MECHANISMS_AND_VALIDATION.md)
+The [mechanism review and proposed protocol](../../docs/GATE_MECHANISMS_AND_VALIDATION.md)
 give the hypotheses, formulas and controls. No new full training campaign is
 claimed by this report. Current evidence does not establish a universally best
 gate or justify permanent automatic exclusion of client identities.

@@ -188,7 +188,7 @@ the target models and evaluate only after the selection closure:
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/external-data/revision-ton-iot-retraining-v1
+make evidence-check STUDY=results/revision-ton-iot-retraining-v1
 ```
 
 The `ton-iot-target-prepare`, `ton-iot-target-train` and

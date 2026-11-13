@@ -137,7 +137,7 @@ project workspace, alongside the original study.
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/external-data/revision-ton-iot-flow-end-v2
+make evidence-check STUDY=results/revision-ton-iot-flow-end-v2
 ```
 
 After the explicit prepare/train/evaluate phases of the original numerical

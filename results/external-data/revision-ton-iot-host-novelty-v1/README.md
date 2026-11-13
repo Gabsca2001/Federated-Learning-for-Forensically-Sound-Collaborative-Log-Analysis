@@ -167,7 +167,7 @@ duplicated compact source matrix is required for reproduction.
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/external-data/revision-ton-iot-host-novelty-v1
+make evidence-check STUDY=results/revision-ton-iot-host-novelty-v1
 ```
 
 The executed controllers retain explicit study-specific sibling-directory

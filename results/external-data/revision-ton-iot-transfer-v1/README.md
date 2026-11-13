@@ -158,5 +158,5 @@ retained in `sources/` with their local controlled-input bindings. Stored
 publication integrity is checked with:
 
 ```bash
-make evidence-check STUDY=results/external-data/revision-ton-iot-transfer-v1
+make evidence-check STUDY=results/revision-ton-iot-transfer-v1
 ```

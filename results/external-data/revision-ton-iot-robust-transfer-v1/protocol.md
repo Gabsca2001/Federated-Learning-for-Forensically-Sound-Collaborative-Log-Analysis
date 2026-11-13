@@ -10,7 +10,7 @@ Question: does a preprocessing that is less sensitive to feature scale, selected
 **only** on Data24 validation, improve frozen (no ToN-IoT fitting) transfer to the
 ToN-IoT network windows?
 
-Frozen baseline (`results/external-data/revision-ton-iot-transfer-v1/transfer-results.json`,
+Frozen baseline (`results/revision-ton-iot-transfer-v1/transfer-results.json`,
 model `39075d9c…`, round 11, scaler `70b0471a…`, occurrence view, 7 934 windows):
 - balanced accuracy 0.5013
 - FPR 0.9972
@@ -163,6 +163,6 @@ significance claim.
   mapped to Data24 tactics.
 - Prior exposure: before writing this protocol I had seen the frozen baseline
   numbers above, the ToN-IoT window schema (field names only), and parts of
-  `results/external-data/revision-ton-iot-benign-robustness-v1/README.md`. The latter compares
+  `results/revision-ton-iot-benign-robustness-v1/README.md`. The latter compares
   representations for models trained **on ToN-IoT**, a different setup from this
   frozen transfer. I had seen no transfer results for any of the variants above.

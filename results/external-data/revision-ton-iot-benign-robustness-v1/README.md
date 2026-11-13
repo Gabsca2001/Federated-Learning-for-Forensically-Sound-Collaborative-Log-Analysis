@@ -133,7 +133,7 @@ with no new TPM, Byzantine or witness-independence claim.
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/external-data/revision-ton-iot-benign-robustness-v1
+make evidence-check STUDY=results/revision-ton-iot-benign-robustness-v1
 ```
 
 The executed controllers have explicit study-specific sibling directory

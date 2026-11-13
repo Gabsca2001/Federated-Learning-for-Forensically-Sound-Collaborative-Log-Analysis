@@ -137,7 +137,7 @@ All raw CSVs, parent evidence and the manuscript remain unchanged.
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/external-data/revision-ton-iot-f1-assessment-v1
+make evidence-check STUDY=results/revision-ton-iot-f1-assessment-v1
 ```
 
 The reusable fixed F1 driver is `scripts/run_ton_iot_f1_study.py`; invoke

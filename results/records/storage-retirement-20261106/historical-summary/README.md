@@ -49,7 +49,7 @@ Exact wall-clock/GPU cost was not reconstructed by this report.
 The first reference retained its documented v1–v3 failures and v4 recovery.
 The extension had two pre-training invocation failures; recovery2 used the absolute
 runner path and explicit numeric wrapper without altering the locked protocol.
-See [execution history](../../../docs/M6_ADAPTIVE_MULTIROUND.md) and local recovery receipts.
+See [execution history](../../docs/M6_ADAPTIVE_MULTIROUND.md) and local recovery receipts.
 No failed attempts were converted into successful observations or discarded.
 
 The extractor checks completion receipts, source locks, checkpoint/model/evaluation

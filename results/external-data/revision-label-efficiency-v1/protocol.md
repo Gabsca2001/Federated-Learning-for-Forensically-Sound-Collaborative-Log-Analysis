@@ -6,7 +6,7 @@ Written 2026-11-10 before any training or evaluation for this study. SHA-256 in
 ## Question and motivation
 
 Frozen transfer and label-free adaptation did not show that knowledge learned on Data24
-transfers (`results/external-data/revision-domain-adaptation-controls-v1`). A pre-trained model can still
+transfers (`results/revision-domain-adaptation-controls-v1`). A pre-trained model can still
 be useful if it reaches a given performance on a new network with **fewer labelled
 windows** than the same model trained from scratch. This study measures that.
 

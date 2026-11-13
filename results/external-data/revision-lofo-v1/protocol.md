@@ -5,7 +5,7 @@ Written 2026-11-10 before any training or evaluation for this study. SHA-256 in
 
 ## Motivation
 
-`results/external-data/revision-label-efficiency-v1` found no benefit from Data24 pre-training, but with a
+`results/revision-label-efficiency-v1` found no benefit from Data24 pre-training, but with a
 ceiling effect (16 labels → BA 0.976) because test windows belonged to families seen in
 training. Prior knowledge should matter most for **attack families absent from the target
 training data**. ToN-IoT windows were examined earlier; this is exploratory, not blind.

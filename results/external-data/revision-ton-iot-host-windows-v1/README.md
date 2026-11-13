@@ -201,7 +201,7 @@ Byzantine-admission or independent-witness claim.
 
 ```bash
 make test-ton-iot
-make evidence-check STUDY=results/external-data/revision-ton-iot-host-windows-v1
+make evidence-check STUDY=results/revision-ton-iot-host-windows-v1
 ```
 
 Protocols, source snapshots, histories, score arrays, audits and a checksum index

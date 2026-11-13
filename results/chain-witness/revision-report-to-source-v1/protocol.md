@@ -7,7 +7,7 @@ not validated against analysts, and they must not be edited after the rows are r
 
 ## 1. Hypothesis under evaluation (quoted from the report)
 
-Source: `results/milestones/reference-local-test-v1/m7/report.md`, section
+Source: `results/reference-local-test-v1/m7/report.md`, section
 "Case m7-investigation-case-498ee95ed92e641b997528a6", Analyst Summary:
 
 > The federated model classified the analyzed network window as **Reconnaissance**,

@@ -17,7 +17,7 @@ attack minutes also contain benign units). Here we ask, on that cleaner setting:
 ## Data
 
 `artifacts/unsw-nb15-host-units-v1/units.json` (SHA-256 `29d946b8…`): 27,076 units, 25
-features, approved Argus→Zeek state mapping (`results/external-data/revision-unsw-nb15-preflight-v1`).
+features, approved Argus→Zeek state mapping (`results/revision-unsw-nb15-preflight-v1`).
 Sessions: S0 = 2015-01-22/23, S1 = 2015-02-18. Global windows
 (`artifacts/unsw-nb15-windows-v1/windows.json`) are evaluated as a secondary view only.
 

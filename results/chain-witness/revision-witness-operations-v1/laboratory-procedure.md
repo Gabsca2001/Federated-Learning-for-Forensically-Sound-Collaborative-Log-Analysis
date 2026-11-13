@@ -20,7 +20,7 @@ The verified external TSA profile is Sectigo HTTPS `/qualified`, OID
 SHA256 is `f871f8976b4068d700d5f281084b4a29eaf4b8f35743330ba062fab46f58c2ed`.
 Retain the actual policy-pinned PEM trust store. It has its own file SHA256,
 which must not be confused with the DER certificate fingerprint. See
-`docs/witness-chain/EXTERNAL_TSA_VALIDATION.md` for the authenticated provider references.
+`docs/EXTERNAL_TSA_VALIDATION.md` for the authenticated provider references.
 
 On a remote host, `witness-serve` needs both `--tls-cert` and
 `--tls-private-key`; non-loopback plaintext is rejected. The operator's local

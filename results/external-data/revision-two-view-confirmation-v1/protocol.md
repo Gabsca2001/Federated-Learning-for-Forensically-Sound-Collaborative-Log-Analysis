@@ -26,7 +26,7 @@ UNSW-NB15 source-host × minute units, session S0. Baseline: 2015-01-22 20:00–
 (label-free). Primary test: S0 units starting before 14:00 UTC (attack period, benign and
 attack units in the same minutes). Secondary: all S0 units outside the baseline.
 Already seen on S0: view A without persistence and NOV without persistence
-(`results/external-data/revision-unsw-s0-confirmation-v1`). Never seen on S0: view B, MAX, persistence.
+(`results/revision-unsw-s0-confirmation-v1`). Never seen on S0: view B, MAX, persistence.
 
 ## Criteria (primary test, mean over five seeds)
 

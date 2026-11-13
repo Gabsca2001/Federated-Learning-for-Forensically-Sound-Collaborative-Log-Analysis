@@ -5,7 +5,7 @@ the script refuses to run if it differs. Not edited after results are seen.
 
 ## Why
 
-`results/external-data/revision-domain-adaptation-v1` showed that AB1 (frozen Data24 model, standardization
+`results/revision-domain-adaptation-v1` showed that AB1 (frozen Data24 model, standardization
 and alert threshold re-estimated on a benign baseline) meets the predeclared criteria on
 Data22 and ToN-IoT. That does **not** yet show that knowledge learned on Data24 transfers:
 

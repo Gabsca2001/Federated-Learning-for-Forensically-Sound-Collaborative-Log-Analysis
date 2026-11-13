@@ -133,7 +133,7 @@ record scan requires the acquired source files and an explicit source index:
 make ton-iot-preflight \
   TON_IOT_INDEX=/mnt/c/Users/scama/Downloads/ToN-IoT-official/collection-complete.json \
   TON_IOT_OUTPUT=artifacts/ton-iot-preflight-new
-make evidence-check STUDY=results/external-data/revision-ton-iot-preflight-v1
+make evidence-check STUDY=results/revision-ton-iot-preflight-v1
 ```
 
 The preflight target refuses an existing output path and does not download,
