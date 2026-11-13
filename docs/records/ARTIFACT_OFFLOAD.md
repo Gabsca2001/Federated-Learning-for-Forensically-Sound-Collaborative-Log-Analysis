@@ -44,6 +44,10 @@ future experiments stays in `artifacts/`.
   readable only by root, and the 15 GB `capped-final-v1/cases` archive ran out of memory.
   A second pass run as root archived all six.
   Inside WSL, disk use dropped from 172 GB to 63 GB.
+* **External working folder (2026-11-13):** the former working folder outside the repository
+  (about 2 GB, 19,604 files) was archived as `codex-chatgpt-projects-20261113.tar.gz` and removed
+  from C:. The archive was checked by entry count and SHA-256 before removal. The inputs the
+  scripts still need had been copied into `artifacts/` first.
 * Further batches only on request.
 
 ## Kept on C: (needed by running or planned work)
