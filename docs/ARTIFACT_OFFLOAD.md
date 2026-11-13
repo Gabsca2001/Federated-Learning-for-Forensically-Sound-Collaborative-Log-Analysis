@@ -32,18 +32,34 @@ future experiments stays in `artifacts/`.
   [`results/artifact-offload/batch-1-old-items.txt`](../results/artifact-offload/batch-1-old-items.txt),
   except `m2-data24-parquet`, `m3-data24-parquet-iid-local-test-v1`, `m5-secure-multiround-local-test-v1`
   (dataset and starting model, still required).
-* Later batches (recent completed revision studies) only on request.
+* **Batch 2 (2026-11-13):** completed November revision studies, 36 items, ≈107 GB of
+  source data. The list is in
+  [`results/artifact-offload/batch-2-items.txt`](../results/artifact-offload/batch-2-items.txt).
+  21 studies closed between 2 and 6 November were moved whole. For `capped-final-v1`,
+  `gate-trajectories-v1`, `head-gate-v2`, `head-gate-v2-confirm`, `trigger-probe-live`,
+  `trigger-probe-evasion-live`, `probe-keynorm-confirm` and `global-probe-confirm` only the
+  case folders moved (`cases/`, `evaluation*/cases`, `guard/cases`, plus
+  `head-gate-v2/evaluation-exploratory` and `capped-final-v1/interrupted-attempts`).
+  In the first pass 6 items failed and were left untouched: five held swtpm state files
+  readable only by root, and the 15 GB `capped-final-v1/cases` archive ran out of memory.
+  A second pass run as root archived all six.
+  Inside WSL, disk use dropped from 172 GB to 63 GB.
+* Further batches only on request.
 
 ## Kept on C: (needed by running or planned work)
 
 `m2-data24-parquet`, `m3-data24-parquet-iid-local-test-v1` (data, validation, test),
 `m5-secure-multiround-local-test-v1` (starting model), `revision-bounded-influence-v1`
 (clipping limits), `revision-clean-gate-calibration-v1` (clean histories, training protocol),
-`revision-dba-three-seed-v1`, `revision-trigger-probe-live` (main result, cases already
-archived per case), `revision-trigger-probe-evasion-live` (cases archived per case), retired v1/factorial records, everything under ~300 MB.
-For `revision-head-gate-v2`, `revision-head-gate-v2-confirm`, `revision-capped-final-v1` and
-`revision-gate-trajectories-v1` the `partitions/` (needed for partition-distinctness checks),
-protocols, models and summaries stay; their case evidence moves.
+`revision-dba-three-seed-v1`, `revision-live-bounded-tpm-v2` (source workspace for the live
+rollback), `revision-live-probe-rollback-v1` and `revision-live-probe-rollback-fedavg-v1`
+(study still in progress), `revision-head-cusum-gate-v1` (evaluation awaiting approval),
+`maintenance/`, `ton-iot-robust-transfer-v1`, and everything under ~300 MB.
+For every study in the PRIOR chain (`capped-final-v1`, `gate-trajectories-v1`, `head-gate-v2`,
+`head-gate-v2-confirm`, `trigger-probe-live`, `trigger-probe-evasion-live`,
+`probe-keynorm-confirm`, `global-probe-confirm`), `partitions/` stays on C: because the
+partition-distinctness checks need it, together with protocols, models, decisions and
+summaries. Only their case evidence was moved.
 
 ## Restoring
 
