@@ -15,6 +15,7 @@ TON_IOT_PROTOCOL ?=
 TON_IOT_WINDOWS_OUTPUT ?= artifacts/ton-iot-windows
 TON_IOT_TRANSFER ?=
 TON_IOT_TARGET_WORKSPACE ?= artifacts/ton-iot-target-retraining
+TON_IOT_F1_WORKSPACE ?=
 
 DATA24_SOURCE ?= data/raw/uwf-zeekdata24/parquet
 M2_AUDIT ?= artifacts/m2-data24-parquet-audit.json
@@ -43,6 +44,7 @@ help:
 	  '  make docs-index        Regenerate the two registered catalogue files' \
 	  '  make evidence-list     List all retained study directories' \
 	  '  make evidence-check    Check the selected stored flat checksum publication' \
+	  '  make thesis-evidence   Check the evidence cited by the thesis (docs/thesis-evidence.txt)' \
 	  '                         Override STUDY=results/<registered-study>' \
 	  '' \
 	  'Environment and verification:' \
@@ -55,7 +57,7 @@ help:
 	  '  make test              Run the full pytest suite' \
 	  '  make lint              Run documented Ruff error checks' \
 	  '  make smoke             Generate and verify the small acquisition fixture' \
-	  '  make validate          Run package checks, tests, lint and fixture smoke' \
+	  '  make validate          Run package checks, tests, lint, fixture smoke and docs-check' \
 	  '' \
 	  'Explicit data/foundation reconstruction:' \
 	  '  make dataset-download Download pinned Data24 into a fresh DATA24_SOURCE' \
@@ -76,7 +78,7 @@ help:
 	  '' \
 	  'Path variables: VENV, PYTHON, CLI, STUDY, DATA24_SOURCE, M2_AUDIT, M2_DATA,' \
 	  'M2_BASELINE, M3_IID_PARTITION, M3_NON_IID_PARTITION, M3_IID_RUN, M3_NON_IID_RUN,' \
-	  'DEMO_INPUT and DEMO_WORKSPACE. Generation targets refuse existing outputs.' \
+	  'DEMO_INPUT, DEMO_WORKSPACE and the TON_IOT_* variables. Generation targets refuse existing outputs.' \
 	  'M4-M8 and the research studies: make experiments.'
 
 setup:
@@ -109,7 +111,7 @@ test: check
 lint: check
 	"$(PYTHON)" -m ruff check --select E9,F63,F7,F82 src tests scripts/repository_audit.py
 
-validate: test lint smoke
+validate: test lint smoke docs-check
 
 guard-smoke:
 	if [[ ! -f "$(DEMO_INPUT)" ]]; then
@@ -192,19 +194,23 @@ foundation: check guard-foundation
 	$(MAKE) m3
 
 # Maintained navigation checks are independent of numerical campaign execution.
-.PHONY: docs-check docs-index evidence-list evidence-check test-docs test-formal test-groups dataset-verify
+.PHONY: docs-check docs-index evidence-list evidence-check thesis-evidence test-docs test-formal test-groups dataset-verify
 
-docs-check:
+docs-check: check
 	"$(PYTHON)" scripts/repository_audit.py docs
 
-docs-index:
+docs-index: check
 	"$(PYTHON)" scripts/repository_audit.py index
 
-evidence-list:
+evidence-list: check
 	"$(PYTHON)" scripts/repository_audit.py list
 
-evidence-check:
+evidence-check: check
 	"$(PYTHON)" scripts/repository_audit.py evidence --study "$(STUDY)"
+
+# Checks the retained evidence cited by the thesis (docs/thesis-evidence.txt).
+thesis-evidence: check
+	"$(PYTHON)" scripts/thesis_evidence.py
 
 test-docs: check
 	"$(PYTHON)" -m pytest -q tests/test_repository_audit.py
@@ -220,7 +226,7 @@ dataset-verify: check
 
 .PHONY: test-ton-iot ton-iot-preflight
 
-test-ton-iot:
+test-ton-iot: check
 	"$(PYTHON)" -m pytest -q tests/test_ton_iot.py tests/test_ton_iot_preflight.py tests/test_ton_iot_collection_preflight.py tests/test_ton_iot_windows.py tests/test_ton_iot_retraining.py tests/test_ton_iot_time_bounds.py tests/test_ton_iot_calibration.py tests/test_ton_iot_margin.py tests/test_ton_iot_traffic_features.py tests/test_ton_iot_host_windows.py tests/test_ton_iot_novelty.py tests/test_ton_iot_transfer_initialization.py
 
 ton-iot-preflight:

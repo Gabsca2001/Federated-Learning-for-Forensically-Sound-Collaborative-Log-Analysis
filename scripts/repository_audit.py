@@ -139,6 +139,15 @@ def catalogues(mapping: dict) -> dict[str, str]:
     return {'docs/REFERENCE_INDEX.md': '\n'.join(refs), 'results/CATALOG.md': '\n'.join(studies)}
 
 
+def offloaded_artifacts(root: Path) -> set[str]:
+    """Artifact paths (relative to artifacts/) moved to the external SSD, from the offload manifest."""
+    manifest = root / 'results/records/artifact-offload/manifest.jsonl'
+    if not manifest.is_file():
+        return set()
+    rows = (json.loads(line) for line in manifest.read_text(encoding='utf-8').splitlines() if line.strip())
+    return {row['artifact'] for row in rows if not row['artifact'].startswith('external-')}
+
+
 def audit(root: Path, mapping: dict, scan_runtime: bool = False) -> dict:
     errors = []
     maintained = set(mapping['maintained_pages']) | set(mapping['generated_pages'])
@@ -159,8 +168,14 @@ def audit(root: Path, mapping: dict, scan_runtime: bool = False) -> dict:
     if actual_studies != expected_studies:
         errors.append(dict(kind='study_registration', unregistered=sorted(actual_studies - expected_studies),
                            missing=sorted(expected_studies - actual_studies)))
+    offloaded = offloaded_artifacts(root)
+    archived = []
     for rel, expected in mapping['protected_markdown_sha256'].items():
         path = root / rel
+        if not path.exists() and rel.startswith('artifacts/') and any(
+                rel[len('artifacts/'):] == a or rel[len('artifacts/'):].startswith(a + '/') for a in offloaded):
+            archived.append(rel)
+            continue
         if not path.is_file() or sha256(path) != expected:
             errors.append(dict(kind='retained_markdown_changed_or_missing', path=rel))
     for rel, expected in catalogues(mapping).items():
@@ -197,7 +212,8 @@ def audit(root: Path, mapping: dict, scan_runtime: bool = False) -> dict:
     return dict(status='passed' if not errors else 'failed', markdown_scanned=count,
                 maintained_pages=len(maintained), versioned_references=len(references),
                 study_directories=len(expected_studies),
-                retained_markdown_checked=len(mapping['protected_markdown_sha256']),
+                retained_markdown_checked=len(mapping['protected_markdown_sha256']) - len(archived),
+                retained_markdown_archived=len(archived),
                 runtime_scan_performed=scan_runtime,
                 errors=errors, historical_local_link_findings=historical,
                 qualifications='Historical local-link findings are diagnostic; frozen files are not rewritten. '

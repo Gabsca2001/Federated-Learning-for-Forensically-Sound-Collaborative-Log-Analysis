@@ -13,7 +13,9 @@
     "docs/guide/REPRODUCIBILITY.md",
     "docs/guide/REQUIREMENTS.md",
     "results/README.md",
-    "docs/TON_IOT_VALIDATION.md"
+    "docs/TON_IOT_VALIDATION.md",
+    "docs/guide/ARCHITECTURE_MAP.md",
+    "docs/guide/GLOSSARY.md"
   ],
   "references": [
     {
@@ -42,7 +44,7 @@
       "title": "Live derivation campaign with swtpm",
       "group": "Versioned admission and attack studies",
       "role": "versioned_reference",
-      "sha256": "c7cf4a071c81c68c11e1380ef1f7eb10f5443b52ccf660042929999e43bc0601"
+      "sha256": "0b3493007e3921684a63abd5b8c6a2d79c0d14fb71df19030156fac03d6eae1e"
     },
     {
       "path": "docs/admission-gates/BOUNDED_INFLUENCE_THEOREMS.md",
@@ -89,7 +91,7 @@
     {
       "path": "docs/records/EMAIL_REQUIREMENTS_STATUS_20261106.md",
       "title": "Email requirements: current implementation, evidence and remaining work",
-      "group": "Dated requirement and consolidation records",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "856d0b65b00a72e33dc7f26b8aa782e283fb3ed0c80a5e844956561ba153018c"
     },
@@ -110,7 +112,7 @@
     {
       "path": "docs/formal/FORMAL_MODEL_REVIEW.md",
       "title": "Formal model: correspondence, proof obligations, and scope",
-      "group": "Formal definitions and verifier correspondence",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "2aebf1b0ba57c37c27657da29e887f984637e15152d5cd245f43db5f320e9fe7"
     },
@@ -124,9 +126,9 @@
     {
       "path": "docs/formal/FORMAL_PROFILE_CORRESPONDENCE.md",
       "title": "Final formal-profile correspondence",
-      "group": "Formal definitions and verifier correspondence",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
-      "sha256": "fad41f9a525f051e86100b06d0173f59da58b16b80c16e08e735efa1803a533b"
+      "sha256": "c867ff3f1a4d21cbd6ce360e4a1ab6a33bdd8a05ee041454b6fa527327d87142"
     },
     {
       "path": "docs/admission-gates/GATE_MECHANISMS_AND_VALIDATION.md",
@@ -147,7 +149,7 @@
       "title": "Independent receipt witness: registered-set profile",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
-      "sha256": "82a39f26a5c4f541af02f06279223fa8572a0abbfd679d619179d63af1ca24b7"
+      "sha256": "eb8b40a9edd607599d2944462deeb0e7ed7a4a92c2b715f65ce100f80ecd5cee"
     },
     {
       "path": "docs/formal/INGESTION_COVERAGE.md",
@@ -168,7 +170,7 @@
       "title": "Local demonstration and independent laboratory deployment",
       "group": "Witness and submission profiles",
       "role": "versioned_reference",
-      "sha256": "92f164836e863944871340c618b9fbcde193d2f799d4935051901c5825bd34f5"
+      "sha256": "6c2598ff3968ba6e2c91c42333e2f50b1e5635a730fff62a94ce9648f2902d47"
     },
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_ATTACK.md",
@@ -201,28 +203,28 @@
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md",
       "title": "M6 untargeted adaptive continuation branch — seed 342593",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "9af2b82f72fe930ff4309466c723ed7bef3e92defbcbff6148b7159156d29495"
     },
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md",
       "title": "M6 untargeted adaptive continuation branch — seed 342593",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "aeb9b2442ed76b90d263f4802a0dce3ccfacff5acec7c797bece73a4583f21ca"
     },
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md",
       "title": "M6 adaptive untargeted campaign: infrastructure recovery v1",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "d6de3c64f9839ca6ef832e664c5f91904c5a03fd5b82471e3aa4edd7df2800f7"
     },
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md",
       "title": "Untargeted adaptive live M6 campaign v1",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "643d01edea299e3b78e42e542d5fc3a69b9e7590206b54aac2e58839f99b24dd"
     },
@@ -236,21 +238,21 @@
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md",
       "title": "M6 untargeted seed 343593 infrastructure recovery",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "de5545cc8997cbd7ac9bba0fbc7e757ebad35ce8b31dfcfe060bf61583ba7921"
     },
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md",
       "title": "Untargeted adaptive M6 seed extension v1",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "b169f27e3e9100e96fa6ffaba1e2a09b1c8623aa86cde6f81a410954b2c6935c"
     },
     {
       "path": "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md",
       "title": "M6 adaptive untargeted campaign: seed 342593 continuation",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "d12ffc63ea26f1d78e9fadac33891a5fbecba6c56e9eddb6a38e6720bc72662a"
     },
@@ -294,7 +296,7 @@
       "title": "Milestone 5 - secure multi-round campaign",
       "group": "Original milestone and data procedures",
       "role": "versioned_reference",
-      "sha256": "126364447adf2e9837214070ae26db71f4aa28f645e2ba6d0bcbb10f0ed88898"
+      "sha256": "fd371769e579357d8ab6d7ce0a5b0ae53eedf957a7c96a0134678fc2a760dd09"
     },
     {
       "path": "docs/milestones/MILESTONE_5_SECURE_ROUND.md",
@@ -341,14 +343,14 @@
     {
       "path": "docs/admission-gates/PERSISTENT_ENVELOPE_POLICY.md",
       "title": "Experimental bounded-persistence envelope",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "888120fba5b4aeaa67b68c2d2864387de840ac5196e1c3ecb95841f1570af362"
     },
     {
       "path": "docs/measurement/PUBLICATION_READINESS.md",
       "title": "Publication readiness — reviewed 2026-09-29",
-      "group": "Measurement and deployment references",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "b235c21b66b172638bf8167484a698a39c19c8f423889e5204245ac26d6a112e"
     },
@@ -362,14 +364,14 @@
     {
       "path": "docs/records/RESEARCH_CONSOLIDATION_20261104.md",
       "title": "Reserved research follow-up: scope and interpretation",
-      "group": "Dated requirement and consolidation records",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "7d8d9a0f2d637912afe153bc3b682077787bc5c3d33da7522e793a3d5e2e4faa"
     },
     {
       "path": "docs/admission-gates/ROLLING_ENVELOPE_VALIDATION.md",
       "title": "Rolling peak memory: validation and rejection",
-      "group": "Versioned admission and attack studies",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "99a686cb3481709ab5c37ad8c263769c7a2def54ea9ea8c273653d00aceb9f48"
     },
@@ -404,21 +406,21 @@
     {
       "path": "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT.md",
       "title": "Supervisor correspondence: implementation and evidence audit",
-      "group": "Dated requirement and consolidation records",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
-      "sha256": "0286a7e409b89d473833b5728bbde25b68f80c34fca067ae0449470098966244"
+      "sha256": "10a29d27115e6862ce10d6a0ce4703a3186fd83fe27df316425506cca5b40fac"
     },
     {
       "path": "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md",
       "title": "Supervisor-email correspondence audit — 4 November 2026",
-      "group": "Dated requirement and consolidation records",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "ca2c9a90fa2560987abb573d256ee898a754d5ed3aba9111b91b9b7cb56564c2"
     },
     {
       "path": "docs/records/SUPERVISOR_UPDATE_2026_09_29.md",
       "title": "Supervisor update evidence review — 2026-09-29",
-      "group": "Dated requirement and consolidation records",
+      "group": "Superseded historical records (consult the maintained guide first)",
       "role": "versioned_reference",
       "sha256": "bdc598a173caf7060548c2ceeecbf1277aa47f7840600bb07b91e1ce1e0105c5"
     },
@@ -1601,10 +1603,10 @@
     "docs/witness-chain/EXTERNAL_TSA_VALIDATION.md": "ef3572a4777bc50954d3a48d2e0cba0ca0ff345491707f9d9ae6c5bcc74aca7e",
     "docs/witness-chain/WITNESS_LIVE_ROUND.md": "a3bda604eb66f15d23e50da04539d11815cfc95aaade4b67d8aad372cf2f40b3",
     "docs/witness-chain/SUBMISSION_EVIDENCE.md": "ba8d4ebd92510da0f640b40280c658d20f810940279929baf9ce3dd12c968bbf",
-    "docs/formal/FORMAL_PROFILE_CORRESPONDENCE.md": "fad41f9a525f051e86100b06d0173f59da58b16b80c16e08e735efa1803a533b",
+    "docs/formal/FORMAL_PROFILE_CORRESPONDENCE.md": "c867ff3f1a4d21cbd6ce360e4a1ab6a33bdd8a05ee041454b6fa527327d87142",
     "docs/records/EMAIL_REQUIREMENTS_STATUS_20261106.md": "856d0b65b00a72e33dc7f26b8aa782e283fb3ed0c80a5e844956561ba153018c",
     "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md": "de5545cc8997cbd7ac9bba0fbc7e757ebad35ce8b31dfcfe060bf61583ba7921",
-    "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT.md": "0286a7e409b89d473833b5728bbde25b68f80c34fca067ae0449470098966244",
+    "docs/records/SUPERVISOR_REQUIREMENTS_AUDIT.md": "10a29d27115e6862ce10d6a0ce4703a3186fd83fe27df316425506cca5b40fac",
     "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md": "d6de3c64f9839ca6ef832e664c5f91904c5a03fd5b82471e3aa4edd7df2800f7",
     "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md": "9af2b82f72fe930ff4309466c723ed7bef3e92defbcbff6148b7159156d29495",
     "docs/admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md": "b169f27e3e9100e96fa6ffaba1e2a09b1c8623aa86cde6f81a410954b2c6935c",
@@ -1627,7 +1629,7 @@
     "docs/milestones/MILESTONE_3_FEDERATED_BASELINE.md": "bd5b8f8a35046cf573740cd264fb725ac77bf871f951c85ab92a65027ea8987c",
     "docs/admission-gates/INDEPENDENT_CONTAINMENT_VALIDATION.md": "8d45555fa672e8b8acd84c0a9dfa6f181f3b72a837068476d42365b162f22d16",
     "docs/admission-gates/ATTESTED_DBA_REPLAY.md": "699178b365ab4128d9e703972a5cdbe80a063f16aa208f5bd9090631cee2b8ad",
-    "docs/admission-gates/ATTESTED_LIVE_CHAIN.md": "c7cf4a071c81c68c11e1380ef1f7eb10f5443b52ccf660042929999e43bc0601",
+    "docs/admission-gates/ATTESTED_LIVE_CHAIN.md": "0b3493007e3921684a63abd5b8c6a2d79c0d14fb71df19030156fac03d6eae1e",
     "docs/milestones/DATASET_UWF_ZEEKDATA24.md": "b8e1bcbb77233b35238b8b9867a44a7bf0bf6d9afeac01cd56c614e60389c844",
     "docs/admission-gates/GATE_MECHANISMS_AND_VALIDATION.md": "d135b8f6d2a146c484d87e01a7a3e6a127aa4e964952c3e5d9d5a0eeb6cd46c5",
     "docs/milestones/MILESTONE_8_PRESERVATION.md": "3f6f984bcb2cbbdb78ef54a0f48f9c2f47d69ed6b5861f491c0b7b61be281030",
@@ -1646,11 +1648,11 @@
     "docs/formal/FORMAL_MODEL_THEOREMS.md": "0527cbbaeaca25f54e3756b9a4d20a15ba1b0934cd1886335c9dec1e42fe72a9",
     "docs/admission-gates/M6_LIVE_SENSITIVITY.md": "f960a264f9f84e2954fc7f3d754ab2cbcd1a26d98553e6b10be1597dd6068499",
     "docs/formal/MULTIROUND_DERIVATION.md": "56d5182b3d73d6ac2a2c619203a350d14370597b578201ecb0785ae564462f5c",
-    "docs/witness-chain/LOCAL_WITNESS_DEMONSTRATION.md": "92f164836e863944871340c618b9fbcde193d2f799d4935051901c5825bd34f5",
-    "docs/witness-chain/INDEPENDENT_SUBMISSION_WITNESS.md": "82a39f26a5c4f541af02f06279223fa8572a0abbfd679d619179d63af1ca24b7",
+    "docs/witness-chain/LOCAL_WITNESS_DEMONSTRATION.md": "6c2598ff3968ba6e2c91c42333e2f50b1e5635a730fff62a94ce9648f2902d47",
+    "docs/witness-chain/INDEPENDENT_SUBMISSION_WITNESS.md": "eb8b40a9edd607599d2944462deeb0e7ed7a4a92c2b715f65ce100f80ecd5cee",
     "docs/admission-gates/CAPPED_FINAL_RESULTS.md": "ba6dac5bdde0cb56dcce4054873fc24abb6ed52ba0a83a5cfad4579bd5d5b353",
     "docs/admission-gates/BOUNDED_INFLUENCE_THEOREMS.md": "934c4321468e28c33c208b50f2283e5f81b9b75b046abf53d9fe1d36504d69be",
-    "docs/milestones/MILESTONE_5_SECURE_MULTIROUND.md": "126364447adf2e9837214070ae26db71f4aa28f645e2ba6d0bcbb10f0ed88898",
+    "docs/milestones/MILESTONE_5_SECURE_MULTIROUND.md": "fd371769e579357d8ab6d7ce0a5b0ae53eedf957a7c96a0134678fc2a760dd09",
     "docs/admission-gates/CAPPED_FINAL_AGGREGATION.md": "69fd945eb7100c7d32c87d7d06c86fd0fc7f3ba10e4dc44efb73ab7fee042c34",
     "docs/admission-gates/LIVE_ENVELOPE_VALIDATION.md": "9760f2e12451112dde918bf7f7849aba82764b2a7923bcf46739690024a8535f",
     "docs/measurement/RUNTIME_OVERHEAD_BENCHMARKING.md": "8958a577159ef24a409b3f240454e1c5330ef7bf835de4fc0e79f4f259c91d09",

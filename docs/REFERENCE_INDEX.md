@@ -12,21 +12,14 @@ named release; the reference files are not rewritten by consolidation.
 | Reference | Role |
 | --- | --- |
 | [Artifact offload to the external SSD](records/ARTIFACT_OFFLOAD.md) | Stable versioned reference |
-| [Email requirements: current implementation, evidence and remaining work](records/EMAIL_REQUIREMENTS_STATUS_20261106.md) | Stable versioned reference |
 | [Gate research handoff](records/GATE_RESEARCH_HANDOFF.md) | Stable versioned reference |
-| [Reserved research follow-up: scope and interpretation](records/RESEARCH_CONSOLIDATION_20261104.md) | Stable versioned reference |
-| [Supervisor correspondence: implementation and evidence audit](records/SUPERVISOR_REQUIREMENTS_AUDIT.md) | Stable versioned reference |
-| [Supervisor-email correspondence audit — 4 November 2026](records/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md) | Stable versioned reference |
-| [Supervisor update evidence review — 2026-09-29](records/SUPERVISOR_UPDATE_2026_09_29.md) | Stable versioned reference |
 
 ## Formal definitions and verifier correspondence
 
 | Reference | Role |
 | --- | --- |
 | [Counterfactuals and replay with retraining](formal/COUNTERFACTUAL_REPLAY.md) | Stable versioned reference |
-| [Formal model: correspondence, proof obligations, and scope](formal/FORMAL_MODEL_REVIEW.md) | Stable versioned reference |
 | [Formal derivation model: definitions, conditional theorems and proof correspondence](formal/FORMAL_MODEL_THEOREMS.md) | Stable versioned reference |
-| [Final formal-profile correspondence](formal/FORMAL_PROFILE_CORRESPONDENCE.md) | Stable versioned reference |
 | [Authenticated coverage of ingested source occurrences](formal/INGESTION_COVERAGE.md) | Stable versioned reference |
 | [Multiround derivation and structural blast radius](formal/MULTIROUND_DERIVATION.md) | Stable versioned reference |
 | [Receipt-bound round derivation](formal/ROUND_DERIVATION.md) | Stable versioned reference |
@@ -38,7 +31,6 @@ named release; the reference files are not rewritten by consolidation.
 | --- | --- |
 | [External UWF-ZeekData22 generalization](measurement/EXTERNAL_GENERALIZATION.md) | Stable versioned reference |
 | [M4–M8 overhead benchmarking](measurement/OVERHEAD_BENCHMARKING.md) | Stable versioned reference |
-| [Publication readiness — reviewed 2026-09-29](measurement/PUBLICATION_READINESS.md) | Stable versioned reference |
 | [Real post-training TPM attestation failure](measurement/REAL_ATTESTATION_FAILURE.md) | Stable versioned reference |
 | [M4–M5 containerized runtime-overhead benchmarking](measurement/RUNTIME_OVERHEAD_BENCHMARKING.md) | Stable versioned reference |
 
@@ -55,6 +47,28 @@ named release; the reference files are not rewritten by consolidation.
 | [Milestone 6 — Byzantine experiments and robust aggregation](milestones/MILESTONE_6_BYZANTINE_EXPERIMENTS.md) | Stable versioned reference |
 | [Milestone 7 — Investigation](milestones/MILESTONE_7_INVESTIGATION.md) | Stable versioned reference |
 | [Milestone 8 — preservation, timestamping, and offline recovery](milestones/MILESTONE_8_PRESERVATION.md) | Stable versioned reference |
+
+## Superseded historical records (consult the maintained guide first)
+
+| Reference | Role |
+| --- | --- |
+| [M6 untargeted adaptive continuation branch — seed 342593](admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md) | Stable versioned reference |
+| [M6 untargeted adaptive continuation branch — seed 342593](admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md) | Stable versioned reference |
+| [M6 adaptive untargeted campaign: infrastructure recovery v1](admission-gates/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md) | Stable versioned reference |
+| [Untargeted adaptive live M6 campaign v1](admission-gates/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md) | Stable versioned reference |
+| [M6 untargeted seed 343593 infrastructure recovery](admission-gates/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md) | Stable versioned reference |
+| [Untargeted adaptive M6 seed extension v1](admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md) | Stable versioned reference |
+| [M6 adaptive untargeted campaign: seed 342593 continuation](admission-gates/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md) | Stable versioned reference |
+| [Experimental bounded-persistence envelope](admission-gates/PERSISTENT_ENVELOPE_POLICY.md) | Stable versioned reference |
+| [Rolling peak memory: validation and rejection](admission-gates/ROLLING_ENVELOPE_VALIDATION.md) | Stable versioned reference |
+| [Formal model: correspondence, proof obligations, and scope](formal/FORMAL_MODEL_REVIEW.md) | Stable versioned reference |
+| [Final formal-profile correspondence](formal/FORMAL_PROFILE_CORRESPONDENCE.md) | Stable versioned reference |
+| [Publication readiness — reviewed 2026-09-29](measurement/PUBLICATION_READINESS.md) | Stable versioned reference |
+| [Email requirements: current implementation, evidence and remaining work](records/EMAIL_REQUIREMENTS_STATUS_20261106.md) | Stable versioned reference |
+| [Reserved research follow-up: scope and interpretation](records/RESEARCH_CONSOLIDATION_20261104.md) | Stable versioned reference |
+| [Supervisor correspondence: implementation and evidence audit](records/SUPERVISOR_REQUIREMENTS_AUDIT.md) | Stable versioned reference |
+| [Supervisor-email correspondence audit — 4 November 2026](records/SUPERVISOR_REQUIREMENTS_AUDIT_20261104.md) | Stable versioned reference |
+| [Supervisor update evidence review — 2026-09-29](records/SUPERVISOR_UPDATE_2026_09_29.md) | Stable versioned reference |
 
 ## System and integration references
 
@@ -85,18 +99,9 @@ named release; the reference files are not rewritten by consolidation.
 | [Paired adaptive multiround protocol — 2026-09-28](admission-gates/M6_ADAPTIVE_MULTIROUND.md) | Stable versioned reference |
 | [Adaptive multiseed extension v1 — prespecified 2026-09-29](admission-gates/M6_ADAPTIVE_MULTISEED_V1.md) | Stable versioned reference |
 | [Adaptive objective and statistical-filter ablation v1](admission-gates/M6_ADAPTIVE_OBJECTIVES_ABLATION_V1.md) | Stable versioned reference |
-| [M6 untargeted adaptive continuation branch — seed 342593](admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V2.md) | Stable versioned reference |
-| [M6 untargeted adaptive continuation branch — seed 342593](admission-gates/M6_ADAPTIVE_UNTARGETED_CONTINUATION_S342593_V3.md) | Stable versioned reference |
-| [M6 adaptive untargeted campaign: infrastructure recovery v1](admission-gates/M6_ADAPTIVE_UNTARGETED_INFRA_RECOVERY_V1.md) | Stable versioned reference |
-| [Untargeted adaptive live M6 campaign v1](admission-gates/M6_ADAPTIVE_UNTARGETED_LIVE_V1.md) | Stable versioned reference |
 | [Untargeted adaptive M6: four-seed results](admission-gates/M6_ADAPTIVE_UNTARGETED_MULTISEED_RESULTS_V1.md) | Stable versioned reference |
-| [M6 untargeted seed 343593 infrastructure recovery](admission-gates/M6_ADAPTIVE_UNTARGETED_RECOVERY_S343593_V1.md) | Stable versioned reference |
-| [Untargeted adaptive M6 seed extension v1](admission-gates/M6_ADAPTIVE_UNTARGETED_REPLICATION_V1.md) | Stable versioned reference |
-| [M6 adaptive untargeted campaign: seed 342593 continuation](admission-gates/M6_ADAPTIVE_UNTARGETED_RESUME_S342593_V1.md) | Stable versioned reference |
 | [Exploratory live downweight-threshold sensitivity](admission-gates/M6_LIVE_SENSITIVITY.md) | Stable versioned reference |
 | [Paired active-policy pilot](admission-gates/M6_POLICY_PILOT.md) | Stable versioned reference |
-| [Experimental bounded-persistence envelope](admission-gates/PERSISTENT_ENVELOPE_POLICY.md) | Stable versioned reference |
-| [Rolling peak memory: validation and rejection](admission-gates/ROLLING_ENVELOPE_VALIDATION.md) | Stable versioned reference |
 | [Severe-tail statistical admission: research specification](admission-gates/severe-tail-admission-research.md) | Stable versioned reference |
 
 ## Witness and submission profiles

@@ -23,6 +23,22 @@ The [dated requirement audit](../records/EMAIL_REQUIREMENTS_STATUS_20261106.md) 
 those source-bound comparisons and the earlier Data22 transfer diagnosis. Data22
 development does not replace the deferred independent ToN-IoT evaluation.
 
+## Data22 transfer diagnosis and representation follow-up
+
+The frozen Data24 checkpoint misses 104 of 110 Data22 attack windows
+(`results/milestones/m5-external-generalization-local-test-v1`). The representation
+follow-up cited by the thesis is retained in two local artifact directories:
+
+| Study | Content | Location |
+| --- | --- | --- |
+| Central screening | Seven representations, three seeds, selection recorded before external and test access; standard selected at 0.96445 mean validation macro-F1 | `artifacts/revision-preprocessing-screening-v1/` |
+| Federated follow-up | Standard and log-transformed quantitative measures, three seeds, thirty rounds; the second variant is an exploratory choice made after the Data22 result | `artifacts/revision-preprocessing-federated-v1/` |
+| Source record | Frozen tested library, launch and closure scripts, and the original progress notes, with a `SHA256SUMS` index | `artifacts/revision-preprocessing-source-record-20261102/` |
+
+The federated protocol records `library_source_path` outside this repository;
+the source record preserves that frozen library. These directories are not
+tracked by Git and are not registered study publications.
+
 ## Admission and aggregation findings
 
 | Study | Supported finding | Limit |
